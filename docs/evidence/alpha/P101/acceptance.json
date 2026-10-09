@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "phaseId": "P101",
+  "state": "COMMITTED",
+  "claimId": "CLM-P101-001",
+  "agentId": "slot-one",
+  "claimEpoch": 1,
+  "baseMainSha": "5ea76924abba1ae04de774e548cd6ac2c9ee745b",
+  "contractHash": "9b379980e16fdd557e0ea8a7f8273421f4a581c1c1563fe7661308038e29ee12",
+  "commitSha": "9c40bceba5cde45c56745e2e8cd83ad4f40447b4",
+  "providerLive": false,
+  "acceptanceIds": ["AP101-01", "AP101-02", "AP101-03"],
+  "ciRuns": [],
+  "browserCiRuns": [],
+  "pending": ["independent PR CI", "current-main merge validation", "independent merged-main CI", "separately assigned GATE-R1"],
+  "localBrowserEvidence": {
+    "commitSha": "9c40bceba5cde45c56745e2e8cd83ad4f40447b4",
+    "contentSandboxDisabled": true,
+    "supplementalOnly": true,
+    "smokeReport": "local-smoke.json",
+    "packagedReport": "local-packaged.json"
+  }
+}
