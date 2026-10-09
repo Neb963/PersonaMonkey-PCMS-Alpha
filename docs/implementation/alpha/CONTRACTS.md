@@ -55,3 +55,11 @@ Feature implementations must use typed projections and reject unknown fields and
 commands at their runtime boundary. A declaration is not acceptance evidence for
 any provider operation. The original proposed text is preserved under
 `docs/provenance/alpha-design/`.
+
+## Authorized P103 account-discovery amendment (AMEND-P103-LIST-001, revision 2)
+
+`PerchanceAdapter.listGenerators({ context, cursor? })` returns `Result<Page<AccountGeneratorEntry>>`, where each item is `{ key: GeneratorKey, readback: ProviderReadback }`. The `key` is the nonempty canonical Perchance generator slug, not a source revision, feed position, account identifier, or inferred array index. `readback` retains its original schema. `read` / `observe` / mutation readbacks remain `Result<ProviderReadback>`; no generator key is added to those methods.
+
+Pages retain the existing `items`, `cursor` (opaque continuation token or `null`), and `asOf` fields. Account ownership must be observed through the account-bound Persona context. An implementation must reject missing, invalid/noncanonical, or duplicate generator identities; duplicates across successive pages must not silently overwrite prior observations. The consumer must treat pagination failure and conflicting identities as incomplete discovery, not proof of absent generators or ownership. No public-feed API is an account-inventory substitute. These are interface requirements, not a claim that a Perchance runtime adapter exists or has been live-tested.
+
+Revision 2 changes only the account-list element type, introduces `AccountGeneratorEntry`, and updates its surface metadata. It does not change `ProviderReadback`, `Page<T>`, Persona Broker commands, other provider methods, persistence records, or service methods. The contract family remains `alpha.contracts.v1` and its byte-framed lock hash is changed; active R1 claims require explicit read-hash revalidation without ownership or epoch reassignment.

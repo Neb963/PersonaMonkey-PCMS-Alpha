@@ -12,6 +12,7 @@ export const CONTRACT_FILES = [
   'extension/alpha/contracts/index.d.ts',
   'extension/alpha/contracts/surface.json'
 ];
+export const AMENDMENT = Object.freeze({ id: 'AMEND-P103-LIST-001', branch: 'agent/alpha-contract-amendment/amend-p103-list-001', contextPath: 'docs/evidence/alpha/AMEND-P103-LIST-001/context.json', previousHash: '9b379980e16fdd557e0ea8a7f8273421f4a581c1c1563fe7661308038e29ee12', nextHash: '8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e', revision: 2 });
 export const ACTIVE = new Set(['ACTIVE', 'PR_OPEN']);
 export const SHA = /^[a-f0-9]{40}$/;
 const PHASE_STATES = new Set(['LOCKED', 'READY', 'CLAIMED', 'IN_PROGRESS', 'PR_OPEN', 'MERGED', 'ACCEPTED']);
@@ -108,7 +109,7 @@ export function validateSnapshot(s, { root, verifyHash = true } = {}) {
     for (const dep of plan.phases.find(p => p.id === id).dependsOn) visit(dep, next);
   }
   for (const id of ids) visit(id);
-  requireThat(lock.schemaVersion === 1 && /^[a-f0-9]{64}$/.test(lock.contracts['alpha.contracts.v1']), 'Invalid contract lock');
+  requireThat(lock.schemaVersion === 1 && /^[a-f0-9]{64}$/.test(lock.contracts['alpha.contracts.v1']) && (lock.contractRevision === undefined || lock.contractRevision === AMENDMENT.revision), 'Invalid contract lock');
   if (root && verifyHash) requireThat(contractHash(root) === lock.contracts['alpha.contracts.v1'], 'Frozen contract bytes have changed');
   requireThat(registry.schemaVersion === 1 && sameSet(Object.keys(registry.epochs), [...ids]) && Array.isArray(registry.claims), 'Invalid claim registry');
   for (const epoch of Object.values(registry.epochs)) requireThat(Number.isSafeInteger(epoch) && epoch >= 0, 'Invalid authoritative claim epoch');
@@ -173,10 +174,41 @@ export function validateTransition(main, head, context, { mainSha, headBranch, f
     requireThat(head.plan.bootstrap.state === 'IN_PROGRESS' && head.registry.claims.length === 0, 'Bootstrap cannot pre-accept G0 or acquire round claims');
   } else {
     validateSnapshot(main, { verifyHash: false });
-    requireThat(equal(main.lock, head.lock), 'Frozen shared contracts require a separate authorized gate amendment');
+    if (context.kind !== 'CONTRACT_AMENDMENT') requireThat(equal(main.lock, head.lock), 'Frozen shared contracts require a separate authorized gate amendment');
     requireThat(equal(main.policies, head.policies), 'Policy amendment is outside this claim');
   }
-  if (context.kind === 'BOOTSTRAP') {
+  if (context.kind === 'CONTRACT_AMENDMENT') {
+    requireThat(main?.plan.bootstrap.state === 'ACCEPTED' && context.baseMainSha === mainSha, 'Contract amendment requires accepted G0 and exact current main');
+    requireThat(context.amendmentId === AMENDMENT.id && context.phaseId === AMENDMENT.id &&
+      context.agentId === 'alpha-contract-amendment' && context.branch === AMENDMENT.branch &&
+      context.claimEpoch === 1 && context.previousHash === AMENDMENT.previousHash &&
+      context.nextHash === AMENDMENT.nextHash, 'Unauthorized or malformed contract amendment');
+    requireThat(main.lock.contracts['alpha.contracts.v1'] === AMENDMENT.previousHash &&
+      main.lock.contractRevision === undefined, 'Amendment already applied or previous contract changed');
+    requireThat(head.lock.contracts['alpha.contracts.v1'] === AMENDMENT.nextHash &&
+      head.lock.contractRevision === AMENDMENT.revision &&
+      Object.keys(head.lock.contracts).length === 1, 'Amendment changed unexpected contract locks');
+    requireThat(equal(main.plan, head.plan) && equal(main.policies, head.policies), 'Contract amendment cannot change phase eligibility or policies');
+    const active = main.registry.claims.filter(c => ACTIVE.has(c.state));
+    requireThat(equal([...context.affectedClaims].sort(), active.map(c => c.phaseId).sort()), 'Amendment omitted or invented affected claims');
+    const expectedRegistry = structuredClone(main.registry);
+    for (const c of expectedRegistry.claims) if (ACTIVE.has(c.state)) {
+      requireThat(c.contractReads['alpha.contracts.v1'] === AMENDMENT.previousHash, 'Unexpected active contract read hash');
+      c.contractReads['alpha.contracts.v1'] = AMENDMENT.nextHash;
+    }
+    requireThat(equal(head.registry, expectedRegistry), 'Amendment must revalidate reads only; epoch, owner, scope and history are immutable');
+    const p103 = main.plan.phases.find(p => p.id === 'P103');
+    requireThat(p103.status === 'READY' && main.registry.epochs.P103 === 0 &&
+      !main.registry.claims.some(c => c.phaseId === 'P103'), 'P103 has been acquired; halt amendment for claim review');
+    assertFiles(files, [
+      'extension/alpha/contracts/index.d.ts', 'extension/alpha/contracts/surface.json',
+      'docs/implementation/alpha/CONTRACTS.md', LOCK, CLAIMS,
+      'docs/implementation/alpha/GOVERNANCE.md', 'tools/alpha/governance.mjs',
+      'tools/alpha/ci.mjs', 'tools/alpha/verify-amendment.mjs',
+      'tests/alpha/governance/contracts.test.mjs', 'tests/alpha/governance/contract-amendment.test.mjs',
+      '.github/workflows/alpha-contract-amendment.yml', AMENDMENT.contextPath
+    ]);
+  } else if (context.kind === 'BOOTSTRAP') {
     const lease = main?.plan.bootstrap ?? head.plan.bootstrap;
     requireThat(context.agentId === lease.agentId && context.claimEpoch === lease.claimEpoch && context.branch === lease.branch && context.baseMainSha === lease.baseMainSha, 'Stale or invalid G0 lease');
     requireThat(!main || main.plan.bootstrap.state !== 'ACCEPTED', 'G0 is already accepted');

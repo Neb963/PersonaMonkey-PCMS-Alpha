@@ -90,3 +90,11 @@ P101 owns its separately assigned Alpha browser harness; G0 does not implement i
 P103's discovery-v3 observations are not present in this design ZIP or the donor;
 that source-specific evidence must be supplied/located before claiming its
 observation-dependent acceptance. Unknown provider behavior remains fail-closed.
+
+## One-time operator-authorized P103 contract amendment
+
+`AMEND-P103-LIST-001` is a **single-use**, serialized correction for the unkeyed `PerchanceAdapter.listGenerators` return type. It is not a P103 phase claim, not a gate acceptance and not a general contract unlock. Its fixed context path is `docs/evidence/alpha/AMEND-P103-LIST-001/context.json` and its branch is `agent/alpha-contract-amendment/amend-p103-list-001`. The authorization is the operator's 2026-10-09 instruction; the validator pins the prior and new contract hashes, revision, exact current-main SHA, limited changed files and every active claim's exact before/after registry projection.
+
+The procedure is: inspect all current active claims and PRs; prepare a dedicated branch from exact main; revalidate contract-read hashes of all affected active claims **without** changing epochs, owners, paths, states or plan; run the amendment-only fixture suite and independent CI; compare the entire diff and current main again; serialize and merge only when the repository's trusted-main guard and required CI permit it, followed by merged-main CI. A candidate may not approve itself by modifying the validation code copied from current main. If the old validator does not support this one-time transition, **do not merge** based only on a self-hosted amendment workflow; obtain a separately approved trusted-validator bootstrap path first. No ordinary PHASE, CLAIM or GATE transition receives the amendment's privileges.
+
+PR #8 contains an obsolete P103 claim acquisition plus unrelated P105 control changes, based on a superseded main. It must remain unmerged; closing the draft with a recorded explanation preserves its historical branch and work. After a valid amendment, P103 remains READY/unclaimed at epoch 0 for its rightful agent's new current-main claim or separately authorized continuation. No R2 unlock or P103 acceptance is implied.

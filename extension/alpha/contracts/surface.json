@@ -307,6 +307,7 @@
     "ProviderContext",
     "ProviderMutation",
     "ProviderReadback",
+    "AccountGeneratorEntry",
     "HealthyActiveClock",
     "RefresherCommentLedger",
     "VisibilityObservation",
@@ -354,5 +355,17 @@
       "IN_DEVELOPMENT",
       "READY"
     ]
+  },
+  "contractRevision": 2,
+  "perchanceAdapter": {
+    "listGenerators": {
+      "itemType": "AccountGeneratorEntry",
+      "key": "GeneratorKey",
+      "readback": "ProviderReadback",
+      "cursor": "Page.cursor",
+      "identityScope": "GLOBAL_GENERATOR_SLUG",
+      "invalidIdentity": "FAIL_CLOSED",
+      "duplicateIdentity": "FAIL_CLOSED"
+    }
   }
 }

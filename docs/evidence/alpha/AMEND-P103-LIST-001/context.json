@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "kind": "CONTRACT_AMENDMENT",
+  "phaseId": "AMEND-P103-LIST-001",
+  "amendmentId": "AMEND-P103-LIST-001",
+  "agentId": "alpha-contract-amendment",
+  "branch": "agent/alpha-contract-amendment/amend-p103-list-001",
+  "claimEpoch": 1,
+  "baseMainSha": "2c075175e366e970e3bfe4e17662df23fed97c19",
+  "previousHash": "9b379980e16fdd557e0ea8a7f8273421f4a581c1c1563fe7661308038e29ee12",
+  "nextHash": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e",
+  "affectedClaims": [
+    "P101",
+    "P102",
+    "P104",
+    "P105"
+  ],
+  "authorization": "operator 2026-10-09: specific P103 keyed account discovery and serialized governance amendment",
+  "providerLive": false
+}
