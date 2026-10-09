@@ -9,9 +9,12 @@ export function packagedBroker(browser) {
   return createPersonaBroker({ transport: createFirefoxPersonaBrokerTransport({ runtime: {
     async sendMessage(message) {
       const result = await browser.pageScript(`const done=arguments[arguments.length-1];
-        window.wrappedJSObject.browser.runtime.sendMessage(arguments[0]).then(
-          value=>done({ok:true,value:JSON.parse(JSON.stringify(value))}),
-          ()=>done({ok:false}));`, [message], { async: true });
+        (async()=>{
+          const value=await window.wrappedJSObject.browser.runtime.sendMessage(arguments[0]);
+          if(value===undefined) return {ok:false,reason:"MISSING_RESPONSE"};
+          return {ok:true,value:JSON.parse(JSON.stringify(value))};
+        })().then(done,()=>done({ok:false,reason:"SEND_REJECTED"}));`, [message], { async: true });
+      browser.lastBrokerTransportFailure = result.reason || null;
       if (!result.ok) throw new Error('Packaged broker sender or transport rejected');
       return result.value;
     },

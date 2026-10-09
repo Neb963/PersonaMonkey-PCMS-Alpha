@@ -72,6 +72,23 @@ export class IsolatedFirefox extends PackagedFirefox {
   async deniedLoopbackOrigin(origin) {
     return this.client.script('return Services.prefs.getStringPref("alpha.tests.lastDeniedLoopbackOrigin", "") === arguments[0];', [origin]);
   }
+  async observeFixtureNavigation(url) {
+    if (!this.allowedOrigins.includes(new URL(url).origin)) throw new Error('Navigation probe requires an allowed fixture origin');
+    await this.client.script(`const target=arguments[0];
+      Services.prefs.setBoolPref("alpha.tests.navigationStopped", false);
+      gBrowser.addTabsProgressListener({onStateChange(_browser, _progress, request, flags, status) {
+        if (!(flags & Components.interfaces.nsIWebProgressListener.STATE_STOP)) return;
+        let uri; try { uri=request.QueryInterface(Components.interfaces.nsIChannel).URI.spec; } catch { return; }
+        if(uri===target) {
+          Services.prefs.setIntPref("alpha.tests.navigationStatus", status | 0);
+          Services.prefs.setBoolPref("alpha.tests.navigationStopped", true);
+        }
+      }});`, [url]);
+  }
+  async fixtureNavigationResult() {
+    return this.client.script(`return {stopped:Services.prefs.getBoolPref("alpha.tests.navigationStopped", false),
+      status:Services.prefs.getIntPref("alpha.tests.navigationStatus", 0)};`);
+  }
   async dispose() {
     try { await this.stop(); }
     finally {

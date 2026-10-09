@@ -30,6 +30,22 @@ async function mutate(command, params, operationId, precondition) {
 function succeeded(response) { assert.equal(response.ok, true); return response.result; }
 function items(result) { return Array.isArray(result) ? result : result.items; }
 const digest = bytes => createHash('sha256').update(bytes).digest('hex');
+async function brokerReady(label) {
+  // Only discovery reads wait for a newly created/woken extension context.
+  // Never retry a mutation or a malformed typed response.
+  const response = await waitFor(async () => {
+    try {
+      const state = await request('system.describe');
+      assert.equal(state.ok, true); return state;
+    } catch (failure) {
+      if (failure.code !== 'PCMS_PERSONA_BROKER_TRANSPORT_UNAVAILABLE') throw failure;
+      report.bootFailureCode = failure.code;
+      report.bootTransportFailure = h.lastBrokerTransportFailure || null; return null;
+    }
+  }, label);
+  delete report.bootFailureCode; delete report.bootTransportFailure;
+  return response;
+}
 try {
   report.stage = 'reproducible-xpi';
   const manifest = JSON.parse(await readFile(join(REPO_ROOT, 'extension/manifest.json'), 'utf8'));
@@ -55,6 +71,12 @@ try {
   h = await IsolatedFirefox.create({ root: join(root, 'profiles'), allowedOrigins: [origin] });
   report.firefox = h.artifact;
   await h.start();
+  await h.navigate(origin + '/reachable-control');
+  assert.equal(await h.pageScript('return document.body.textContent;'), 'routing fixture');
+  assert.ok(hits.includes('/reachable-control'));
+  const controlHits = hits.length;
+  await h.navigate('about:blank');
+  report.checks.routingFixtureReachableBeforeProduct = true;
   assert.equal(await h.install(xpi), PRODUCT);
   const extension = await h.extension(PRODUCT);
   assert.equal(extension.manifestVersion, 3);
@@ -63,14 +85,7 @@ try {
   // future product UI and the donor's dynamic PCMS feature-module dashboard.
   let tab = await h.openPage(PRODUCT, 'pcms/index.html');
   broker = packagedBroker(h);
-  const initial = await waitFor(async () => {
-    try {
-      const state = await request('system.describe');
-      if (state.ok) return state;
-      report.bootFailureCode = state.error.code; return null;
-    } catch (failure) { report.bootFailureCode = failure.code || 'BROKER_UNAVAILABLE'; return null; }
-  }, 'PersonaMonkey broker boot');
-  delete report.bootFailureCode;
+  const initial = await brokerReady('PersonaMonkey broker boot');
   assert.equal(initial.result.integrationProtocolVersion, 1);
   assert.equal(initial.result.authority.allowDirect, false);
   assert.ok(initial.result.commands.some(c => c.command === 'persona.create'));
@@ -118,14 +133,18 @@ try {
 
   report.stage = 'fail-closed-network';
   const beforeHandles = await h.client.command('WebDriver:GetWindowHandles');
+  await h.observeFixtureNavigation(origin + '/must-be-blocked');
   const opened = succeeded(await mutate('persona.open', { personaUid: UID, url: origin + '/must-be-blocked', active: false }, 'p101-open-blocked'));
   assert.equal(opened.personaUid, UID); assert.equal(opened.cookieStoreId, cookieStoreId);
   const afterHandles = await h.client.command('WebDriver:GetWindowHandles');
   const blockedHandle = (afterHandles.value ?? afterHandles).find(v => !(beforeHandles.value ?? beforeHandles).includes(v));
   assert.ok(blockedHandle);
   await h.client.command('WebDriver:SwitchToWindow', { handle: blockedHandle });
-  await waitFor(async () => /^about:neterror/.test(await h.pageScript('return document.documentURI;')), 'Block route produces a network error');
-  assert.equal(hits.length, 0);
+  const navigation = await waitFor(async () => {
+    const result = await h.fixtureNavigationResult(); return result.stopped ? result : null;
+  }, 'Block route stops the real fixture navigation');
+  assert.notEqual(navigation.status, 0);
+  assert.equal(hits.length, controlHits);
   await h.closePage(blockedHandle);
   await h.client.command('WebDriver:SwitchToWindow', { handle: tab });
   report.checks.blockedPersonaCannotReachAllowedLoopback = true;
@@ -142,7 +161,7 @@ try {
   broker.close(); await h.closePage(tab);
   assert.equal((await h.forceIdleUnload(PRODUCT)).state, 'stopped');
   tab = await h.openPage(PRODUCT, 'pcms/index.html'); broker = packagedBroker(h);
-  const warm = await request('system.describe');
+  const warm = await brokerReady('typed broker resumes after forced event-page unload');
   assert.notEqual(warm.bootId, beforeIdle.bootId);
   assert.equal(succeeded(await request('persona.get', { personaUid: UID })).cookieStoreId, cookieStoreId);
   report.checks.idleUnloadAndTypedBrokerWake = true;
@@ -153,7 +172,7 @@ try {
   // Deliberately no Addon:Install call after either unload or full restart.
   assert.equal((await h.extension(PRODUCT)).id, PRODUCT);
   tab = await h.openPage(PRODUCT, 'pcms/index.html'); broker = packagedBroker(h);
-  const cold = await request('system.describe');
+  const cold = await brokerReady('typed broker resumes after browser restart');
   assert.notEqual(cold.bootId, beforeRestart.bootId);
   const persisted = succeeded(await request('persona.get', { personaUid: UID }));
   assert.equal(persisted.cookieStoreId, cookieStoreId); assert.equal(persisted.name, createParams.name);
@@ -165,7 +184,7 @@ try {
   const replayAfterRestart = succeeded(await mutate('persona.create', createParams, 'p101-create-once', createPrecondition));
   assert.equal(replayAfterRestart.persona.cookieStoreId, cookieStoreId);
   assert.equal(items(succeeded(await request('persona.list'))).length, 1);
-  assert.equal(hits.length, 0);
+  assert.equal(hits.length, controlHits);
   await h.closePage(tab);
   report.checks.persistentXpiAndPersonaSurviveBrowserRestart = true;
   report.checks.oldBootRejectedAndCreateReplayDoesNotDuplicate = true;
