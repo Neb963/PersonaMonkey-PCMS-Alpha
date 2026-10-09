@@ -1,0 +1,13 @@
+# P201 — committed implementation; independent CI pending
+
+Claim PR #47 is merged at `c2a86420488e9cab7a8c162b75f6698e47dd71fc`. CLM-P201-001 belongs to slot-one-r2, epoch 1. P102/P103/P104 and G0 are accepted; the frozen revision-2 contract hash remains unchanged. R2 remains IN_PROGRESS. All parallel claims, plan, policies and generated views are unchanged.
+
+AP201-01 installs one idempotent production entry/Core after PersonaMonkey's routing gate, disables the legacy PCMS entry, keeps the existing typed broker authority and validates fixed UI commands, sender identity/document/frame, optimistic revisions and safe responses. Real packaged requests cover local Accounts/Inventory projections and a conflicting two-client inventory intent mutation.
+
+AP201-02 compares actual Core identity/generation and measured host construction counts across two clients. It closes every Alpha UI tab, unloads the real event page, waits for the durable alarm to restart it and checks the persisted timer ran once. A real profile restart distinguishes cold startup from warm wake, advances generation and preserves the timer journal.
+
+AP201-03 exercises an actual typed PersonaMonkey mutation followed by deliberately lost readback, durable UNCERTAIN/RECOVERY_HOLD through restart and read-only reconciliation without replay. It verifies a 16-item coalesced pass, fixed alarms, two-operation/four-tab ceilings, genuine Persona-open receipt/tagging, occupied-tab retention, warm ownership recovery and no operator-tab closure. A corrupted actual IndexedDB envelope fails startup closed and an explicit harness repair restores operation. Deterministic regressions additionally cover stale generations/bindings, late callbacks, failed preparation commits, duplicate dispatch calls, unknown targets and failed mutation timers.
+
+Local results: 19 Core regressions and all 157 Alpha tests passed, with zero failures/skips/TODO. The unmodified trusted migration runner reports P201 EXECUTED and six packaged acceptance cases. Firefox Developer Edition is the exact 154.0b10 artifact; the packaged XPI and production source hashes are in acceptance.json. The local container requires the documented content-sandbox-disable diagnostic setting; independent hosted Firefox must run fully sandboxed. No local result is live provider acceptance.
+
+`npm run verify` fails three governance fixture assertions inherited from PR #44 (46/49 pass). The narrow repair proposal and required separate maintenance authorization are in ci-blocker.md. No governance file or historical test has been changed. A failing required check prevents merging P201. This evidence records COMMITTED only; it does not claim CI_VERIFIED, MERGED, GATE_VERIFIED or ACCEPTED.
