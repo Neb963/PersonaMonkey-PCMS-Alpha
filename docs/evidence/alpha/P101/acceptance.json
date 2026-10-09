@@ -6,92 +6,92 @@
   "agentId": "slot-one",
   "claimEpoch": 1,
   "baseMainSha": "5ea76924abba1ae04de774e548cd6ac2c9ee745b",
-  "contractHash": "9b379980e16fdd557e0ea8a7f8273421f4a581c1c1563fe7661308038e29ee12",
-  "commitSha": "b63e5ae88a03d9b7957d916578fff9dc34f09c42",
-  "mergedMainSha": "e613198320700a92e76361376adab9dc946ecf65",
+  "contractHash": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e",
+  "commitSha": "14f0bd6797f3bb2f304f2fdb41e5ec3e0b9a84b5",
+  "mergedMainSha": "3c927d682cadba40c7a7994074b383fa259c072b",
   "providerLive": false,
   "acceptanceIds": [
     "AP101-01",
     "AP101-02",
     "AP101-03"
   ],
-  "implementationPr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/12",
+  "implementationPr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/24",
   "claimPr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/4",
   "ciRuns": [
     {
-      "id": 37916497549,
+      "id": 37954923475,
       "name": "alpha-governance",
-      "sha": "e613198320700a92e76361376adab9dc946ecf65",
+      "sha": "3c927d682cadba40c7a7994074b383fa259c072b",
       "status": "completed",
       "conclusion": "success",
       "event": "push",
-      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37916497549"
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37954923475"
     },
     {
-      "id": 37916497321,
+      "id": 37954923550,
       "name": "firefox-developer-edition",
-      "sha": "e613198320700a92e76361376adab9dc946ecf65",
+      "sha": "3c927d682cadba40c7a7994074b383fa259c072b",
       "status": "completed",
       "conclusion": "success",
       "event": "push",
-      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37916497321"
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37954923550"
     }
   ],
   "browserCiRuns": [
     {
-      "id": 37916497407,
+      "id": 37954923535,
       "name": "alpha-firefox",
-      "sha": "e613198320700a92e76361376adab9dc946ecf65",
+      "sha": "3c927d682cadba40c7a7994074b383fa259c072b",
       "status": "completed",
       "conclusion": "success",
       "event": "push",
-      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37916497407"
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37954923535"
     }
   ],
   "prCiRuns": [
     {
-      "id": 37915910853,
+      "id": 37954279622,
       "name": "alpha-governance",
-      "sha": "b63e5ae88a03d9b7957d916578fff9dc34f09c42",
+      "sha": "14f0bd6797f3bb2f304f2fdb41e5ec3e0b9a84b5",
       "status": "completed",
       "conclusion": "success",
       "event": "pull_request",
-      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37915910853"
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37954279622"
     },
     {
-      "id": 37915910864,
-      "name": "firefox-developer-edition",
-      "sha": "b63e5ae88a03d9b7957d916578fff9dc34f09c42",
-      "status": "completed",
-      "conclusion": "success",
-      "event": "pull_request",
-      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37915910864"
-    },
-    {
-      "id": 37915910852,
+      "id": 37954279627,
       "name": "alpha-firefox",
-      "sha": "b63e5ae88a03d9b7957d916578fff9dc34f09c42",
+      "sha": "14f0bd6797f3bb2f304f2fdb41e5ec3e0b9a84b5",
       "status": "completed",
       "conclusion": "success",
       "event": "pull_request",
-      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37915910852"
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37954279627"
+    },
+    {
+      "id": 37954279539,
+      "name": "firefox-developer-edition",
+      "sha": "14f0bd6797f3bb2f304f2fdb41e5ec3e0b9a84b5",
+      "status": "completed",
+      "conclusion": "success",
+      "event": "pull_request",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37954279539"
     }
   ],
   "milestones": [
     {
       "state": "COMMITTED",
-      "sha": "9c40bceba5cde45c56745e2e8cd83ad4f40447b4",
-      "description": "Clean code checkpoint; local pin/broker regressions and supplemental browser checks passed"
+      "sha": "14f0bd6797f3bb2f304f2fdb41e5ec3e0b9a84b5",
+      "description": "Scoped native-updater-mutex integrity repair with strict immutable inventory and tamper regressions"
     },
     {
       "state": "CI_VERIFIED",
-      "sha": "b63e5ae88a03d9b7957d916578fff9dc34f09c42",
-      "description": "All three independent PR workflows passed against exact main dd4760744ea8b53a1cf12cf45f798e3e402be762"
+      "sha": "14f0bd6797f3bb2f304f2fdb41e5ec3e0b9a84b5",
+      "description": "All three independent candidate workflows passed against exact main 2c877f598e95119ff4616c1289bae03b6be4a006"
     },
     {
       "state": "MERGED",
-      "sha": "e613198320700a92e76361376adab9dc946ecf65",
-      "description": "Serialized non-forced main update with exact expected-main SHA; all three independent push workflows passed"
+      "sha": "3c927d682cadba40c7a7994074b383fa259c072b",
+      "description": "Expected-main non-forced two-parent merge; all three exact merged-main workflows passed"
     }
   ],
   "pending": [
@@ -99,26 +99,26 @@
   ],
   "claimState": "ACTIVE",
   "localBrowserEvidence": {
-    "commitSha": "9c40bceba5cde45c56745e2e8cd83ad4f40447b4",
-    "contentSandboxDisabled": true,
+    "scope": "native updater mutex parent-process probe only",
+    "contentSandboxDisabled": false,
     "supplementalOnly": true,
-    "smokeReport": "local-smoke.json",
-    "packagedReport": "local-packaged.json"
+    "report": "integrity-repair/local-mutex.json",
+    "completeContentSuitesUnavailableLocally": true
   },
   "hostedBrowserEvidence": {
-    "commitSha": "e613198320700a92e76361376adab9dc946ecf65",
+    "commitSha": "3c927d682cadba40c7a7994074b383fa259c072b",
     "contentSandboxDisabled": false,
     "worktreeDirty": false,
-    "smokeReport": "hosted-main-smoke.json",
-    "packagedReport": "hosted-main-packaged.json",
-    "smokeChecks": 2,
+    "smokeReport": "integrity-repair/hosted-main-smoke.json",
+    "packagedReport": "integrity-repair/hosted-main-packaged.json",
+    "smokeChecks": 3,
     "packagedChecks": 13
   },
   "localFocusedTests": {
-    "commitSha": "a215c810e9bbc3550b1e87ba6f922887d6aab209",
     "command": "node --test tests/alpha/browser-baseline/*.test.mjs tests/firefox/*.test.mjs tests/pcms/p008-*.test.mjs tests/pcms/p009-*.test.mjs",
-    "passed": 35,
-    "failed": 0
+    "passed": 65,
+    "failed": 0,
+    "reportedBeforeCommit": true
   },
   "acceptanceCases": {
     "AP101-01": [
@@ -135,7 +135,12 @@
     "AP101-03": [
       "exact 154.0b10 Mozilla checksum and extracted-tree/build identity",
       "two-build XPI reproducibility",
-      "independently verified PR and merged-main CI"
+      "independently verified PR and merged-main CI",
+      "real pinned native updater mutex lifecycle preserves exact immutable archive digest",
+      "changed binary/pref bytes, modes, hardlinks, symlinks and unexpected additions fail closed with bounded deltas"
     ]
-  }
+  },
+  "validatedMainSha": "2c877f598e95119ff4616c1289bae03b6be4a006",
+  "historicalAcceptance": "integrity-repair/historical-acceptance.json",
+  "repairEvidence": "integrity-repair/verification.json"
 }

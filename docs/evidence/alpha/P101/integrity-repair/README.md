@@ -94,3 +94,29 @@ used for this repair. Provider-live remains false.
 
 Final candidate/merge/run proofs are recorded separately after independent CI.
 P101 does not assert GATE_VERIFIED, ACCEPTED or provider-live acceptance.
+
+## Independently verified delivery
+
+Repair [PR #24](https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/24)
+candidate `14f0bd6797f3bb2f304f2fdb41e5ec3e0b9a84b5` passed all three workflows
+against main `2c877f598e95119ff4616c1289bae03b6be4a006`. The tested tree
+`3294110cdcf00c9d2e2ab0b8209b8100a8272c0f` was merged unchanged as
+`3c927d682cadba40c7a7994074b383fa259c072b`, with those exact main/head parents
+and a non-forced expected-main update. GitHub marks PR #24 merged.
+
+| Workflow | Exact candidate run | Exact merged-main run |
+| --- | --- | --- |
+| alpha-governance | [37954279622](https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37954279622) | [37954923475](https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37954923475) |
+| alpha-firefox | [37954279627](https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37954279627) | [37954923535](https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37954923535) |
+| firefox-developer-edition | [37954279539](https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37954279539) | [37954923550](https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37954923550) |
+
+All six completed successfully on their first attempt. The retained hosted
+reports show clean exact merged-main provenance, the enabled content sandbox,
+3/3 smoke checks and 13/13 packaged checks. They record only the two native mutex
+entries while held and only `.parentlock` after release, smoke, packaged restart
+and shutdown; every immutable digest remains the original accepted digest.
+`verification.json` contains exact run coordinates and local command results.
+The earlier `acceptance.json` is preserved byte-for-byte as
+`historical-acceptance.json`; the current phase evidence names this verified
+repair. The claim remains ACTIVE, delivery is MERGED, and gate acceptance is
+pending the separately assigned checker.
