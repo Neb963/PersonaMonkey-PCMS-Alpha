@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "kind": "CLAIM",
+  "action": "acquire",
+  "phaseId": "P204",
+  "agentId": "slot-four-p204",
+  "branch": "agent/slot-four-p204/p204",
+  "claimEpoch": 1,
+  "expectedEpoch": 0,
+  "baseMainSha": "660a0756b186080c9571ba97d89289617c85eaef"
+}
