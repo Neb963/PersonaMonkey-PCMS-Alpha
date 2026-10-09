@@ -43,7 +43,7 @@
         "P105"
       ],
       "gateId": "GATE-R1",
-      "status": "READY"
+      "status": "IN_PROGRESS"
     },
     {
       "round": 2,
@@ -224,7 +224,7 @@
       "round": 1,
       "agent": 4,
       "title": "GitHub private-repo adapter and safe paths",
-      "status": "READY",
+      "status": "CLAIMED",
       "dependsOn": [
         "G0"
       ],
@@ -354,7 +354,7 @@
         "AP202-03"
       ],
       "verify": [
-        "account\u2194personaUid epoch and rotation",
+        "account↔personaUid epoch and rotation",
         "manual challenge route retry without bypass",
         "import existing account-owned generators excluded"
       ]
@@ -577,7 +577,7 @@
         "P204",
         "P201"
       ],
-      "goal": "Implement per-generator active/sleep timing, \u00b130-minute bounded jitter, downtime/outage-paused healthy clock, automatic cap from eligible population and observed capacity, manual override and longest-waiting selection. No provider refresh mutations here.",
+      "goal": "Implement per-generator active/sleep timing, ±30-minute bounded jitter, downtime/outage-paused healthy clock, automatic cap from eligible population and observed capacity, manual override and longest-waiting selection. No provider refresh mutations here.",
       "ownership": {
         "writePaths": [
           "extension/alpha/features/refresher/**",
