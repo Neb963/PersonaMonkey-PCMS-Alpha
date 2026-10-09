@@ -3,7 +3,7 @@
   "epochs": {
     "P101": 1,
     "P102": 1,
-    "P103": 0,
+    "P103": 1,
     "P104": 1,
     "P105": 1,
     "P201": 0,
@@ -139,6 +139,33 @@
         "AP104-01",
         "AP104-02",
         "AP104-03"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "claimId": "CLM-P103-001",
+      "phaseId": "P103",
+      "agentId": "slot-three-p103",
+      "claimEpoch": 1,
+      "state": "ACTIVE",
+      "baseMainSha": "0580a8145c5a55c7d3c1dfa80a41820bb10a3e3a",
+      "branch": "agent/slot-three-p103/p103",
+      "writePaths": [
+        "extension/alpha/providers/perchance/**",
+        "fixtures/alpha/perchance/**",
+        "tests/alpha/providers/perchance/**",
+        "docs/evidence/alpha/P103/**"
+      ],
+      "contractReads": {
+        "alpha.contracts.v1": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e"
+      },
+      "contractWrites": [],
+      "exclusiveResources": [],
+      "migrationSlots": [],
+      "acceptanceIds": [
+        "AP103-01",
+        "AP103-02",
+        "AP103-03"
       ]
     }
   ]
