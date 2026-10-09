@@ -153,8 +153,14 @@ export function createSourceCatalog({ github, repository = 'Neb963/per-gens', ma
         }
       }
     }
-    const binding = normalizeSourceBinding({ repository, ref: 'main', root: entry.root, folder: entry.folder,
+    let binding = normalizeSourceBinding({ repository, ref: 'main', root: entry.root, folder: entry.folder,
       slug: entry.slug, commitSha, blobs: found, status, releaseId });
+    if (files) {
+      // P102 is the authoritative ReleaseRecord validator. A malformed deployable
+      // package must not advertise a releaseId that downstream deployment could adopt.
+      try { normalizeRelease({ releaseId, source: binding, files, createdAt: now() }); }
+      catch { files = null; binding = normalizeSourceBinding({ ...binding, releaseId: null }); }
+    }
     return { binding, files };
   }
   async function selected(entriesToRead, expectedSha = null) {
