@@ -364,7 +364,7 @@
       "round": 2,
       "agent": 3,
       "title": "GitHub source catalog and READY interpreter",
-      "status": "READY",
+      "status": "CLAIMED",
       "dependsOn": [
         "P102",
         "P104"
