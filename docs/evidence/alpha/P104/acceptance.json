@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "phaseId": "P104",
+  "claimId": "CLM-P104-001",
+  "agentId": "slot-four",
+  "claimEpoch": 1,
+  "state": "MERGED",
+  "providerLive": false,
+  "commitSha": "9302eb9b320622ba80323c29028e8c8e6b8317f6",
+  "mergedMainSha": "dd4760744ea8b53a1cf12cf45f798e3e402be762",
+  "acceptanceIds": [
+    "AP104-01",
+    "AP104-02",
+    "AP104-03"
+  ],
+  "cases": [
+    {
+      "id": "AP104-01",
+      "evidence": [
+        "extension/alpha/providers/github/paths.mjs",
+        "extension/alpha/providers/github/adapter.mjs",
+        "tests/alpha/providers/github/adapter.test.mjs"
+      ],
+      "result": "PASS — literal template and exact binding allowlists; commit-pinned Contents reads and blob IDs; one atomic non-forced source tree/commit"
+    },
+    {
+      "id": "AP104-02",
+      "evidence": [
+        "tests/alpha/providers/github/adapter.test.mjs",
+        "fixtures/alpha/github/branch-conflict.json"
+      ],
+      "result": "PASS — traversal and ambiguous filenames rejected; unexpected HEAD/blob and non-fast-forward races preserve intervening developer changes; ambiguous PATCH requires reconciliation"
+    },
+    {
+      "id": "AP104-03",
+      "evidence": [
+        "tests/alpha/providers/github/adapter.test.mjs",
+        "fixtures/alpha/github/rate-limit.json"
+      ],
+      "result": "PASS — read/write credentials resolved by secretRef; 401/403, rate-limit and transport uncertainty return typed, redacted failures; secret values absent from responses"
+    }
+  ],
+  "localTestsExecuted": [
+    {
+      "command": "node --test tests/alpha/providers/github/*.test.mjs",
+      "result": "PASS",
+      "tests": 14,
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "command": "node --check extension/alpha/providers/github/adapter.mjs && node --check extension/alpha/providers/github/paths.mjs",
+      "result": "PASS"
+    }
+  ],
+  "verification": [
+    {
+      "scope": "GitHub Actions pull_request",
+      "workflow": "alpha-governance",
+      "runId": 37915303435,
+      "result": "PASS",
+      "sourceSha": "9302eb9b320622ba80323c29028e8c8e6b8317f6"
+    },
+    {
+      "scope": "GitHub Actions pull_request",
+      "workflow": "firefox-developer-edition",
+      "runId": 37915303262,
+      "result": "PASS",
+      "sourceSha": "9302eb9b320622ba80323c29028e8c8e6b8317f6"
+    },
+    {
+      "scope": "GitHub Actions merged main",
+      "workflow": "alpha-governance",
+      "runId": 37915771001,
+      "result": "PASS",
+      "sourceSha": "dd4760744ea8b53a1cf12cf45f798e3e402be762",
+      "event": "push"
+    },
+    {
+      "scope": "GitHub Actions merged main",
+      "workflow": "firefox-developer-edition",
+      "runId": 37915771042,
+      "result": "PASS",
+      "sourceSha": "dd4760744ea8b53a1cf12cf45f798e3e402be762",
+      "event": "push"
+    }
+  ],
+  "ciRuns": [
+    {
+      "id": 37915771001,
+      "name": "alpha-governance",
+      "sha": "dd4760744ea8b53a1cf12cf45f798e3e402be762",
+      "event": "push",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37915771001"
+    },
+    {
+      "id": 37915771042,
+      "name": "firefox-developer-edition",
+      "sha": "dd4760744ea8b53a1cf12cf45f798e3e402be762",
+      "event": "push",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37915771042"
+    }
+  ],
+  "limitations": [
+    "Not a provider-live GitHub mutation test; real private-repo credentials were never used.",
+    "The caller must durably journal mutations and reconcile uncertain outcomes; no source-status business logic lives in this adapter.",
+    "R1 combined GATE_VERIFIED/ACCEPTED remains exclusively integration-checker controlled."
+  ]
+}
