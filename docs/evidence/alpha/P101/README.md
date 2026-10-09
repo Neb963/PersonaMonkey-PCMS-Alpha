@@ -68,3 +68,29 @@ COMMITTED is distinct from CI_VERIFIED, MERGED, GATE_VERIFIED and ACCEPTED.
 run proofs. The phase owner does not change the shared plan or claim state and
 does not declare GATE-R1 verification or acceptance. Provider-live remains false.
 The separately assigned integration checker owns combined-round acceptance.
+
+## Independently verified merged-main result
+
+Implementation PR #12 merged as
+`e613198320700a92e76361376adab9dc946ecf65`, with exact parents
+`dd4760744ea8b53a1cf12cf45f798e3e402be762` (validated main) and
+`b63e5ae88a03d9b7957d916578fff9dc34f09c42` (independently tested PR head).
+The non-forced update supplied the expected main SHA. Ref, diff, epoch, contract,
+scope and trusted current-main validator were rechecked before merging.
+
+All three independent push workflows passed on that exact merge:
+
+- [alpha-governance, run 37916497549](https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37916497549)
+- [firefox-developer-edition, run 37916497321](https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37916497321)
+- [alpha-firefox, run 37916497407](https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37916497407)
+
+The bounded hosted reports retained here show a clean checkout and enabled
+content sandbox: smoke 2/2 and packaged baseline 13/13. The main derivative XPI
+was built twice with equal SHA-256
+`fc63f3817856d96d92beb668894b91035a71a3b2b96ff605cf5b5d0329ff26da`.
+The exact Mozilla archive, extracted-tree digest and build identity match the
+local pin proof. CI ran the commands declared in the committed
+`alpha-firefox.yml`, without the local sandbox-disable flag.
+
+Delivery is MERGED with independent main CI. The claim remains ACTIVE in shared
+authority. GATE_VERIFIED, ACCEPTED and provider-live are not asserted by P101.

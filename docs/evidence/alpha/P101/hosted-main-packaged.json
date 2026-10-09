@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "phaseId": "P101",
+  "suite": "packaged-personamonkey-baseline",
+  "commitSha": "e613198320700a92e76361376adab9dc946ecf65",
+  "treeSha": "857087dc80aa70768e9989940524017563178b8b",
+  "prHeadSha": "e613198320700a92e76361376adab9dc946ecf65",
+  "workflowRun": "37916497407",
+  "worktreeDirty": false,
+  "providerLive": false,
+  "contentSandboxDisabled": false,
+  "networkIsolation": "startup-rejecting-proxy-and-exact-origin-parent-observer",
+  "checks": {
+    "reproducibleXpiAndExactBrokerBytes": true,
+    "routingFixtureReachableBeforeProduct": true,
+    "packagedInstallAndTypedBrokerDescribe": true,
+    "personaUidContainerAndCorrelatedCreate": true,
+    "newPersonaDefaultsToBlock": true,
+    "blockRouteAssignment": true,
+    "staleRevisionAndUnknownFieldsRejected": true,
+    "directDeniedWithoutMutation": true,
+    "blockedPersonaCannotReachAllowedLoopback": true,
+    "nonPcmsDocumentCannotUseInternalBroker": true,
+    "idleUnloadAndTypedBrokerWake": true,
+    "persistentXpiAndPersonaSurviveBrowserRestart": true,
+    "oldBootRejectedAndCreateReplayDoesNotDuplicate": true
+  },
+  "passed": true,
+  "product": {
+    "id": "persona-route-manager@local",
+    "version": "1.2.0",
+    "xpiSha256": "fc63f3817856d96d92beb668894b91035a71a3b2b96ff605cf5b5d0329ff26da"
+  },
+  "firefox": {
+    "version": "154.0b10",
+    "artifactSha256": "681913108bba655d7ec6fadfac2731141b23e48dca88d1988a4d95a6bdaff164",
+    "archiveUrl": "https://archive.mozilla.org/pub/devedition/releases/154.0b10/linux-x86_64/en-US/firefox-154.0b10.tar.xz",
+    "extractedTreeSha256": "56fd1ac4a9c8b099fefe82ef43fd58ca1b9fe97e75a3bd5b84170f847dd0615c",
+    "buildId": "20260812080401",
+    "sourceStamp": "1d78fecadb05f7a244f966728e5228681708c72c",
+    "versionOutput": "Mozilla Firefox 154.0b10"
+  },
+  "acceptanceIds": [
+    "AP101-01",
+    "AP101-02",
+    "AP101-03"
+  ]
+}
