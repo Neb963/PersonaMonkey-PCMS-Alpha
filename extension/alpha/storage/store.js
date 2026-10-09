@@ -56,11 +56,11 @@ async function verifyJournal(input) {
   } catch { throw new AlphaDataError('RECOVERY_HOLD'); }
 }
 
-// Only oncomplete acknowledges durability. A request succeeding can still roll back.
+// Strict write durability flushes before oncomplete; request success can still roll back.
 function transaction(db, mode, enqueue) {
   return new Promise((resolve, reject) => {
     let tx, preferred, result;
-    try { tx = db.transaction(stores, mode); }
+    try { tx = db.transaction(stores, mode, mode === 'readwrite' ? { durability: 'strict' } : undefined); }
     catch { reject(new AlphaDataError('UNAVAILABLE')); return; }
     const abort = error => { preferred ||= dataError(error); try { tx.abort(); } catch { /* already aborted */ } };
     const watch = (request, done = () => {}) => {

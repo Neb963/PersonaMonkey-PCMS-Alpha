@@ -39,8 +39,17 @@ export async function runStorageCases() {
     await rejects(() => openAlphaDatabase({ dbName: 'persona-monkey-pcms' }), 'INVALID_REQUEST'); legacy.close();
   });
 
-  await check('AP102-01: four records and journal commit atomically, with detached exact source bytes', async () => {
-    const s = storage('four-records'); const a = account(); const r = release();
+  await check('AP102-01: four records and journal commit with strict durability and detached exact source bytes', async () => {
+    let db;
+    const s = createAlphaStorage({ dbName: nameFor('four-records'), clock: () => WHEN,
+      openDatabase: async options => (db = await openAlphaDatabase(options)) });
+    await s.open(); const original = db.transaction.bind(db);
+    db.transaction = (...args) => {
+      const tx = original(...args);
+      if (args[1] === 'readwrite') assert(args[2]?.durability === 'strict' && tx.durability === 'strict');
+      return tx;
+    };
+    const a = account(); const r = release();
     const pending = s.commit({ expectedRevision: 0, writes: [write('generator', generator()), write('account', a), write('release', r), write('operation', operation())] });
     a.name = 'Changed by caller'; r.files.thumbnail[0] = 0;
     const result = await pending;
