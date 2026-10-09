@@ -14,6 +14,13 @@ machine-readable in the plan, context, provenance and contract lock.
 | No premature R1 | Actual registry has zero claims; all rounds/phases stay LOCKED while G0 is IN_PROGRESS; five-claim tests are isolated fixtures |
 | Independent browser acceptance | Preserved exact-pin Firefox workflow runs against the active packaged derivative; Alpha PR/main run records are recorded only after actual completion |
 
+Final bootstrap review found that disjoint phase owners cannot edit shared CI to
+register their tests. A bounded G0 repair adds automatic discovery of feature-owned
+`.test`/`.spec` JavaScript suites under `tests/alpha/`, with failing-suite and empty
+G0 regressions. Governance already runs separately. This adds no Alpha feature.
+The final governance suite is 21 cases; its actual results and repaired merged-main
+CI are recorded in the acceptance ledger before R1 is unlocked.
+
 Donor pin: `482dc9d9273dcdcd7d2ef4c4b0df8c7c6933d5ca`, tree
 `07e005b7b5647215a10dc957c633aae2d76435cc`. Its two inspected main workflows
 37833424339/37833424414 passed, including eleven Firefox jobs. These are donor

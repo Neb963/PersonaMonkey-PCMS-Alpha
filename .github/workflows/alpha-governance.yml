@@ -44,7 +44,7 @@ jobs:
             node tools/alpha/ci.mjs
           fi
       - name: Alpha contracts, epoch and overlap regressions plus frozen donor baseline
-        run: npm run verify
+        run: npm run verify && node tools/alpha/run-tests.mjs
       - name: Validate and package the actual derivative
         run: node scripts/build-extension.mjs
       - name: Confirm main has not moved after the full acceptance suite
