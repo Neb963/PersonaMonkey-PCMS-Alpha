@@ -13,6 +13,21 @@ export const CONTRACT_FILES = [
   'extension/alpha/contracts/surface.json'
 ];
 export const AMENDMENT = Object.freeze({ id: 'AMEND-P103-LIST-001', branch: 'agent/alpha-contract-amendment/amend-p103-list-001', contextPath: 'docs/evidence/alpha/AMEND-P103-LIST-001/context.json', previousHash: '9b379980e16fdd557e0ea8a7f8273421f4a581c1c1563fe7661308038e29ee12', nextHash: '8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e', revision: 2 });
+// Reusable governance-only maintenance. The trusted-main copy of this validator
+// owns the scope; candidate edits cannot expand their own authorization.
+export const MAINTENANCE = Object.freeze({
+  agentId: 'alpha-maintenance',
+  authority: 'OWNER_PR_COMMENT_V1',
+  contextPattern: /^MAINT-[A-Z0-9]+(?:-[A-Z0-9]+)*$/,
+  writePaths: Object.freeze([
+    'tools/alpha/governance.mjs',
+    'tools/alpha/ci.mjs',
+    'tools/alpha/maintenance-approval.mjs',
+    'tests/alpha/governance/**',
+    'docs/implementation/alpha/GOVERNANCE.md',
+    '.github/workflows/alpha-maintenance-verification.yml'
+  ])
+});
 export const ACTIVE = new Set(['ACTIVE', 'PR_OPEN']);
 export const SHA = /^[a-f0-9]{40}$/;
 const PHASE_STATES = new Set(['LOCKED', 'READY', 'CLAIMED', 'IN_PROGRESS', 'PR_OPEN', 'MERGED', 'ACCEPTED']);
@@ -177,7 +192,26 @@ export function validateTransition(main, head, context, { mainSha, headBranch, f
     if (context.kind !== 'CONTRACT_AMENDMENT') requireThat(equal(main.lock, head.lock), 'Frozen shared contracts require a separate authorized gate amendment');
     requireThat(equal(main.policies, head.policies), 'Policy amendment is outside this claim');
   }
-  if (context.kind === 'CONTRACT_AMENDMENT') {
+  if (context.kind === 'MAINTENANCE') {
+    requireThat(main?.plan.bootstrap.state === 'ACCEPTED' &&
+      context.baseMainSha === mainSha, 'Maintenance requires accepted G0 and exact current main');
+    requireThat(typeof context.maintenanceId === 'string' &&
+      MAINTENANCE.contextPattern.test(context.maintenanceId) &&
+      context.phaseId === context.maintenanceId &&
+      context.agentId === MAINTENANCE.agentId &&
+      context.branch === `agent/${MAINTENANCE.agentId}/${context.maintenanceId.toLowerCase()}` &&
+      context.claimEpoch === 0 && context.authorization === MAINTENANCE.authority &&
+      Number.isSafeInteger(context.pullRequest) && context.pullRequest > 0,
+      'Unauthorized or malformed maintenance context');
+    requireThat(context.contractHash === main.lock.contracts['alpha.contracts.v1'] &&
+      equal(context.claimEpochs, main.registry.epochs), 'Stale maintenance contracts or claim epochs');
+    requireThat(equal(main.plan, head.plan) && equal(main.registry, head.registry) &&
+      equal(main.lock, head.lock) && equal(main.policies, head.policies),
+      'Maintenance cannot change plans, claims, contracts or policies');
+    const contextPath = `docs/evidence/alpha/${context.maintenanceId}/context.json`;
+    requireThat(files.includes(contextPath), 'Maintenance needs its own new context');
+    assertFiles(files, [...MAINTENANCE.writePaths, contextPath]);
+  } else if (context.kind === 'CONTRACT_AMENDMENT') {
     requireThat(main?.plan.bootstrap.state === 'ACCEPTED' && context.baseMainSha === mainSha, 'Contract amendment requires accepted G0 and exact current main');
     requireThat(context.amendmentId === AMENDMENT.id && context.phaseId === AMENDMENT.id &&
       context.agentId === 'alpha-contract-amendment' && context.branch === AMENDMENT.branch &&
