@@ -4,8 +4,16 @@ import { load, validateSnapshot, acquire, validateTransition, checkConflicts, ov
 
 const seeded = load();
 const sha = '1'.repeat(40), newer = '2'.repeat(40);
-function accepted() {
+function pristine() {
   const s = structuredClone(seeded);
+  s.plan.bootstrap.state = 'IN_PROGRESS'; delete s.plan.bootstrap.evidence;
+  for (const p of s.plan.phases) p.status = 'LOCKED';
+  for (const r of s.plan.rounds) r.status = 'LOCKED';
+  s.registry = { schemaVersion: 1, epochs: Object.fromEntries(s.plan.phases.map(p => [p.id, 0])), claims: [] };
+  return s;
+}
+function accepted() {
+  const s = pristine();
   s.plan.bootstrap.state = 'ACCEPTED';
   s.plan.bootstrap.evidence = 'docs/evidence/alpha/G0/independent-ci.json';
   for (const p of s.plan.phases) p.status = p.round === 1 ? 'READY' : 'LOCKED';
@@ -101,7 +109,7 @@ test('malformed authority and dependency cycles cannot unlock a round', () => {
   for (const change of cases) { const s = accepted(); change(s); assert.throws(() => validateSnapshot(s)); }
 });
 test('initial bootstrap cannot self-accept or acquire any phase', () => {
-  const head = structuredClone(seeded);
+  const head = pristine();
   head.plan.bootstrap.state = 'IN_PROGRESS';
   for (const p of head.plan.phases) p.status = 'LOCKED';
   for (const r of head.plan.rounds) r.status = 'LOCKED';

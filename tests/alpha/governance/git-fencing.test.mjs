@@ -27,6 +27,7 @@ test('real Git fixtures serialize five CLI claims, reject a resumed old epoch an
     for (const p of plan.phases) p.status = p.round === 1 ? 'READY' : 'LOCKED';
     for (const r of plan.rounds) r.status = r.round === 1 ? 'READY' : 'LOCKED';
     save('docs/implementation/alpha/plan.json', plan);
+    save('docs/implementation/alpha/claims.json', { schemaVersion: 1, epochs: Object.fromEntries(plan.phases.map(p => [p.id, 0])), claims: [] });
     run(process.execPath, ['tools/generate-views.mjs']); commit('fixture prerequisite'); git('push', 'origin', 'HEAD:main');
     for (let i = 1; i <= 5; i++) {
       git('fetch', 'origin', 'main'); git('switch', '-C', `agent/worker-${i}/p10${i}`, 'origin/main');
