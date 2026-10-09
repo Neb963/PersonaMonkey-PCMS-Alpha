@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "phaseId": "P105",
+  "claimId": "CLM-P105-001",
+  "agentId": "slot-five",
+  "claimEpoch": 1,
+  "state": "COMMITTED",
+  "providerLive": false,
+  "commitSha": "03eec9dd743340c1ff4b3700c86785d5f7d408a8",
+  "acceptanceIds": [
+    "AP105-01",
+    "AP105-02",
+    "AP105-03"
+  ],
+  "cases": [
+    {
+      "id": "AP105-01",
+      "evidence": [
+        "tests/alpha/ui-shell/shell.test.mjs",
+        "tests/alpha/ui-shell/styles.test.mjs"
+      ],
+      "result": "Nine P105 tests pass on original product head; no Core/backend authority or dynamic modules"
+    },
+    {
+      "id": "AP105-02",
+      "evidence": [
+        "tests/alpha/ui-shell/shell.test.mjs",
+        "tests/alpha/ui-shell/styles.test.mjs"
+      ],
+      "result": "Seven static routes, skip-to-main, aria-current/focus, responsive CSS, readable theme token contrast"
+    },
+    {
+      "id": "AP105-03",
+      "evidence": [
+        "tests/alpha/ui-shell/states.test.mjs"
+      ],
+      "result": "Loading/empty/error DOM-safe primitives, accessible live regions, retry callback and invalid-state rejection"
+    }
+  ],
+  "verification": [
+    {
+      "scope": "GitHub Actions",
+      "command": "npm run verify && node tools/alpha/run-tests.mjs",
+      "runId": 37913233574,
+      "workflow": "alpha-governance",
+      "result": "PASS",
+      "p105Tests": 9,
+      "p105Passed": 9,
+      "p105Failed": 0,
+      "sourceSha": "03eec9dd743340c1ff4b3700c86785d5f7d408a8"
+    },
+    {
+      "scope": "GitHub Actions",
+      "workflow": "firefox-developer-edition",
+      "runId": 37913233505,
+      "result": "FAIL",
+      "reason": "inherited p031-packaged timed out waiting for module schedule wake; no P105 runtime changes",
+      "sourceSha": "03eec9dd743340c1ff4b3700c86785d5f7d408a8"
+    },
+    {
+      "scope": "GitHub Actions",
+      "command": "npm run verify && node tools/alpha/run-tests.mjs",
+      "runId": 37913806463,
+      "workflow": "alpha-governance",
+      "result": "PASS",
+      "p105Tests": 9,
+      "p105Passed": 9,
+      "p105Failed": 0,
+      "sourceSha": "7118cefb0e23af6685f7677f2a4283deea012772"
+    },
+    {
+      "scope": "GitHub Actions",
+      "workflow": "firefox-developer-edition",
+      "runId": 37913806436,
+      "result": "PASS",
+      "sourceSha": "7118cefb0e23af6685f7677f2a4283deea012772"
+    }
+  ],
+  "localTestsExecuted": [],
+  "limitations": [
+    "No operator/provider-live acceptance",
+    "Static preview not wired into toolbar/manifest or Alpha Core; downstream UI phase owns integration",
+    "No installed-Firefox visual keyboard walkthrough in P105",
+    "Latest-main candidate must still pass independent CI at exact merge SHA"
+  ],
+  "ciRuns": [],
+  "mergedMainSha": null
+}

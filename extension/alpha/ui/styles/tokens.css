@@ -1,0 +1,73 @@
+/* P105 Alpha-only visual tokens; prefers Firefox theme, with optional deterministic preview override. */
+:root {
+  color-scheme: light;
+  --alpha-bg: #f4f7fb;
+  --alpha-surface: #ffffff;
+  --alpha-surface-subtle: #eef3f9;
+  --alpha-text: #172334;
+  --alpha-muted: #4a5b72;
+  --alpha-border: #d4deea;
+  --alpha-accent: #225bc3;
+  --alpha-accent-bg: #e9f0ff;
+  --alpha-focus: #225bc3;
+  --alpha-danger: #a21d31;
+  --alpha-good: #1d6946;
+  --alpha-warning: #845914;
+  --alpha-shadow: 0 2px 16px rgba(17, 31, 55, .045);
+  --alpha-font: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --alpha-radius: 10px;
+  --alpha-gap: 14px;
+  font-family: var(--alpha-font);
+  font-size: 14px;
+  line-height: 1.5;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --alpha-bg: #101720;
+  --alpha-surface: #192330;
+  --alpha-surface-subtle: #233143;
+  --alpha-text: #f0f4fb;
+  --alpha-muted: #bfccdc;
+  --alpha-border: #43536a;
+  --alpha-accent: #b7d0ff;
+  --alpha-accent-bg: #293d59;
+  --alpha-focus: #b7d0ff;
+  --alpha-danger: #ffa5ad;
+  --alpha-good: #9cddbc;
+  --alpha-warning: #ffd393;
+  --alpha-shadow: 0 2px 16px rgba(0, 0, 0, .18);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+  color-scheme: dark;
+  --alpha-bg: #101720;
+  --alpha-surface: #192330;
+  --alpha-surface-subtle: #233143;
+  --alpha-text: #f0f4fb;
+  --alpha-muted: #bfccdc;
+  --alpha-border: #43536a;
+  --alpha-accent: #b7d0ff;
+  --alpha-accent-bg: #293d59;
+  --alpha-focus: #b7d0ff;
+  --alpha-danger: #ffa5ad;
+  --alpha-good: #9cddbc;
+  --alpha-warning: #ffd393;
+  --alpha-shadow: 0 2px 16px rgba(0, 0, 0, .18);
+  }
+}
+:root[data-theme="light"] {
+  color-scheme: light;
+  --alpha-bg: #f4f7fb;
+  --alpha-surface: #ffffff;
+  --alpha-surface-subtle: #eef3f9;
+  --alpha-text: #172334;
+  --alpha-muted: #4a5b72;
+  --alpha-border: #d4deea;
+  --alpha-accent: #225bc3;
+  --alpha-accent-bg: #e9f0ff;
+  --alpha-focus: #225bc3;
+  --alpha-danger: #a21d31;
+  --alpha-good: #1d6946;
+  --alpha-warning: #845914;
+  --alpha-shadow: 0 2px 16px rgba(17, 31, 55, .045);
+}

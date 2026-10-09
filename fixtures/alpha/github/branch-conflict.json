@@ -1,0 +1,9 @@
+{
+  "case": "GitHub non-fast-forward ref update fixture",
+  "status": 422,
+  "stage": "PATCH /git/refs/heads/main",
+  "force": false,
+  "expectedFailure": "CONFLICT",
+  "expectedRemoteWrite": false,
+  "containsCredentials": false
+}
