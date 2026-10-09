@@ -57,7 +57,7 @@
         "P205"
       ],
       "gateId": "GATE-R2",
-      "status": "READY"
+      "status": "IN_PROGRESS"
     },
     {
       "round": 3,
@@ -398,7 +398,7 @@
       "round": 2,
       "agent": 4,
       "title": "Generator inventory and drift facts",
-      "status": "READY",
+      "status": "CLAIMED",
       "dependsOn": [
         "P102",
         "P103"

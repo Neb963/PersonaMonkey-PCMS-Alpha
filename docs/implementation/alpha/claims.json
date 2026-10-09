@@ -9,7 +9,7 @@
     "P201": 0,
     "P202": 0,
     "P203": 0,
-    "P204": 0,
+    "P204": 1,
     "P205": 0,
     "P301": 0,
     "P302": 0,
@@ -166,6 +166,32 @@
         "AP103-01",
         "AP103-02",
         "AP103-03"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "claimId": "CLM-P204-001",
+      "phaseId": "P204",
+      "agentId": "slot-four-p204",
+      "claimEpoch": 1,
+      "state": "ACTIVE",
+      "baseMainSha": "39623c872e73aa9983e9f4fbdbc8f939281da57b",
+      "branch": "agent/slot-four-p204/p204",
+      "writePaths": [
+        "extension/alpha/features/inventory/**",
+        "tests/alpha/inventory/**",
+        "docs/evidence/alpha/P204/**"
+      ],
+      "contractReads": {
+        "alpha.contracts.v1": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e"
+      },
+      "contractWrites": [],
+      "exclusiveResources": [],
+      "migrationSlots": [],
+      "acceptanceIds": [
+        "AP204-01",
+        "AP204-02",
+        "AP204-03"
       ]
     }
   ]
