@@ -432,7 +432,7 @@
       "round": 2,
       "agent": 5,
       "title": "Unified backup schema and safe exporter",
-      "status": "READY",
+      "status": "CLAIMED",
       "dependsOn": [
         "P102"
       ],

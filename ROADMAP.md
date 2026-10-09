@@ -22,7 +22,7 @@ State: **IN_PROGRESS**. Gate: GATE-R2.
 - P202: **READY** — Accounts and Persona enrollment
 - P203: **CLAIMED** — GitHub source catalog and READY interpreter
 - P204: **READY** — Generator inventory and drift facts
-- P205: **READY** — Unified backup schema and safe exporter
+- P205: **CLAIMED** — Unified backup schema and safe exporter
 
 ## R3 — Operational engines
 
