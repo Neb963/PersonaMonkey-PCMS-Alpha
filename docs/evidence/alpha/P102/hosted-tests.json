@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "phaseId": "P102",
+  "providerLive": false,
+  "sourceSha": "826a8af69511f06cb6eff789c481865389546783",
+  "treeSha": "4dcfdcaf15d1737a512b6733e72d420e47916bc6",
+  "workflow": {
+    "id": 37919750569,
+    "name": "alpha-governance",
+    "event": "push",
+    "attempt": 1,
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37919750569"
+  },
+  "job": {
+    "id": 113784555674,
+    "name": "authority"
+  },
+  "command": "npm run verify && node tools/alpha/run-tests.mjs",
+  "contentSandboxDisabled": false,
+  "combinedTestsPassed": 45,
+  "p102NodeEntriesPassed": 15,
+  "indexedDbCasesPassed": 20,
+  "processRestartCasesPassed": 1,
+  "evidenceBasis": "The hosted browser test passed; it asserts the exact case/restart counts, source-copy equality and normal content sandbox. These lines come from the exact merged-main governance job.",
+  "testPassLines": [
+    "2026-10-09T10:49:22.1929108Z ✔ AP102-01/02/03: actual pinned Firefox IndexedDB migrations, races, aborts, corruption and process restart (23660.729656ms)",
+    "2026-10-09T10:49:22.2012524Z ✔ AP102-01: four normalizers implement the frozen fields, without merging independent Generator facts (17.171281ms)",
+    "2026-10-09T10:49:22.2018908Z ✔ AP102-01: canonical donor slug grammar avoids aliases and fleet collisions (1.293997ms)",
+    "2026-10-09T10:49:22.2026739Z ✔ AP102-03: unknown credential/container fields are rejected in every normal record without echoing data (2.160495ms)",
+    "2026-10-09T10:49:22.2028868Z ✔ AP102-03: nested operation metadata rejects credential names and keeps opaque SecretRefs only (1.983014ms)",
+    "2026-10-09T10:49:22.2030115Z ✔ AP102-03: recognizable credential material is rejected without a credential fixture (0.624277ms)",
+    "2026-10-09T10:49:22.2032000Z ✔ AP102-01: unknown fields, exotic objects, accessors and symbols fail without executing getters (1.292985ms)",
+    "2026-10-09T10:49:22.2033676Z ✔ AP102-02: revisions, binding epochs and timestamps are bounded and canonical (0.750132ms)",
+    "2026-10-09T10:49:22.2034909Z ✔ AP102-01: exact Alpha enums and explicit source slug mapping are retained (0.911703ms)",
+    "2026-10-09T10:49:22.2035803Z ✔ AP102-01: source references are commit-pinned on main and safe relative paths (1.443436ms)",
+    "2026-10-09T10:49:22.2036739Z ✔ AP102-01: Release files preserve exact UTF-8 text and detached thumbnail bytes (1.993443ms)",
+    "2026-10-09T10:49:22.2038554Z ✔ AP102-03: operation evidence is bounded data, rejects cycles and unsafe arrays/prototypes (1.055672ms)",
+    "2026-10-09T10:49:22.2040248Z ✔ AP102-02: immutable operation target and uncertainty prohibit blind replay (1.271044ms)",
+    "2026-10-09T10:49:22.2041406Z ✔ AP102-02: a Persona rebind requires a monotone epoch and releases cannot be rewritten (0.509793ms)",
+    "2026-10-09T10:49:22.2042505Z ✔ AP102-02: isolated Alpha migration authority is contiguous, synchronous and rejects unsupported versions (0.977275ms)",
+    "2026-10-09T10:49:22.2065287Z ℹ tests 45",
+    "2026-10-09T10:49:22.2065743Z ℹ pass 45"
+  ]
+}

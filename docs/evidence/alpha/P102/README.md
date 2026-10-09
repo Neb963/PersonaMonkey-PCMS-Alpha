@@ -105,3 +105,31 @@ in prose or source. Callers remain responsible for placing credentials in the
 approved secret backend. Fixtures are synthetic and contain no live credentials,
 sessions, account data or provider traffic. Recovery checks detect accidental
 corruption; unkeyed checksums are not protection against a malicious DB writer.
+
+## Delivery and gate handoff
+
+Product PR #15 merged at `826a8af69511f06cb6eff789c481865389546783`.
+The final CI-tested head was `2aece95b31d407f421564e2f38a0ab9aa05ecf61`,
+validated against exact main `3975183b2975da1c4448635694c2a1ddc5104132`.
+The serialized non-forced ref update used that expected main SHA, the tested
+candidate tree and both exact parents. The local trusted validator and final
+remote-main fence passed immediately before the update.
+
+`acceptance.json` records separate COMMITTED, CI_VERIFIED and MERGED milestones
+and exact independent PR/main workflow proofs. `hosted-tests.json` contains only
+the P102 pass lines and bounded totals from the hosted merged-main governance
+job. The test's assertions require 20 IndexedDB cases, one process restart and
+the normal content sandbox in GitHub Actions.
+
+The authoritative registry remains ACTIVE at epoch 1 and generated plan status
+remains CLAIMED: a phase PR cannot rewrite current-main control authority.
+Only the separately assigned R1 integration checker may mark GATE_VERIFIED /
+ACCEPTED. No successor phase was claimed or started, and no orchestrator was
+created. Provider-live verification remains unclaimed.
+
+Both required push workflows passed on that exact merged SHA. The additional
+Alpha Firefox workflow's first attempt failed because its extracted browser
+artifact hash changed between smoke and packaged setup, before product startup.
+Its single fresh-runner retry passed with unchanged source and integrity checks.
+The cause of the artifact change is not established; both attempts are recorded
+in `verificationIncidents` rather than treating the first attempt as a pass.
