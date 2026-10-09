@@ -1,0 +1,168 @@
+{
+  "schemaVersion": 1,
+  "phaseId": "P101",
+  "suite": "isolated-smoke",
+  "commitSha": "3c927d682cadba40c7a7994074b383fa259c072b",
+  "treeSha": "3294110cdcf00c9d2e2ab0b8209b8100a8272c0f",
+  "prHeadSha": "3c927d682cadba40c7a7994074b383fa259c072b",
+  "workflowRun": "37954923535",
+  "worktreeDirty": false,
+  "providerLive": false,
+  "contentSandboxDisabled": false,
+  "networkIsolation": "startup-rejecting-proxy-and-exact-origin-parent-observer",
+  "checks": {
+    "nativeUpdaterMutexPreservesImmutableArtifact": true,
+    "loopbackDomVerified": true,
+    "unlistedOriginBlocked": true
+  },
+  "passed": true,
+  "firefox": {
+    "version": "154.0b10",
+    "artifactSha256": "681913108bba655d7ec6fadfac2731141b23e48dca88d1988a4d95a6bdaff164",
+    "archiveUrl": "https://archive.mozilla.org/pub/devedition/releases/154.0b10/linux-x86_64/en-US/firefox-154.0b10.tar.xz",
+    "extractedTreeSha256": "56fd1ac4a9c8b099fefe82ef43fd58ca1b9fe97e75a3bd5b84170f847dd0615c",
+    "buildId": "20260812080401",
+    "sourceStamp": "1d78fecadb05f7a244f966728e5228681708c72c",
+    "versionOutput": "Mozilla Firefox 154.0b10",
+    "artifactIntegrity": {
+      "baselineTreeSha256": "56fd1ac4a9c8b099fefe82ef43fd58ca1b9fe97e75a3bd5b84170f847dd0615c",
+      "observedTreeSha256": "56fd1ac4a9c8b099fefe82ef43fd58ca1b9fe97e75a3bd5b84170f847dd0615c",
+      "immutableTreeSha256": "56fd1ac4a9c8b099fefe82ef43fd58ca1b9fe97e75a3bd5b84170f847dd0615c",
+      "changeCount": 0,
+      "truncated": false,
+      "changes": [],
+      "runtimeMetadata": []
+    }
+  },
+  "updaterMutex": {
+    "mechanism": "pinned-native-nsIUpdateMutex",
+    "autoUpdate": false,
+    "before": {
+      "baselineTreeSha256": "56fd1ac4a9c8b099fefe82ef43fd58ca1b9fe97e75a3bd5b84170f847dd0615c",
+      "observedTreeSha256": "56fd1ac4a9c8b099fefe82ef43fd58ca1b9fe97e75a3bd5b84170f847dd0615c",
+      "immutableTreeSha256": "56fd1ac4a9c8b099fefe82ef43fd58ca1b9fe97e75a3bd5b84170f847dd0615c",
+      "changeCount": 0,
+      "truncated": false,
+      "changes": [],
+      "runtimeMetadata": []
+    },
+    "held": {
+      "baselineTreeSha256": "56fd1ac4a9c8b099fefe82ef43fd58ca1b9fe97e75a3bd5b84170f847dd0615c",
+      "observedTreeSha256": "dc42c2557093f8460edd07aa945fc34ccefec4a2146798feb61c981b583f9991",
+      "immutableTreeSha256": "56fd1ac4a9c8b099fefe82ef43fd58ca1b9fe97e75a3bd5b84170f847dd0615c",
+      "changeCount": 2,
+      "truncated": false,
+      "changes": [
+        {
+          "path": ".parentlock",
+          "before": null,
+          "after": {
+            "path": ".parentlock",
+            "mode": 420,
+            "type": "file",
+            "size": 0,
+            "nlink": 1,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        },
+        {
+          "path": "lock",
+          "before": null,
+          "after": {
+            "path": "lock",
+            "mode": 511,
+            "type": "link",
+            "target": "10.1.1.226:+2929"
+          }
+        }
+      ],
+      "runtimeMetadata": [
+        {
+          "path": ".parentlock",
+          "mode": 420,
+          "type": "file",
+          "size": 0,
+          "nlink": 1,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "lock",
+          "mode": 511,
+          "type": "link",
+          "target": "10.1.1.226:+2929"
+        }
+      ]
+    },
+    "released": {
+      "baselineTreeSha256": "56fd1ac4a9c8b099fefe82ef43fd58ca1b9fe97e75a3bd5b84170f847dd0615c",
+      "observedTreeSha256": "7e10a8761ae6a450cb9e9e6537a233c173d31f118c53bbbdcd9b949bfc8f3372",
+      "immutableTreeSha256": "56fd1ac4a9c8b099fefe82ef43fd58ca1b9fe97e75a3bd5b84170f847dd0615c",
+      "changeCount": 1,
+      "truncated": false,
+      "changes": [
+        {
+          "path": ".parentlock",
+          "before": null,
+          "after": {
+            "path": ".parentlock",
+            "mode": 420,
+            "type": "file",
+            "size": 0,
+            "nlink": 1,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        }
+      ],
+      "runtimeMetadata": [
+        {
+          "path": ".parentlock",
+          "mode": 420,
+          "type": "file",
+          "size": 0,
+          "nlink": 1,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    }
+  },
+  "firefoxAfterSmoke": {
+    "version": "154.0b10",
+    "artifactSha256": "681913108bba655d7ec6fadfac2731141b23e48dca88d1988a4d95a6bdaff164",
+    "archiveUrl": "https://archive.mozilla.org/pub/devedition/releases/154.0b10/linux-x86_64/en-US/firefox-154.0b10.tar.xz",
+    "extractedTreeSha256": "56fd1ac4a9c8b099fefe82ef43fd58ca1b9fe97e75a3bd5b84170f847dd0615c",
+    "buildId": "20260812080401",
+    "sourceStamp": "1d78fecadb05f7a244f966728e5228681708c72c",
+    "versionOutput": "Mozilla Firefox 154.0b10",
+    "artifactIntegrity": {
+      "baselineTreeSha256": "56fd1ac4a9c8b099fefe82ef43fd58ca1b9fe97e75a3bd5b84170f847dd0615c",
+      "observedTreeSha256": "7e10a8761ae6a450cb9e9e6537a233c173d31f118c53bbbdcd9b949bfc8f3372",
+      "immutableTreeSha256": "56fd1ac4a9c8b099fefe82ef43fd58ca1b9fe97e75a3bd5b84170f847dd0615c",
+      "changeCount": 1,
+      "truncated": false,
+      "changes": [
+        {
+          "path": ".parentlock",
+          "before": null,
+          "after": {
+            "path": ".parentlock",
+            "mode": 420,
+            "type": "file",
+            "size": 0,
+            "nlink": 1,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        }
+      ],
+      "runtimeMetadata": [
+        {
+          "path": ".parentlock",
+          "mode": 420,
+          "type": "file",
+          "size": 0,
+          "nlink": 1,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    }
+  }
+}

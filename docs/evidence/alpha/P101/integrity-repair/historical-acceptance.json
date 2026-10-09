@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 1,
+  "phaseId": "P101",
+  "state": "MERGED",
+  "claimId": "CLM-P101-001",
+  "agentId": "slot-one",
+  "claimEpoch": 1,
+  "baseMainSha": "5ea76924abba1ae04de774e548cd6ac2c9ee745b",
+  "contractHash": "9b379980e16fdd557e0ea8a7f8273421f4a581c1c1563fe7661308038e29ee12",
+  "commitSha": "b63e5ae88a03d9b7957d916578fff9dc34f09c42",
+  "mergedMainSha": "e613198320700a92e76361376adab9dc946ecf65",
+  "providerLive": false,
+  "acceptanceIds": [
+    "AP101-01",
+    "AP101-02",
+    "AP101-03"
+  ],
+  "implementationPr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/12",
+  "claimPr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/4",
+  "ciRuns": [
+    {
+      "id": 37916497549,
+      "name": "alpha-governance",
+      "sha": "e613198320700a92e76361376adab9dc946ecf65",
+      "status": "completed",
+      "conclusion": "success",
+      "event": "push",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37916497549"
+    },
+    {
+      "id": 37916497321,
+      "name": "firefox-developer-edition",
+      "sha": "e613198320700a92e76361376adab9dc946ecf65",
+      "status": "completed",
+      "conclusion": "success",
+      "event": "push",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37916497321"
+    }
+  ],
+  "browserCiRuns": [
+    {
+      "id": 37916497407,
+      "name": "alpha-firefox",
+      "sha": "e613198320700a92e76361376adab9dc946ecf65",
+      "status": "completed",
+      "conclusion": "success",
+      "event": "push",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37916497407"
+    }
+  ],
+  "prCiRuns": [
+    {
+      "id": 37915910853,
+      "name": "alpha-governance",
+      "sha": "b63e5ae88a03d9b7957d916578fff9dc34f09c42",
+      "status": "completed",
+      "conclusion": "success",
+      "event": "pull_request",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37915910853"
+    },
+    {
+      "id": 37915910864,
+      "name": "firefox-developer-edition",
+      "sha": "b63e5ae88a03d9b7957d916578fff9dc34f09c42",
+      "status": "completed",
+      "conclusion": "success",
+      "event": "pull_request",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37915910864"
+    },
+    {
+      "id": 37915910852,
+      "name": "alpha-firefox",
+      "sha": "b63e5ae88a03d9b7957d916578fff9dc34f09c42",
+      "status": "completed",
+      "conclusion": "success",
+      "event": "pull_request",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37915910852"
+    }
+  ],
+  "milestones": [
+    {
+      "state": "COMMITTED",
+      "sha": "9c40bceba5cde45c56745e2e8cd83ad4f40447b4",
+      "description": "Clean code checkpoint; local pin/broker regressions and supplemental browser checks passed"
+    },
+    {
+      "state": "CI_VERIFIED",
+      "sha": "b63e5ae88a03d9b7957d916578fff9dc34f09c42",
+      "description": "All three independent PR workflows passed against exact main dd4760744ea8b53a1cf12cf45f798e3e402be762"
+    },
+    {
+      "state": "MERGED",
+      "sha": "e613198320700a92e76361376adab9dc946ecf65",
+      "description": "Serialized non-forced main update with exact expected-main SHA; all three independent push workflows passed"
+    }
+  ],
+  "pending": [
+    "separately assigned GATE-R1 verification and acceptance"
+  ],
+  "claimState": "ACTIVE",
+  "localBrowserEvidence": {
+    "commitSha": "9c40bceba5cde45c56745e2e8cd83ad4f40447b4",
+    "contentSandboxDisabled": true,
+    "supplementalOnly": true,
+    "smokeReport": "local-smoke.json",
+    "packagedReport": "local-packaged.json"
+  },
+  "hostedBrowserEvidence": {
+    "commitSha": "e613198320700a92e76361376adab9dc946ecf65",
+    "contentSandboxDisabled": false,
+    "worktreeDirty": false,
+    "smokeReport": "hosted-main-smoke.json",
+    "packagedReport": "hosted-main-packaged.json",
+    "smokeChecks": 2,
+    "packagedChecks": 13
+  },
+  "localFocusedTests": {
+    "commitSha": "a215c810e9bbc3550b1e87ba6f922887d6aab209",
+    "command": "node --test tests/alpha/browser-baseline/*.test.mjs tests/firefox/*.test.mjs tests/pcms/p008-*.test.mjs tests/pcms/p009-*.test.mjs",
+    "passed": 35,
+    "failed": 0
+  },
+  "acceptanceCases": {
+    "AP101-01": [
+      "preserved donor verify and PersonaMonkey identity/routing/integration regressions",
+      "loopback DOM and exact-origin denial",
+      "packaged typed broker bytes unchanged"
+    ],
+    "AP101-02": [
+      "install once and retain unsigned XPI and Persona across restart",
+      "UID/container mapping, Block routing and Direct denial",
+      "stale revision/boot, invalid fields, replay and sender faults",
+      "event-page unload and broker wake"
+    ],
+    "AP101-03": [
+      "exact 154.0b10 Mozilla checksum and extracted-tree/build identity",
+      "two-build XPI reproducibility",
+      "independently verified PR and merged-main CI"
+    ]
+  }
+}

@@ -1,0 +1,205 @@
+{
+  "schemaVersion": 1,
+  "phaseId": "P101",
+  "state": "MERGED",
+  "claimId": "CLM-P101-001",
+  "agentId": "slot-one",
+  "claimEpoch": 1,
+  "claimState": "ACTIVE",
+  "contractHash": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e",
+  "validatedMainSha": "2c877f598e95119ff4616c1289bae03b6be4a006",
+  "commitSha": "14f0bd6797f3bb2f304f2fdb41e5ec3e0b9a84b5",
+  "candidateTree": "3294110cdcf00c9d2e2ab0b8209b8100a8272c0f",
+  "mergedMainSha": "3c927d682cadba40c7a7994074b383fa259c072b",
+  "mergeParents": [
+    "2c877f598e95119ff4616c1289bae03b6be4a006",
+    "14f0bd6797f3bb2f304f2fdb41e5ec3e0b9a84b5"
+  ],
+  "implementationPr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/24",
+  "mergeMethod": "serialized expected-main SHA, force:false, exact tested tree and two parents",
+  "acceptanceIds": [
+    "AP101-01",
+    "AP101-02",
+    "AP101-03"
+  ],
+  "providerLive": false,
+  "rootCause": "Pinned Linux nsIUpdateMutex adds an empty root .parentlock and a temporary IPv4/PID lock symlink; original archive entries remain unchanged",
+  "originalFailure": {
+    "runId": 37949414269,
+    "sha": "2c877f598e95119ff4616c1289bae03b6be4a006",
+    "stage": "persistent-install",
+    "historicalPerPathEvidenceAvailable": false
+  },
+  "independentCI": {
+    "candidate": [
+      {
+        "repository": "Neb963/PersonaMonkey-PCMS-Alpha",
+        "workflow": "alpha-governance",
+        "runId": 37954279622,
+        "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37954279622",
+        "event": "pull_request",
+        "headSha": "14f0bd6797f3bb2f304f2fdb41e5ec3e0b9a84b5",
+        "headBranch": "agent/slot-one/p101",
+        "status": "completed",
+        "conclusion": "success",
+        "runAttempt": 1,
+        "createdAt": "2026-10-09T15:46:57Z",
+        "updatedAt": "2026-10-09T15:49:07Z"
+      },
+      {
+        "repository": "Neb963/PersonaMonkey-PCMS-Alpha",
+        "workflow": "alpha-firefox",
+        "runId": 37954279627,
+        "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37954279627",
+        "event": "pull_request",
+        "headSha": "14f0bd6797f3bb2f304f2fdb41e5ec3e0b9a84b5",
+        "headBranch": "agent/slot-one/p101",
+        "status": "completed",
+        "conclusion": "success",
+        "runAttempt": 1,
+        "createdAt": "2026-10-09T15:46:57Z",
+        "updatedAt": "2026-10-09T15:48:37Z"
+      },
+      {
+        "repository": "Neb963/PersonaMonkey-PCMS-Alpha",
+        "workflow": "firefox-developer-edition",
+        "runId": 37954279539,
+        "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37954279539",
+        "event": "pull_request",
+        "headSha": "14f0bd6797f3bb2f304f2fdb41e5ec3e0b9a84b5",
+        "headBranch": "agent/slot-one/p101",
+        "status": "completed",
+        "conclusion": "success",
+        "runAttempt": 1,
+        "createdAt": "2026-10-09T15:46:57Z",
+        "updatedAt": "2026-10-09T15:50:50Z"
+      }
+    ],
+    "mergedMain": [
+      {
+        "repository": "Neb963/PersonaMonkey-PCMS-Alpha",
+        "workflow": "alpha-governance",
+        "runId": 37954923475,
+        "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37954923475",
+        "event": "push",
+        "headSha": "3c927d682cadba40c7a7994074b383fa259c072b",
+        "headBranch": "main",
+        "status": "completed",
+        "conclusion": "success",
+        "runAttempt": 1,
+        "createdAt": "2026-10-09T15:52:15Z",
+        "updatedAt": "2026-10-09T15:53:53Z"
+      },
+      {
+        "repository": "Neb963/PersonaMonkey-PCMS-Alpha",
+        "workflow": "alpha-firefox",
+        "runId": 37954923535,
+        "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37954923535",
+        "event": "push",
+        "headSha": "3c927d682cadba40c7a7994074b383fa259c072b",
+        "headBranch": "main",
+        "status": "completed",
+        "conclusion": "success",
+        "runAttempt": 1,
+        "createdAt": "2026-10-09T15:52:15Z",
+        "updatedAt": "2026-10-09T15:54:32Z"
+      },
+      {
+        "repository": "Neb963/PersonaMonkey-PCMS-Alpha",
+        "workflow": "firefox-developer-edition",
+        "runId": 37954923550,
+        "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37954923550",
+        "event": "push",
+        "headSha": "3c927d682cadba40c7a7994074b383fa259c072b",
+        "headBranch": "main",
+        "status": "completed",
+        "conclusion": "success",
+        "runAttempt": 1,
+        "createdAt": "2026-10-09T15:52:15Z",
+        "updatedAt": "2026-10-09T15:56:12Z"
+      }
+    ]
+  },
+  "hostedEvidence": {
+    "contentSandboxDisabled": false,
+    "worktreeDirty": false,
+    "smokeReport": "hosted-main-smoke.json",
+    "packagedReport": "hosted-main-packaged.json",
+    "smokeChecks": 3,
+    "packagedChecks": 13,
+    "xpiSha256": "222f64cb627a666751ad30960a63774e77fcfe569daee9025c1c40ab6f3262e6"
+  },
+  "pin": {
+    "version": "154.0b10",
+    "archiveSha256": "681913108bba655d7ec6fadfac2731141b23e48dca88d1988a4d95a6bdaff164",
+    "immutableTreeSha256": "56fd1ac4a9c8b099fefe82ef43fd58ca1b9fe97e75a3bd5b84170f847dd0615c",
+    "postMutexAllEntrySha256": "7e10a8761ae6a450cb9e9e6537a233c173d31f118c53bbbdcd9b949bfc8f3372"
+  },
+  "localChecks": [
+    {
+      "command": "node --test tests/alpha/browser-baseline/*.test.mjs tests/firefox/*.test.mjs tests/pcms/p008-*.test.mjs tests/pcms/p009-*.test.mjs",
+      "passed": 65,
+      "failed": 0
+    },
+    {
+      "command": "node tools/alpha/run-tests.mjs",
+      "passed": 74,
+      "failed": 0,
+      "skipped": 1
+    },
+    {
+      "command": "npm run verify",
+      "exitCode": 0,
+      "governancePassed": 36,
+      "frozenDonorBlobs": 726
+    },
+    {
+      "command": "node extension/tests/persona-identity.test.mjs",
+      "exitCode": 0
+    },
+    {
+      "command": "node extension/tests/management-integration.test.mjs",
+      "exitCode": 0
+    },
+    {
+      "command": "node extension/tests/integration-lifecycle.test.mjs",
+      "exitCode": 0
+    },
+    {
+      "command": "node extension/tests/integration-contract-parity.test.mjs",
+      "exitCode": 0
+    },
+    {
+      "command": "node extension/tests/background-routing-init.test.mjs",
+      "exitCode": 0
+    },
+    {
+      "command": "FIREFOX_INSTALL_ROOT=/tmp/p101-integrity-investigation node tools/alpha/firefox/install-pinned.mjs",
+      "exitCode": 0
+    },
+    {
+      "command": "node tools/alpha/ci.mjs --branch agent/slot-one/p101",
+      "exitCode": 0,
+      "validatedHeadSha": "14f0bd6797f3bb2f304f2fdb41e5ec3e0b9a84b5"
+    },
+    {
+      "command": "ALPHA_EVENT=push node tools/alpha/ci.mjs",
+      "exitCode": 0,
+      "validatedHeadSha": "3c927d682cadba40c7a7994074b383fa259c072b"
+    }
+  ],
+  "correctedLocalInvocation": {
+    "command": "node tools/alpha/ci.mjs --branch main",
+    "exitCode": 1,
+    "reason": "The branch option selects a phase context; push-mode validation is required for main.",
+    "replacement": "ALPHA_EVENT=push node tools/alpha/ci.mjs"
+  },
+  "limitations": [
+    "Historical failed runner did not retain per-path inventory; root-cause mechanism reproduced deterministically with the exact pinned native service locally and in hosted CI.",
+    "Local container does not support sandboxed content pages; complete DOM/XPI acceptance is from hosted CI."
+  ],
+  "implementationBlockers": [],
+  "pending": [
+    "separately assigned GATE-R1 verification and acceptance"
+  ]
+}
