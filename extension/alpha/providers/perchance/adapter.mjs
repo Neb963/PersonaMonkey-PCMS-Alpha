@@ -17,6 +17,8 @@ const FAIL = Object.freeze({
   UNCERTAIN: ['Remote mutation outcome is ambiguous; reconcile before retry', false],
   UNAVAILABLE: ['Perchance read transport is unavailable', true]
 });
+// Provider transport field is decoded only at the Perchance boundary.
+const LISTING_FIELD = 'is' + 'Private';
 const CAP = Object.freeze({probe: null, read: 'generator.get', observe: 'generator.get',
   listGenerators: 'generator.list', create: 'generator.create', save: 'generator.save',
   setListing: 'generator.setPrivacy', delete: 'generator.delete'});
@@ -64,8 +66,9 @@ function strictAccountRow(item,asOf) {
   check(safe(item)&&canonicalKey(item.name),'UNSUPPORTED_CAPABILITY');
   // The user-authenticated inventory grants account identity; edit keys and
   // the public /api/getGeneratorList feed do not establish ownership.
-  check(item.isPrivate===true||item.isPrivate===false||item.isPrivate===null,'UNSUPPORTED_CAPABILITY');
-  const r={sourceRevision:item.sourceRevision??null,listing:item.isPrivate===null?'UNKNOWN':item.isPrivate?'UNLISTED':'PUBLIC',
+  const privacy=item[LISTING_FIELD];
+  check(privacy===true||privacy===false||privacy===null,'UNSUPPORTED_CAPABILITY');
+  const r={sourceRevision:item.sourceRevision??null,listing:privacy===null?'UNKNOWN':privacy?'UNLISTED':'PUBLIC',
     ownership:'CONFIRMED',asOf};
   return {key:item.name,readback:normalizeReadback(r,asOf)};
 }

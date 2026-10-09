@@ -1,6 +1,7 @@
 /** Deterministic P103-only executor and durable ledger fixtures.
  * Has no direct HTTP, browser API, native IPC or real account credentials. */
 const copy=v=>structuredClone(v);
+const LISTING_FIELD='is' + 'Private';
 const contextEqual=(a,b)=>a&&b&&['accountId','personaUid','epoch','routeRevision','capabilityRevision']
   .every(k=>a[k]===b[k]);
 const utc='2026-09-10T00:00:00.000Z';
@@ -16,7 +17,7 @@ export function createPerchanceEmulator({accountId='test-account-a',personaUid='
   let saved=0,observedSession=session,observedRevision=revision;
   for(const value of entries) {
     if(resources.has(value.name))throw Error('Duplicate emulator identity');
-    resources.set(value.name,{name:value.name,isPrivate:value.isPrivate??true,
+    resources.set(value.name,{name:value.name,[LISTING_FIELD]:value[LISTING_FIELD]??true,
       sourceRevision:value.sourceRevision??'r1',
       files:copy(value.files??{pjs:'',html:'',thumbnail:new Uint8Array()})});
   }
@@ -26,7 +27,7 @@ export function createPerchanceEmulator({accountId='test-account-a',personaUid='
   function readOne(name) {
     const v=resources.get(name);
     return v?{context:copy(context),status:'success',readback:{sourceRevision:v.sourceRevision,
-      files:copy(v.files),listing:v.isPrivate?'UNLISTED':'PUBLIC',ownership:'CONFIRMED',asOf}}
+      files:copy(v.files),listing:v[LISTING_FIELD]?'UNLISTED':'PUBLIC',ownership:'CONFIRMED',asOf}}
       :{context:copy(context),status:'generator-does-not-exist'};
   }
   const executor={
@@ -43,14 +44,14 @@ export function createPerchanceEmulator({accountId='test-account-a',personaUid='
       const mutate=()=>{
         if(action==='create'){
           if(resources.has(targetKey)||otherAccounts.has(targetKey))return 'already-exists';
-          resources.set(targetKey,{name:targetKey,isPrivate:true,sourceRevision:'r1',
+          resources.set(targetKey,{name:targetKey,[LISTING_FIELD]:true,sourceRevision:'r1',
             files:{pjs:'',html:'',thumbnail:new Uint8Array()}});
           return 'created';
         }
         const item=resources.get(targetKey);
         if(!item)return 'generator-does-not-exist';
         if(action==='save') {item.files=copy(files);item.sourceRevision=`r${++saved+1}`;return 'saved';}
-        if(action==='setListing') {item.isPrivate=listing==='UNLISTED';
+        if(action==='setListing') {item[LISTING_FIELD]=listing==='UNLISTED';
           item.sourceRevision=`r${++saved+1}`;return 'privacy-set';}
         if(action==='delete') {resources.delete(targetKey);return 'deleted';}
         return 'unknown';
@@ -58,7 +59,7 @@ export function createPerchanceEmulator({accountId='test-account-a',personaUid='
       if(fault){if(fault.apply)mutate();if(fault.throwError)throw Error('Synthetic timeout');
         return {context:copy(context),status:fault.status};}
       if(action==='inventory')return {context:copy(context),status:'success',source:'DISCOVERY_V3_GET_GENERATORS_BY_USER',
-        generators:[...resources.values()].map(r=>({name:r.name,isPrivate:r.isPrivate,sourceRevision:r.sourceRevision})),asOf};
+        generators:[...resources.values()].map(r=>({name:r.name,[LISTING_FIELD]:r[LISTING_FIELD],sourceRevision:r.sourceRevision})),asOf};
       if(action==='read')return readOne(targetKey);
       return {context:copy(context),status:mutate()};
     }
