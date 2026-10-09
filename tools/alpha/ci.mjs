@@ -1,8 +1,9 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
-import { git, json, load, hasAuthority, requireThat, validateSnapshot, validateTransition, owns, ACTIVE, AMENDMENT } from './governance.mjs';
+import { git, json, load, hasAuthority, requireThat, validateSnapshot, validateTransition, owns, ACTIVE, AMENDMENT, MAINTENANCE } from './governance.mjs';
 import { verifyRepository, verifyG0Runtime } from './verify-repo.mjs';
 import { verifyRun } from './ci-evidence.mjs';
+import { verifyMaintenanceApproval } from './maintenance-approval.mjs';
 
 const options = {};
 for (let i = 2; i < process.argv.length; i += 2) {
@@ -22,9 +23,11 @@ let branch = options['--branch'] || process.env.ALPHA_HEAD_BRANCH;
 let contexts;
 if (branch || event === 'local') {
   branch ||= git(root, ['branch', '--show-current']);
-  contexts = [json(root, branch === AMENDMENT.branch ? AMENDMENT.contextPath : `docs/evidence/alpha/${branch.split('/').at(-1).toUpperCase()}/context.json`)];
+  const contextPath = branch === AMENDMENT.branch ? AMENDMENT.contextPath :
+    `docs/evidence/alpha/${branch.split('/').at(-1).toUpperCase()}/context.json`;
+  contexts = [json(root, contextPath)];
 } else {
-  const changed = files.filter(p => /^docs\/evidence\/alpha\/(G0|P[1-6]0[1-5]|GATE-R[1-6]|AMEND-P103-LIST-001)\/context\.json$/.test(p));
+  const changed = files.filter(p => /^docs\/evidence\/alpha\/(G0|P[1-6]0[1-5]|GATE-R[1-6]|AMEND-P103-LIST-001|MAINT-[A-Z0-9-]+)\/context\.json$/.test(p));
   if (changed.length) contexts = changed.map(p => json(root, p));
   else if (!main || main.plan.bootstrap.state !== 'ACCEPTED') contexts = [json(root, 'docs/evidence/alpha/G0/context.json')];
   else {
@@ -43,6 +46,26 @@ const results = contexts.map(c => {
   return validateTransition(main, head, c, { mainSha, headBranch: branch || c.branch, files: owned });
 });
 const context = contexts[0], report = { ...results[0], contexts: results };
+if (context.kind === 'MAINTENANCE') {
+  const path = `docs/evidence/alpha/${context.maintenanceId}/context.json`;
+  let existsOnMain = false;
+  try { git(root, ['cat-file', '-e', `${mainRef}:${path}`]); existsOnMain = true; } catch {}
+  requireThat(!existsOnMain, 'Maintenance authorization has already been consumed');
+  // A main push is the serialized two-parent merge of the reviewed PR head.
+  // Its first parent is exact old main; its second parent is the approved PR.
+  let approvedHeadSha = headSha;
+  if (event === 'push') {
+    const parents = git(root, ['rev-list', '--parents', '-n', '1', headSha]).split(' ');
+    requireThat(parents.length === 3 && parents[1] === mainSha,
+      'Maintenance must merge exact current main and approved PR head');
+    approvedHeadSha = parents[2];
+  }
+  const auth = await verifyMaintenanceApproval(context, {
+    repository: process.env.GITHUB_REPOSITORY || 'Neb963/PersonaMonkey-PCMS-Alpha',
+    mainSha, approvedHeadSha
+  });
+  requireThat(auth.approved === true, 'Maintenance owner authorization was not verified');
+}
 if (context.kind === 'BOOTSTRAP' && !main) {
   await verifyG0Runtime(root);
   const additions = git(root, ['ls-tree', '-r', '--name-only', headSha, 'extension/alpha']).split('\n').filter(Boolean);
