@@ -20,6 +20,12 @@ Local equivalent implementation and regressions were tested in a detached tempor
 node --test tests/alpha/backup/*.test.mjs
 # 4 tests, 4 passed, 0 failed
 ```
-No fixture bytes, decoded archive, secret content or exceptions are printed by P205 runtime or tests. GitHub CI shall separately execute `node tools/alpha/run-tests.mjs` and the governed pinned Firefox workflows against this PR; the outcome must be recorded separately from these local results.
+No fixture bytes, decoded archive, secret content or exceptions are printed by P205 runtime or tests. GitHub CI independently executed `node tools/alpha/run-tests.mjs` and the governed pinned Firefox workflows against the exact PR head and merged main. See `acceptance.json` for verified run IDs, SHAs, and outcomes.
 
 **Boundary:** P405 owns actual restore application, download/retention and wired PersonaMonkey export provision. This phase provides no live/provider acceptance and does not assert that missing session material can be restored.
+
+## Verified merge handoff
+
+Product PR #36 was merged with a non-forced, serialized expected-main update at `7cace06a658729e0a68b744598c83ded9b8d1258` from independently tested head `573531ca791c68b3d7b6905ccc264a4d84ee3aba`. All three PR workflows and all three exact merged-main workflows passed. The hosted governance log was inspected for serialized backup archive content and the synthetic sensitive fixture; neither was present.
+
+The claim remains ACTIVE and the phase plan remains CLAIMED. `acceptance.json` records MERGED only; GATE_VERIFIED and ACCEPTED require independently invoked GATE-R2.

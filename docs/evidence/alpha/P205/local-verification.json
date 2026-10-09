@@ -17,8 +17,23 @@
     "passed": 4,
     "failed": 0
   },
-  "githubCI": "PENDING",
-  "phaseState": "COMMITTED",
+  "githubCI": {
+    "state": "VERIFIED",
+    "head": "573531ca791c68b3d7b6905ccc264a4d84ee3aba",
+    "mergedMainSha": "7cace06a658729e0a68b744598c83ded9b8d1258",
+    "prRuns": [
+      37980173343,
+      37980173351,
+      37980173266
+    ],
+    "mergedMainRuns": [
+      37981748834,
+      37981748858,
+      37981748817
+    ],
+    "backupContentInLogs": false
+  },
+  "phaseState": "MERGED",
   "claims": {
     "backupContentInLogs": false,
     "providerMutation": false,
