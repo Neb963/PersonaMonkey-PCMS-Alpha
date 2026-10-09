@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "phaseId": "P203",
+  "claimId": "CLM-P203-001",
+  "agentId": "slot-three-r2",
+  "claimEpoch": 1,
+  "state": "COMMITTED",
+  "providerLive": false,
+  "contractId": "alpha.contracts.v1",
+  "contractRevision": 2,
+  "contractHash": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e",
+  "acceptanceIds": [
+    "AP203-01",
+    "AP203-02",
+    "AP203-03"
+  ],
+  "cases": [
+    {
+      "id": "AP203-01",
+      "evidence": [
+        "extension/alpha/features/sources/catalog.mjs",
+        "tests/alpha/sources/catalog.test.mjs"
+      ],
+      "summary": "Strict standalone DEPLOYMENT.md READY/BLOCKED/IN_DEVELOPMENT; invalid/missing status blocks; READY requires all three commit-pinned deployable blobs and a P102-valid release."
+    },
+    {
+      "id": "AP203-02",
+      "evidence": [
+        "tests/alpha/sources/catalog.test.mjs"
+      ],
+      "summary": "SHA-256 releaseId hashes framed PJS/HTML/JPEG bytes only; documentation and immutable commit changes alone do not change releaseId."
+    },
+    {
+      "id": "AP203-03",
+      "evidence": [
+        "tests/alpha/sources/catalog.test.mjs"
+      ],
+      "summary": "Different literal folder/slug mappings and remapped filenames; duplicate path/mapping rejection, bounded commit-fenced pagination, error sanitization and local bind CAS."
+    }
+  ],
+  "localTestsExecuted": [
+    {
+      "command": "node --test /mnt/data/p203-work/tests/alpha/sources/catalog.test.mjs",
+      "environment": "Node.js with local P104 path-templates replica and stub P102 normalizers (not an integrated repository test)",
+      "tests": 10,
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "command": "node --check /mnt/data/p203-work/extension/alpha/features/sources/catalog.mjs",
+      "result": "PASS"
+    }
+  ],
+  "pending": [
+    "Independent GitHub Actions candidate CI on exact source revision",
+    "Merged-main CI and GATE-R2 independent acceptance"
+  ],
+  "limitations": [
+    "No real GitHub/per-gens credentials or live Perchance/Mullvad acceptance.",
+    "Local tests used P102/P104 test-local replicas pending independent repository CI; they do not establish integrated acceptance.",
+    "This phase reads source and binds provenance only; scheduling, provider deployment and approval belong to later phases."
+  ]
+}
