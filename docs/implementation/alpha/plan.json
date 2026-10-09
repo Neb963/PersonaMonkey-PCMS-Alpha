@@ -224,7 +224,7 @@
       "round": 1,
       "agent": 4,
       "title": "GitHub private-repo adapter and safe paths",
-      "status": "READY",
+      "status": "CLAIMED",
       "dependsOn": [
         "G0"
       ],

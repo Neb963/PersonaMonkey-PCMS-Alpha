@@ -56,14 +56,32 @@
       "result": "FAIL",
       "reason": "inherited p031-packaged timed out waiting for module schedule wake; no P105 runtime changes",
       "sourceSha": "03eec9dd743340c1ff4b3700c86785d5f7d408a8"
+    },
+    {
+      "scope": "GitHub Actions",
+      "command": "npm run verify && node tools/alpha/run-tests.mjs",
+      "runId": 37913806463,
+      "workflow": "alpha-governance",
+      "result": "PASS",
+      "p105Tests": 9,
+      "p105Passed": 9,
+      "p105Failed": 0,
+      "sourceSha": "7118cefb0e23af6685f7677f2a4283deea012772"
+    },
+    {
+      "scope": "GitHub Actions",
+      "workflow": "firefox-developer-edition",
+      "runId": 37913806436,
+      "result": "PASS",
+      "sourceSha": "7118cefb0e23af6685f7677f2a4283deea012772"
     }
   ],
   "localTestsExecuted": [],
   "limitations": [
     "No operator/provider-live acceptance",
     "Static preview not wired into toolbar/manifest or Alpha Core; downstream UI phase owns integration",
-    "Firefox PR CI must be repeated successfully against latest main before merge",
-    "No installed-Firefox visual keyboard walkthrough in P105"
+    "No installed-Firefox visual keyboard walkthrough in P105",
+    "Latest-main candidate must still pass independent CI at exact merge SHA"
   ],
   "ciRuns": [],
   "mergedMainSha": null
