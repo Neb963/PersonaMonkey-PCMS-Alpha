@@ -1,0 +1,171 @@
+{
+  "schemaVersion": 1,
+  "phaseId": "P203",
+  "claimId": "CLM-P203-001",
+  "agentId": "slot-three-r2",
+  "claimEpoch": 1,
+  "state": "MERGED",
+  "providerLive": false,
+  "contractId": "alpha.contracts.v1",
+  "contractRevision": 2,
+  "contractHash": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e",
+  "acceptanceIds": [
+    "AP203-01",
+    "AP203-02",
+    "AP203-03"
+  ],
+  "cases": [
+    {
+      "id": "AP203-01",
+      "evidence": [
+        "extension/alpha/features/sources/catalog.mjs",
+        "tests/alpha/sources/catalog.test.mjs"
+      ],
+      "summary": "Strict standalone DEPLOYMENT.md READY/BLOCKED/IN_DEVELOPMENT; invalid/missing status blocks; READY requires all three commit-pinned deployable blobs and a P102-valid release."
+    },
+    {
+      "id": "AP203-02",
+      "evidence": [
+        "tests/alpha/sources/catalog.test.mjs"
+      ],
+      "summary": "SHA-256 releaseId hashes framed PJS/HTML/JPEG bytes only; documentation and immutable commit changes alone do not change releaseId."
+    },
+    {
+      "id": "AP203-03",
+      "evidence": [
+        "tests/alpha/sources/catalog.test.mjs"
+      ],
+      "summary": "Different literal folder/slug mappings and remapped filenames; duplicate path/mapping rejection, bounded commit-fenced pagination, error sanitization and local bind CAS."
+    }
+  ],
+  "localTestsExecuted": [
+    {
+      "command": "node --test /mnt/data/p203-work/tests/alpha/sources/catalog.test.mjs",
+      "environment": "Node.js with local P104 path-templates replica and stub P102 normalizers (not an integrated repository test)",
+      "tests": 10,
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "command": "node --check /mnt/data/p203-work/extension/alpha/features/sources/catalog.mjs",
+      "result": "PASS"
+    },
+    {
+      "command": "node --check /mnt/data/p203-work/tests/alpha/sources/catalog.test.mjs",
+      "result": "PASS (local JavaScript syntax check)"
+    }
+  ],
+  "pending": [
+    "Independent GATE-R2 checker verification of combined acceptance and formal phase/round acceptance",
+    "Operator-controlled provider-live testing outside deterministic Alpha CI"
+  ],
+  "limitations": [
+    "No real GitHub/per-gens credentials or live Perchance/Mullvad acceptance.",
+    "Local tests used P102/P104 test-local replicas pending independent repository CI; they do not establish integrated acceptance.",
+    "This phase reads source and binds provenance only; scheduling, provider deployment and approval belong to later phases.",
+    "Product implementation is merged and independently tested; only the separately assigned GATE-R2 checker may set GATE_VERIFIED/ACCEPTED. Claim remains ACTIVE."
+  ],
+  "claimState": "ACTIVE",
+  "baseMainSha": "39623c872e73aa9983e9f4fbdbc8f939281da57b",
+  "commitSha": "0dcf2d9d6208566ae5a4bdba83f36e84b171e5d1",
+  "mergedMainSha": "4bd778fd3a207833fefd0e050c5542cb8ebfd1ed",
+  "implementationPr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/35",
+  "claimPr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/32",
+  "prCiRuns": [
+    {
+      "id": 37981835192,
+      "name": "alpha-governance",
+      "sha": "0dcf2d9d6208566ae5a4bdba83f36e84b171e5d1",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "attempt": 1,
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37981835192"
+    },
+    {
+      "id": 37981835228,
+      "name": "alpha-firefox",
+      "sha": "0dcf2d9d6208566ae5a4bdba83f36e84b171e5d1",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "attempt": 1,
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37981835228"
+    },
+    {
+      "id": 37981835214,
+      "name": "firefox-developer-edition",
+      "sha": "0dcf2d9d6208566ae5a4bdba83f36e84b171e5d1",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "attempt": 1,
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37981835214"
+    }
+  ],
+  "ciRuns": [
+    {
+      "id": 37982294586,
+      "name": "alpha-governance",
+      "sha": "4bd778fd3a207833fefd0e050c5542cb8ebfd1ed",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "attempt": 1,
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37982294586"
+    },
+    {
+      "id": 37982294610,
+      "name": "firefox-developer-edition",
+      "sha": "4bd778fd3a207833fefd0e050c5542cb8ebfd1ed",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "attempt": 1,
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37982294610"
+    }
+  ],
+  "additionalMergedMainCi": [
+    {
+      "id": 37982294636,
+      "name": "alpha-firefox",
+      "sha": "4bd778fd3a207833fefd0e050c5542cb8ebfd1ed",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "attempt": 1,
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37982294636"
+    }
+  ],
+  "milestones": [
+    {
+      "state": "COMMITTED",
+      "sourceSha": "be83a115818227eea275540bbb81bfe68ba6b653",
+      "description": "P203 source and tests committed to claimed branch; local focused Node tests passed 10/10."
+    },
+    {
+      "state": "CI_VERIFIED",
+      "sourceSha": "0dcf2d9d6208566ae5a4bdba83f36e84b171e5d1",
+      "validatedMainSha": "7cace06a658729e0a68b744598c83ded9b8d1258",
+      "runIds": [
+        37981835192,
+        37981835228,
+        37981835214
+      ],
+      "description": "All three required/relevant PR workflows succeeded on exact candidate and then-current main."
+    },
+    {
+      "state": "MERGED",
+      "sourceSha": "4bd778fd3a207833fefd0e050c5542cb8ebfd1ed",
+      "sourcePrSha": "0dcf2d9d6208566ae5a4bdba83f36e84b171e5d1",
+      "validatedPreviousMainSha": "7cace06a658729e0a68b744598c83ded9b8d1258",
+      "runIds": [
+        37982294586,
+        37982294636,
+        37982294610
+      ],
+      "description": "Serialized non-forced, expected-SHA two-parent merge; all three push CI workflows passed on exact merged main."
+    }
+  ]
+}
