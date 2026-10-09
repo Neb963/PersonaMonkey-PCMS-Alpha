@@ -23,20 +23,41 @@ export function assertExactVersion(output, version) {
 
 // Frame every file, mode and symlink so the unpacked artifact is independently
 // reproducible and edits to libxul/prefs cannot hide behind an unchanged binary.
-export async function artifactTreeHash(root) {
-  const hash = createHash('sha256');
+export async function artifactInventory(root) {
+  const entries = [];
   async function visit(dir, prefix = '') {
-    const entries = (await readdir(dir, { withFileTypes: true })).sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
-    for (const entry of entries) {
+    const children = (await readdir(dir, { withFileTypes: true })).sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
+    for (const entry of children) {
       const name = prefix + entry.name, path = join(dir, entry.name), info = await lstat(path);
-      if (info.isDirectory()) await visit(path, name + '/');
-      else if (info.isFile()) hash.update(`${name}\0file\0${info.mode & 0o777}\0${info.size}\0${await sha256File(path)}\0`);
-      else if (info.isSymbolicLink()) hash.update(`${name}\0link\0${await readlink(path)}\0`);
+      const record = { path: name, mode: info.mode & 0o777 };
+      if (info.isDirectory()) { entries.push({ ...record, type: 'directory' }); await visit(path, name + '/'); }
+      else if (info.isFile()) entries.push({ ...record, type: 'file', size: info.size, sha256: await sha256File(path) });
+      else if (info.isSymbolicLink()) entries.push({ ...record, type: 'link', target: await readlink(path) });
       else throw new Error('Unsupported entry in Firefox artifact');
     }
   }
   await visit(root);
+  return entries;
+}
+
+export function inventoryTreeHash(entries) {
+  const hash = createHash('sha256');
+  for (const entry of entries) {
+    if (entry.type === 'file') hash.update(`${entry.path}\0file\0${entry.mode}\0${entry.size}\0${entry.sha256}\0`);
+    else if (entry.type === 'link') hash.update(`${entry.path}\0link\0${entry.target}\0`);
+  }
   return hash.digest('hex');
+}
+
+export async function artifactTreeHash(root) { return inventoryTreeHash(await artifactInventory(root)); }
+
+export function inventoryDelta(expected, actual) {
+  const before = new Map(expected.map(entry => [entry.path, entry]));
+  const after = new Map(actual.map(entry => [entry.path, entry]));
+  const paths = [...new Set([...before.keys(), ...after.keys()])].sort();
+  const changes = paths.filter(path => JSON.stringify(before.get(path)) !== JSON.stringify(after.get(path)));
+  return { changeCount: changes.length, truncated: changes.length > 16,
+    changes: changes.slice(0, 16).map(path => ({ path, before: before.get(path) || null, after: after.get(path) || null })) };
 }
 
 export async function verifyInstallation({ firefoxBin = process.env.FIREFOX_BIN,
@@ -49,8 +70,13 @@ export async function verifyInstallation({ firefoxBin = process.env.FIREFOX_BIN,
     throw new Error('Firefox installation provenance differs from the Alpha pin');
   }
   await assertFileSha256(manifest.archivePath, pin.archive.sha256);
-  if (await artifactTreeHash(dirname(await realpath(firefoxBin))) !== manifest.extractedTreeSha256) {
-    throw new Error('Extracted Firefox artifact changed after installation');
+  const inventory = await artifactInventory(dirname(await realpath(firefoxBin)));
+  const observed = inventoryTreeHash(inventory);
+  if (observed !== manifest.extractedTreeSha256) {
+    const error = new Error('Extracted Firefox artifact changed after installation');
+    error.artifactIntegrity = { baselineTreeSha256: manifest.extractedTreeSha256, observedTreeSha256: observed,
+      ...(manifest.artifactInventory ? inventoryDelta(manifest.artifactInventory, inventory) : { inventoryUnavailable: true }) };
+    throw error;
   }
   const result = await execFileText(firefoxBin, ['--version'], { env: { ...process.env, MOZ_HEADLESS: '1' }, timeout: 30_000 });
   assertExactVersion(result.stdout, pin.version);

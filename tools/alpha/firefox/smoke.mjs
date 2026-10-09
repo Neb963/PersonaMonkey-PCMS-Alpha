@@ -5,6 +5,7 @@ import { join, resolve } from 'node:path';
 import { IsolatedFirefox } from './harness.mjs';
 import { waitFor } from '../../firefox/packaged-harness.mjs';
 import { newReport, saveReport } from './report.mjs';
+import { verifyInstallation } from './pin.mjs';
 
 const root = resolve(process.env.FIREFOX_SMOKE_DIR || join(tmpdir(), 'alpha-p101-smoke'));
 const reportPath = resolve(process.env.FIREFOX_SMOKE_REPORT || join(root, 'report.json'));
@@ -41,6 +42,11 @@ try {
 } catch (failure) { error = failure; }
 finally {
   await h?.dispose();
+  if (!error && h) {
+    report.stage = 'artifact-integrity-after-smoke';
+    try { report.firefoxAfterSmoke = await verifyInstallation(); }
+    catch (failure) { error = failure; report.passed = false; }
+  }
   server?.closeAllConnections();
   if (server?.listening) await new Promise(done => server.close(done));
   await saveReport(reportPath, report, error);

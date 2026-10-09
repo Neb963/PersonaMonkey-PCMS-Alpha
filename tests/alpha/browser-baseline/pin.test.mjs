@@ -3,7 +3,7 @@ import test from 'node:test';
 import { mkdtemp, mkdir, writeFile, chmod, symlink, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { loadAlphaPin, assertExactVersion, artifactTreeHash, verifyInstallation } from '../../../tools/alpha/firefox/pin.mjs';
+import { loadAlphaPin, assertExactVersion, artifactTreeHash, artifactInventory, inventoryTreeHash, inventoryDelta, verifyInstallation } from '../../../tools/alpha/firefox/pin.mjs';
 import { validateOrigins, IsolatedFirefox } from '../../../tools/alpha/firefox/harness.mjs';
 
 test('AP101-03 Alpha consumes the accepted exact donor/Mozilla pin', async () => {
@@ -37,6 +37,27 @@ test('AP101-03 artifact tree hashing is reproducible and detects content, path, 
 
 test('AP101-03 unproven executables and a missing installation manifest fail before launch', async () => {
   await assert.rejects(() => verifyInstallation({ firefoxBin: '/unproven/firefox', manifestPath: '' }), /Alpha installer/);
+});
+
+test('AP101-03 integrity evidence identifies exact changed bytes/modes/links and bounds unexpected paths', async () => {
+  const root = await mkdtemp(join(tmpdir(), 'p101-delta-'));
+  try {
+    await writeFile(join(root, 'binary'), 'original', { mode: 0o755 });
+    await symlink('binary', join(root, 'link'));
+    const before = await artifactInventory(root);
+    assert.equal(inventoryTreeHash(before), await artifactTreeHash(root));
+    assert.deepEqual(inventoryDelta(before, before), { changeCount: 0, truncated: false, changes: [] });
+    await writeFile(join(root, 'binary'), 'tampered'); await chmod(join(root, 'binary'), 0o644);
+    await rm(join(root, 'link')); await symlink('elsewhere', join(root, 'link'));
+    const delta = inventoryDelta(before, await artifactInventory(root));
+    assert.deepEqual(delta.changes.map(e => e.path), ['binary', 'link']);
+    assert.notEqual(delta.changes[0].before.sha256, delta.changes[0].after.sha256);
+    assert.equal(delta.changes[0].before.mode, 0o755); assert.equal(delta.changes[0].after.mode, 0o644);
+    assert.equal(delta.changes[1].before.target, 'binary'); assert.equal(delta.changes[1].after.target, 'elsewhere');
+    for (let i = 0; i < 20; i++) await writeFile(join(root, `unexpected-${i}`), 'fixture');
+    const bounded = inventoryDelta(before, await artifactInventory(root));
+    assert.equal(bounded.changeCount, 22); assert.equal(bounded.changes.length, 16); assert.equal(bounded.truncated, true);
+  } finally { await rm(root, { recursive: true, force: true }); }
 });
 
 test('AP101-01 fixtures accept only exact loopback origins, never a public host or widened URL', () => {
