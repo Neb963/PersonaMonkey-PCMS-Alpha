@@ -5,7 +5,7 @@
     "P102": 0,
     "P103": 0,
     "P104": 1,
-    "P105": 0,
+    "P105": 1,
     "P201": 0,
     "P202": 0,
     "P203": 0,
@@ -62,12 +62,39 @@
     },
     {
       "schemaVersion": 1,
+      "claimId": "CLM-P105-001",
+      "phaseId": "P105",
+      "agentId": "slot-five",
+      "claimEpoch": 1,
+      "state": "ACTIVE",
+      "baseMainSha": "2d4ad4d6353d64b761547c8a9f3926cfa258d387",
+      "branch": "agent/slot-five/p105",
+      "writePaths": [
+        "extension/alpha/ui/shell/**",
+        "extension/alpha/ui/styles/**",
+        "tests/alpha/ui-shell/**",
+        "docs/evidence/alpha/P105/**"
+      ],
+      "contractReads": {
+        "alpha.contracts.v1": "9b379980e16fdd557e0ea8a7f8273421f4a581c1c1563fe7661308038e29ee12"
+      },
+      "contractWrites": [],
+      "exclusiveResources": [],
+      "migrationSlots": [],
+      "acceptanceIds": [
+        "AP105-01",
+        "AP105-02",
+        "AP105-03"
+      ]
+    },
+    {
+      "schemaVersion": 1,
       "claimId": "CLM-P104-001",
       "phaseId": "P104",
       "agentId": "slot-four",
       "claimEpoch": 1,
       "state": "ACTIVE",
-      "baseMainSha": "2d4ad4d6353d64b761547c8a9f3926cfa258d387",
+      "baseMainSha": "45c00cf9673f5382fa5e7987211005e5d4557948",
       "branch": "agent/slot-four/p104",
       "writePaths": [
         "extension/alpha/providers/github/**",
