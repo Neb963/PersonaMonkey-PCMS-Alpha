@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "epochs": {
     "P101": 1,
-    "P102": 0,
+    "P102": 1,
     "P103": 0,
     "P104": 0,
     "P105": 1,
@@ -85,6 +85,33 @@
         "AP105-01",
         "AP105-02",
         "AP105-03"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "claimId": "CLM-P102-001",
+      "phaseId": "P102",
+      "agentId": "codex-r1-a2",
+      "claimEpoch": 1,
+      "state": "ACTIVE",
+      "baseMainSha": "45c00cf9673f5382fa5e7987211005e5d4557948",
+      "branch": "agent/codex-r1-a2/p102",
+      "writePaths": [
+        "extension/alpha/domain/**",
+        "extension/alpha/storage/**",
+        "tests/alpha/domain/**",
+        "docs/evidence/alpha/P102/**"
+      ],
+      "contractReads": {
+        "alpha.contracts.v1": "9b379980e16fdd557e0ea8a7f8273421f4a581c1c1563fe7661308038e29ee12"
+      },
+      "contractWrites": [],
+      "exclusiveResources": [],
+      "migrationSlots": [],
+      "acceptanceIds": [
+        "AP102-01",
+        "AP102-02",
+        "AP102-03"
       ]
     }
   ]
