@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "phaseId": "P102",
+  "claimId": "CLM-P102-001",
+  "agentId": "codex-r1-a2",
+  "claimEpoch": 1,
+  "state": "COMMITTED",
+  "providerLive": false,
+  "commitSha": "f73063c293bab8e9eae929701fd2eb7a8d042982",
+  "mergedMainSha": null,
+  "contractHash": "9b379980e16fdd557e0ea8a7f8273421f4a581c1c1563fe7661308038e29ee12",
+  "acceptanceIds": ["AP102-01", "AP102-02", "AP102-03"],
+  "cases": [
+    {
+      "id": "AP102-01",
+      "evidence": [
+        "extension/alpha/domain/records.js",
+        "extension/alpha/storage/migrations.js",
+        "extension/alpha/storage/store.js",
+        "tests/alpha/domain/records.test.mjs",
+        "tests/alpha/domain/storage-cases.js"
+      ],
+      "result": "PASS locally — frozen records, exact release bytes, separate Alpha schema and atomic strict-durability four-record journal commit"
+    },
+    {
+      "id": "AP102-02",
+      "evidence": ["tests/alpha/domain/storage-cases.js", "tests/alpha/domain/firefox.test.mjs", "docs/evidence/alpha/P102/local-firefox.json"],
+      "result": "PASS locally — schema/CAS/revision collisions, real two-connection race, transaction/migration abort rollback, reopen/corruption holds, bounded journal and actual Firefox process restart"
+    },
+    {
+      "id": "AP102-03",
+      "evidence": ["extension/alpha/domain/validation.js", "tests/alpha/domain/records.test.mjs", "tests/alpha/domain/storage-cases.js"],
+      "result": "PASS locally — strict fields and nested credential rejection, no rejected data in typed errors, no record/journal written for rejected input; no live credentials used"
+    }
+  ],
+  "localTestsExecuted": [
+    {
+      "command": "MOZ_DISABLE_CONTENT_SANDBOX=1 FIREFOX_BIN=/tmp/p101-firefox/versions/154.0b10/firefox/firefox node tools/alpha/run-tests.mjs",
+      "sourceSha": "f73063c293bab8e9eae929701fd2eb7a8d042982",
+      "result": "PASS",
+      "tests": 45,
+      "passed": 45,
+      "failed": 0,
+      "skipped": 0,
+      "p102NodeEntries": 15,
+      "p102IndexedDbCases": 19,
+      "p102BrowserRestartCases": 1,
+      "contentSandboxDisabled": true
+    },
+    {
+      "command": "npm run verify",
+      "sourceSha": "f73063c293bab8e9eae929701fd2eb7a8d042982",
+      "result": "PASS — active repository and Alpha authority checks plus exact frozen donor verification/reproducible build; one inherited CI-only case skipped locally",
+      "donorXpiSha256": "bbe084a0f3495a1a505f87f69c5a29cfdfd538bf15ec35afee35d34b9ae6b5f1"
+    },
+    {
+      "command": "node scripts/build-extension.mjs",
+      "sourceSha": "f73063c293bab8e9eae929701fd2eb7a8d042982",
+      "result": "PASS — actual derivative XPI, 273 source files",
+      "xpiSha256": "da68dda3ecf0a95dfaa97aebbbb0b3b2bd9c2ef07e201ff0d84e0b6d7b85b30e"
+    }
+  ],
+  "diffReview": {
+    "authorizedPathsOnly": true,
+    "credentialsFound": false,
+    "providerMutations": false,
+    "uiChanges": false
+  },
+  "ciRuns": [],
+  "verification": [],
+  "limitations": [
+    "Local content sandbox cannot create its user namespace in this container. The local browser result is diagnostic only; independent hosted CI must pass with the normal sandbox.",
+    "No provider-live acceptance. Browser fixtures use synthetic records and block external traffic.",
+    "Strict write durability and transaction completion are verified; these tests do not simulate hardware power loss.",
+    "Credential screening cannot discover arbitrary secrets hidden in prose; callers must use the approved secret backend.",
+    "Future Core owns interruption reconciliation and recovery scope; P102 persists unresolved identities without dispatch or replay.",
+    "Combined R1 GATE_VERIFIED and ACCEPTED remain exclusively integration-checker controlled."
+  ]
+}
