@@ -161,7 +161,10 @@ follow-up `MAINT-P201-CI-MIGRATION-005` transaction use these additional paths:
 
 - `.github/workflows/firefox.yml`
 - `.github/workflows/alpha-firefox.yml`
-- `tools/alpha/ci-migration/**`
+- `tools/alpha/ci-migration/donor.mjs`
+- `tools/alpha/ci-migration/policy.mjs`
+- `tools/alpha/ci-migration/prepare.mjs`
+- `tools/alpha/ci-migration/core.mjs`
 - `docs/evidence/alpha/MAINT-P201-CI-MIGRATION-005/README.md`
 - `docs/evidence/alpha/MAINT-P201-CI-MIGRATION-005/verification.json`
 

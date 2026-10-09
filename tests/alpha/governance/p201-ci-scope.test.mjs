@@ -16,8 +16,7 @@ const followup = {
   scopeAmendmentId: P201_CI_MIGRATION.scopeAmendmentId, pullRequest: 12345
 };
 const files = [`docs/evidence/alpha/${followup.maintenanceId}/context.json`,
-  ...P201_CI_MIGRATION.writePaths.filter(p => !p.endsWith('/**')),
-  'tools/alpha/ci-migration/runner.mjs'];
+  ...P201_CI_MIGRATION.writePaths];
 const check = (ctx = followup, changed = files, next = base) =>
   validateTransition(base, next, ctx, { mainSha: proposal.baseMainSha, headBranch: ctx.branch, files: changed });
 
@@ -66,7 +65,8 @@ test('migration cannot edit product, historical tests, snapshots, pins or other 
     'tests/pcms/p028/boundary.test.mjs', 'tools/firefox/packaged.mjs',
     'docs/legacy/donor/extension/background.js', 'docs/provenance/alpha-donor.json',
     'docs/implementation/alpha/browser-pin.json', '.github/workflows/alpha-governance.yml',
-    'package.json', 'docs/evidence/alpha/P203/context.json'
+    'package.json', 'docs/evidence/alpha/P203/context.json',
+    'tools/alpha/ci-migration/unreviewed.mjs'
   ]) assert.throws(() => check(followup, [...files, path]), /outside ownership/);
 });
 
