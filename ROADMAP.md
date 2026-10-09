@@ -19,7 +19,7 @@ State: **ACCEPTED**. Gate: GATE-R1.
 State: **IN_PROGRESS**. Gate: GATE-R2.
 
 - P201: **READY** — Background Core and durable alarms
-- P202: **READY** — Accounts and Persona enrollment
+- P202: **CLAIMED** — Accounts and Persona enrollment
 - P203: **CLAIMED** — GitHub source catalog and READY interpreter
 - P204: **CLAIMED** — Generator inventory and drift facts
 - P205: **CLAIMED** — Unified backup schema and safe exporter
