@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "kind": "CLAIM",
+  "action": "acquire",
+  "phaseId": "P101",
+  "agentId": "slot-one",
+  "branch": "agent/slot-one/p101",
+  "claimEpoch": 1,
+  "expectedEpoch": 0,
+  "baseMainSha": "5ea76924abba1ae04de774e548cd6ac2c9ee745b"
+}
