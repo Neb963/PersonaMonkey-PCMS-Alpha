@@ -17,6 +17,7 @@ export async function saveReport(path, report, error) {
   // Publish only controlled stage/codes; never include page source, console,
   // storage, browser stderr, provider responses, credentials or profile files.
   if (error) report.failure = { stage: report.stage, code: 'REGRESSION_FAILED' };
+  if (error?.artifactIntegrity) report.artifactIntegrity = error.artifactIntegrity;
   delete report.stage;
   await writeJson(path, report);
   console.log(JSON.stringify(report));

@@ -94,3 +94,7 @@ local pin proof. CI ran the commands declared in the committed
 
 Delivery is MERGED with independent main CI. The claim remains ACTIVE in shared
 authority. GATE_VERIFIED, ACCEPTED and provider-live are not asserted by P101.
+
+The subsequent Firefox artifact-integrity repair has its own root-cause,
+regression and current-revision evidence in [integrity-repair](integrity-repair/README.md).
+The historical implementation proofs above remain unchanged.
