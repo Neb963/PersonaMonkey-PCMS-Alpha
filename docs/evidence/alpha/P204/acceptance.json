@@ -1,0 +1,170 @@
+{
+  "schemaVersion": 1,
+  "phaseId": "P204",
+  "claimId": "CLM-P204-001",
+  "agentId": "slot-four-p204",
+  "claimEpoch": 1,
+  "state": "MERGED",
+  "claimState": "ACTIVE",
+  "providerLive": false,
+  "baseMainSha": "660a0756b186080c9571ba97d89289617c85eaef",
+  "contractId": "alpha.contracts.v1",
+  "contractRevision": 2,
+  "contractHash": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e",
+  "claimPr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/34",
+  "implementationPr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/37",
+  "commitSha": "ebb99f374edbbb73cd495b7a24cfaec0230bf53c",
+  "mergedMainSha": "96ed2eca5be231b04b2e3354b084c1f5f1e09098",
+  "acceptanceIds": [
+    "AP204-01",
+    "AP204-02",
+    "AP204-03"
+  ],
+  "cases": [
+    {
+      "id": "AP204-01",
+      "summary": "P102 durable generator/account storage, default EXCLUDED intent, 1,001 entries, indexed filtering and bounded 64-row CAS writes",
+      "evidence": [
+        "extension/alpha/features/inventory/index.mjs",
+        "extension/alpha/features/inventory/service.mjs",
+        "tests/alpha/inventory/inventory.test.mjs"
+      ]
+    },
+    {
+      "id": "AP204-02",
+      "summary": "P103 account-scoped paginated discovery distinct from public feed, duplicate/noncanonical/incomplete page and ownership conflicts fail closed",
+      "evidence": [
+        "extension/alpha/features/inventory/service.mjs",
+        "tests/alpha/inventory/inventory.test.mjs"
+      ]
+    },
+    {
+      "id": "AP204-03",
+      "summary": "Per-account binding/ownership revisions, durable indexedDB source version and drift ledger; exact revision-scoped ignore and APPLIED evidence adoption",
+      "evidence": [
+        "extension/alpha/features/inventory/facts.mjs",
+        "extension/alpha/features/inventory/service.mjs",
+        "tests/alpha/inventory/inventory.test.mjs"
+      ]
+    }
+  ],
+  "localTestsExecuted": [
+    {
+      "command": "node --test /mnt/data/p204/tests/alpha/inventory/inventory.test.mjs",
+      "environment": "isolated local P102/P103 test shims, not integrated repo",
+      "tests": 5,
+      "passed": 5,
+      "failed": 0,
+      "result": "PASS (earlier P204 implementation run, documented in README)"
+    },
+    {
+      "command": "node --check (each of 3 inventory .mjs and 1 test .mjs)",
+      "environment": "Node v22.16.0, detached source archive, rerun during continuation",
+      "filesChecked": 4,
+      "result": "PASS"
+    }
+  ],
+  "hostedTestsExecuted": [
+    {
+      "command": "node tools/alpha/run-tests.mjs",
+      "environment": "independent alpha-governance on exact merged-main SHA",
+      "runId": 37980035619,
+      "jobId": 113987909136,
+      "tests": 108,
+      "passed": 108,
+      "failed": 0,
+      "p204Tests": 5,
+      "p204Passed": 5,
+      "result": "PASS"
+    }
+  ],
+  "prCiRuns": [
+    {
+      "name": "alpha-governance",
+      "id": 37979534135,
+      "sha": "ebb99f374edbbb73cd495b7a24cfaec0230bf53c",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37979534135"
+    },
+    {
+      "name": "alpha-firefox",
+      "id": 37979534016,
+      "sha": "ebb99f374edbbb73cd495b7a24cfaec0230bf53c",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37979534016"
+    },
+    {
+      "name": "firefox-developer-edition",
+      "id": 37979534007,
+      "sha": "ebb99f374edbbb73cd495b7a24cfaec0230bf53c",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37979534007"
+    }
+  ],
+  "ciRuns": [
+    {
+      "name": "alpha-governance",
+      "id": 37980035619,
+      "sha": "96ed2eca5be231b04b2e3354b084c1f5f1e09098",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37980035619"
+    },
+    {
+      "name": "firefox-developer-edition",
+      "id": 37980035596,
+      "sha": "96ed2eca5be231b04b2e3354b084c1f5f1e09098",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37980035596"
+    }
+  ],
+  "additionalMergedMainCi": [
+    {
+      "name": "alpha-firefox",
+      "id": 37980035499,
+      "sha": "96ed2eca5be231b04b2e3354b084c1f5f1e09098",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37980035499"
+    }
+  ],
+  "milestones": [
+    {
+      "state": "COMMITTED",
+      "sha": "ebb99f374edbbb73cd495b7a24cfaec0230bf53c"
+    },
+    {
+      "state": "CI_VERIFIED",
+      "sha": "ebb99f374edbbb73cd495b7a24cfaec0230bf53c",
+      "validatedMainSha": "4aaa52bdb1f575ac2c4f583c6e715a085c44007a"
+    },
+    {
+      "state": "MERGED",
+      "sha": "96ed2eca5be231b04b2e3354b084c1f5f1e09098",
+      "previousMainSha": "4aaa52bdb1f575ac2c4f583c6e715a085c44007a"
+    }
+  ],
+  "diffReview": {
+    "authorizedPathsOnly": true,
+    "credentialsCommitted": false,
+    "sharedContractsModified": false,
+    "otherPhaseFilesModified": false,
+    "providerMutations": false,
+    "publicFeedAsInventory": false
+  },
+  "limitations": [
+    "Not live Perchance/Firefox account acceptance.",
+    "P204 auxiliary drift facts require inclusion by later full backup/restore integration (P405).",
+    "Only independently assigned GATE-R2 may set GATE_VERIFIED/ACCEPTED; claim remains ACTIVE."
+  ]
+}

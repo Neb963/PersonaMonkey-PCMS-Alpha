@@ -1,0 +1,163 @@
+{
+  "schemaVersion": 1,
+  "phaseId": "P205",
+  "claimId": "CLM-P205-001",
+  "agentId": "slot-five-p205",
+  "claimEpoch": 1,
+  "state": "MERGED",
+  "claimState": "ACTIVE",
+  "providerLive": false,
+  "baseMainSha": "09dbe12a7f80d5e67316604ea500efa482c19777",
+  "contractId": "alpha.contracts.v1",
+  "contractRevision": 2,
+  "contractHash": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e",
+  "claimPr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/33",
+  "claimMergedMainSha": "660a0756b186080c9571ba97d89289617c85eaef",
+  "implementationPr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/36",
+  "commitSha": "573531ca791c68b3d7b6905ccc264a4d84ee3aba",
+  "mergedMainSha": "7cace06a658729e0a68b744598c83ded9b8d1258",
+  "acceptanceIds": [
+    "AP205-01",
+    "AP205-02",
+    "AP205-03"
+  ],
+  "cases": [
+    {
+      "id": "AP205-01",
+      "result": "PASS — unencrypted consent-gated v1 bundle, per-section and manifest SHA-256, byte-preserving Alpha snapshot, invalid/tampered format rejection and read-only RECOVERY_HOLD preview",
+      "evidence": [
+        "extension/alpha/backup/bundle.js",
+        "tests/alpha/backup/bundle.test.mjs"
+      ]
+    },
+    {
+      "id": "AP205-02",
+      "result": "PASS — truthful exported/unavailable inventory; Alpha records and journal from verified P102 snapshot, PersonaMonkey and secret entries only through explicitly authorized read-only providers, unavailable sessions are not claimed restorable",
+      "evidence": [
+        "extension/alpha/backup/README.md",
+        "extension/alpha/backup/bundle.js",
+        "tests/alpha/backup/bundle.test.mjs"
+      ]
+    },
+    {
+      "id": "AP205-03",
+      "result": "PASS — exact candidate regressions executed in independent GitHub CI; no serialized backup archive or synthetic sensitive fixture in inspected governance logs, safe assertion outputs",
+      "evidence": [
+        "tests/alpha/backup/bundle.test.mjs",
+        "docs/evidence/alpha/P205/README.md"
+      ]
+    }
+  ],
+  "localTestsExecuted": [
+    {
+      "command": "node --test tests/alpha/backup/*.test.mjs",
+      "runtime": "Node v22.16.0",
+      "environment": "detached equivalent-source local workspace",
+      "tests": 4,
+      "passed": 4,
+      "failed": 0,
+      "result": "PASS",
+      "note": "Exact committed source independently executed in GitHub Actions governance; detached local files were not asserted byte-identical to merged head."
+    }
+  ],
+  "prCiRuns": [
+    {
+      "id": 37980173343,
+      "name": "alpha-governance",
+      "sha": "573531ca791c68b3d7b6905ccc264a4d84ee3aba",
+      "status": "completed",
+      "conclusion": "success",
+      "event": "pull_request",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37980173343"
+    },
+    {
+      "id": 37980173351,
+      "name": "alpha-firefox",
+      "sha": "573531ca791c68b3d7b6905ccc264a4d84ee3aba",
+      "status": "completed",
+      "conclusion": "success",
+      "event": "pull_request",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37980173351"
+    },
+    {
+      "id": 37980173266,
+      "name": "firefox-developer-edition",
+      "sha": "573531ca791c68b3d7b6905ccc264a4d84ee3aba",
+      "status": "completed",
+      "conclusion": "success",
+      "event": "pull_request",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37980173266"
+    }
+  ],
+  "ciRuns": [
+    {
+      "id": 37981748834,
+      "name": "alpha-governance",
+      "sha": "7cace06a658729e0a68b744598c83ded9b8d1258",
+      "status": "completed",
+      "conclusion": "success",
+      "event": "push",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37981748834"
+    },
+    {
+      "id": 37981748858,
+      "name": "firefox-developer-edition",
+      "sha": "7cace06a658729e0a68b744598c83ded9b8d1258",
+      "status": "completed",
+      "conclusion": "success",
+      "event": "push",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37981748858"
+    }
+  ],
+  "browserCiRuns": [
+    {
+      "id": 37981748817,
+      "name": "alpha-firefox",
+      "sha": "7cace06a658729e0a68b744598c83ded9b8d1258",
+      "status": "completed",
+      "conclusion": "success",
+      "event": "push",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37981748817"
+    }
+  ],
+  "hostedEvidence": {
+    "governanceJobId": 113993729864,
+    "governanceRunId": 37981748834,
+    "p205CasesExecuted": true,
+    "syntheticSensitiveFixtureInLogs": false,
+    "serializedArchiveInLogs": false,
+    "reportedTestFailures": false
+  },
+  "diffReview": {
+    "authorizedPathsOnly": true,
+    "credentialsCommitted": false,
+    "sharedContractsModified": false,
+    "otherPhaseFilesModified": false,
+    "providerMutations": false,
+    "restoreApply": false
+  },
+  "milestones": [
+    {
+      "state": "COMMITTED",
+      "sha": "573531ca791c68b3d7b6905ccc264a4d84ee3aba"
+    },
+    {
+      "state": "CI_VERIFIED",
+      "sha": "573531ca791c68b3d7b6905ccc264a4d84ee3aba",
+      "validatedMainSha": "96ed2eca5be231b04b2e3354b084c1f5f1e09098"
+    },
+    {
+      "state": "MERGED",
+      "sha": "7cace06a658729e0a68b744598c83ded9b8d1258",
+      "previousMainSha": "96ed2eca5be231b04b2e3354b084c1f5f1e09098",
+      "testedHeadSha": "573531ca791c68b3d7b6905ccc264a4d84ee3aba"
+    }
+  ],
+  "limitations": [
+    "Typed PersonaMonkey Broker has no bulk backup export; optional authorized read-only callbacks are the only supported way to add eligible PersonaMonkey data in P205.",
+    "Unavailable credentials, native integrations, Perchance passwords and active sessions are explicitly identified; no session reusability is promised.",
+    "P405 owns actual restore application, durable hold, downloads retention, provider and Persona binding reconciliation.",
+    "SHA-256 detects accidental corruption, not malicious repackaging/authenticity.",
+    "No provider-live acceptance; GATE-R2 checker alone may promote phase state beyond MERGED."
+  ]
+}
