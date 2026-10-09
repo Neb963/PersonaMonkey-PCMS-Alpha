@@ -9,7 +9,7 @@ import { waitFor } from '../../../tools/firefox/packaged-harness.mjs';
 import { IsolatedFirefox } from '../../../tools/alpha/firefox/harness.mjs';
 import { packagedBroker } from '../../../tools/alpha/firefox/broker.mjs';
 import { newReport, saveReport } from '../../../tools/alpha/firefox/report.mjs';
-import { REPO_ROOT } from '../../../tools/alpha/firefox/pin.mjs';
+import { REPO_ROOT, verifyInstallation } from '../../../tools/alpha/firefox/pin.mjs';
 import { INTEGRATION_ERROR_CODES } from '../../../extension/lib/management-integration-protocol.js';
 
 const PRODUCT = 'persona-route-manager@local';
@@ -167,8 +167,10 @@ try {
   report.checks.idleUnloadAndTypedBrokerWake = true;
 
   report.stage = 'browser-restart';
+  report.firefoxBeforeRestart = await verifyInstallation();
   const beforeRestart = await request('system.describe');
   broker.close(); await h.closePage(tab); await h.restart();
+  report.firefoxAfterRestart = await verifyInstallation();
   // Deliberately no Addon:Install call after either unload or full restart.
   assert.equal((await h.extension(PRODUCT)).id, PRODUCT);
   tab = await h.openPage(PRODUCT, 'pcms/index.html'); broker = packagedBroker(h);
@@ -193,6 +195,10 @@ try {
 } catch (failure) { error = failure; }
 finally {
   broker?.close(); await h?.dispose();
+  if (h) {
+    try { report.firefoxAfterPackaged = await verifyInstallation(); }
+    catch (failure) { error = failure; report.passed = false; report.stage = 'artifact-integrity-after-packaged'; }
+  }
   server?.closeAllConnections();
   if (server?.listening) await new Promise(done => server.close(done));
   await saveReport(reportPath, report, error);

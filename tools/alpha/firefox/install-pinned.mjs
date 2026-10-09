@@ -21,7 +21,7 @@ const buildId = /^BuildID=(\d{14})$/m.exec(ini)?.[1], sourceStamp = /^SourceStam
 if (!buildId || !sourceStamp || !ini.includes('CodeName=Firefox Developer Edition')) throw new Error('Unexpected Mozilla artifact identity');
 const manifestPath = join(root, 'alpha-install-manifest.json');
 const inventory = await artifactInventory(dirname(firefoxBin));
-await writeJson(manifestPath, { schemaVersion: 1, phaseId: 'P101', product: pin.product, version: pin.version,
+await writeJson(manifestPath, { schemaVersion: 2, phaseId: 'P101', product: pin.product, version: pin.version,
   artifactSha256: pin.archive.sha256, archiveUrl: pin.archive.url, archivePath, firefoxBin,
   extractedTreeSha256: inventoryTreeHash(inventory), artifactInventory: inventory, buildId, sourceStamp });
 const proof = await verifyInstallation({ firefoxBin, manifestPath });

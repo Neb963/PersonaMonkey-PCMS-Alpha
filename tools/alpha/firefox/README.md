@@ -9,6 +9,24 @@ run rechecks the archive, extraction digest and running Developer Edition build.
 A divergent donor/Alpha pin requires an authorized amendment; there is no latest
 channel, system-browser fallback or automatic update.
 
+The version-2 installation manifest records the pristine archive inventory.
+Firefox's Linux updater mutex legitimately adds a root `.parentlock` (empty,
+single-link regular file, mode 0600/0640/0644) and, while held, a `lock` symlink
+(mode 0777, IPv4 address plus positive PID). Only those new entries with exactly
+that validated shape are separated from the immutable archive digest. Original
+members, including directory/symlink modes and hardlink counts, remain immutable;
+unexpected additions or malformed mutex metadata fail closed. Older manifests
+require a fresh installer run; verification never refreshes a baseline or repairs
+an installation. The Mozilla archive checksum and original extracted digest are
+unchanged.
+
+Smoke acquires/releases the actual pinned `nsIUpdateMutex` with automatic updates
+disabled, without checking for or downloading an update. It records sorted,
+bounded path/hash/mode/symlink deltas before, during and after the mutex and after
+shutdown. Packaged tests verify the same installation before/after restart and
+after shutdown. Filesystem regressions reject binary/pref edits, unsafe modes,
+hardlinks, missing/retargeted members, lookalike locks and unrelated additions.
+
 From the repository root on Linux with Firefox libraries, Node 24, tar, zip and unzip:
 
 ```sh
