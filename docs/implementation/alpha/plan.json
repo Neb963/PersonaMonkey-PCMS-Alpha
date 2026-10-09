@@ -156,7 +156,7 @@
       "round": 1,
       "agent": 2,
       "title": "Generator/domain persistence and durability",
-      "status": "READY",
+      "status": "CLAIMED",
       "dependsOn": [
         "G0"
       ],
