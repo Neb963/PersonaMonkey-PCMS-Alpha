@@ -1,4 +1,4 @@
-import { exact, id, text, revision, instant, member, relativePath, safeDetails, requireData, canonical } from './validation.js';
+import { exact, id, text, revision, instant, member, relativePath, safeDetails, requireData, canonical, arrayData } from './validation.js';
 
 export const RECORD_KINDS = Object.freeze(['account', 'generator', 'release', 'operation']);
 export const OPERATION_PHASES = Object.freeze(['PREPARED', 'DISPATCHING', 'APPLIED', 'NOT_APPLIED', 'UNCERTAIN', 'FAILED', 'HELD']);
@@ -46,8 +46,7 @@ export function normalizeGenerator(input) {
   const key = normalizeGeneratorKey(r.key);
   const sourceBinding = r.sourceBinding === null ? null : normalizeSourceBinding(r.sourceBinding);
   requireData(sourceBinding === null || sourceBinding.slug === key);
-  requireData(Array.isArray(r.attentionRefs) && r.attentionRefs.length <= 256);
-  const refs = safeDetails({ refs: r.attentionRefs }).refs.map(id);
+  const refs = arrayData(r.attentionRefs, 256).map(id);
   requireData(new Set(refs).size === refs.length);
   return { key, accountId: id(r.accountId), personaUid: id(r.personaUid), accountBindingEpoch: revision(r.accountBindingEpoch, 1),
     fleetIntent: member(r.fleetIntent, ['MANAGED', 'EXCLUDED']), listingObserved: member(r.listingObserved, ['PUBLIC', 'UNLISTED', 'UNKNOWN']),
@@ -64,9 +63,12 @@ export function normalizeRelease(input) {
   const pjs = text(files.pjs, 4 * 1024 * 1024, true), html = text(files.html, 4 * 1024 * 1024, true);
   // These are local memory bounds inherited from the donor, not provider quotas.
   requireData(new TextEncoder().encode(pjs).length + new TextEncoder().encode(html).length <= 4 * 1024 * 1024);
-  requireData(files.thumbnail instanceof Uint8Array && Object.getPrototypeOf(files.thumbnail) === Uint8Array.prototype);
-  requireData(files.thumbnail.length > 0 && files.thumbnail.length <= 1024 * 1024);
-  return { releaseId, source, files: { pjs, html, thumbnail: new Uint8Array(files.thumbnail) }, createdAt: instant(r.createdAt) };
+  requireData(ArrayBuffer.isView(files.thumbnail) && Object.getPrototypeOf(files.thumbnail) === Uint8Array.prototype);
+  const thumbnail = new Uint8Array(files.thumbnail);
+  requireData(thumbnail.length > 0 && thumbnail.length <= 1024 * 1024);
+  const keys = Reflect.ownKeys(files.thumbnail);
+  requireData(keys.length === thumbnail.length && keys.every(k => typeof k === 'string' && /^(0|[1-9][0-9]*)$/.test(k)));
+  return { releaseId, source, files: { pjs, html, thumbnail }, createdAt: instant(r.createdAt) };
 }
 
 /** @returns {import('../contracts/index.d.ts').Operation} */
@@ -115,7 +117,7 @@ export function assertRecordUpdate(kind, previous, next) {
     for (const field of ['opId', 'kind', 'targetKey', 'sourceRevision', 'accountBindingEpoch', 'startedAt'])
       requireData(previous[field] === next[field], 'CONFLICT');
     requireData(TRANSITIONS[previous.phase].includes(next.phase), 'CONFLICT');
-    if (['UNCERTAIN', 'HELD'].includes(previous.phase) && ['APPLIED', 'NOT_APPLIED'].includes(next.phase))
+    if (['DISPATCHING', 'UNCERTAIN', 'HELD'].includes(previous.phase) && ['APPLIED', 'NOT_APPLIED', 'FAILED'].includes(next.phase))
       requireData(next.remoteEvidence && Object.keys(next.remoteEvidence).length > 0, 'CONFLICT');
   }
 }

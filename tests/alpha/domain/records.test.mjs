@@ -102,6 +102,10 @@ test('AP102-01: Release files preserve exact UTF-8 text and detached thumbnail b
   invalid(() => normalizeRelease(release({ source: binding({ releaseId: null }) })));
   const bad = release(); bad.files.pjs = String.fromCharCode(0xd800); invalid(() => normalizeRelease(bad));
   const empty = release(); empty.files.thumbnail = new Uint8Array(); invalid(() => normalizeRelease(empty));
+  const extra = release(); extra.files.thumbnail.token = 'not-a-credential'; invalid(() => normalizeRelease(extra));
+  const getter = release(); let ran = false;
+  Object.defineProperty(getter.files.thumbnail, 'length', { get() { ran = true; throw new Error('Unsafe getter'); } });
+  invalid(() => normalizeRelease(getter)); assert.equal(ran, false);
 });
 
 test('AP102-03: operation evidence is bounded data, rejects cycles and unsafe arrays/prototypes', () => {
@@ -138,7 +142,8 @@ test('AP102-02: a Persona rebind requires a monotone epoch and releases cannot b
 test('AP102-02: isolated Alpha migration authority is contiguous, synchronous and rejects unsupported versions', () => {
   assert.notEqual(ALPHA_DB_NAME, 'persona-monkey-pcms');
   const apply = () => {};
-  for (const migrations of [[], [{ version: 2, apply }], [{ version: 1, apply }, { version: 3, apply }], [{ version: 1, apply: async () => {} }]])
+  for (const migrations of [[], [{ version: 2, apply }], [{ version: 1, apply }, { version: 3, apply }],
+    [{ version: 1, apply: async () => {} }], [{ version: 1, apply: async () => { throw new Error('Synthetic migration fault'); } }]])
     assert.throws(() => applyAlphaMigrations({ oldVersion: 0, newVersion: 1, migrations }), { code: 'RECOVERY_HOLD' });
   assert.throws(() => applyAlphaMigrations({ oldVersion: 1, newVersion: 2 }), { code: 'RECOVERY_HOLD' });
 });

@@ -27,7 +27,12 @@ export function applyAlphaMigrations({ db, transaction, oldVersion, newVersion, 
     newVersion > 0 && oldVersion <= newVersion && newVersion <= migrations.length, 'RECOVERY_HOLD');
   for (let v = oldVersion + 1; v <= newVersion; v++) {
     const result = migrations[v - 1].apply({ db, transaction, oldVersion, newVersion });
-    requireData(!result || typeof result.then !== 'function', 'RECOVERY_HOLD');
+    if (result && typeof result.then === 'function') {
+      // The upgrade is rejected/aborted; consume a rejected async result so its
+      // exception cannot escape the typed migration error or leak into logs.
+      Promise.resolve(result).catch(() => {});
+      throw new AlphaDataError('RECOVERY_HOLD');
+    }
   }
 }
 

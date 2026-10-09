@@ -1,4 +1,4 @@
-import { AlphaDataError, requireData, exact, revision, instant, canonical } from '../domain/validation.js';
+import { AlphaDataError, requireData, exact, revision, instant, canonical, arrayData } from '../domain/validation.js';
 import { normalizeRecord, normalizeRecordKey, recordKey, assertRecordUpdate, RECORD_KINDS } from '../domain/records.js';
 import { openAlphaDatabase, ALPHA_DB_VERSION, RECORDS, JOURNAL, META, JOURNAL_LIMIT } from './migrations.js';
 
@@ -47,7 +47,7 @@ async function verifyJournal(input) {
       const c = exact(raw, ['kind', 'key', 'previousRevision', 'revision', 'checksum']);
       normalizeRecordKey(c.kind, c.key);
       revision(c.previousRevision);
-      requireData(c.revision === c.previousRevision + 1 && c.revision <= j.revision && /^[a-f0-9]{64}$/.test(c.checksum));
+      requireData(c.revision === c.previousRevision + 1 && c.revision <= j.revision && typeof c.checksum === 'string' && /^[a-f0-9]{64}$/.test(c.checksum));
       const key = address(c.kind, c.key);
       requireData(!ids.has(key)); ids.add(key);
     }
@@ -121,10 +121,14 @@ export function createAlphaStorage({ openDatabase = openAlphaDatabase, clock = (
       try {
         requireData(connection.version === ALPHA_DB_VERSION && connection.objectStoreNames.length === stores.length &&
           stores.every(s => connection.objectStoreNames.contains(s)), 'RECOVERY_HOLD');
-        const recordStore = connection.transaction(RECORDS).objectStore(RECORDS);
-        requireData(recordStore.keyPath === 'id' && recordStore.index('accountPersona').unique &&
-          recordStore.index('accountPersona').keyPath === 'accountPersonaUid' && recordStore.index('byKind').keyPath === 'kind' &&
-          canonical(recordStore.index('byAccount').keyPath) === canonical(['kind', 'record.accountId']), 'RECOVERY_HOLD');
+        try {
+          const schema = connection.transaction(stores);
+          const recordStore = schema.objectStore(RECORDS);
+          requireData(recordStore.keyPath === 'id' && recordStore.index('accountPersona').unique &&
+            recordStore.index('accountPersona').keyPath === 'accountPersonaUid' && recordStore.index('byKind').keyPath === 'kind' &&
+            canonical(recordStore.index('byAccount').keyPath) === canonical(['kind', 'record.accountId']) &&
+            schema.objectStore(JOURNAL).keyPath === 'revision' && schema.objectStore(META).keyPath === 'id', 'RECOVERY_HOLD');
+        } catch { throw new AlphaDataError('RECOVERY_HOLD'); }
         await readSelection(connection, [], null, true);
         requireData(lifecycle === token, 'UNAVAILABLE');
         db = connection;
@@ -157,9 +161,9 @@ export function createAlphaStorage({ openDatabase = openAlphaDatabase, clock = (
       const batch = exact(input, ['expectedRevision', 'writes']);
       revision(batch.expectedRevision);
       requireData(batch.expectedRevision < Number.MAX_SAFE_INTEGER);
-      requireData(Array.isArray(batch.writes) && batch.writes.length > 0 && batch.writes.length <= 64);
+      const rawWrites = arrayData(batch.writes, 64); requireData(rawWrites.length > 0);
       // Normalize/copy everything before the first await; callers cannot change a queued write.
-      const writes = batch.writes.map(raw => {
+      const writes = rawWrites.map(raw => {
         const w = exact(raw, ['kind', 'expectedRevision', 'record']);
         revision(w.expectedRevision); requireData(w.expectedRevision < Number.MAX_SAFE_INTEGER);
         const record = normalizeRecord(w.kind, w.record), key = recordKey(w.kind, record);

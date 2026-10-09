@@ -73,6 +73,16 @@ export function member(value, allowed) {
   return value;
 }
 
+export function arrayData(value, max) {
+  requireData(Array.isArray(value) && value.length <= max);
+  const descriptors = Object.getOwnPropertyDescriptors(value);
+  requireData(Reflect.ownKeys(descriptors).length === value.length + 1);
+  return Array.from({ length: value.length }, (_, i) => {
+    requireData(descriptors[i]?.enumerable && Object.hasOwn(descriptors[i], 'value'));
+    return descriptors[i].value;
+  });
+}
+
 export function relativePath(value, allowEmpty = false) {
   text(value, 1024, allowEmpty);
   if (value === '' && allowEmpty) return value;
@@ -97,13 +107,7 @@ export function safeDetails(input) {
     ancestors.add(value);
     try {
       if (Array.isArray(value)) {
-        requireData(value.length <= 1000);
-        const d = Object.getOwnPropertyDescriptors(value);
-        requireData(Reflect.ownKeys(d).length === value.length + 1);
-        return Array.from({ length: value.length }, (_, i) => {
-          requireData(d[i]?.enumerable && Object.hasOwn(d[i], 'value'));
-          return clone(d[i].value, depth + 1);
-        });
+        return arrayData(value, 1000).map(item => clone(item, depth + 1));
       }
       const keys = Reflect.ownKeys(value);
       requireData(keys.every(k => typeof k === 'string' && !UNSAFE_KEYS.has(k)));
