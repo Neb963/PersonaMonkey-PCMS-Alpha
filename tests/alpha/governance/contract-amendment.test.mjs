@@ -43,5 +43,6 @@ test('stale main, duplicate amendment, invented claims and unrelated paths rejec
 });
 test('normal phase path cannot amend frozen lock',()=>{
  const main=before(),changed=structuredClone(main),c=main.registry.claims[0];changed.lock.contracts['alpha.contracts.v1']=AMENDMENT.nextHash;
+ for(const record of changed.registry.claims)if(['ACTIVE','PR_OPEN'].includes(record.state))record.contractReads['alpha.contracts.v1']=AMENDMENT.nextHash;
  assert.throws(()=>validateTransition(main,changed,{schemaVersion:1,kind:'PHASE',phaseId:c.phaseId,agentId:c.agentId,claimEpoch:c.claimEpoch,baseMainSha:c.baseMainSha,branch:c.branch},{mainSha:ctx.baseMainSha,headBranch:c.branch,files:[]}),/Frozen shared contracts/);
 });
