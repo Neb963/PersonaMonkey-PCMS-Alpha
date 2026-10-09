@@ -1,0 +1,31 @@
+{
+  "phaseId": "P205",
+  "claimId": "CLM-P205-001",
+  "claimEpoch": 1,
+  "agentId": "slot-five-p205",
+  "contractHash": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e",
+  "providerLive": false,
+  "acceptanceIds": [
+    "AP205-01",
+    "AP205-02",
+    "AP205-03"
+  ],
+  "local": {
+    "environment": "Node v22.16.0, temporary detached workspace",
+    "command": "node --test tests/alpha/backup/*.test.mjs",
+    "tests": 4,
+    "passed": 4,
+    "failed": 0
+  },
+  "githubCI": "PENDING",
+  "phaseState": "COMMITTED",
+  "claims": {
+    "backupContentInLogs": false,
+    "providerMutation": false,
+    "restoreApply": false
+  },
+  "unresolved": [
+    "PersonaMonkey bulk export is not available through the frozen typed broker; requires approved read-only exporter injection.",
+    "P405 retains responsibility for restore application, download retention, and post-restore reconciliation."
+  ]
+}
