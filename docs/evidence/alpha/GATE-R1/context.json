@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "kind": "GATE",
+  "phaseId": "GATE-R1",
+  "agentId": "r1-integration-checker",
+  "claimEpoch": 1,
+  "baseMainSha": "e321dfc2dc63dacea909b2f18f008a881a9ed8de",
+  "branch": "agent/r1-integration-checker/gate-r1"
+}
