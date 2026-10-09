@@ -1,0 +1,10 @@
+{
+  "case": "GitHub secondary rate-limit fixture",
+  "status": 403,
+  "headers": {
+    "retry-after": "15",
+    "x-ratelimit-remaining": "0"
+  },
+  "expectedFailure": "RATE_LIMIT",
+  "containsCredentials": false
+}
