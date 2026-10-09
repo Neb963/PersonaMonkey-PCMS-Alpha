@@ -6,7 +6,7 @@
   "agentId": "alpha-maintenance",
   "branch": "agent/alpha-maintenance/maint-p201-ci-scope-004",
   "claimEpoch": 0,
-  "baseMainSha": "830c0242a4cdaa2f1c9a388cba4aea2b688f1e76",
+  "baseMainSha": "4aaa52bdb1f575ac2c4f583c6e715a085c44007a",
   "contractHash": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e",
   "claimEpochs": {
     "P101": 1,
@@ -15,7 +15,7 @@
     "P104": 1,
     "P105": 1,
     "P201": 0,
-    "P202": 0,
+    "P202": 1,
     "P203": 1,
     "P204": 1,
     "P205": 1,
