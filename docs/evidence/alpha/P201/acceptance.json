@@ -19,21 +19,21 @@
   "accepted": false,
   "mergedMainSha": null,
   "ciRuns": [],
-  "requiredCi": "PENDING",
+  "requiredCi": "BLOCKED",
   "commands": [
     {
       "command": "node --test tests/alpha/core/core.test.mjs",
       "exitCode": 0,
-      "tests": 19,
-      "passed": 19,
+      "tests": 20,
+      "passed": 20,
       "failed": 0,
       "skipped": 0
     },
     {
       "command": "MOZ_DISABLE_CONTENT_SANDBOX=1 FIREFOX_BIN=/tmp/alpha-p101-firefox/versions/154.0b10/firefox/firefox FIREFOX_INSTALL_MANIFEST=/tmp/alpha-p101-firefox/alpha-install-manifest.json node tools/alpha/run-tests.mjs",
       "exitCode": 0,
-      "tests": 157,
-      "passed": 157,
+      "tests": 158,
+      "passed": 158,
       "failed": 0,
       "skipped": 0
     },
@@ -73,11 +73,39 @@
     {
       "command": "git diff --check",
       "exitCode": 0
+    },
+    {
+      "command": "node --test tests/alpha/browser-baseline/*.test.mjs tests/firefox/*.test.mjs",
+      "exitCode": 0,
+      "tests": 42,
+      "passed": 42,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "command": "node extension/tests/persona-identity.test.mjs",
+      "exitCode": 0
+    },
+    {
+      "command": "node extension/tests/management-integration.test.mjs",
+      "exitCode": 0
+    },
+    {
+      "command": "node extension/tests/integration-lifecycle.test.mjs",
+      "exitCode": 0
+    },
+    {
+      "command": "node extension/tests/integration-contract-parity.test.mjs",
+      "exitCode": 0
+    },
+    {
+      "command": "node extension/tests/background-routing-init.test.mjs",
+      "exitCode": 0
     }
   ],
   "sourceSha256": {
     "extension/alpha/bootstrap/client.mjs": "603bdab75b674d4dee8a33b3d5e298f539c02baaeb6beed0f370444fc8a8058c",
-    "extension/alpha/bootstrap/entry.mjs": "509a756a80966345ae12e0aed2736f03f764babd1ca280be6d659be051d06f10",
+    "extension/alpha/bootstrap/entry.mjs": "397b476f9096f3eab2ea5c6b6525f5dd3e9de316136b886398604104a3f38712",
     "extension/alpha/bootstrap/host.mjs": "83c59d19b528f6531512ec2ce29ddcd397a4622e0adf26d85818c9babd0522a3",
     "extension/alpha/core/README.md": "7c735820aa5bc063ae14a78038e7cbc80211c7c5e0fc499177f969883778bae9",
     "extension/alpha/core/control-store.mjs": "8d02be5bf81a6259f5860c2a82283da8899580038bfd1230b921ae6c31a357c1",
@@ -85,7 +113,7 @@
     "extension/alpha/core/ui.mjs": "764fe9f78fbc36d728e6f4877d8b37146a4737e34e2f0266ca689dd12dc14f57",
     "extension/lib/recovery-bootstrap.js": "50259774662e0b48c91263d7c8a6bfb6801afcfb9f9aea31ecd5a5daf3d1e7ba",
     "extension/manifest.json": "d4f9046cb61cf14732af6cee364e4532a5ac0db349861f444c35e642ea746e67",
-    "tests/alpha/core/core.test.mjs": "73d92956cf9a4f35e9cda3ce72a1704c067ca9d06684c695be158963557d77cb",
+    "tests/alpha/core/core.test.mjs": "65ea738ef095ba25d7436de86e50645e5d3b9350bff58d113ddd473f2662250d",
     "tests/alpha/core/helpers.mjs": "888dc4ff4ad9b3e1d0b1a9cccfaec218327dfbba3fdab40256e2607750dabc71",
     "tests/alpha/core/packaged.test.mjs": "a69b955c0afb387dcc4890fa3a4eb63a249b145be5e69c91739d42e291480103"
   },
@@ -120,17 +148,18 @@
         "runtimeMetadata": []
       }
     },
-    "commitSha": "c2a86420488e9cab7a8c162b75f6698e47dd71fc",
+    "commitSha": "f7c8258a59bd6b41ddd156cf937a362d4943ae27",
     "workflowRun": null,
-    "productXpiSha256": "1f05c1bd6294767b41e12ea1833f7bc9889c9bfc1968db8ff6fc5d26b4c3b9eb",
+    "productXpiSha256": "cfed4d9b8c933387afab581d792523e2fffc2a7778d2446365f93a8f876d0a89",
     "unload": {
       "state": "stopped",
       "mode": "firefox-test-hook"
     }
   },
   "localBrowserLimitation": "The managed container rejects Firefox content sandbox namespace setup (/proc/self/uid_map EPERM). Local packaged runs use MOZ_DISABLE_CONTENT_SANDBOX=1 and are diagnostic; hosted CI must execute with the full sandbox. No CI sandbox guard was changed.",
-  "localProvenance": "The packaged report records the implementation base HEAD plus uncommitted owned product changes. The source digest map and XPI hash identify the tested slice; independent CI must verify the published candidate.",
+  "localProvenance": "The packaged report records published checkpoint f7c8258 plus the owned startup fix. Source hashes/XPI identify the tested slice; final independent CI must verify the revised PR head.",
   "blockers": [
     "Required governance regressions outside P201 ownership fail when Alpha Core is introduced. A fresh separately authorized ordinary MAINTENANCE transaction is required; no scope expansion or workflow edits are needed."
-  ]
+  ],
+  "initialIndependentCi": "initial-independent-ci.json"
 }

@@ -17,6 +17,13 @@ test('AP201-01 duplicate entry evaluations install one host and one listener set
   assert.equal(a.setPersonaMonkeyBootstrap(async () => {}), true); assert.equal(b.setPersonaMonkeyBootstrap(async () => {}), false);
   await Promise.resolve(); assert.equal(wakes, 1);
 });
+test('AP201-01 a partial browser API cannot break PersonaMonkey static routing initialization', async () => {
+  const listeners = [], event = { addListener(fn) { listeners.push(fn); } };
+  const entry = installAlphaBackground({ browserRef: { runtime: { onMessage: event }, alarms: { onAlarm: event } }, scope: {},
+    createHost: () => ({ async wake() {} }) });
+  assert.equal(listeners.length, 2);
+  assert.equal(entry.setPersonaMonkeyBootstrap(async () => {}), true);
+});
 test('AP201-01 sender identity, origin, document and frame fail closed', () => {
   const runtime = { id: 'product', getURL: () => 'moz-extension://correct/' };
   const sender = { id: 'product', url: 'moz-extension://correct/alpha/ui/shell/index.html', frameId: 0 };

@@ -25,13 +25,16 @@ export function installAlphaBackground({ browserRef = globalThis.browser, scope 
   });
   // These listeners exist during static evaluation, before any asynchronous
   // bootstrap read. They wake one promise and never keep the event page alive.
-  browserRef.runtime.onMessage.addListener(entry.onMessage);
-  browserRef.alarms.onAlarm.addListener(entry.onAlarm);
-  browserRef.runtime.onStartup.addListener(safeWake);
-  browserRef.runtime.onInstalled.addListener(safeWake);
+  for (const [event, listener] of [[browserRef.runtime?.onMessage, entry.onMessage], [browserRef.alarms?.onAlarm, entry.onAlarm],
+    [browserRef.runtime?.onStartup, safeWake], [browserRef.runtime?.onInstalled, safeWake]]) {
+    if (typeof event?.addListener === 'function') event.addListener(listener);
+  }
   Object.defineProperty(scope, SINGLETON, { value: entry, configurable: false, writable: false });
   return entry;
 }
 
+// Keep every available listener synchronous in partial environments as well.
+// Real Firefox exposes all four events; mandatory packaged acceptance checks
+// actual startup, warm alarms and restart rather than inferring them here.
 const entry = globalThis.browser?.runtime ? installAlphaBackground() : null;
 export function setAlphaPersonaMonkeyBootstrap(bootstrap) { return entry?.setPersonaMonkeyBootstrap(bootstrap) ?? false; }
