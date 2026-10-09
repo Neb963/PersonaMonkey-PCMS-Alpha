@@ -57,7 +57,7 @@
         "P205"
       ],
       "gateId": "GATE-R2",
-      "status": "READY"
+      "status": "IN_PROGRESS"
     },
     {
       "round": 3,
@@ -292,7 +292,7 @@
       "round": 2,
       "agent": 1,
       "title": "Background Core and durable alarms",
-      "status": "READY",
+      "status": "CLAIMED",
       "dependsOn": [
         "P102",
         "P103",
