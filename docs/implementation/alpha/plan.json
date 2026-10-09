@@ -292,7 +292,7 @@
       "round": 2,
       "agent": 1,
       "title": "Background Core and durable alarms",
-      "status": "READY",
+      "status": "CLAIMED",
       "dependsOn": [
         "P102",
         "P103",
