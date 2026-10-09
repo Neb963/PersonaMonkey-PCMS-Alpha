@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "epochs": {
-    "P101": 0,
+    "P101": 1,
     "P102": 1,
     "P103": 0,
     "P104": 0,
@@ -35,12 +35,39 @@
   "claims": [
     {
       "schemaVersion": 1,
+      "claimId": "CLM-P101-001",
+      "phaseId": "P101",
+      "agentId": "slot-one",
+      "claimEpoch": 1,
+      "state": "ACTIVE",
+      "baseMainSha": "5ea76924abba1ae04de774e548cd6ac2c9ee745b",
+      "branch": "agent/slot-one/p101",
+      "writePaths": [
+        ".github/workflows/alpha-firefox.yml",
+        "tools/alpha/firefox/**",
+        "tests/alpha/browser-baseline/**",
+        "docs/evidence/alpha/P101/**"
+      ],
+      "contractReads": {
+        "alpha.contracts.v1": "9b379980e16fdd557e0ea8a7f8273421f4a581c1c1563fe7661308038e29ee12"
+      },
+      "contractWrites": [],
+      "exclusiveResources": [],
+      "migrationSlots": [],
+      "acceptanceIds": [
+        "AP101-01",
+        "AP101-02",
+        "AP101-03"
+      ]
+    },
+    {
+      "schemaVersion": 1,
       "claimId": "CLM-P102-001",
       "phaseId": "P102",
       "agentId": "codex-r1-a2",
       "claimEpoch": 1,
       "state": "ACTIVE",
-      "baseMainSha": "5ea76924abba1ae04de774e548cd6ac2c9ee745b",
+      "baseMainSha": "2d4ad4d6353d64b761547c8a9f3926cfa258d387",
       "branch": "agent/codex-r1-a2/p102",
       "writePaths": [
         "extension/alpha/domain/**",
