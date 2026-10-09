@@ -57,7 +57,7 @@
         "P205"
       ],
       "gateId": "GATE-R2",
-      "status": "READY"
+      "status": "IN_PROGRESS"
     },
     {
       "round": 3,
@@ -364,7 +364,7 @@
       "round": 2,
       "agent": 3,
       "title": "GitHub source catalog and READY interpreter",
-      "status": "READY",
+      "status": "CLAIMED",
       "dependsOn": [
         "P102",
         "P104"
