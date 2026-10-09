@@ -7,7 +7,7 @@ The frozen contract read hash is
 `9b379980e16fdd557e0ea8a7f8273421f4a581c1c1563fe7661308038e29ee12`.
 Claim acquisition was merged separately in PR #5 before product edits.
 
-The implementation checkpoint is `f73063c293bab8e9eae929701fd2eb7a8d042982`.
+The implementation checkpoint is `6898991a9d811149dfc2fbb39731a9fc27cdc85d`.
 It incorporates current R1 main, including P101's harness and P104/P105's work.
 See `acceptance.json` for the achieved state and independent CI coordinates.
 COMMITTED, CI_VERIFIED, MERGED, GATE_VERIFIED and ACCEPTED are separate states;
@@ -56,6 +56,9 @@ record deletion is exposed, avoiding revision reset/ABA. Journal retention is
 explicitly bounded to 1024 transactions without resetting revisions; unresolved
 Operation records are retained. Future feature services own record retention and
 deletion policy rather than receiving a generic workflow engine here.
+On reopen/snapshot, each target's latest retained journal receipt must match its
+current record and checksum. Missing records and replayed older rows enter hold
+even if the older row still has a valid checksum.
 
 Operations start PREPARED with immutable target/source/epoch identity. UNCERTAIN
 cannot transition back to DISPATCHING. Terminal reconciliation from an ambiguous
@@ -68,18 +71,18 @@ and provider reconciliation. This phase never performs dispatch or readback.
 | ID | Actual cases |
 | --- | --- |
 | AP102-01 | Frozen fields/enums and donor slug grammar; explicit commit-pinned bindings; exact detached release bytes; isolated schema; atomic four-record strict-durability commit. |
-| AP102-02 | Global/per-record CAS collision and two-connection race; Persona uniqueness/epoch collision; immutable releases/operations; quota-style failure and abort after journal request success; interrupted/async/blocked migrations; malformed/future schemas; pending-open close; record/journal/metadata corruption holds; 1027 writes compact to 1024 journal entries; actual Firefox process restart. |
+| AP102-02 | Global/per-record CAS collision and two-connection race; Persona uniqueness/epoch collision; immutable releases/operations; quota-style failure and abort after journal request success; interrupted/async/blocked migrations; malformed/future schemas; pending-open close; record/journal/metadata corruption and missing/replayed-row holds; 1027 writes compact to 1024 journal entries; actual Firefox process restart. |
 | AP102-03 | All normal records reject credential/container fields; nested evidence rejects credential-shaped keys and recognizable token material; only opaque secret references survive; rejected data is absent from errors and produces no persisted record or journal. |
 
 `tests/alpha/domain/records.test.mjs` contains 14 Node cases. The isolated fixture
 in `firefox.test.mjs` copies and hashes the exact four implementation files into
-an XPI, installs it in a disposable profile, executes 19 real IndexedDB cases and
+an XPI, installs it in a disposable profile, executes 20 real IndexedDB cases and
 then verifies durable records across a Firefox process restart. External traffic
 is blocked by the fixture profile's closed proxy. The donor packaged-XPI harness
 and exact Firefox installer are reused unchanged. The normal Alpha test discovery
 command runs this fixture automatically in GitHub Actions rather than skipping it.
 
-Executed locally on the clean implementation checkpoint:
+Executed local commands (exact source SHA/results are in `acceptance.json`):
 
 ```sh
 MOZ_DISABLE_CONTENT_SANDBOX=1 FIREFOX_BIN=/tmp/p101-firefox/versions/154.0b10/firefox/firefox node tools/alpha/run-tests.mjs
@@ -90,7 +93,7 @@ git diff --check
 ```
 
 The combined test command passed 45 Node entries, including all 15 P102 entries
-and the 19 IndexedDB cases plus restart. `local-firefox.json` records the exact
+and the 20 IndexedDB cases plus restart. `local-firefox.json` records the exact
 source hashes, Firefox 154.0b10 archive checksum and restart result. Local Firefox
 requires `MOZ_DISABLE_CONTENT_SANDBOX=1` because this container rejects the content
 sandbox's user-namespace mapping. This is a diagnostic storage result, not local
