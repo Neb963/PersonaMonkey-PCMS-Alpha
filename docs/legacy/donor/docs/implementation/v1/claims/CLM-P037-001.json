@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "claimId": "CLM-P037-001",
+  "phaseId": "P037",
+  "taskId": "T037.1",
+  "claimEpoch": 1,
+  "state": "ACCEPTED",
+  "owner": {
+    "agentId": "gpt-6-p037-20261008"
+  },
+  "baseMainSha": "14c58d1201cd8cd65ea82a71e1e8a5ff8f02fb7a",
+  "branch": "agent/gpt-6-p037-20261008/p037-t037-1",
+  "writePaths": [
+    "extension/pcms/providers/repository/**",
+    "pcms-modules/p015/**",
+    "extension/pcms/integration/**",
+    "extension/pcms/app/views/settings/connections/**",
+    "tests/pcms/p037/**",
+    "docs/evidence/P037/**",
+    "docs/implementation/v1/claims/CLM-P037-001.json",
+    "package.json",
+    ".github/workflows/firefox.yml",
+    "extension/pcms/background/feature-factories.js"
+  ],
+  "contractReads": [],
+  "contractWrites": [
+    "pcms.repository-provider/v1",
+    "pcms.generator-repository/v1"
+  ],
+  "resources": [
+    {
+      "key": "ci-workflows",
+      "mode": "exclusive"
+    }
+  ],
+  "migrationSlots": [],
+  "acceptanceIds": [
+    "A037-01",
+    "A037-02",
+    "A037-03"
+  ],
+  "lastCheckpointSha": "9b5b2ad89f2616221397d6beb9349d28793d6cd5"
+}

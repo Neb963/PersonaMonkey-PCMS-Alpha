@@ -1,0 +1,34 @@
+/* P041 Settings → Backup & restore and Settings → Modules. */
+.settings-panel { display:grid; gap:12px; min-width:0; }
+.settings-status { font-weight:750; margin:0; }
+.settings-status[data-recovery-status="RECOVERY_HOLD"] { color:light-dark(#8a6417,#ffd17a); }
+.settings-note, .settings-gate { color:light-dark(#596579,#aab4c4); font-size:13px; margin:0; }
+.settings-primary, .settings-panel button {
+  border-radius:8px; border:1px solid light-dark(#cbd2dd,#3a4351); background:light-dark(#fff,#151a22);
+  color:inherit; min-height:36px; padding:7px 12px; cursor:pointer; justify-self:start;
+}
+.settings-primary { border-color:light-dark(#265c88,#79a4d2); background:light-dark(#e1eef8,#233850); font-weight:750; }
+.settings-panel button.danger { border-color:light-dark(#a43737,#ff9b9b); }
+.settings-panel button:disabled { opacity:.55; cursor:not-allowed; }
+.settings-file input, .settings-typed input {
+  display:block; margin-top:6px; border:1px solid light-dark(#cbd2dd,#3a4351); border-radius:8px;
+  background:light-dark(#fff,#151a22); color:inherit; min-height:36px; padding:6px 10px; max-width:100%;
+}
+.settings-preview, .settings-checklist, .settings-dialog {
+  border:1px solid light-dark(#d9dee7,#303744); border-radius:12px; padding:14px; display:grid; gap:8px;
+  background:light-dark(#fff,#151a22); min-width:0;
+}
+.settings-preview p { margin:0; overflow-wrap:anywhere; }
+.settings-checklist-items { list-style:none; margin:0; padding:0; display:grid; gap:8px; }
+.settings-check { display:flex; flex-wrap:wrap; gap:8px; align-items:baseline; }
+.settings-check small { flex-basis:100%; color:light-dark(#596579,#aab4c4); }
+.settings-check[data-check-status="FAIL"] .settings-check-mark { color:light-dark(#70459b,#d6a6ff); font-weight:800; }
+.settings-check[data-check-status="PASS"] .settings-check-mark { color:light-dark(#226342,#80ddb0); font-weight:800; }
+.settings-feedback[data-state="error"] { color:light-dark(#a43737,#ff9b9b); }
+.settings-feedback[data-state="warning"] { color:light-dark(#8a6417,#ffd17a); }
+.settings-modules { border-collapse:collapse; width:100%; font-size:13px; background:light-dark(#fff,#151a22); }
+.settings-modules td, .settings-modules th { padding:10px 8px; text-align:left; border-bottom:1px solid light-dark(#d9dee7,#303744); overflow-wrap:anywhere; }
+.settings-modules th { font-size:12px; color:light-dark(#596579,#aab4c4); font-weight:800; }
+.settings-row-actions { display:flex; flex-wrap:wrap; gap:6px; }
+.settings-dialog .capability-new { font-weight:650; }
+.settings-download { justify-self:start; }

@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "claimId": "CLM-P039-001",
+  "phaseId": "P039",
+  "taskId": "T039.1",
+  "claimEpoch": 1,
+  "state": "ACCEPTED",
+  "owner": {
+    "agentId": "gpt-6-p039-20261008"
+  },
+  "baseMainSha": "6a9f9f43ddf6289ec1e902b4317b4f350911d72b",
+  "branch": "agent/gpt-6-p039-20261008/p039-t039-1",
+  "writePaths": [
+    "extension/pcms/providers/perchance/**",
+    "pcms-modules/p015/**",
+    "extension/pcms/integration/**",
+    "extension/pcms/app/views/generators/**",
+    "tests/pcms/p039/**",
+    "docs/evidence/P039/**",
+    "extension/pcms/background/core-factory.js",
+    "package.json",
+    ".github/workflows/firefox.yml",
+    "docs/implementation/v1/claims/CLM-P039-001.json",
+    "docs/implementation/v1/plan.json",
+    "ROADMAP.md",
+    "docs/progress/STATUS.md"
+  ],
+  "contractReads": [],
+  "contractWrites": [
+    "pcms.perchance.driver/v2",
+    "pcms.ui-client/v1"
+  ],
+  "resources": [
+    {
+      "key": "ci-workflows",
+      "mode": "exclusive"
+    }
+  ],
+  "migrationSlots": [],
+  "acceptanceIds": [
+    "A039-01",
+    "A039-02",
+    "A039-03"
+  ],
+  "lastCheckpointSha": "29f2fcec3a19a661abf871d779e57634650dfba1"
+}

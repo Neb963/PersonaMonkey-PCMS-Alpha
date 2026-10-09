@@ -1,0 +1,570 @@
+name: firefox-developer-edition
+
+on:
+  push:
+    branches: ["main", "agent/**"]
+  pull_request:
+  merge_group:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name != 'merge_group' }}
+
+jobs:
+  pinned-firefox:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "24"
+
+      # Two P030 PR runs hung here (apt mirror) until cancelled: skip apt when the runner
+      # image already has the libraries, bound every apt call, retry, and fail fast.
+      - name: Install Firefox runtime libraries
+        timeout-minutes: 6
+        run: |
+          packages="libgtk-3-0 libdbus-glib-1-2 libasound2t64 libx11-xcb1 libxt6"
+          if dpkg -s $packages >/dev/null 2>&1; then echo "Firefox runtime libraries already installed"; exit 0; fi
+          apt_opts="-o Acquire::Retries=3 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30"
+          for attempt in 1 2 3; do
+            if sudo timeout 150 apt-get $apt_opts update && sudo timeout 150 apt-get $apt_opts install -y $packages; then exit 0; fi
+            echo "apt attempt $attempt failed; retrying"; sleep 5
+          done
+          exit 1
+
+      - name: Verify Firefox harness contracts
+        run: npm run test:firefox
+
+      - name: Install exact pinned Firefox Developer Edition
+        id: install
+        env:
+          FIREFOX_INSTALL_ROOT: ${{ runner.temp }}/pcms-firefox
+        run: npm run firefox:install
+
+      - name: Smoke pinned Firefox with disposable profile
+        env:
+          FIREFOX_BIN: ${{ steps.install.outputs.firefox_bin }}
+          FIREFOX_SMOKE_REPORT: ${{ runner.temp }}/firefox-smoke-report.json
+        run: npm run firefox:smoke
+
+      - name: Verify P027 harness and inherited P026 regressions
+        run: npm run test:p027 && node --test tests/pcms/p026/*.test.mjs
+
+      - name: Verify P028 background Core, wake recovery and UI client protocol
+        run: npm run test:p028 && node extension/tests/background-routing-init.test.mjs
+
+      - name: Verify P029 durable timers and inherited P012 timer contracts
+        run: npm run test:p029 && node --test tests/pcms/p012-services.test.mjs tests/pcms/p012-boundary.test.mjs
+
+      - name: Verify P030 sandbox pages, browser floor and controller frame lifecycle
+        run: npm run test:p030
+
+      - name: Verify P031 live runtime-module lifecycle, schedules and capability set v1
+        run: npm run test:p031
+
+      - name: Verify P032 dashboard routes, receipt read API and multi-tab durability
+        run: npm run test:p032
+
+      - name: Verify P034 Accounts models and durable rebind fencing
+        run: npm run test:p034
+
+      - name: Verify P033 module UI contribution contract, merge points and lifecycle presentation
+        run: npm run test:p033
+
+      - name: Verify P041 previewed restore, recovery checklist and Settings views
+        run: npm run test:p041 && node --test tests/pcms/p020/*.test.mjs
+
+      - name: Verify P036 Deployer v2 migration, status table, Perchance driver v2 and Generators deploy flow
+        run: npm run test:p036
+
+      - name: Verify P037 repository provider, immutable releases and durable manual scans
+        run: npm run test:p037
+
+      - name: Verify P038 cadence, recovery, bounded scans and backoff
+        run: npm run test:p038
+
+      - name: Verify P039 observation gates, baselines, drift choices and restart-safe bounded sweeps
+        run: npm run test:p039
+
+      - name: Verify P040 Refresher v2 migration, background passes, module pages and legacy-form removal
+        run: npm run test:p040
+
+      - name: Verify P042 unattended execution-artifact driver, automatic gates, eligibility and bounded passes
+        run: npm run test:p042
+
+      - name: Install and drive packaged XPI, lifecycle and platform probes
+        env:
+          FIREFOX_BIN: ${{ steps.install.outputs.firefox_bin }}
+          FIREFOX_PACKAGED_DIR: ${{ runner.temp }}/pcms-packaged
+          FIREFOX_PACKAGED_REPORT: ${{ runner.temp }}/firefox-packaged-report.json
+        run: npm run firefox:packaged
+
+      - name: Prove P029 timers with zero PCMS tabs across unload and restart
+        env:
+          FIREFOX_BIN: ${{ steps.install.outputs.firefox_bin }}
+          FIREFOX_PACKAGED_DIR: ${{ runner.temp }}/pcms-packaged
+          FIREFOX_P029_REPORT: ${{ runner.temp }}/firefox-p029-report.json
+        run: npm run firefox:packaged:p029
+
+      - name: Upload P029 packaged evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: firefox-packaged-p029
+          path: ${{ runner.temp }}/firefox-p029-report.json
+          if-no-files-found: warn
+          retention-days: 7
+
+      - name: Execute runtime-supplied controller in a background sandbox frame of the packaged XPI
+        env:
+          FIREFOX_BIN: ${{ steps.install.outputs.firefox_bin }}
+          FIREFOX_PACKAGED_DIR: ${{ runner.temp }}/pcms-packaged
+          FIREFOX_P030_REPORT: ${{ runner.temp }}/firefox-p030-report.json
+        run: npm run firefox:packaged:p030
+
+      - name: Upload P030 packaged evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: firefox-packaged-p030
+          path: ${{ runner.temp }}/firefox-p030-report.json
+          if-no-files-found: warn
+          retention-days: 7
+
+      - name: Upload packaged evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: firefox-packaged-p027
+          path: ${{ runner.temp }}/firefox-packaged-report.json
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Upload deterministic smoke report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: firefox-developer-edition-smoke
+          path: ${{ runner.temp }}/firefox-smoke-report.json
+          if-no-files-found: warn
+          retention-days: 7
+
+  # Real-browser A032-02 runs on its own disposable runner. Three consecutive
+  # Marionette packaged probes on one runner intermittently time out on navigation;
+  # this keeps the inherited P027/P029/P030 acceptance sequence unchanged.
+  p032-packaged:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "24"
+
+      - name: Install Firefox runtime libraries
+        timeout-minutes: 6
+        run: |
+          packages="libgtk-3-0 libdbus-glib-1-2 libasound2t64 libx11-xcb1 libxt6"
+          if dpkg -s $packages >/dev/null 2>&1; then echo "Firefox runtime libraries already installed"; exit 0; fi
+          apt_opts="-o Acquire::Retries=3 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30"
+          for attempt in 1 2 3; do
+            if sudo timeout 150 apt-get $apt_opts update && sudo timeout 150 apt-get $apt_opts install -y $packages; then exit 0; fi
+            echo "apt attempt $attempt failed; retrying"; sleep 5
+          done
+          exit 1
+
+      - name: Install exact pinned Firefox Developer Edition
+        id: install
+        env:
+          FIREFOX_INSTALL_ROOT: ${{ runner.temp }}/pcms-firefox
+        run: npm run firefox:install
+
+      - name: Verify P032 receipts across two packaged Firefox dashboards and after forced unload
+        env:
+          FIREFOX_BIN: ${{ steps.install.outputs.firefox_bin }}
+          FIREFOX_PACKAGED_DIR: ${{ runner.temp }}/pcms-packaged-p032
+          FIREFOX_P032_REPORT: ${{ runner.temp }}/firefox-p032-report.json
+        run: npm run firefox:packaged:p032
+
+      - name: Upload P032 packaged receipt evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: firefox-packaged-p032
+          path: ${{ runner.temp }}/firefox-p032-report.json
+          if-no-files-found: warn
+          retention-days: 7
+
+
+  # P034 Accounts fixture runs in a separate disposable packaged Firefox,
+  # avoiding shared-profile navigation races with inherited packaged checks.
+  p034-packaged:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "24"
+      - name: Install Firefox runtime libraries
+        timeout-minutes: 6
+        run: |
+          packages="libgtk-3-0 libdbus-glib-1-2 libasound2t64 libx11-xcb1 libxt6"
+          if dpkg -s $packages >/dev/null 2>&1; then exit 0; fi
+          apt_opts="-o Acquire::Retries=3 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30"
+          for attempt in 1 2 3; do
+            if sudo timeout 150 apt-get $apt_opts update && sudo timeout 150 apt-get $apt_opts install -y $packages; then exit 0; fi
+            sleep 5
+          done
+          exit 1
+      - name: Install exact pinned Firefox Developer Edition
+        id: install
+        env:
+          FIREFOX_INSTALL_ROOT: ${{ runner.temp }}/pcms-firefox
+        run: npm run firefox:install
+      - name: Exercise P034 Accounts table, detail and guarded rebind in packaged Firefox
+        env:
+          FIREFOX_BIN: ${{ steps.install.outputs.firefox_bin }}
+          FIREFOX_PACKAGED_DIR: ${{ runner.temp }}/pcms-packaged-p034
+          FIREFOX_P034_REPORT: ${{ runner.temp }}/firefox-p034-report.json
+        run: npm run firefox:packaged:p034
+      - name: Upload P034 packaged evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: firefox-packaged-p034
+          path: ${{ runner.temp }}/firefox-p034-report.json
+          if-no-files-found: warn
+          retention-days: 7
+
+  # P031 runtime-module lifecycle runs in its own disposable packaged Firefox: it waits on
+  # real module schedules across event-page unload and a profile restart.
+  p031-packaged:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "24"
+      - name: Install Firefox runtime libraries
+        timeout-minutes: 6
+        run: |
+          packages="libgtk-3-0 libdbus-glib-1-2 libasound2t64 libx11-xcb1 libxt6"
+          if dpkg -s $packages >/dev/null 2>&1; then exit 0; fi
+          apt_opts="-o Acquire::Retries=3 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30"
+          for attempt in 1 2 3; do
+            if sudo timeout 150 apt-get $apt_opts update && sudo timeout 150 apt-get $apt_opts install -y $packages; then exit 0; fi
+            sleep 5
+          done
+          exit 1
+      - name: Install exact pinned Firefox Developer Edition
+        id: install
+        env:
+          FIREFOX_INSTALL_ROOT: ${{ runner.temp }}/pcms-firefox
+        run: npm run firefox:install
+      - name: Install, run, schedule, update and remove a runtime module in packaged Firefox
+        env:
+          FIREFOX_BIN: ${{ steps.install.outputs.firefox_bin }}
+          FIREFOX_PACKAGED_DIR: ${{ runner.temp }}/pcms-packaged-p031
+          FIREFOX_P031_REPORT: ${{ runner.temp }}/firefox-p031-report.json
+        run: npm run firefox:packaged:p031
+      - name: Upload P031 packaged evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: firefox-packaged-p031
+          path: ${{ runner.temp }}/firefox-p031-report.json
+          if-no-files-found: warn
+          retention-days: 7
+
+  # P033 module UI contributions run in their own disposable packaged Firefox: a runtime
+  # module page in the sandboxed module-UI frame, the Core confirmation dialog, an event-page
+  # unload and every degraded presentation state, all observed in the real dashboard DOM.
+  p033-packaged:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "24"
+      - name: Install Firefox runtime libraries
+        timeout-minutes: 6
+        run: |
+          packages="libgtk-3-0 libdbus-glib-1-2 libasound2t64 libx11-xcb1 libxt6"
+          if dpkg -s $packages >/dev/null 2>&1; then exit 0; fi
+          apt_opts="-o Acquire::Retries=3 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30"
+          for attempt in 1 2 3; do
+            if sudo timeout 150 apt-get $apt_opts update && sudo timeout 150 apt-get $apt_opts install -y $packages; then exit 0; fi
+            sleep 5
+          done
+          exit 1
+      - name: Install exact pinned Firefox Developer Edition
+        id: install
+        env:
+          FIREFOX_INSTALL_ROOT: ${{ runner.temp }}/pcms-firefox
+        run: npm run firefox:install
+      - name: Contribute built-in and runtime module UI, sandboxed page and Core dialog in packaged Firefox
+        env:
+          FIREFOX_BIN: ${{ steps.install.outputs.firefox_bin }}
+          FIREFOX_PACKAGED_DIR: ${{ runner.temp }}/pcms-packaged-p033
+          FIREFOX_P033_REPORT: ${{ runner.temp }}/firefox-p033-report.json
+        run: npm run firefox:packaged:p033
+      - name: Upload P033 packaged evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: firefox-packaged-p033
+          path: ${{ runner.temp }}/firefox-p033-report.json
+          if-no-files-found: warn
+          retention-days: 7
+
+  # P041 Settings → Modules drives a runtime module's whole lifecycle, and Settings → Backup &
+  # restore downloads, previews and restores a backup, in their own disposable packaged Firefox.
+  p041-packaged:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "24"
+      - name: Install Firefox runtime libraries
+        timeout-minutes: 6
+        run: |
+          packages="libgtk-3-0 libdbus-glib-1-2 libasound2t64 libx11-xcb1 libxt6"
+          if dpkg -s $packages >/dev/null 2>&1; then exit 0; fi
+          apt_opts="-o Acquire::Retries=3 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30"
+          for attempt in 1 2 3; do
+            if sudo timeout 150 apt-get $apt_opts update && sudo timeout 150 apt-get $apt_opts install -y $packages; then exit 0; fi
+            sleep 5
+          done
+          exit 1
+      - name: Install exact pinned Firefox Developer Edition
+        id: install
+        env:
+          FIREFOX_INSTALL_ROOT: ${{ runner.temp }}/pcms-firefox
+        run: npm run firefox:install
+      - name: Install, review, update, roll back, remove and purge a runtime module, then back up and restore, from Settings in packaged Firefox
+        env:
+          FIREFOX_BIN: ${{ steps.install.outputs.firefox_bin }}
+          FIREFOX_PACKAGED_DIR: ${{ runner.temp }}/pcms-packaged-p041
+          FIREFOX_P041_REPORT: ${{ runner.temp }}/firefox-p041-report.json
+        run: npm run firefox:packaged:p041
+      - name: Upload P041 packaged evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: firefox-packaged-p041
+          path: ${{ runner.temp }}/firefox-p041-report.json
+          if-no-files-found: warn
+          retention-days: 7
+
+  # P036 Generators: the real dashboard against the real background Core, then the shipped
+  # Generators view and Deployer modules driving an assisted manual deploy, in their own
+  # disposable packaged Firefox.
+  p036-packaged:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "24"
+      - name: Install Firefox runtime libraries
+        timeout-minutes: 6
+        run: |
+          packages="libgtk-3-0 libdbus-glib-1-2 libasound2t64 libx11-xcb1 libxt6"
+          if dpkg -s $packages >/dev/null 2>&1; then exit 0; fi
+          apt_opts="-o Acquire::Retries=3 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30"
+          for attempt in 1 2 3; do
+            if sudo timeout 150 apt-get $apt_opts update && sudo timeout 150 apt-get $apt_opts install -y $packages; then exit 0; fi
+            sleep 5
+          done
+          exit 1
+      - name: Install exact pinned Firefox Developer Edition
+        id: install
+        env:
+          FIREFOX_INSTALL_ROOT: ${{ runner.temp }}/pcms-firefox
+        run: npm run firefox:install
+      - name: Render Generators from the Core index and run an assisted manual deploy in packaged Firefox
+        env:
+          FIREFOX_BIN: ${{ steps.install.outputs.firefox_bin }}
+          FIREFOX_PACKAGED_DIR: ${{ runner.temp }}/pcms-packaged-p036
+          FIREFOX_P036_REPORT: ${{ runner.temp }}/firefox-p036-report.json
+        run: npm run firefox:packaged:p036
+      - name: Upload P036 packaged evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: firefox-packaged-p036
+          path: ${{ runner.temp }}/firefox-p036-report.json
+          if-no-files-found: warn
+          retention-days: 7
+
+  # P038 uses a dedicated pinned-FDE runner: a failed network scan should be
+  # durable across a real extension event-page unload and profile restart.
+  p038-packaged:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "24"
+      - name: Install Firefox runtime libraries
+        timeout-minutes: 6
+        run: |
+          packages="libgtk-3-0 libdbus-glib-1-2 libasound2t64 libx11-xcb1 libxt6"
+          if dpkg -s $packages >/dev/null 2>&1; then exit 0; fi
+          apt_opts="-o Acquire::Retries=3 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30"
+          for attempt in 1 2 3; do
+            if sudo timeout 150 apt-get $apt_opts update && sudo timeout 150 apt-get $apt_opts install -y $packages; then exit 0; fi
+            sleep 5
+          done
+          exit 1
+      - name: Install exact pinned Firefox Developer Edition
+        id: install
+        env:
+          FIREFOX_INSTALL_ROOT: ${{ runner.temp }}/pcms-firefox
+        run: npm run firefox:install
+      - name: Verify real background repository checks without PCMS tabs and across restart
+        env:
+          FIREFOX_BIN: ${{ steps.install.outputs.firefox_bin }}
+          FIREFOX_PACKAGED_DIR: ${{ runner.temp }}/pcms-packaged-p038
+          FIREFOX_P038_REPORT: ${{ runner.temp }}/firefox-p038-report.json
+        run: npm run firefox:packaged:p038
+      - name: Upload P038 packaged evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: firefox-packaged-p038
+          path: ${{ runner.temp }}/firefox-p038-report.json
+          if-no-files-found: warn
+          retention-days: 7
+
+  # P039: actual PersonaMonkey execution-artifact reads against loopback fixtures.
+  p039-packaged:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "24"
+      - name: Install Firefox runtime libraries
+        timeout-minutes: 6
+        run: |
+          packages="libgtk-3-0 libdbus-glib-1-2 libasound2t64 libx11-xcb1 libxt6"
+          if dpkg -s $packages >/dev/null 2>&1; then exit 0; fi
+          apt_opts="-o Acquire::Retries=3 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30"
+          for attempt in 1 2 3; do
+            if sudo timeout 150 apt-get $apt_opts update && sudo timeout 150 apt-get $apt_opts install -y $packages; then exit 0; fi
+            sleep 5
+          done
+          exit 1
+      - name: Install exact pinned Firefox Developer Edition
+        id: install
+        env:
+          FIREFOX_INSTALL_ROOT: ${{ runner.temp }}/pcms-firefox
+        run: npm run firefox:install
+      - name: Verify execution-artifact reads, drift and challenge stop after a zero-tab alarm wake in packaged Firefox
+        env:
+          FIREFOX_BIN: ${{ steps.install.outputs.firefox_bin }}
+          FIREFOX_PACKAGED_DIR: ${{ runner.temp }}/pcms-packaged-p039
+          FIREFOX_P039_REPORT: ${{ runner.temp }}/firefox-p039-report.json
+        run: npm run firefox:packaged:p039
+      - name: Upload P039 packaged evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: firefox-packaged-p039
+          path: ${{ runner.temp }}/firefox-p039-report.json
+          if-no-files-found: warn
+          retention-days: 7
+
+  # P040: the shipped Refresher pass, woken only by its durable timer alarm with zero tabs.
+  p040-packaged:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "24"
+      - name: Install Firefox runtime libraries
+        timeout-minutes: 6
+        run: |
+          packages="libgtk-3-0 libdbus-glib-1-2 libasound2t64 libx11-xcb1 libxt6"
+          if dpkg -s $packages >/dev/null 2>&1; then exit 0; fi
+          apt_opts="-o Acquire::Retries=3 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30"
+          for attempt in 1 2 3; do
+            if sudo timeout 150 apt-get $apt_opts update && sudo timeout 150 apt-get $apt_opts install -y $packages; then exit 0; fi
+            sleep 5
+          done
+          exit 1
+      - name: Install exact pinned Firefox Developer Edition
+        id: install
+        env:
+          FIREFOX_INSTALL_ROOT: ${{ runner.temp }}/pcms-firefox
+        run: npm run firefox:install
+      - name: Refresh within budget from Deployer-confirmed releases after a zero-tab alarm wake in packaged Firefox
+        env:
+          FIREFOX_BIN: ${{ steps.install.outputs.firefox_bin }}
+          FIREFOX_PACKAGED_DIR: ${{ runner.temp }}/pcms-packaged-p040
+          FIREFOX_P040_REPORT: ${{ runner.temp }}/firefox-p040-report.json
+        run: npm run firefox:packaged:p040
+      - name: Upload P040 packaged evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: firefox-packaged-p040
+          path: ${{ runner.temp }}/firefox-p040-report.json
+          if-no-files-found: warn
+          retention-days: 7
+
+  # P042: automatic deployment woken only by its durable timer alarm with zero tabs.
+  p042-packaged:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "24"
+      - name: Install Firefox runtime libraries
+        timeout-minutes: 6
+        run: |
+          packages="libgtk-3-0 libdbus-glib-1-2 libasound2t64 libx11-xcb1 libxt6"
+          if dpkg -s $packages >/dev/null 2>&1; then exit 0; fi
+          apt_opts="-o Acquire::Retries=3 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30"
+          for attempt in 1 2 3; do
+            if sudo timeout 150 apt-get $apt_opts update && sudo timeout 150 apt-get $apt_opts install -y $packages; then exit 0; fi
+            sleep 5
+          done
+          exit 1
+      - name: Install exact pinned Firefox Developer Edition
+        id: install
+        env:
+          FIREFOX_INSTALL_ROOT: ${{ runner.temp }}/pcms-firefox
+        run: npm run firefox:install
+      - name: Deploy unattended through a leased execution artifact and verify it after a zero-tab alarm wake in packaged Firefox
+        env:
+          FIREFOX_BIN: ${{ steps.install.outputs.firefox_bin }}
+          FIREFOX_PACKAGED_DIR: ${{ runner.temp }}/pcms-packaged-p042
+          FIREFOX_P042_REPORT: ${{ runner.temp }}/firefox-p042-report.json
+        run: npm run firefox:packaged:p042
+      - name: Upload P042 packaged evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: firefox-packaged-p042
+          path: ${{ runner.temp }}/firefox-p042-report.json
+          if-no-files-found: warn
+          retention-days: 7

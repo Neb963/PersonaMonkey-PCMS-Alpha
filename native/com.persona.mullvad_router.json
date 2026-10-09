@@ -1,0 +1,7 @@
+{
+  "name": "com.persona.mullvad_router",
+  "description": "Local Mullvad WireGuard bridge for PersonaMonkey Route Manager",
+  "path": "/usr/local/lib/persona-mullvad-router/native_host.py",
+  "type": "stdio",
+  "allowed_extensions": ["persona-route-manager@local"]
+}

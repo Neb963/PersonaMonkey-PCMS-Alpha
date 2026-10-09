@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>PersonaMonkey Route Manager</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body class="options-loading">
+  <header class="topbar">
+    <div class="brand-block">
+      <span class="eyebrow">PersonaMonkey</span>
+      <h1>Control center</h1>
+      <p>Operate isolated personas, protected routes and automation from one place.</p>
+    </div>
+    <div class="topbar-status">
+      <span class="status-label">Protection</span>
+      <div id="securityBadge" class="badge neutral" role="status" aria-live="polite" aria-atomic="true">Checking…</div>
+      <a class="link" href="../pcms/index.html">Open PersonaMonkey Management</a>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="Settings sections">
+    <button data-tab="profiles" class="active">Personas</button>
+    <button data-tab="routes">Routes</button>
+    <button data-tab="scripts" class="nav-group-start">Userscripts</button>
+    <button data-tab="automations">Automations</button>
+    <button data-tab="activity" class="nav-group-start">Activity</button>
+    <button data-tab="security">Security</button>
+    <button data-tab="backup">Data &amp; backup</button>
+    <span id="tabsOverflowCue" class="tabs-overflow-cue" aria-hidden="true">More →</span>
+  </nav>
+  <label class="mobile-section-picker">Settings section<select id="mobileSectionNav" aria-label="Settings section"></select></label>
+
+  <main id="optionsMain" aria-busy="true">
+    <div id="initialLoadState" class="initial-load-state" role="status" aria-live="polite" aria-atomic="true">
+      <span class="initial-load-spinner" aria-hidden="true"></span>
+      <div><strong id="initialLoadTitle">Loading PersonaMonkey…</strong><span id="initialLoadDetail">Connecting to the extension background and reading persona state.</span></div>
+      <button id="retryInitialLoad" type="button" class="hidden">Retry</button>
+    </div>
+    <section id="tab-profiles" class="tab active">
+      <div class="section-heading">
+        <div><span class="eyebrow">Personas</span><h2>Managed personas</h2><p>Each persona maps to an isolated Firefox container while keeping identity, network, storage and automation controls together.</p></div>
+      </div>
+      <details id="advancedPersonaPolicy" class="persona-policy-disclosure">
+        <summary><span>Advanced routing policy &amp; provisioning</span><small>Routes, protection flags and numbered-persona provisioning</small></summary>
+        <div class="persona-policy-body">
+          <div class="panel compact-grid setup-panel">
+            <label>Provisioned persona count<input id="profileCount" type="number" min="1" max="200"></label>
+            <label>Name prefix<input id="profilePrefix" type="text" maxlength="64"></label>
+            <button id="applyProfileCount" class="primary">Apply persona count</button>
+            <p class="hint span-all">This count manages only numbered personas provisioned by this control. Personas created, cloned, imported, or renamed elsewhere are never disabled to satisfy the count. Reducing it keeps the Firefox containers and preserves their prior route for later re-enabling.</p>
+          </div>
+          <div id="profileDirectNotice" class="notice warning hidden" role="status" aria-live="polite"></div>
+          <div class="toolbar actionbar">
+            <input id="profileFilter" type="search" placeholder="Filter personas…" aria-label="Filter personas">
+            <div class="toolbar-actions"><span id="profileDirtyState" class="save-state" role="status" aria-live="polite">All changes saved</span><button id="refreshProfiles">Refresh</button><button id="saveProfiles" class="primary" disabled>Save changes</button></div>
+          </div>
+          <div id="profilesTable" class="table-wrap"></div>
+          <div id="profileEditor" class="panel editor-panel hidden"></div>
+        </div>
+      </details>
+    </section>
+
+    <section id="tab-routes" class="tab">
+      <div class="section-heading">
+        <div><span class="eyebrow">Network</span><h2>Routes</h2><p>Configure generic proxies and Mullvad exits used by managed personas. Protected personas remain fail-closed when a route cannot be prepared.</p></div>
+      </div>
+      <div class="panel feature-panel">
+        <div class="inline spread panel-heading">
+          <div>
+            <span class="eyebrow">Native transport</span>
+            <h2>Local Mullvad bridge</h2>
+            <p class="hint">One local WireGuard entry tunnel, with independent Mullvad SOCKS5 exits per container. The bridge does not replace your machine-wide default route.</p>
+          </div>
+          <div id="mullvadNativeBadge" class="badge neutral" role="status" aria-live="polite" aria-atomic="true">Checking…</div>
+        </div>
+        <div id="mullvadNativeDetails" class="status-grid"></div>
+        <div class="form-grid">
+          <label>WireGuard entry<select id="mullvadEntry"></select></label>
+          <label>Idle auto-stop (minutes; 0 = never)<input id="mullvadAutoStop" type="number" min="0" max="1440"></label>
+          <label class="check"><input id="mullvadAutoStart" type="checkbox"> Start the tunnel automatically when a Mullvad persona needs it</label>
+          <div class="notice info"><strong>Fail closed.</strong> Mullvad personas are blocked unless the local bridge can prepare the selected exit.</div>
+        </div>
+        <div class="bridge-actions">
+          <div class="action-row bridge-primary-actions">
+            <button id="mullvadEnsure" class="primary">Connect / Ensure</button>
+            <button id="mullvadRefreshNative">Refresh status</button>
+          </div>
+          <details class="secondary-controls">
+            <summary>Bridge controls</summary>
+            <div class="action-row">
+              <button id="mullvadRestart">Restart tunnel</button>
+              <button id="mullvadStop">Disconnect</button>
+              <button id="mullvadSetEntry">Switch entry</button>
+              <button id="mullvadSaveSettings">Save bridge settings</button>
+            </div>
+          </details>
+        </div>
+        <p id="mullvadNativeHelp" class="hint"></p>
+      </div>
+      <div class="panel route-create-panel">
+        <div class="panel-heading"><span class="eyebrow">Route setup</span><h2>Add route</h2><p class="hint">Choose one route source. Generic proxies and Mullvad exits both become reusable routes for personas.</p></div>
+        <div class="route-create-options">
+          <details class="route-create-option" data-route-kind="generic" open>
+            <summary><span>Generic proxy</span><small>SOCKS5, HTTPS or HTTP proxy</small></summary>
+            <div class="route-create-option-body">
+              <div class="form-grid">
+                <label>Name<input id="routeName" placeholder="Proton CH / Local SOCKS"></label>
+                <label>Type<select id="routeType"><option value="socks">SOCKS5</option><option value="https">HTTPS proxy</option><option value="http">HTTP proxy</option></select></label>
+                <label>Host<input id="routeHost" placeholder="proxy.example.com" required aria-describedby="routeHostHelp routeFormError"><small id="routeHostHelp">Hostname or IP address of the proxy endpoint.</small></label>
+                <label>Port<input id="routePort" type="number" min="1" max="65535" value="1080" required aria-describedby="routePortHelp routeFormError"><small id="routePortHelp">TCP port from 1 to 65535.</small></label>
+                <label>Username<input id="routeUser" autocomplete="off"></label>
+                <label>Password<input id="routePass" type="password" autocomplete="new-password"></label>
+                <label class="check"><input id="routeProxyDNS" type="checkbox" checked> Resolve DNS through SOCKS proxy</label>
+              </div>
+              <div class="action-row"><button id="addGenericRoute" class="primary">Add generic route</button></div>
+              <p id="routeFormError" class="hint warning-text" role="alert" hidden></p>
+              <p class="hint">HTTP(S) credentials are stored locally in extension storage. SOCKS credentials use Firefox's SOCKS authentication fields.</p>
+            </div>
+          </details>
+
+          <details class="route-create-option" data-route-kind="mullvad">
+            <summary><span>Mullvad SOCKS exit</span><small>Exit through the local WireGuard bridge</small></summary>
+            <div class="route-create-option-body">
+              <p class="hint">Each selected relay becomes an independent exit while sharing the local WireGuard entry tunnel.</p>
+              <div class="inline search-row">
+                <input id="mullvadSearch" placeholder="Country, city, server…" aria-label="Filter Mullvad relays">
+                <button id="loadMullvad">Load relays</button>
+              </div>
+              <select id="mullvadRelay" size="8" class="relay-list"></select>
+              <div class="action-row"><button id="addMullvadRoute" class="primary">Add selected relay</button></div>
+              <a class="link" href="https://mullvad.net/en/account/wireguard-config" target="_blank" rel="noreferrer">Open Mullvad WireGuard config page</a>
+            </div>
+          </details>
+        </div>
+      </div>
+      <div class="panel"><div class="panel-heading"><span class="eyebrow">Inventory</span><h2>Configured routes</h2><p class="hint">Route edits happen in-page. Deleting a route explicitly blocks personas that used it.</p></div><div id="routesTable" class="table-wrap"></div></div>
+      <div id="routeEditor" class="panel editor-panel hidden"></div>
+    </section>
+
+    <section id="tab-scripts" class="tab">
+      <div class="section-heading">
+        <div><span class="eyebrow">Automation layer</span><h2>Userscripts</h2><p>Import and assign scripts to explicit personas. Unsupported grants fail explicitly instead of silently degrading.</p></div>
+      </div>
+      <div class="panel feature-panel">
+        <div class="inline spread panel-heading">
+          <div><h2>Container-specific userscripts</h2><p class="hint">Import scripts, then assign them to explicit personas.</p></div>
+          <div class="userscript-permission"><span id="userScriptsPermissionState" class="badge neutral">Checking permission…</span><button id="enableUserScripts" class="primary">Enable permission</button></div>
+        </div>
+        <label>Import .user.js files<input id="scriptFile" type="file" accept=".js,.user.js,text/javascript" multiple></label>
+        <details class="secondary-controls userscript-import-settings">
+          <summary>Import defaults &amp; compatibility</summary>
+          <div class="userscript-settings-body">
+            <div class="settings-stack"><label class="check"><input id="autoAssignImported" type="checkbox"> Assign future imports to all managed personas</label><label>Remote @require/@resource<select id="dependencyFetch"><option value="direct">Allow dependency fetch</option><option value="disabled">Disable</option></select></label></div>
+            <p class="hint">Imports start unassigned. Saving this option is required to opt in to assigning future imports everywhere. Each import shows its declared grants and @connect destinations for review.</p>
+            <div class="notice warning-text"><strong>Protected dependency traffic.</strong> Remote dependencies follow the assigned protected route when supported; unsupported protected proxy paths are blocked rather than fetched directly.</div>
+            <p class="hint compatibility-copy"><strong>Compatibility scope:</strong> common Violentmonkey/Tampermonkey metadata and GM APIs are supported, including routed <code>GM_xmlhttpRequest</code>. PersonaMonkey is not the upstream Violentmonkey runtime.</p>
+            <button id="saveUserscriptSettings">Save import defaults</button>
+          </div>
+        </details>
+        <details class="secondary-controls userscript-paste-import">
+          <summary>Import by pasting code</summary>
+          <div class="userscript-settings-body"><label>Paste userscript<textarea id="scriptPaste" class="code small-code" spellcheck="false" placeholder="// ==UserScript==&#10;// @name ...&#10;// ==/UserScript=="></textarea></label><button id="importPastedScript" class="primary">Import pasted userscript</button></div>
+        </details>
+      </div>
+      <div class="two-col scripts-layout"><div class="panel list-panel"><div class="panel-heading"><h3>Scripts</h3><p class="hint">Filter large script libraries without changing assignments.</p></div><input id="scriptFilter" class="collection-filter" type="search" placeholder="Filter scripts…" aria-label="Filter userscripts"><div id="scriptList" class="list"></div></div><div id="scriptEditor" class="panel editor-panel"><p class="muted empty-state">Import or select a userscript.</p></div></div>
+    </section>
+
+    <section id="tab-automations" class="tab">
+      <div class="section-heading">
+        <div><span class="eyebrow">Workflows</span><h2>Automations</h2><p>Build sequential persona steps with bounded concurrency, explicit completion conditions, retries, and portable package export.</p></div>
+        <button id="newWorkflow" class="primary">New workflow</button>
+      </div>
+      <div class="two-col scripts-layout"><div class="panel list-panel"><div class="panel-heading"><h3>Workflows</h3><p class="hint">Search by workflow name or ID.</p></div><input id="workflowFilter" class="collection-filter" type="search" placeholder="Filter workflows…" aria-label="Filter workflows"><div id="workflowList" class="list"></div></div><div id="workflowEditor" class="panel editor-panel"><p class="muted empty-state">Create or select a workflow.</p></div></div>
+    </section>
+
+    <section id="tab-activity" class="tab">
+      <div class="section-heading">
+        <div><span class="eyebrow">Observability</span><h2>Activity &amp; diagnostics</h2><p>Inspect persisted workflow progress, route snapshots, retries, tab ownership, fail-closed blocks, and proxy errors.</p></div>
+      </div>
+      <div class="panel">
+        <div class="inline spread panel-heading"><div><h2>Automation diagnostics</h2><p class="hint">Exports intentionally omit proxy credentials and WireGuard secrets.</p></div><div class="inline diagnostic-actions"><button id="diagnosticsRefresh" class="primary">Refresh</button><button id="downloadDiagnostics">Download diagnostics</button><details class="secondary-controls diagnostic-history-menu"><summary>History actions</summary><div class="action-row"><button id="diagnosticsClear" class="danger">Clear finished</button></div></details></div></div>
+        <div id="diagnosticsSummary" class="status-grid"></div><div id="diagnosticsJobs" class="jobs-list diagnostics-jobs"></div>
+      </div>
+      <div class="panel hidden" aria-hidden="true"><div class="inline spread"><div><h2>Raw automation activity</h2><p class="hint">Compatibility backing view used by the options controller.</p></div><div class="inline"><button id="refreshJobs">Refresh</button><button id="clearJobs">Clear finished</button></div></div><div id="jobsList" class="jobs-list"></div></div>
+    </section>
+
+    <section id="tab-security" class="tab">
+      <div class="section-heading">
+        <div><span class="eyebrow">Protection</span><h2>Security &amp; leak controls</h2><p>Keep managed personas fail-closed and constrain browser features that can bypass the intended proxy path.</p></div>
+      </div>
+      <div class="two-col security-layout">
+        <div class="panel">
+          <div class="panel-heading"><h2>Leak protection</h2></div>
+          <div class="settings-list">
+            <label class="check"><input id="blockSpeculative" type="checkbox"> Block speculative browser requests</label>
+            <label class="check"><input id="strictProxyVerification" type="checkbox"> Verify actual proxy for every managed request</label>
+            <label class="check"><input id="enforcePrivacyControls" type="checkbox"> Block protected personas when required privacy controls are unsafe</label>
+            <label class="check"><input id="disableNetworkPrediction" type="checkbox"> Disable DNS prefetch / network prediction</label>
+            <label>WebRTC policy<select id="webRTCMode"><option value="proxy_only">Proxy-only (recommended)</option><option value="disabled">Disable WebRTC entirely</option><option value="unchanged">Leave browser setting unchanged</option></select></label>
+            <label>Unmanaged Firefox containers<select id="unmanagedPolicy"><option value="direct">Leave direct / normal</option><option value="block">Block network traffic</option></select></label>
+            <label class="check"><input id="autoReload" type="checkbox"> Reload container tabs when route changes</label>
+          </div>
+          <div class="action-row security-save-row"><span id="securitySaveState" class="save-state" role="status" aria-live="polite">Settings applied</span><button id="saveSecurity" class="primary" disabled>Apply security settings</button></div>
+        </div>
+        <div>
+          <div class="panel"><div class="panel-heading"><h2>Current security state</h2><p class="hint">Runtime state reflects the last applied settings, not unsaved edits on the left.</p></div><div id="securityApplyNotice" class="notice info security-apply-notice"><strong>Settings applied.</strong> Runtime checks below correspond to the saved configuration.</div><div id="securityDetails" class="status-grid"></div><div class="action-row"><button id="refreshSecurity">Re-check runtime state</button></div></div>
+          <details class="panel warning boundary-panel"><summary>What this protection does not cover</summary><p>Managed requests are fail-closed after the extension background policy is active. This is not an OS firewall: browser traffic emitted before extension initialization, browser-internal/system traffic that WebExtensions cannot observe, or traffic from other applications is outside this extension's control.</p></details>
+        </div>
+      </div>
+      <div class="panel" id="integrationSettingsPanel">
+        <div class="panel-heading"><div><h2>PCMS integration</h2><p class="hint">Advanced: authorize specific local extension IDs to use the restricted PersonaMonkey Integration API. Integration is disabled by default.</p></div></div>
+        <div class="settings-list">
+          <label class="check"><input id="integrationEnabled" type="checkbox"> Enable external PCMS integration</label>
+          <label>Trusted extension IDs
+            <textarea id="integrationTrustedIds" rows="4" maxlength="4096" spellcheck="false" placeholder="pcms-extension@example"></textarea>
+          </label>
+          <p class="hint">One exact Firefox extension ID per line. External callers cannot add or modify trusted IDs.</p>
+          <label class="check"><input id="integrationAllowDestructive" type="checkbox"> Allow trusted callers to request destructive operations</label>
+          <p class="hint">This saves durable local authority. A request's <code>confirm: true</code> field records caller intent; it is not a user confirmation dialog and cannot enable the capability by itself.</p>
+          <label class="check"><input id="integrationAllowDirect" type="checkbox"> Allow explicitly requested Direct routing</label>
+          <p class="hint">This grants trusted callers permission to assign a Persona to Direct when explicitly requested. It does not enable destructive operations.</p>
+          <label class="check"><input id="integrationAllowExternalAutomation" type="checkbox"> Allow trusted callers to run external automations</label>
+          <p class="hint">Allows trusted callers to execute automation plans and control Personas through the external automation API. This does not authorize installing userscript code.</p>
+          <label class="check"><input id="integrationAllowExecutableInstall" type="checkbox"> Allow trusted callers to manage executable userscript artifacts</label>
+          <p class="hint">Userscripts are executable code that can run in browser pages. This separate authority permits installation, reconciliation, and release; it does not enable external automation execution. Both authorities are off by default.</p>
+        </div>
+        <div class="action-row"><span id="integrationPolicyStatus" class="save-state" role="status" aria-live="polite">Loading…</span><button id="saveIntegrationPolicy" class="primary">Save integration policy</button></div>
+        <div class="external-control-lease-panel" aria-labelledby="integrationControlLeaseHeading">
+          <div class="panel-heading"><div><h3 id="integrationControlLeaseHeading">External Persona control</h3><p class="hint">Current leases and local override controls are visible only in PersonaMonkey settings.</p></div><button id="refreshIntegrationControlLeases" type="button">Refresh</button></div>
+          <p id="integrationControlLeaseStatus" class="save-state" role="status" aria-live="polite">Checking local control leases…</p>
+          <div id="integrationControlLeaseList" class="external-control-lease-list" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="tab-backup" class="tab">
+      <div class="section-heading">
+        <div><span class="eyebrow">Portability</span><h2>Data, backup &amp; recovery</h2><p>Create encrypted complete backups, export selected components, restore portable personas on another install, and inspect Firefox Sync recovery state.</p></div>
+      </div>
+      <details id="legacyBackupPanel" class="legacy-section legacy-disclosure backup-subview hidden" data-backup-section="legacy">
+        <summary>Legacy JSON compatibility</summary>
+        <p class="hint legacy-intro">Use these controls only for older flat JSON backups. New backups should use the versioned PersonaMonkey format above.</p>
+        <div class="two-col legacy-grid">
+          <div class="panel subdued-panel">
+            <h3>Legacy JSON export</h3>
+            <label class="check"><input id="includeSecrets" type="checkbox"> Include proxy usernames/passwords</label><p class="warning-text"><strong>Sensitive legacy export.</strong> Credentials are written into the flat JSON file without the protections of the versioned encrypted backup format.</p>
+            <div class="action-row"><button id="exportConfig">Export legacy JSON</button></div>
+          </div>
+          <div class="panel subdued-panel">
+            <h3>Legacy JSON import</h3>
+            <label>Configuration file<input id="importConfig" type="file" accept="application/json,.json"></label>
+            <label>Mode<select id="importMode"><option value="replace">Replace current configuration</option><option value="merge">Merge with current configuration</option></select></label>
+            <div class="action-row"><button id="doImport">Import legacy configuration</button></div>
+          </div>
+        </div>
+      </details>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+  <script type="module" src="options.js"></script>
+  <script type="module" src="automations.js"></script>
+  <script type="module" src="diagnostics.js"></script>
+  <script type="module" src="data-management.js"></script>
+  <script type="module" src="recovery-ui.js"></script>
+  <script type="module" src="integration-settings.js"></script>
+</body>
+</html>

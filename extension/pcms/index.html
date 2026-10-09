@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PersonaMonkey Management</title>
+  <link rel="stylesheet" href="pcms.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <span class="eyebrow">PersonaMonkey</span>
+      <h1>PersonaMonkey Management</h1>
+      <p>Operate managed personas through the versioned PersonaMonkey management API.</p>
+    </div>
+    <div class="connection"><span id="connectionDot" class="dot pending"></span><div class="connection-copy"><span id="connectionState" role="status" aria-live="polite" aria-atomic="true">Connecting…</span><small id="protocol">Protocol —</small></div><button id="refresh" type="button">Refresh</button><a class="topbar-link" href="../options/options.html">Detailed dashboard</a></div>
+  </header>
+
+  <main>
+    <div id="error" class="notice error hidden" role="alert"></div>
+    <section class="overview" aria-label="Management overview">
+      <article class="metric"><span>Protection</span><strong id="protection">—</strong></article>
+      <article class="metric"><span>Managed personas</span><strong id="personaCount">—</strong></article>
+      <article class="metric"><span>Route health</span><strong id="routeHealth">—</strong></article>
+      <article class="metric"><span>Running jobs</span><strong id="runningJobs">—</strong></article>
+    </section>
+
+    <section class="panel">
+      <div class="section-head">
+        <div><span class="eyebrow">Personas</span><h2>Managed personas</h2></div>
+        <div class="controls">
+          <label class="sr-only" for="routeSelect">Route</label><select id="routeSelect"><option value="">Choose a route…</option></select>
+          <button id="assignRoute" type="button" disabled>Assign route</button>
+          <button id="testRoutes" type="button" disabled>Test selected routes</button>
+        </div>
+      </div>
+      <div id="directRouteWarning" class="notice warning hidden" role="group" aria-labelledby="directRouteWarningTitle">
+        <strong id="directRouteWarningTitle">Direct routing bypasses the configured protected route for the selected personas.</strong>
+        <label><input id="confirmDirectRoute" type="checkbox"> I understand that these personas will use a direct network connection.</label>
+      </div>
+      <p id="selectionSummary" class="muted" role="status" aria-live="polite">Select personas for supported batch actions.</p>
+      <div id="personas" class="personas" aria-live="polite"></div>
+    </section>
+
+    <div class="split activity-empty">
+      <section class="panel jobs-panel">
+        <div class="section-head"><div><span class="eyebrow">Automation</span><h2>Workflow jobs</h2></div></div>
+        <div class="controls workflow-controls"><label class="sr-only" for="workflowSelect">Workflow</label><select id="workflowSelect"><option value="">Choose a workflow…</option></select><button id="runWorkflow" type="button" disabled>Run workflow</button></div>
+        <div class="job-view-controls">
+          <input id="jobSearch" type="search" placeholder="Filter jobs…" aria-label="Filter workflow jobs">
+          <label class="sr-only" for="jobFilter">Job state</label>
+          <select id="jobFilter"><option value="all">All jobs</option><option value="active">Active jobs</option><option value="failed">Failed jobs</option></select>
+        </div>
+        <div id="jobs" class="jobs" aria-live="polite"></div>
+      </section>
+      <section class="panel activity-panel">
+        <div class="section-head"><div><span class="eyebrow">Observability</span><h2>Recent activity</h2></div><button id="clearActivity" type="button">Clear</button></div>
+        <ol id="activity" class="activity" aria-live="polite"></ol>
+      </section>
+    </div>
+
+  </main>
+  <script type="module" src="pcms.js"></script>
+</body>
+</html>

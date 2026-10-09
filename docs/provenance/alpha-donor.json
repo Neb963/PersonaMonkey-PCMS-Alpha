@@ -1,0 +1,5109 @@
+{
+  "schemaVersion": 1,
+  "repository": "Neb963/persona-monkey-pcms",
+  "commitSha": "482dc9d9273dcdcd7d2ef4c4b0df8c7c6933d5ca",
+  "treeSha": "07e005b7b5647215a10dc957c633aae2d76435cc",
+  "license": "MIT",
+  "verifiedCiRuns": [
+    {
+      "id": 37833424339,
+      "name": "verify",
+      "conclusion": "success"
+    },
+    {
+      "id": 37833424414,
+      "name": "firefox-developer-edition",
+      "conclusion": "success"
+    }
+  ],
+  "localBaseline": {
+    "verify": "PASS",
+    "build": "PASS",
+    "xpiSha256": "bbe084a0f3495a1a505f87f69c5a29cfdfd538bf15ec35afee35d34b9ae6b5f1",
+    "browser": "Hosted donor CI inspected; no local browser execution claimed."
+  },
+  "entries": [
+    {
+      "path": ".github/workflows/firefox.yml",
+      "mode": "100644",
+      "blobSha": "b240dfd02b4574bd1dc38446ae2d6512f231f7ed",
+      "size": 23829,
+      "destinationPath": "docs/legacy/donor/.github/workflows/firefox.yml"
+    },
+    {
+      "path": ".github/workflows/verify.yml",
+      "mode": "100644",
+      "blobSha": "bdb6882cc2aff4f7c8a1bc11c8aa5a0f05c81e65",
+      "size": 553,
+      "destinationPath": "docs/legacy/donor/.github/workflows/verify.yml"
+    },
+    {
+      "path": ".gitignore",
+      "mode": "100644",
+      "blobSha": "73facbaf37b0f080bebb2af851e07b9594abe4f2",
+      "size": 239,
+      "destinationPath": "docs/legacy/donor/.gitignore"
+    },
+    {
+      "path": "AGENTS.md",
+      "mode": "100644",
+      "blobSha": "795bf362b236fea2b28dd7f8408c8a7cb2399135",
+      "size": 4914,
+      "destinationPath": "docs/legacy/donor/AGENTS.md"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "mode": "100644",
+      "blobSha": "fa57cd37ec5ac800c16e45b598e6308077137876",
+      "size": 10365,
+      "destinationPath": "docs/legacy/donor/CHANGELOG.md"
+    },
+    {
+      "path": "CONTRIBUTING.md",
+      "mode": "100644",
+      "blobSha": "86deddadeca4491841f9bfe75d23bacd8c3c4ef0",
+      "size": 660,
+      "destinationPath": "docs/legacy/donor/CONTRIBUTING.md"
+    },
+    {
+      "path": "LICENSE",
+      "mode": "100644",
+      "blobSha": "14fac913ccf80234b1848540089a3bbcb6e5283d",
+      "size": 1056,
+      "destinationPath": "docs/legacy/donor/LICENSE"
+    },
+    {
+      "path": "README.md",
+      "mode": "100644",
+      "blobSha": "1ab9955b273a8b040d5e31b2df2fd86c2ad95ae4",
+      "size": 2072,
+      "destinationPath": "docs/legacy/donor/README.md"
+    },
+    {
+      "path": "ROADMAP.md",
+      "mode": "100644",
+      "blobSha": "1e83eb4a381d6ada54bdd15d0345dcabad68dc86",
+      "size": 14450,
+      "destinationPath": "docs/legacy/donor/ROADMAP.md"
+    },
+    {
+      "path": "SECURITY.md",
+      "mode": "100644",
+      "blobSha": "a8e1c407e509bffa46d4deac7e375c6c6b69ee3d",
+      "size": 960,
+      "destinationPath": "docs/legacy/donor/SECURITY.md"
+    },
+    {
+      "path": "docs/adr/ADR-001-personamonkey-derivative.md",
+      "mode": "100644",
+      "blobSha": "033de7c07d04d8b0858ab905660d92882e229550",
+      "size": 1738,
+      "destinationPath": "docs/legacy/donor/docs/adr/ADR-001-personamonkey-derivative.md"
+    },
+    {
+      "path": "docs/adr/ADR-002-background-authoritative-pcms-runtime.md",
+      "mode": "100644",
+      "blobSha": "a47079626f9a3c17729579206e48a7208316d7c3",
+      "size": 17718,
+      "destinationPath": "docs/legacy/donor/docs/adr/ADR-002-background-authoritative-pcms-runtime.md"
+    },
+    {
+      "path": "docs/adr/ADR-003-production-runtime-installable-modules.md",
+      "mode": "100644",
+      "blobSha": "682060dcabb6d813c846e2ca56abd752447b3067",
+      "size": 11547,
+      "destinationPath": "docs/legacy/donor/docs/adr/ADR-003-production-runtime-installable-modules.md"
+    },
+    {
+      "path": "docs/architecture/00-principles.md",
+      "mode": "100644",
+      "blobSha": "80cf01ce02922064cc87711793f078c7eb3ef101",
+      "size": 2118,
+      "destinationPath": "docs/legacy/donor/docs/architecture/00-principles.md"
+    },
+    {
+      "path": "docs/architecture/01-system-architecture.md",
+      "mode": "100644",
+      "blobSha": "464f5cc594aec97e809f5dfd0e28c093c839c489",
+      "size": 3997,
+      "destinationPath": "docs/legacy/donor/docs/architecture/01-system-architecture.md"
+    },
+    {
+      "path": "docs/architecture/02-module-runtime.md",
+      "mode": "100644",
+      "blobSha": "bc862e902be9d34803b6a810f1b4a42f10ccb6f9",
+      "size": 1864,
+      "destinationPath": "docs/legacy/donor/docs/architecture/02-module-runtime.md"
+    },
+    {
+      "path": "docs/architecture/03-testing-ci.md",
+      "mode": "100644",
+      "blobSha": "e98274f6363e799eab339d8c353fbef51aa6b683",
+      "size": 1605,
+      "destinationPath": "docs/legacy/donor/docs/architecture/03-testing-ci.md"
+    },
+    {
+      "path": "docs/architecture/04-parallel-agents.md",
+      "mode": "100644",
+      "blobSha": "dcf9910b9c40be3176e7fec92e97c0fa1d4aaf7b",
+      "size": 1008,
+      "destinationPath": "docs/legacy/donor/docs/architecture/04-parallel-agents.md"
+    },
+    {
+      "path": "docs/design/pcms-ux-v2/01-ux-audit.md",
+      "mode": "100644",
+      "blobSha": "926ea34ac15445fbf72b9af57c161517a8be2ad2",
+      "size": 12791,
+      "destinationPath": "docs/legacy/donor/docs/design/pcms-ux-v2/01-ux-audit.md"
+    },
+    {
+      "path": "docs/design/pcms-ux-v2/02-information-architecture.md",
+      "mode": "100644",
+      "blobSha": "31e79fdd28dc4f9728a935ce0f272a46a7344028",
+      "size": 39156,
+      "destinationPath": "docs/legacy/donor/docs/design/pcms-ux-v2/02-information-architecture.md"
+    },
+    {
+      "path": "docs/design/pcms-ux-v2/03-module-ui-contract.md",
+      "mode": "100644",
+      "blobSha": "a6168b21979ad4ee842213814b8e5c56c721f1d6",
+      "size": 19663,
+      "destinationPath": "docs/legacy/donor/docs/design/pcms-ux-v2/03-module-ui-contract.md"
+    },
+    {
+      "path": "docs/design/pcms-ux-v2/04-deployer-repository-sync.md",
+      "mode": "100644",
+      "blobSha": "e2ec2f70a82a75be9ab605dd7fcd3aafdc10bcc4",
+      "size": 35800,
+      "destinationPath": "docs/legacy/donor/docs/design/pcms-ux-v2/04-deployer-repository-sync.md"
+    },
+    {
+      "path": "docs/design/pcms-ux-v2/05-migration-and-roadmap.md",
+      "mode": "100644",
+      "blobSha": "218019c22b8abb5cb863c04cac9e3dfecf0eb12c",
+      "size": 7712,
+      "destinationPath": "docs/legacy/donor/docs/design/pcms-ux-v2/05-migration-and-roadmap.md"
+    },
+    {
+      "path": "docs/design/pcms-ux-v2/README.md",
+      "mode": "100644",
+      "blobSha": "e5a9599ccf682371d9cdff7a8157345f740bbc4e",
+      "size": 8708,
+      "destinationPath": "docs/legacy/donor/docs/design/pcms-ux-v2/README.md"
+    },
+    {
+      "path": "docs/evidence/P000/README.md",
+      "mode": "100644",
+      "blobSha": "9b1285f4d661dcafee2f99f22a7cc31e01dcf064",
+      "size": 1508,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P000/README.md"
+    },
+    {
+      "path": "docs/evidence/P001/README.md",
+      "mode": "100644",
+      "blobSha": "8a36fc7e2c6ad340ccd811b1cc4c7ed5ebf8bf24",
+      "size": 3931,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P001/README.md"
+    },
+    {
+      "path": "docs/evidence/P003/README.md",
+      "mode": "100644",
+      "blobSha": "b274976500fed0f5184ebdc05e3d23bcb73568fc",
+      "size": 6047,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P003/README.md"
+    },
+    {
+      "path": "docs/evidence/P004/README.md",
+      "mode": "100644",
+      "blobSha": "035043b5582ad513e3bddc530382cc41d3e27bc3",
+      "size": 7464,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P004/README.md"
+    },
+    {
+      "path": "docs/evidence/P005/README.md",
+      "mode": "100644",
+      "blobSha": "2632cb255ba55c1f72acf0841c4f90b8989a82f9",
+      "size": 7148,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P005/README.md"
+    },
+    {
+      "path": "docs/evidence/P006/README.md",
+      "mode": "100644",
+      "blobSha": "cf835bfe3e32e5f50f355f6cdec7b507338b9b8a",
+      "size": 7469,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P006/README.md"
+    },
+    {
+      "path": "docs/evidence/P007/README.md",
+      "mode": "100644",
+      "blobSha": "3ca93dbe5ff5bd61d355addf934fc5600645f648",
+      "size": 6863,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P007/README.md"
+    },
+    {
+      "path": "docs/evidence/P008/README.md",
+      "mode": "100644",
+      "blobSha": "d95916757cf4774cf236658a4c2dbaa309b42100",
+      "size": 7385,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P008/README.md"
+    },
+    {
+      "path": "docs/evidence/P009/README.md",
+      "mode": "100644",
+      "blobSha": "770bed0685408a6e2f0e0ea2b6fe17c226cd15ef",
+      "size": 7320,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P009/README.md"
+    },
+    {
+      "path": "docs/evidence/P010/README.md",
+      "mode": "100644",
+      "blobSha": "ca2c9818eb78db883ba412856590f76699f22132",
+      "size": 8094,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P010/README.md"
+    },
+    {
+      "path": "docs/evidence/P011/README.md",
+      "mode": "100644",
+      "blobSha": "f7074b33c51b3f7a0a7064f5c09dc01c0a80980c",
+      "size": 4728,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P011/README.md"
+    },
+    {
+      "path": "docs/evidence/P012/README.md",
+      "mode": "100644",
+      "blobSha": "0f1b6e0635d6be59117c33c48b9eeae118dfd2ab",
+      "size": 4768,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P012/README.md"
+    },
+    {
+      "path": "docs/evidence/P013/README.md",
+      "mode": "100644",
+      "blobSha": "da5dd47139e473337eb0dc8358cbf77721f85b94",
+      "size": 4959,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P013/README.md"
+    },
+    {
+      "path": "docs/evidence/P020/README.md",
+      "mode": "100644",
+      "blobSha": "a7d3752c8e893fbc21adaacda8356f915c325295",
+      "size": 5621,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P020/README.md"
+    },
+    {
+      "path": "docs/evidence/P021/README.md",
+      "mode": "100644",
+      "blobSha": "1781b046a8dd2dd43314648603d73329eac402a3",
+      "size": 5491,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P021/README.md"
+    },
+    {
+      "path": "docs/evidence/P022/README.md",
+      "mode": "100644",
+      "blobSha": "9907404a55a375c4e42d14e55328b3f508958b74",
+      "size": 6072,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P022/README.md"
+    },
+    {
+      "path": "docs/evidence/P023/README.md",
+      "mode": "100644",
+      "blobSha": "a01aadcec6e2caf6e5a05f93984c3278f4f4c243",
+      "size": 6594,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P023/README.md"
+    },
+    {
+      "path": "docs/evidence/P024/README.md",
+      "mode": "100644",
+      "blobSha": "8b0a57ea06b6d49f97ed52e140b4bee8f04ecf4b",
+      "size": 6010,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P024/README.md"
+    },
+    {
+      "path": "docs/evidence/P025/README.md",
+      "mode": "100644",
+      "blobSha": "24108fb29445b015e7ce88e9eaaafc941fc0e3ea",
+      "size": 4630,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P025/README.md"
+    },
+    {
+      "path": "docs/evidence/P026/README.md",
+      "mode": "100644",
+      "blobSha": "c91235a9ae65d5eabc8b6941e8c20f342554f46e",
+      "size": 11379,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P026/README.md"
+    },
+    {
+      "path": "docs/evidence/P027/README.md",
+      "mode": "100644",
+      "blobSha": "87fd1e5375ed62c997a4ef08f68d9d9c80b17982",
+      "size": 7957,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P027/README.md"
+    },
+    {
+      "path": "docs/evidence/P027/pinned-platform-facts.json",
+      "mode": "100644",
+      "blobSha": "fa45a65011aad7a72a08a36d2a928b939c8e0191",
+      "size": 1625,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P027/pinned-platform-facts.json"
+    },
+    {
+      "path": "docs/evidence/P028/README.md",
+      "mode": "100644",
+      "blobSha": "a205b131bb9965c49929ec390f2bf3a2133268fd",
+      "size": 8424,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P028/README.md"
+    },
+    {
+      "path": "docs/evidence/P029/README.md",
+      "mode": "100644",
+      "blobSha": "dc41fbef6dd15c73398e69be4e28cc4d296bebd0",
+      "size": 5518,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P029/README.md"
+    },
+    {
+      "path": "docs/evidence/P029/packaged-report.json",
+      "mode": "100644",
+      "blobSha": "660b0b9aedb5b03f96813cc05e7cb46c10a27227",
+      "size": 1989,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P029/packaged-report.json"
+    },
+    {
+      "path": "docs/evidence/P030/README.md",
+      "mode": "100644",
+      "blobSha": "01d4ebaeb7fe911067d918c5f874d4560030bac7",
+      "size": 6982,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P030/README.md"
+    },
+    {
+      "path": "docs/evidence/P030/packaged-report.json",
+      "mode": "100644",
+      "blobSha": "d788018417f769704d3bcfd5bdc6d53b4c3309e3",
+      "size": 4401,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P030/packaged-report.json"
+    },
+    {
+      "path": "docs/evidence/P031/README.md",
+      "mode": "100644",
+      "blobSha": "870024b2f164796640631e9c4451dbf96a8011e2",
+      "size": 7831,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P031/README.md"
+    },
+    {
+      "path": "docs/evidence/P031/packaged-report.json",
+      "mode": "100644",
+      "blobSha": "dbde58510eceeb5c7050520de7fab1d26d9c7d1b",
+      "size": 1689,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P031/packaged-report.json"
+    },
+    {
+      "path": "docs/evidence/P032/README.md",
+      "mode": "100644",
+      "blobSha": "45a0bcdab155fb4579f5cea32f98922d283e3ff9",
+      "size": 8195,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P032/README.md"
+    },
+    {
+      "path": "docs/evidence/P033/README.md",
+      "mode": "100644",
+      "blobSha": "f98d5acaf451ed4db1170c52834617162f54cc59",
+      "size": 9479,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P033/README.md"
+    },
+    {
+      "path": "docs/evidence/P034/README.md",
+      "mode": "100644",
+      "blobSha": "054b3781dabbf404d7b357182af3e551f67134b9",
+      "size": 4536,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P034/README.md"
+    },
+    {
+      "path": "docs/evidence/P035/README.md",
+      "mode": "100644",
+      "blobSha": "5d46ae3e4c25ca2a57f08b7fadbb430885cfa5e6",
+      "size": 5735,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P035/README.md"
+    },
+    {
+      "path": "docs/evidence/P036/README.md",
+      "mode": "100644",
+      "blobSha": "48b34b8ece9b790ce354d1ff58ba950da47e060d",
+      "size": 6570,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P036/README.md"
+    },
+    {
+      "path": "docs/evidence/P037/README.md",
+      "mode": "100644",
+      "blobSha": "b7b8e182574ee2df21052d5bca0eda4da7153192",
+      "size": 2699,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P037/README.md"
+    },
+    {
+      "path": "docs/evidence/P038/README.md",
+      "mode": "100644",
+      "blobSha": "f7799ae6829da9b67dc1240154060b531ee3a66c",
+      "size": 3660,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P038/README.md"
+    },
+    {
+      "path": "docs/evidence/P039/README.md",
+      "mode": "100644",
+      "blobSha": "3da9160a20d7337f146df769c20e58b372169bdd",
+      "size": 8287,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P039/README.md"
+    },
+    {
+      "path": "docs/evidence/P039/api-publication.json",
+      "mode": "100644",
+      "blobSha": "f4b47cd0aa4094a25b499173f31b7131e34ece19",
+      "size": 2019,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P039/api-publication.json"
+    },
+    {
+      "path": "docs/evidence/P039/independent-ci.json",
+      "mode": "100644",
+      "blobSha": "d4cc769661adbe4a4c4966bbbe4fc77d0cd6cfc7",
+      "size": 12912,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P039/independent-ci.json"
+    },
+    {
+      "path": "docs/evidence/P039/local-verification.json",
+      "mode": "100644",
+      "blobSha": "c71e46ce8c01ee350ddd1aab26dc7fc919442135",
+      "size": 3448,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P039/local-verification.json"
+    },
+    {
+      "path": "docs/evidence/P039/packaged-fix-pr-ci.json",
+      "mode": "100644",
+      "blobSha": "9bcc736c44747e34cc3d9f6eae82c2e7922f4a27",
+      "size": 2392,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P039/packaged-fix-pr-ci.json"
+    },
+    {
+      "path": "docs/evidence/P039/packaged-local-diagnostic.json",
+      "mode": "100644",
+      "blobSha": "b10e85943494cbdf9b0f3475b4d1a4157792db13",
+      "size": 2157,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P039/packaged-local-diagnostic.json"
+    },
+    {
+      "path": "docs/evidence/P039/packaged-main-initial-failure.json",
+      "mode": "100644",
+      "blobSha": "6a6352e426be056cbd048d77a3ac0776867d1026",
+      "size": 3619,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P039/packaged-main-initial-failure.json"
+    },
+    {
+      "path": "docs/evidence/P039/packaged-merged-main.json",
+      "mode": "100644",
+      "blobSha": "896615ba8c2ca5b5d225ca2e449f8ceafc263245",
+      "size": 2392,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P039/packaged-merged-main.json"
+    },
+    {
+      "path": "docs/evidence/P039/packaged-pr-ci.json",
+      "mode": "100644",
+      "blobSha": "30780423c06be8709d8d555776c004224615989f",
+      "size": 2169,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P039/packaged-pr-ci.json"
+    },
+    {
+      "path": "docs/evidence/P039/pr-description.md",
+      "mode": "100644",
+      "blobSha": "ca75d105e3f42904f9fed28038533fcfb384e91a",
+      "size": 1103,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P039/pr-description.md"
+    },
+    {
+      "path": "docs/evidence/P040/README.md",
+      "mode": "100644",
+      "blobSha": "7474d3015e229aa4b853ede94f579727c232038f",
+      "size": 6058,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P040/README.md"
+    },
+    {
+      "path": "docs/evidence/P041/README.md",
+      "mode": "100644",
+      "blobSha": "efee43b4b9a0d000c139a17daf854d0748f10877",
+      "size": 8599,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P041/README.md"
+    },
+    {
+      "path": "docs/evidence/P042/README.md",
+      "mode": "100644",
+      "blobSha": "ce241573e93be93777a2c40c08bf9f7f79656e1f",
+      "size": 6604,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P042/README.md"
+    },
+    {
+      "path": "docs/evidence/P042/independent-ci.json",
+      "mode": "100644",
+      "blobSha": "9bba11e709ad8ea2139468f6bbfa95b666f2183e",
+      "size": 3558,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P042/independent-ci.json"
+    },
+    {
+      "path": "docs/evidence/P042/packaged-pr-ci.json",
+      "mode": "100644",
+      "blobSha": "42d68a29a955089c0f55ab105d1ca8b146cf2d1c",
+      "size": 2883,
+      "destinationPath": "docs/legacy/donor/docs/evidence/P042/packaged-pr-ci.json"
+    },
+    {
+      "path": "docs/implementation/v1/README.md",
+      "mode": "100644",
+      "blobSha": "e046178f1e93fe6294317f5b0caa72352cddda36",
+      "size": 1125,
+      "destinationPath": "docs/legacy/donor/docs/implementation/v1/README.md"
+    },
+    {
+      "path": "docs/implementation/v1/acceptance.json",
+      "mode": "100644",
+      "blobSha": "9675344cac7c3176038d9d06f16b14610689e72b",
+      "size": 31982,
+      "destinationPath": "docs/legacy/donor/docs/implementation/v1/acceptance.json"
+    },
+    {
+      "path": "docs/implementation/v1/browser-pin.json",
+      "mode": "100644",
+      "blobSha": "1b1bfab1eeb1e94567be7f0233897b9899c23fd5",
+      "size": 722,
+      "destinationPath": "docs/legacy/donor/docs/implementation/v1/browser-pin.json"
+    },
+    {
+      "path": "docs/implementation/v1/claims/CLAIM.schema.json",
+      "mode": "100644",
+      "blobSha": "609a088ce121c0df2e7807341a0436ea96fa7010",
+      "size": 3065,
+      "destinationPath": "docs/legacy/donor/docs/implementation/v1/claims/CLAIM.schema.json"
+    },
+    {
+      "path": "docs/implementation/v1/claims/CLM-P001-001.json",
+      "mode": "100644",
+      "blobSha": "be6551235f1200713244e35e17579a4bcb3c522c",
+      "size": 713,
+      "destinationPath": "docs/legacy/donor/docs/implementation/v1/claims/CLM-P001-001.json"
+    },
+    {
+      "path": "docs/implementation/v1/claims/CLM-P002-001.json",
+      "mode": "100644",
+      "blobSha": "a832b1a69b79f37bf9552e9694780497c76c69d2",
+      "size": 691,
+      "destinationPath": "docs/legacy/donor/docs/implementation/v1/claims/CLM-P002-001.json"
+    },
+    {
+      "path": "docs/implementation/v1/claims/CLM-P003-001.json",
+      "mode": "100644",
+      "blobSha": "0ec7eb568d3deed9caaf40174f9b66b766528b45",
+      "size": 611,
+      "destinationPath": "docs/legacy/donor/docs/implementation/v1/claims/CLM-P003-001.json"
+    },
+    {
+      "path": "docs/implementation/v1/claims/CLM-P004-001.json",
+      "mode": "100644",
+      "blobSha": "ab85f7edd4837c6ccb6e59d14ee55c2fb88d8bcc",
+      "size": 611,
+      "destinationPath": "docs/legacy/donor/docs/implementation/v1/claims/CLM-P004-001.json"
+    },
+    {
+      "path": "docs/implementation/v1/claims/CLM-P005-001.json",
+      "mode": "100644",
+      "blobSha": "a5d81c31010a750fc358524270e380fd2506dce0",
+      "size": 611,
+      "destinationPath": "docs/legacy/donor/docs/implementation/v1/claims/CLM-P005-001.json"
+    },
+    {
+      "path": "docs/implementation/v1/claims/CLM-P006-001.json",
+      "mode": "100644",
+      "blobSha": "7c9fdfe1f640a5cd1bbb651c09a1fdd51a0f3c6a",
+      "size": 611,
+      "destinationPath": "docs/legacy/donor/docs/implementation/v1/claims/CLM-P006-001.json"
+    },
+    {
+      "path": "docs/implementation/v1/claims/CLM-P007-001.json",
+      "mode": "100644",
+      "blobSha": "446ffcbdafe942f8547d554621e8b6f71c412aa5",
+      "size": 611,
+      "destinationPath": "docs/legacy/donor/docs/implementation/v1/claims/CLM-P007-001.json"
+    },
+    {
+      "path": "docs/implementation/v1/claims/CLM-P008-001.json",
+      "mode": "100644",
+      "blobSha": "12b910ce87dcdb577f7d43921a9045aab0e71f0b",
+      "size": 611,
+      "destinationPath": "docs/legacy/donor/docs/implementation/v1/claims/CLM-P008-001.json"
+    },
+    {
+      "path": "docs/implementation/v1/claims/CLM-P009-001.json",
+      "mode": "100644",
+      "blobSha": "8c90a577e2b4b6ad49043bdd95de2e76f36cd7c9",
+      "size": 611,
+      "destinationPath": "docs/legacy/donor/docs/implementation/v1/claims/CLM-P009-001.json"
+    },
+    {
+      "path": "docs/implementation/v1/claims/CLM-P010-001.json",
+      "mode": "100644",
+      "blobSha": "a886adf3959fe3a128a31813e4675dbdfdbe7b4d",
+      "size": 611,
+      "destinationPath": "docs/legacy/donor/docs/implementation/v1/claims/CLM-P010-001.json"
+    },
+    {
+      "path": "docs/implementation/v1/claims/CLM-P011-001.json",
+      "mode": "100644",
+      "blobSha": "73c118faa54860b9cc20e6ff4cbf3a4c23a52335",
+      "size": 611,
+      "destinationPath": "docs/legacy/donor/docs/implementation/v1/claims/CLM-P011-001.json"
+    },
+    {
+      "path": "docs/implementation/v1/claims/CLM-P012-001.json",
+      "mode": "100644",
+      "blobSha": "72732e19f9bbdc624b03e987dd0e53bf50c9cb78",
+      "size": 611,
+      "destinationPath": "docs/legacy/donor/docs/implementation/v1/claims/CLM-P012-001.json"
+    },
+    {
+      "path": "docs/implementation/v1/claims/CLM-P013-001.json",
+      "mode": "100644",
+      "blobSha": "77c631e6856862a77fd46dda70ba3348462454b7",
+      "size": 611,
+      "destinationPath": "docs/legacy/donor/docs/implementation/v1/claims/CLM-P013-001.json"
+    },
+    {
+      "path": "docs/implementation/v1/claims/CLM-P014-001.json",
+      "mode": "100644",
+      "blobSha": "1d4166182db04f856df2da84826dee69db520f32",
+      "size": 593,
+      "destinationPath": "docs/legacy/donor/docs/implementation/v1/claims/CLM-P014-001.json"
+    },
+    {
+      "path": "docs/implementation/v1/claims/CLM-P015-001.json",
+      "mode": "100644",
+      "blobSha": "66bcc15e956da39bbc7599b019e8e090790843c5",
+      "size": 593,
+      "destinationPath": "docs/legacy/donor/docs/implementation/v1/claims/CLM-P015-001.json"
+    },
+    {
+      "path": "docs/implementation/v1/claims/CLM-P016-001.json",
+      "mode": "100644",
+      "blobSha": "a05d86c69470ee34bcfb5e4318aaba4d23060206",
+      "size": 593,
+      "destinationPath": "docs/legacy/donor/docs/implementation/v1/claims/CLM-P016-001.json"
+    },
+    {
+      "path": "docs/implementation/v1/claims/CLM-P017-001.json",
+      "mode": "100644",
+      "blobSha": "9d2f49565d993270f59746c27c76399f18c8a904",
+      "size": 593,
+      "destinationPath": "docs/legacy/donor/docs/implementation/v1/claims/CLM-P017-001.json"
+    },
+    {
+      "path": "docs/implementation/v1/claims/CLM-P018-001.json",
+      "mode": "100644",
+      "blobSha": "e4eb678b9f4dda404c18b7d4499857fdde090896",
+      "size": 593,
+      "destinationPath": "docs/legacy/donor/docs/implementation/v1/claims/CLM-P018-001.json"
+    },
+    {
+      "path": "docs/implementation/v1/claims/CLM-P019-001.json",
+      "mode": "100644",
+      "blobSha": "8930b5077bbbd5a95e16fbc0f1cc6ce45127e791",
+      "size": 593,
+      "destinationPath": "docs/legacy/donor/docs/implementation/v1/claims/CLM-P019-001.json"
+    },
+    {
+      "path": "docs/implementation/v1/claims/CLM-P020-001.json",
+      "mode": "100644",
+      "blobSha": "b16b57fb7d0c7188784b801c83db4d0f7f236e58",
+      "size": 611,
+      "destinationPath": "docs/legacy/donor/docs/implementation/v1/claims/CLM-P020-001.json"
+    },
+    {
+      "path": "docs/implementation/v1/claims/CLM-P021-001.json",
+      "mode": "100644",
+      "blobSha": "ed026658d584d9f74ef8644e35818ee9202851e6",
+      "size": 611,
+      "destinationPath": "docs/legacy/donor/docs/implementation/v1/claims/CLM-P021-001.json"
+    },
+    {
+      "path": "docs/implementation/v1/claims/CLM-P022-001.json",
+      "mode": "100644",
+      "blobSha": "4fda1594ef32c2c40a339a0c70d41890fe944951",
+      "size": 611,
+      "destinationPath": "docs/legacy/donor/docs/implementation/v1/claims/CLM-P022-001.json"
+    },
+    {
+      "path": "docs/implementation/v1/claims/CLM-P023-001.json",
+      "mode": "100644",
+      "blobSha": "1f5218442e1b661f07d03dd5066fc7a6fe1ea6ce",
+      "size": 611,
+      "destinationPath": "docs/legacy/donor/docs/implementation/v1/claims/CLM-P023-001.json"
+    },
+    {
+      "path": "docs/implementation/v1/claims/CLM-P024-001.json",
+      "mode": "100644",
+      "blobSha": "0fb6b97d7ec421ef8d78e52d2da84d3a4674a669",
+      "size": 611,
+      "destinationPath": "docs/legacy/donor/docs/implementation/v1/claims/CLM-P024-001.json"
+    },
+    {
+      "path": "docs/implementation/v1/claims/CLM-P025-001.json",
+      "mode": "100644",
+      "blobSha": "3c59af83b990ab9c98ee0dc9d9704c0c9b11459b",
+      "size": 1162,
+      "destinationPath": "docs/legacy/donor/docs/implementation/v1/claims/CLM-P025-001.json"
+    },
+    {
+      "path": "docs/implementation/v1/claims/CLM-P026-001.json",
+      "mode": "100644",
+      "blobSha": "bdaeceb10f6cdaebea21dc4b2f1a7c8d0ea5f705",
+      "size": 788,
+      "destinationPath": "docs/legacy/donor/docs/implementation/v1/claims/CLM-P026-001.json"
+    },
+    {
+      "path": "docs/implementation/v1/claims/CLM-P027-001.json",
+      "mode": "100644",
+      "blobSha": "49b87beced7012ff6e92da2f4a4f49e7370add87",
+      "size": 1025,
+      "destinationPath": "docs/legacy/donor/docs/implementation/v1/claims/CLM-P027-001.json"
+    },
+    {
+      "path": "docs/implementation/v1/claims/CLM-P028-001.json",
+      "mode": "100644",
+      "blobSha": "bc2aa808e5a6c6d4d8b6323f678101b67e8e66a0",
+      "size": 1606,
+      "destinationPath": "docs/legacy/donor/docs/implementation/v1/claims/CLM-P028-001.json"
+    },
+    {
+      "path": "docs/implementation/v1/claims/CLM-P029-001.json",
+      "mode": "100644",
+      "blobSha": "eb6769d53d0a7a1b00a5fc3041a308a3e95d7232",
+      "size": 1112,
+      "destinationPath": "docs/legacy/donor/docs/implementation/v1/claims/CLM-P029-001.json"
+    },
+    {
+      "path": "docs/implementation/v1/claims/CLM-P030-001.json",
+      "mode": "100644",
+      "blobSha": "d5c4986d319fd2faa597845d4ef440f23dfb027f",
+      "size": 1174,
+      "destinationPath": "docs/legacy/donor/docs/implementation/v1/claims/CLM-P030-001.json"
+    },
+    {
+      "path": "docs/implementation/v1/claims/CLM-P031-001.json",
+      "mode": "100644",
+      "blobSha": "3db91eda183eaf9d7323279cec4cdb8c77eda8b9",
+      "size": 1363,
+      "destinationPath": "docs/legacy/donor/docs/implementation/v1/claims/CLM-P031-001.json"
+    },
+    {
+      "path": "docs/implementation/v1/claims/CLM-P032-001.json",
+      "mode": "100644",
+      "blobSha": "3263d83a12f72f0c62df3c4e8acf7dfd119e1b5c",
+      "size": 964,
+      "destinationPath": "docs/legacy/donor/docs/implementation/v1/claims/CLM-P032-001.json"
+    },
+    {
+      "path": "docs/implementation/v1/claims/CLM-P033-001.json",
+      "mode": "100644",
+      "blobSha": "fd5b7187ffc26eeb1173e52ed35521629a65a669",
+      "size": 1464,
+      "destinationPath": "docs/legacy/donor/docs/implementation/v1/claims/CLM-P033-001.json"
+    },
+    {
+      "path": "docs/implementation/v1/claims/CLM-P034-001.json",
+      "mode": "100644",
+      "blobSha": "c01d2e82889535fdb4bf3671e89e37f75a18acc9",
+      "size": 963,
+      "destinationPath": "docs/legacy/donor/docs/implementation/v1/claims/CLM-P034-001.json"
+    },
+    {
+      "path": "docs/implementation/v1/claims/CLM-P035-001.json",
+      "mode": "100644",
+      "blobSha": "b549ebb80b68e48faa5b29dd5a1954380a89b841",
+      "size": 1079,
+      "destinationPath": "docs/legacy/donor/docs/implementation/v1/claims/CLM-P035-001.json"
+    },
+    {
+      "path": "docs/implementation/v1/claims/CLM-P036-001.json",
+      "mode": "100644",
+      "blobSha": "86e16ab12cbed71737ffa9f8565055506294de30",
+      "size": 1804,
+      "destinationPath": "docs/legacy/donor/docs/implementation/v1/claims/CLM-P036-001.json"
+    },
+    {
+      "path": "docs/implementation/v1/claims/CLM-P037-001.json",
+      "mode": "100644",
+      "blobSha": "692d02797056a3e521a888e2081a544492beb07f",
+      "size": 1088,
+      "destinationPath": "docs/legacy/donor/docs/implementation/v1/claims/CLM-P037-001.json"
+    },
+    {
+      "path": "docs/implementation/v1/claims/CLM-P038-001.json",
+      "mode": "100644",
+      "blobSha": "c052b857573d64283225a30d2e3149b7e9aa17a6",
+      "size": 1068,
+      "destinationPath": "docs/legacy/donor/docs/implementation/v1/claims/CLM-P038-001.json"
+    },
+    {
+      "path": "docs/implementation/v1/claims/CLM-P039-001.json",
+      "mode": "100644",
+      "blobSha": "24189b55f54993b13a01b7ce71adc02f3056e172",
+      "size": 1147,
+      "destinationPath": "docs/legacy/donor/docs/implementation/v1/claims/CLM-P039-001.json"
+    },
+    {
+      "path": "docs/implementation/v1/claims/CLM-P040-001.json",
+      "mode": "100644",
+      "blobSha": "6e6b11854c9f2dc993b2d1098fcaded1684a16d9",
+      "size": 1909,
+      "destinationPath": "docs/legacy/donor/docs/implementation/v1/claims/CLM-P040-001.json"
+    },
+    {
+      "path": "docs/implementation/v1/claims/CLM-P041-001.json",
+      "mode": "100644",
+      "blobSha": "4d1ca6da43d61f257f707e00b3f8605ffe0291af",
+      "size": 1496,
+      "destinationPath": "docs/legacy/donor/docs/implementation/v1/claims/CLM-P041-001.json"
+    },
+    {
+      "path": "docs/implementation/v1/claims/CLM-P042-001.json",
+      "mode": "100644",
+      "blobSha": "58ce6aa3fda9992fc9912708cdbfcb6d52c0e46d",
+      "size": 1116,
+      "destinationPath": "docs/legacy/donor/docs/implementation/v1/claims/CLM-P042-001.json"
+    },
+    {
+      "path": "docs/implementation/v1/claims/README.md",
+      "mode": "100644",
+      "blobSha": "8f67468ddd8e3c0a4cfe7b01ef732b6700a5600e",
+      "size": 398,
+      "destinationPath": "docs/legacy/donor/docs/implementation/v1/claims/README.md"
+    },
+    {
+      "path": "docs/implementation/v1/plan.json",
+      "mode": "100644",
+      "blobSha": "20b1c3c6907841e6280705c7da8c6f8e32b56080",
+      "size": 52272,
+      "destinationPath": "docs/legacy/donor/docs/implementation/v1/plan.json"
+    },
+    {
+      "path": "docs/implementation/v1/policies.json",
+      "mode": "100644",
+      "blobSha": "7eca98178d366b202f1197ba38d94e2c8536aebb",
+      "size": 2126,
+      "destinationPath": "docs/legacy/donor/docs/implementation/v1/policies.json"
+    },
+    {
+      "path": "docs/implementation/v1/requirements.json",
+      "mode": "100644",
+      "blobSha": "ba7cb1a896ae1e3c38dbb4a08084a77541d758da",
+      "size": 4088,
+      "destinationPath": "docs/legacy/donor/docs/implementation/v1/requirements.json"
+    },
+    {
+      "path": "docs/progress/STATUS.md",
+      "mode": "100644",
+      "blobSha": "303179c5aa2ecd3ec14b7a53b549bc493a070d78",
+      "size": 620,
+      "destinationPath": "docs/legacy/donor/docs/progress/STATUS.md"
+    },
+    {
+      "path": "docs/prompts/IMPLEMENT_NEXT_ELIGIBLE_PHASE.md",
+      "mode": "100644",
+      "blobSha": "c2f6986415ee493c3f1c71a13c7a64b10ed11b53",
+      "size": 433,
+      "destinationPath": "docs/legacy/donor/docs/prompts/IMPLEMENT_NEXT_ELIGIBLE_PHASE.md"
+    },
+    {
+      "path": "docs/provenance/PERSONAMONKEY_BASELINE.md",
+      "mode": "100644",
+      "blobSha": "8d3761668726b8f603d3009a48260275d783ad69",
+      "size": 925,
+      "destinationPath": "docs/legacy/donor/docs/provenance/PERSONAMONKEY_BASELINE.md"
+    },
+    {
+      "path": "docs/upstream/P002_EVIDENCE.md",
+      "mode": "100644",
+      "blobSha": "3e3a64baec954c8cdd1f907458d07728ce0145e5",
+      "size": 5475,
+      "destinationPath": "docs/legacy/donor/docs/upstream/P002_EVIDENCE.md"
+    },
+    {
+      "path": "docs/upstream/README.md",
+      "mode": "100644",
+      "blobSha": "65f3ba283f52def66cc5fb9c42dc4fba354865dc",
+      "size": 1850,
+      "destinationPath": "docs/legacy/donor/docs/upstream/README.md"
+    },
+    {
+      "path": "docs/upstream/import-manifest.json",
+      "mode": "100644",
+      "blobSha": "29d05fa29891e7b2f9fda9352e448b903df0efe1",
+      "size": 69185,
+      "destinationPath": "docs/legacy/donor/docs/upstream/import-manifest.json"
+    },
+    {
+      "path": "docs/upstream/source/.github/workflows/extension-tests.yml",
+      "mode": "100644",
+      "blobSha": "8d7bb88fc5917aa26363f28184f0a95e1f55a3b3",
+      "size": 1340,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/.github/workflows/extension-tests.yml"
+    },
+    {
+      "path": "docs/upstream/source/.gitignore",
+      "mode": "100644",
+      "blobSha": "1a1c4b3434afca30b003087469d142257abdc5af",
+      "size": 657,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/.gitignore"
+    },
+    {
+      "path": "docs/upstream/source/AGENTS.md",
+      "mode": "100644",
+      "blobSha": "d386b30fa0e9f7d6fb3e3cfce1ae1168ffb2d63e",
+      "size": 4101,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/AGENTS.md"
+    },
+    {
+      "path": "docs/upstream/source/CONTRIBUTING.md",
+      "mode": "100644",
+      "blobSha": "e295888a76895cb193ba1d7eb513d2abb68e7125",
+      "size": 2947,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/CONTRIBUTING.md"
+    },
+    {
+      "path": "docs/upstream/source/DEVELOPMENT.md",
+      "mode": "100644",
+      "blobSha": "eeadbe47566cbce66e158e9fb11b040ad140fdea",
+      "size": 4796,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/DEVELOPMENT.md"
+    },
+    {
+      "path": "docs/upstream/source/README.md",
+      "mode": "100644",
+      "blobSha": "79d2674effb8e2f322d3df4196e598273650bdd5",
+      "size": 4556,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/README.md"
+    },
+    {
+      "path": "docs/upstream/source/SECURITY.md",
+      "mode": "100644",
+      "blobSha": "d46c38d7e0f0b699ac8f37f20ec01cdcc234fe1a",
+      "size": 7192,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/SECURITY.md"
+    },
+    {
+      "path": "docs/upstream/source/diagnose.sh",
+      "mode": "100755",
+      "blobSha": "625323d0b42d6406008463971ac4e392953c8072",
+      "size": 2770,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/diagnose.sh"
+    },
+    {
+      "path": "docs/upstream/source/docs/README.md",
+      "mode": "100644",
+      "blobSha": "1f31b661c03cb8ed218cd65e5e552659a230e723",
+      "size": 4052,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/docs/README.md"
+    },
+    {
+      "path": "docs/upstream/source/docs/api/integration-v1.md",
+      "mode": "100644",
+      "blobSha": "0221774456577571284f6a2257c3785cdc61394d",
+      "size": 46065,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/docs/api/integration-v1.md"
+    },
+    {
+      "path": "docs/upstream/source/docs/api/management-v1.md",
+      "mode": "100644",
+      "blobSha": "a3fbfd88847cab0d14b0d9ad10c8743e4c7bbaf2",
+      "size": 11550,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/docs/api/management-v1.md"
+    },
+    {
+      "path": "docs/upstream/source/docs/api/persona-os.md",
+      "mode": "100644",
+      "blobSha": "7feff19f3528098add3375a7e29e0d114b92748f",
+      "size": 7944,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/docs/api/persona-os.md"
+    },
+    {
+      "path": "docs/upstream/source/docs/architecture/overview.md",
+      "mode": "100644",
+      "blobSha": "3d824a54b2d29106fc20cbb479efd74e982c276c",
+      "size": 6121,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/docs/architecture/overview.md"
+    },
+    {
+      "path": "docs/upstream/source/docs/architecture/persona-model.md",
+      "mode": "100644",
+      "blobSha": "dbe5a86e655522f3b595eb0b1a09b578450a73f4",
+      "size": 6259,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/docs/architecture/persona-model.md"
+    },
+    {
+      "path": "docs/upstream/source/docs/development/branching.md",
+      "mode": "100644",
+      "blobSha": "4f6111d4ec1515d1ffddf2ad3e62f10ce7243a9c",
+      "size": 2295,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/docs/development/branching.md"
+    },
+    {
+      "path": "docs/upstream/source/docs/development/external-automation-integration-plan.md",
+      "mode": "100644",
+      "blobSha": "f645c5eaf09114b290f5112ff95b76dfa3e2097c",
+      "size": 7500,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/docs/development/external-automation-integration-plan.md"
+    },
+    {
+      "path": "docs/upstream/source/docs/development/release.md",
+      "mode": "100644",
+      "blobSha": "e1241adbbd2406d9f8000fe8c52ceff0a8cb8a8b",
+      "size": 6970,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/docs/development/release.md"
+    },
+    {
+      "path": "docs/upstream/source/docs/development/testing.md",
+      "mode": "100644",
+      "blobSha": "9dc1a8b9f5e083f62d665691f8684b4687b3c7e9",
+      "size": 4730,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/docs/development/testing.md"
+    },
+    {
+      "path": "docs/upstream/source/docs/getting-started/installation.md",
+      "mode": "100644",
+      "blobSha": "08454abbf9dd7ee6085fb8930c6c21fbca27e562",
+      "size": 6827,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/docs/getting-started/installation.md"
+    },
+    {
+      "path": "docs/upstream/source/docs/guides/data-portability.md",
+      "mode": "100644",
+      "blobSha": "88e8a02a926e23bc97450a1327d5148883cdb538",
+      "size": 14936,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/docs/guides/data-portability.md"
+    },
+    {
+      "path": "docs/upstream/source/docs/guides/workflow-packages.md",
+      "mode": "100644",
+      "blobSha": "eb0a1ac9d57f03f9aba39274a5dcdd8ba52b8e33",
+      "size": 7498,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/docs/guides/workflow-packages.md"
+    },
+    {
+      "path": "docs/upstream/source/docs/history/planning/phase-01-f02-closure.md",
+      "mode": "100644",
+      "blobSha": "97048a4d448dacb63f988992229687454b014218",
+      "size": 6277,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/docs/history/planning/phase-01-f02-closure.md"
+    },
+    {
+      "path": "docs/upstream/source/docs/history/planning/phase-02-f03-f11-closure.md",
+      "mode": "100644",
+      "blobSha": "a11638d46f20842b254841aeefefcc9cf29efef8",
+      "size": 5796,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/docs/history/planning/phase-02-f03-f11-closure.md"
+    },
+    {
+      "path": "docs/upstream/source/docs/history/planning/phase-03-f04-f16-closure.md",
+      "mode": "100644",
+      "blobSha": "59bfb219a4fbdf659512e189678ddfed9323390c",
+      "size": 6965,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/docs/history/planning/phase-03-f04-f16-closure.md"
+    },
+    {
+      "path": "docs/upstream/source/docs/history/planning/phase-04-f09-closure.md",
+      "mode": "100644",
+      "blobSha": "cc1bbe0d82e14a78ddc59cd5e9ae7230cacc9fcc",
+      "size": 9749,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/docs/history/planning/phase-04-f09-closure.md"
+    },
+    {
+      "path": "docs/upstream/source/docs/history/planning/phase-05-f05-f06-f10-closure.md",
+      "mode": "100644",
+      "blobSha": "45336ef4508b135335a2c06e5979dc5e6cb4a49b",
+      "size": 10550,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/docs/history/planning/phase-05-f05-f06-f10-closure.md"
+    },
+    {
+      "path": "docs/upstream/source/docs/history/planning/phase-06-f07-f08-native-framing-closure.md",
+      "mode": "100644",
+      "blobSha": "6dbd09be6da12d909848f69b64d00b5eeb0e4dfe",
+      "size": 9269,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/docs/history/planning/phase-06-f07-f08-native-framing-closure.md"
+    },
+    {
+      "path": "docs/upstream/source/docs/history/planning/phase-07-f12-f14-f15-f16-focus-closure.md",
+      "mode": "100644",
+      "blobSha": "aabdbda646f5c1b7d82ac432e501731353325d25",
+      "size": 8013,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/docs/history/planning/phase-07-f12-f14-f15-f16-focus-closure.md"
+    },
+    {
+      "path": "docs/upstream/source/docs/history/planning/phase-08-firefox-acceptance-audit-closure.md",
+      "mode": "100644",
+      "blobSha": "cc6bbbfc8bb6e829cade822caebcd0df68a2d3f7",
+      "size": 46345,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/docs/history/planning/phase-08-firefox-acceptance-audit-closure.md"
+    },
+    {
+      "path": "docs/upstream/source/docs/history/planning/prompts-pcms-integration-readiness.md",
+      "mode": "100644",
+      "blobSha": "7b8f88a9ecf195570581e441a3dfd4bae66db0f9",
+      "size": 28086,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/docs/history/planning/prompts-pcms-integration-readiness.md"
+    },
+    {
+      "path": "docs/upstream/source/docs/history/planning/specification-pcms-integration-readiness.md",
+      "mode": "100644",
+      "blobSha": "392005edc7a5570c9be13879974f2de67f68f8dc",
+      "size": 35963,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/docs/history/planning/specification-pcms-integration-readiness.md"
+    },
+    {
+      "path": "docs/upstream/source/docs/history/releases/v0.5/RELEASE_NOTES_v0.5.0.md",
+      "mode": "100644",
+      "blobSha": "c8a2374c4cb46c72ffab10c664cab46b02b71323",
+      "size": 2655,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/docs/history/releases/v0.5/RELEASE_NOTES_v0.5.0.md"
+    },
+    {
+      "path": "docs/upstream/source/docs/history/releases/v0.5/V0.5.0.md",
+      "mode": "100644",
+      "blobSha": "4253719eb67ea4f88a75a56bef994ec22c7b926f",
+      "size": 2405,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/docs/history/releases/v0.5/V0.5.0.md"
+    },
+    {
+      "path": "docs/upstream/source/docs/history/releases/v0.6/RELEASE_NOTES_v0.6.0.md",
+      "mode": "100644",
+      "blobSha": "d58885ed856652ec0a36eafa367ab7900c80d175",
+      "size": 4758,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/docs/history/releases/v0.6/RELEASE_NOTES_v0.6.0.md"
+    },
+    {
+      "path": "docs/upstream/source/docs/history/releases/v0.6/RELEASE_NOTES_v0.6.1.md",
+      "mode": "100644",
+      "blobSha": "2eed8f80f72ef70e8cb1ddf71b45ed90e0b81bdd",
+      "size": 3837,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/docs/history/releases/v0.6/RELEASE_NOTES_v0.6.1.md"
+    },
+    {
+      "path": "docs/upstream/source/docs/history/releases/v0.6/RELEASE_NOTES_v0.6.2.md",
+      "mode": "100644",
+      "blobSha": "28b3d1f524ea9a87119fc16d95e73d66a3a931b4",
+      "size": 2723,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/docs/history/releases/v0.6/RELEASE_NOTES_v0.6.2.md"
+    },
+    {
+      "path": "docs/upstream/source/docs/history/releases/v0.6/RELEASE_NOTES_v0.6.3.md",
+      "mode": "100644",
+      "blobSha": "e9040cd0f460d618afb265620adda84879e70603",
+      "size": 2142,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/docs/history/releases/v0.6/RELEASE_NOTES_v0.6.3.md"
+    },
+    {
+      "path": "docs/upstream/source/docs/history/releases/v0.6/V0.6.0.md",
+      "mode": "100644",
+      "blobSha": "ced8abaa629f4f7d127705c1242abe7b408d84be",
+      "size": 5157,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/docs/history/releases/v0.6/V0.6.0.md"
+    },
+    {
+      "path": "docs/upstream/source/docs/history/releases/v0.6/V0.6.1.md",
+      "mode": "100644",
+      "blobSha": "124ea29e6c487effbd01c9dd81df40b0a7d51466",
+      "size": 4843,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/docs/history/releases/v0.6/V0.6.1.md"
+    },
+    {
+      "path": "docs/upstream/source/docs/history/releases/v0.6/V0.6.2.md",
+      "mode": "100644",
+      "blobSha": "fd956cf529488cc8accc745ad4621d11f0e72539",
+      "size": 3798,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/docs/history/releases/v0.6/V0.6.2.md"
+    },
+    {
+      "path": "docs/upstream/source/docs/history/releases/v0.6/V0.6.3.md",
+      "mode": "100644",
+      "blobSha": "bfd29de2a2d48fa3e7fabd3a219d21d11643d23f",
+      "size": 3389,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/docs/history/releases/v0.6/V0.6.3.md"
+    },
+    {
+      "path": "docs/upstream/source/docs/history/releases/v0.7/RELEASE_NOTES_v0.7.0.md",
+      "mode": "100644",
+      "blobSha": "4a3eb15eda098c669851d05e3759ea62832f505a",
+      "size": 1716,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/docs/history/releases/v0.7/RELEASE_NOTES_v0.7.0.md"
+    },
+    {
+      "path": "docs/upstream/source/docs/history/releases/v0.7/RELEASE_NOTES_v0.7.4.md",
+      "mode": "100644",
+      "blobSha": "a90da5f0fdd852d2e07dec288fe5d7361018008f",
+      "size": 1936,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/docs/history/releases/v0.7/RELEASE_NOTES_v0.7.4.md"
+    },
+    {
+      "path": "docs/upstream/source/docs/history/releases/v0.7/V0.7.0.md",
+      "mode": "100644",
+      "blobSha": "d05ce67eada8b2859581d1f46358459b3a7968f1",
+      "size": 3325,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/docs/history/releases/v0.7/V0.7.0.md"
+    },
+    {
+      "path": "docs/upstream/source/docs/history/releases/v0.8/PCMS_API.md",
+      "mode": "100644",
+      "blobSha": "854b9355a5f9d33e514cf5fe34cdde86190d3f02",
+      "size": 11758,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/docs/history/releases/v0.8/PCMS_API.md"
+    },
+    {
+      "path": "docs/upstream/source/docs/history/releases/v0.8/RELEASE_NOTES_v0.8.0.md",
+      "mode": "100644",
+      "blobSha": "7f3f6e37feb3865897d2b096bc3acadf4246fa20",
+      "size": 4406,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/docs/history/releases/v0.8/RELEASE_NOTES_v0.8.0.md"
+    },
+    {
+      "path": "docs/upstream/source/docs/history/releases/v0.8/V0.8.0_CURRENT_RELEASE_GATES.md",
+      "mode": "100644",
+      "blobSha": "8d4e2af202df377df56ba9cf2898acf19c069d7e",
+      "size": 17759,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/docs/history/releases/v0.8/V0.8.0_CURRENT_RELEASE_GATES.md"
+    },
+    {
+      "path": "docs/upstream/source/docs/history/releases/v0.8/V0.8.0_ENGINEERING_HANDOFF.md",
+      "mode": "100644",
+      "blobSha": "e6356eb802e506a324b845fafadb094aa187bef4",
+      "size": 6304,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/docs/history/releases/v0.8/V0.8.0_ENGINEERING_HANDOFF.md"
+    },
+    {
+      "path": "docs/upstream/source/docs/history/releases/v0.8/V0.8.0_PCMS_CONTEXT.md",
+      "mode": "100644",
+      "blobSha": "9da1b653b090d950f010a58daa2f0c2e574c4ec5",
+      "size": 15528,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/docs/history/releases/v0.8/V0.8.0_PCMS_CONTEXT.md"
+    },
+    {
+      "path": "docs/upstream/source/docs/history/releases/v0.8/V0.8.0_RELEASE_AUDIT.md",
+      "mode": "100644",
+      "blobSha": "8d2ca0ed1644d011957e8da3116b1b063172a21a",
+      "size": 19075,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/docs/history/releases/v0.8/V0.8.0_RELEASE_AUDIT.md"
+    },
+    {
+      "path": "docs/upstream/source/docs/reference/compatibility.md",
+      "mode": "100644",
+      "blobSha": "9dbe1058e855a81d021cce6616457fcdf0f306dd",
+      "size": 8783,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/docs/reference/compatibility.md"
+    },
+    {
+      "path": "docs/upstream/source/docs/reference/personamonkey-workflow-package.schema.json",
+      "mode": "100644",
+      "blobSha": "30457f17c9e336db5f02436b9935791cfbdc8dcb",
+      "size": 4535,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/docs/reference/personamonkey-workflow-package.schema.json"
+    },
+    {
+      "path": "docs/upstream/source/examples/workflow-packages/mullvad-signal-check/manifest.json",
+      "mode": "100644",
+      "blobSha": "b0da5787556efaac7b2bbdb7034f57c0f072010e",
+      "size": 1865,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/examples/workflow-packages/mullvad-signal-check/manifest.json"
+    },
+    {
+      "path": "docs/upstream/source/examples/workflow-packages/mullvad-signal-check/userscripts/mullvad-status-signal.user.js",
+      "mode": "100644",
+      "blobSha": "38de52defcf2e1cb8f026f3bf4678275e98b7052",
+      "size": 638,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/examples/workflow-packages/mullvad-signal-check/userscripts/mullvad-status-signal.user.js"
+    },
+    {
+      "path": "docs/upstream/source/extension/background.js",
+      "mode": "100644",
+      "blobSha": "4fbbe2125dd6f325acf1c31696af76b35e2ebef9",
+      "size": 59871,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/extension/background.js"
+    },
+    {
+      "path": "docs/upstream/source/extension/lib/management-integration.js",
+      "mode": "100644",
+      "blobSha": "6abee91e8a83e08083a6dc6f473e3f1b9f5d20a0",
+      "size": 146745,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/extension/lib/management-integration.js"
+    },
+    {
+      "path": "docs/upstream/source/extension/lib/recovery-bootstrap.js",
+      "mode": "100644",
+      "blobSha": "69a1b535372e1d303415e80503d8b3c29afae051",
+      "size": 4937,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/extension/lib/recovery-bootstrap.js"
+    },
+    {
+      "path": "docs/upstream/source/extension/manifest.json",
+      "mode": "100644",
+      "blobSha": "d24bea98aaae52bd0c4776bfdefc7f47b6f19bc6",
+      "size": 1538,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/extension/manifest.json"
+    },
+    {
+      "path": "docs/upstream/source/extension/popup/popup.css",
+      "mode": "100644",
+      "blobSha": "72d4e7d3e1014c85d9041bfc71599ff28f7beef7",
+      "size": 5603,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/extension/popup/popup.css"
+    },
+    {
+      "path": "docs/upstream/source/extension/popup/popup.html",
+      "mode": "100644",
+      "blobSha": "700aff9da9276f87beb88062d1a1df7b1abcf4d7",
+      "size": 1573,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/extension/popup/popup.html"
+    },
+    {
+      "path": "docs/upstream/source/extension/popup/popup.js",
+      "mode": "100644",
+      "blobSha": "dce9344adac4825bae77030cd73b5e99029266fb",
+      "size": 8126,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/extension/popup/popup.js"
+    },
+    {
+      "path": "docs/upstream/source/extension/tests/background-routing-init.test.mjs",
+      "mode": "100644",
+      "blobSha": "dce269c4ccfc2e646758c48e950a9d20a52b608f",
+      "size": 27576,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/extension/tests/background-routing-init.test.mjs"
+    },
+    {
+      "path": "docs/upstream/source/install.sh",
+      "mode": "100755",
+      "blobSha": "14a7daa41f90f9a0378659a75531965653320850",
+      "size": 24008,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/install.sh"
+    },
+    {
+      "path": "docs/upstream/source/package.json",
+      "mode": "100644",
+      "blobSha": "30c4fbc8a9bb1f87229ecf3d91d1a8ec748c7048",
+      "size": 993,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/package.json"
+    },
+    {
+      "path": "docs/upstream/source/scripts/build-extension.mjs",
+      "mode": "100644",
+      "blobSha": "512c437e4a07400e8553340ccfb12e5c7adfae53",
+      "size": 3582,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/scripts/build-extension.mjs"
+    },
+    {
+      "path": "docs/upstream/source/uninstall.sh",
+      "mode": "100755",
+      "blobSha": "a35f24e17a1ab667e7b8122005f573e00141ed4d",
+      "size": 2581,
+      "destinationPath": "docs/legacy/donor/docs/upstream/source/uninstall.sh"
+    },
+    {
+      "path": "extension/LICENSE",
+      "mode": "100644",
+      "blobSha": "14fac913ccf80234b1848540089a3bbcb6e5283d",
+      "size": 1056,
+      "destinationPath": "docs/legacy/donor/extension/LICENSE"
+    },
+    {
+      "path": "extension/README.md",
+      "mode": "100644",
+      "blobSha": "e4616aa9be3c64782a5a1355708f878d877f173c",
+      "size": 917,
+      "destinationPath": "docs/legacy/donor/extension/README.md"
+    },
+    {
+      "path": "extension/background.js",
+      "mode": "100644",
+      "blobSha": "aeaf680d363b621bfe438197a9af44b3ecce1d13",
+      "size": 61623,
+      "destinationPath": "docs/legacy/donor/extension/background.js"
+    },
+    {
+      "path": "extension/content/userscript-trigger.js",
+      "mode": "100644",
+      "blobSha": "863de936aaf293f68acd4b79774418550e994e1e",
+      "size": 582,
+      "destinationPath": "docs/legacy/donor/extension/content/userscript-trigger.js"
+    },
+    {
+      "path": "extension/icons/icon48.png",
+      "mode": "100644",
+      "blobSha": "5b436961a13f3333acfe6f8ac8ef8250098e090b",
+      "size": 409,
+      "destinationPath": "docs/legacy/donor/extension/icons/icon48.png"
+    },
+    {
+      "path": "extension/icons/icon96.png",
+      "mode": "100644",
+      "blobSha": "bbd2427e313b0b26ae5e363a0bae582ceb8cb637",
+      "size": 765,
+      "destinationPath": "docs/legacy/donor/extension/icons/icon96.png"
+    },
+    {
+      "path": "extension/lib/automation-history.js",
+      "mode": "100644",
+      "blobSha": "1a218dace0756ffd466de78fdc82abd2ca082a6b",
+      "size": 689,
+      "destinationPath": "docs/legacy/donor/extension/lib/automation-history.js"
+    },
+    {
+      "path": "extension/lib/backup-crypto.js",
+      "mode": "100644",
+      "blobSha": "be942232ee619f3943777b9fe0d4c84b38f4665d",
+      "size": 2843,
+      "destinationPath": "docs/legacy/donor/extension/lib/backup-crypto.js"
+    },
+    {
+      "path": "extension/lib/backup-import.js",
+      "mode": "100644",
+      "blobSha": "45d3d381c97a9b782890dfb7dcc790bdc99857ea",
+      "size": 11891,
+      "destinationPath": "docs/legacy/donor/extension/lib/backup-import.js"
+    },
+    {
+      "path": "extension/lib/backup-package.js",
+      "mode": "100644",
+      "blobSha": "44a9cd873e2798978281a13234a3467a20033564",
+      "size": 15924,
+      "destinationPath": "docs/legacy/donor/extension/lib/backup-package.js"
+    },
+    {
+      "path": "extension/lib/constants.js",
+      "mode": "100644",
+      "blobSha": "30a3c361a0b486a8577a585cc8af095a8a6b9067",
+      "size": 1725,
+      "destinationPath": "docs/legacy/donor/extension/lib/constants.js"
+    },
+    {
+      "path": "extension/lib/cookie-package.js",
+      "mode": "100644",
+      "blobSha": "bf88c148924e95268990d1cd8be2fc6e5e7d50bf",
+      "size": 2733,
+      "destinationPath": "docs/legacy/donor/extension/lib/cookie-package.js"
+    },
+    {
+      "path": "extension/lib/diagnostics.js",
+      "mode": "100644",
+      "blobSha": "b22d650e18969acc67c0a4e4bddb89cf60ebf24b",
+      "size": 7923,
+      "destinationPath": "docs/legacy/donor/extension/lib/diagnostics.js"
+    },
+    {
+      "path": "extension/lib/external-artifact-integrity.js",
+      "mode": "100644",
+      "blobSha": "a8da0d6dbf6fa8b080f3af24acd4fd240655cd0f",
+      "size": 4293,
+      "destinationPath": "docs/legacy/donor/extension/lib/external-artifact-integrity.js"
+    },
+    {
+      "path": "extension/lib/gm-compat.js",
+      "mode": "100644",
+      "blobSha": "fbfa4107f9c02b866efda9814a537b8359ef434d",
+      "size": 51754,
+      "destinationPath": "docs/legacy/donor/extension/lib/gm-compat.js"
+    },
+    {
+      "path": "extension/lib/management-integration-protocol.js",
+      "mode": "100644",
+      "blobSha": "d784fa643ce3fd5d7cdff78b612a16accb24c953",
+      "size": 45431,
+      "destinationPath": "docs/legacy/donor/extension/lib/management-integration-protocol.js"
+    },
+    {
+      "path": "extension/lib/management-integration.js",
+      "mode": "100644",
+      "blobSha": "3ad8e5cf27ff64aae06462288144dc3a6ccf9bc7",
+      "size": 148045,
+      "destinationPath": "docs/legacy/donor/extension/lib/management-integration.js"
+    },
+    {
+      "path": "extension/lib/mullvad-native.js",
+      "mode": "100644",
+      "blobSha": "0a31c0a8b880caad89cfe9bfe26d8a660acc27f6",
+      "size": 5093,
+      "destinationPath": "docs/legacy/donor/extension/lib/mullvad-native.js"
+    },
+    {
+      "path": "extension/lib/mullvad-runtime.js",
+      "mode": "100644",
+      "blobSha": "03c03b3039f4dc788e780cdcf60476183b92c746",
+      "size": 8613,
+      "destinationPath": "docs/legacy/donor/extension/lib/mullvad-runtime.js"
+    },
+    {
+      "path": "extension/lib/orchestrator.js",
+      "mode": "100644",
+      "blobSha": "f228560ada7938bc6bf73e5c9dff321866b4d7bb",
+      "size": 54854,
+      "destinationPath": "docs/legacy/donor/extension/lib/orchestrator.js"
+    },
+    {
+      "path": "extension/lib/package-inspector-client.js",
+      "mode": "100644",
+      "blobSha": "f04a17fc472f120040ba8accd600046fb8cfbfec",
+      "size": 2239,
+      "destinationPath": "docs/legacy/donor/extension/lib/package-inspector-client.js"
+    },
+    {
+      "path": "extension/lib/package-limits.js",
+      "mode": "100644",
+      "blobSha": "be4d79286e9c503cee6c5129ca551a6cea1b686a",
+      "size": 709,
+      "destinationPath": "docs/legacy/donor/extension/lib/package-limits.js"
+    },
+    {
+      "path": "extension/lib/pcms-client.js",
+      "mode": "100644",
+      "blobSha": "7b259c6a7fd63ba975e1d8dabfef80a5bdb0d5d6",
+      "size": 5111,
+      "destinationPath": "docs/legacy/donor/extension/lib/pcms-client.js"
+    },
+    {
+      "path": "extension/lib/pcms-control-plane.js",
+      "mode": "100644",
+      "blobSha": "c92c9d332339b117a18ef944581cc13b921c34c5",
+      "size": 39872,
+      "destinationPath": "docs/legacy/donor/extension/lib/pcms-control-plane.js"
+    },
+    {
+      "path": "extension/lib/pcms-events.js",
+      "mode": "100644",
+      "blobSha": "f047ea0dd03c462a080f2651acbaf3ac8920dc5b",
+      "size": 2017,
+      "destinationPath": "docs/legacy/donor/extension/lib/pcms-events.js"
+    },
+    {
+      "path": "extension/lib/pcms-internal-broker-endpoint.js",
+      "mode": "100644",
+      "blobSha": "d174f71fad32b8c24ffb6039ee337997a56d28da",
+      "size": 5099,
+      "destinationPath": "docs/legacy/donor/extension/lib/pcms-internal-broker-endpoint.js"
+    },
+    {
+      "path": "extension/lib/pcms-pagination.js",
+      "mode": "100644",
+      "blobSha": "bced86ed972c71caa4a984cc242740c2cc9c018c",
+      "size": 5900,
+      "destinationPath": "docs/legacy/donor/extension/lib/pcms-pagination.js"
+    },
+    {
+      "path": "extension/lib/pcms-protocol.js",
+      "mode": "100644",
+      "blobSha": "137a047195851ecdc6e080b758bf576f8bd19359",
+      "size": 15140,
+      "destinationPath": "docs/legacy/donor/extension/lib/pcms-protocol.js"
+    },
+    {
+      "path": "extension/lib/persona-api.js",
+      "mode": "100644",
+      "blobSha": "9ae26c510c7e88b03590813e6dbb30375e205c31",
+      "size": 6090,
+      "destinationPath": "docs/legacy/donor/extension/lib/persona-api.js"
+    },
+    {
+      "path": "extension/lib/persona-cookies.js",
+      "mode": "100644",
+      "blobSha": "fb4ccd7b109c58e243728d80283c39bd582f27c1",
+      "size": 8412,
+      "destinationPath": "docs/legacy/donor/extension/lib/persona-cookies.js"
+    },
+    {
+      "path": "extension/lib/persona-identity.js",
+      "mode": "100644",
+      "blobSha": "977572c4b5206283d0b084e6a8108b2e29df3fcb",
+      "size": 4604,
+      "destinationPath": "docs/legacy/donor/extension/lib/persona-identity.js"
+    },
+    {
+      "path": "extension/lib/persona-intelligence.js",
+      "mode": "100644",
+      "blobSha": "293747407d3f91f78d1fe475868537ed32dca100",
+      "size": 8404,
+      "destinationPath": "docs/legacy/donor/extension/lib/persona-intelligence.js"
+    },
+    {
+      "path": "extension/lib/persona-package.js",
+      "mode": "100644",
+      "blobSha": "4dbe37c0f542e7956dd6574f6df4e5358814d190",
+      "size": 8293,
+      "destinationPath": "docs/legacy/donor/extension/lib/persona-package.js"
+    },
+    {
+      "path": "extension/lib/persona-platform.js",
+      "mode": "100644",
+      "blobSha": "6064ca332b66fad97c919b5849e61dfab9467923",
+      "size": 20137,
+      "destinationPath": "docs/legacy/donor/extension/lib/persona-platform.js"
+    },
+    {
+      "path": "extension/lib/persona-rotation.js",
+      "mode": "100644",
+      "blobSha": "ea147165e8b3addf6c94807ad4ac97e5e7cb830e",
+      "size": 21696,
+      "destinationPath": "docs/legacy/donor/extension/lib/persona-rotation.js"
+    },
+    {
+      "path": "extension/lib/persona-storage.js",
+      "mode": "100644",
+      "blobSha": "44f6d56fa350fcdb044f46cf65fbf9b03257071c",
+      "size": 5164,
+      "destinationPath": "docs/legacy/donor/extension/lib/persona-storage.js"
+    },
+    {
+      "path": "extension/lib/personas.js",
+      "mode": "100644",
+      "blobSha": "80f00b8d9f1754aeb53398b39a78c19be75ed776",
+      "size": 26604,
+      "destinationPath": "docs/legacy/donor/extension/lib/personas.js"
+    },
+    {
+      "path": "extension/lib/policy.js",
+      "mode": "100644",
+      "blobSha": "e96aadd6be6c220f85d1ec5cf046f9c2d2799257",
+      "size": 12458,
+      "destinationPath": "docs/legacy/donor/extension/lib/policy.js"
+    },
+    {
+      "path": "extension/lib/privacy.js",
+      "mode": "100644",
+      "blobSha": "a6aab01b286ebeec6e065a6f13c64ccfb71f4747",
+      "size": 2583,
+      "destinationPath": "docs/legacy/donor/extension/lib/privacy.js"
+    },
+    {
+      "path": "extension/lib/recovery-bootstrap.js",
+      "mode": "100644",
+      "blobSha": "2d1aa89a9eb903289f862b50f4cc5922f1d2542e",
+      "size": 5282,
+      "destinationPath": "docs/legacy/donor/extension/lib/recovery-bootstrap.js"
+    },
+    {
+      "path": "extension/lib/recovery-sync.js",
+      "mode": "100644",
+      "blobSha": "7537c5f0db5320e0494f428f3baa463c5f253d03",
+      "size": 19348,
+      "destinationPath": "docs/legacy/donor/extension/lib/recovery-sync.js"
+    },
+    {
+      "path": "extension/lib/routing-gate.js",
+      "mode": "100644",
+      "blobSha": "4404a919308bab877937d363bd0ec3425b14d250",
+      "size": 2618,
+      "destinationPath": "docs/legacy/donor/extension/lib/routing-gate.js"
+    },
+    {
+      "path": "extension/lib/security-delta.js",
+      "mode": "100644",
+      "blobSha": "df41e5008a87193b378c82e2ec2612c08a42512c",
+      "size": 6500,
+      "destinationPath": "docs/legacy/donor/extension/lib/security-delta.js"
+    },
+    {
+      "path": "extension/lib/state-manager.js",
+      "mode": "100644",
+      "blobSha": "291f0e9c1a6161857c9df5a71e8d92ed1f549a77",
+      "size": 14462,
+      "destinationPath": "docs/legacy/donor/extension/lib/state-manager.js"
+    },
+    {
+      "path": "extension/lib/storage.js",
+      "mode": "100644",
+      "blobSha": "66c027fff1b38dde473d7be4bed0e27cd908b2aa",
+      "size": 16420,
+      "destinationPath": "docs/legacy/donor/extension/lib/storage.js"
+    },
+    {
+      "path": "extension/lib/userscript-runtime.js",
+      "mode": "100644",
+      "blobSha": "b0840c35a05142dc6b6b68088252f06129848465",
+      "size": 5979,
+      "destinationPath": "docs/legacy/donor/extension/lib/userscript-runtime.js"
+    },
+    {
+      "path": "extension/lib/userscripts.js",
+      "mode": "100644",
+      "blobSha": "22afb4edd36ef0390a97a4f95269da6241ca87f7",
+      "size": 6366,
+      "destinationPath": "docs/legacy/donor/extension/lib/userscripts.js"
+    },
+    {
+      "path": "extension/lib/workflow-model.js",
+      "mode": "100644",
+      "blobSha": "c5d8a2fa6f9c475907e90fdf9cf987a9cb39efd9",
+      "size": 9214,
+      "destinationPath": "docs/legacy/donor/extension/lib/workflow-model.js"
+    },
+    {
+      "path": "extension/lib/workflow-package.js",
+      "mode": "100644",
+      "blobSha": "c6e4535e2bd1af59885fe54cfd3650d10d809043",
+      "size": 22425,
+      "destinationPath": "docs/legacy/donor/extension/lib/workflow-package.js"
+    },
+    {
+      "path": "extension/lib/zip.js",
+      "mode": "100644",
+      "blobSha": "9f26ff1d8ed1d9c928cfcc88e84e27f2b81da87b",
+      "size": 13551,
+      "destinationPath": "docs/legacy/donor/extension/lib/zip.js"
+    },
+    {
+      "path": "extension/manifest.json",
+      "mode": "100644",
+      "blobSha": "777a1dc01cdc7ac8a98c863160b4f6c308591e90",
+      "size": 1988,
+      "destinationPath": "docs/legacy/donor/extension/manifest.json"
+    },
+    {
+      "path": "extension/options/automations.js",
+      "mode": "100644",
+      "blobSha": "356c14f044b71dca2055ef28d11d1b77c7177723",
+      "size": 32211,
+      "destinationPath": "docs/legacy/donor/extension/options/automations.js"
+    },
+    {
+      "path": "extension/options/confirm-dialog.js",
+      "mode": "100644",
+      "blobSha": "79ecd3140e8c5b83e2aa9599aaafcffeea04631e",
+      "size": 3697,
+      "destinationPath": "docs/legacy/donor/extension/options/confirm-dialog.js"
+    },
+    {
+      "path": "extension/options/cookies.js",
+      "mode": "100644",
+      "blobSha": "e5470414472d9a505e969fc35fb6f5fa2f02d9b1",
+      "size": 32052,
+      "destinationPath": "docs/legacy/donor/extension/options/cookies.js"
+    },
+    {
+      "path": "extension/options/data-management.js",
+      "mode": "100644",
+      "blobSha": "ce3c66222be1c356fb17ebf5390f6f53f8673886",
+      "size": 42421,
+      "destinationPath": "docs/legacy/donor/extension/options/data-management.js"
+    },
+    {
+      "path": "extension/options/diagnostics.js",
+      "mode": "100644",
+      "blobSha": "0521a5ebe06f78674998c0ce8ee82d70f676c335",
+      "size": 15684,
+      "destinationPath": "docs/legacy/donor/extension/options/diagnostics.js"
+    },
+    {
+      "path": "extension/options/focus-return.js",
+      "mode": "100644",
+      "blobSha": "53f638e5f0d03f0a2bc787a5a39a3ae7e1a70b14",
+      "size": 392,
+      "destinationPath": "docs/legacy/donor/extension/options/focus-return.js"
+    },
+    {
+      "path": "extension/options/integration-settings.js",
+      "mode": "100644",
+      "blobSha": "6147984acb32a8490cf714d32dc13cd6bc3f1a2c",
+      "size": 7454,
+      "destinationPath": "docs/legacy/donor/extension/options/integration-settings.js"
+    },
+    {
+      "path": "extension/options/options.css",
+      "mode": "100644",
+      "blobSha": "ee66a3c938ea352669dd498311e3bfff8098e8b1",
+      "size": 47735,
+      "destinationPath": "docs/legacy/donor/extension/options/options.css"
+    },
+    {
+      "path": "extension/options/options.html",
+      "mode": "100644",
+      "blobSha": "7ce9acf007cb97f8f552bb6ea55edd085f4901cd",
+      "size": 23518,
+      "destinationPath": "docs/legacy/donor/extension/options/options.html"
+    },
+    {
+      "path": "extension/options/options.js",
+      "mode": "100644",
+      "blobSha": "a29ba739726e2d436a617810d885673b5df8c2f3",
+      "size": 69159,
+      "destinationPath": "docs/legacy/donor/extension/options/options.js"
+    },
+    {
+      "path": "extension/options/personas-v07.js",
+      "mode": "100644",
+      "blobSha": "20991144df46c1cae6fa2847b7d5dfb66b6560be",
+      "size": 28054,
+      "destinationPath": "docs/legacy/donor/extension/options/personas-v07.js"
+    },
+    {
+      "path": "extension/options/profile-ui.js",
+      "mode": "100644",
+      "blobSha": "4fc8b55c1d33f70004481500ba1deff823761076",
+      "size": 5766,
+      "destinationPath": "docs/legacy/donor/extension/options/profile-ui.js"
+    },
+    {
+      "path": "extension/options/recovery-ui.js",
+      "mode": "100644",
+      "blobSha": "9019d1a61e1d04a222c8fac01c5f73a2b8e03fc5",
+      "size": 485,
+      "destinationPath": "docs/legacy/donor/extension/options/recovery-ui.js"
+    },
+    {
+      "path": "extension/options/security-review.js",
+      "mode": "100644",
+      "blobSha": "cba050267e3fa223f44c3aa8bf985125efa1bce0",
+      "size": 1562,
+      "destinationPath": "docs/legacy/donor/extension/options/security-review.js"
+    },
+    {
+      "path": "extension/options/toast.js",
+      "mode": "100644",
+      "blobSha": "b310e7e908db3e4572b9cd760064984c52c0b9ea",
+      "size": 1755,
+      "destinationPath": "docs/legacy/donor/extension/options/toast.js"
+    },
+    {
+      "path": "extension/options/v062.css",
+      "mode": "100644",
+      "blobSha": "f215c89c728e4eb44de0e022f6cbf916ed00b6e5",
+      "size": 19572,
+      "destinationPath": "docs/legacy/donor/extension/options/v062.css"
+    },
+    {
+      "path": "extension/options/workflow-control.js",
+      "mode": "100644",
+      "blobSha": "0307e98c6594a13820ac96129d99377b3a20bdb1",
+      "size": 2269,
+      "destinationPath": "docs/legacy/donor/extension/options/workflow-control.js"
+    },
+    {
+      "path": "extension/pcms/app/action-input.js",
+      "mode": "100644",
+      "blobSha": "8edad3a314f17ef2e621aecd4abe5574541a4072",
+      "size": 7570,
+      "destinationPath": "docs/legacy/donor/extension/pcms/app/action-input.js"
+    },
+    {
+      "path": "extension/pcms/app/app.css",
+      "mode": "100644",
+      "blobSha": "7ed2253c546a70df4375684e4bc6902e8ae32721",
+      "size": 13914,
+      "destinationPath": "docs/legacy/donor/extension/pcms/app/app.css"
+    },
+    {
+      "path": "extension/pcms/app/app.js",
+      "mode": "100644",
+      "blobSha": "75c60003ce97d33a600c1b7efe0e93f438abfa5a",
+      "size": 35305,
+      "destinationPath": "docs/legacy/donor/extension/pcms/app/app.js"
+    },
+    {
+      "path": "extension/pcms/app/contributions.js",
+      "mode": "100644",
+      "blobSha": "a5c6b93c5c871c76dc4b337e10d004fd78b0055d",
+      "size": 6847,
+      "destinationPath": "docs/legacy/donor/extension/pcms/app/contributions.js"
+    },
+    {
+      "path": "extension/pcms/app/deep-links.js",
+      "mode": "100644",
+      "blobSha": "8f91da28e23dac76c75debb613a44300f9d59569",
+      "size": 3474,
+      "destinationPath": "docs/legacy/donor/extension/pcms/app/deep-links.js"
+    },
+    {
+      "path": "extension/pcms/app/errors.js",
+      "mode": "100644",
+      "blobSha": "f203281dd1ac7bf712453b544e820572308b603d",
+      "size": 750,
+      "destinationPath": "docs/legacy/donor/extension/pcms/app/errors.js"
+    },
+    {
+      "path": "extension/pcms/app/index.html",
+      "mode": "100644",
+      "blobSha": "60b08c3a9e7b0ee016ce3b44cd5f57983af18fca",
+      "size": 10112,
+      "destinationPath": "docs/legacy/donor/extension/pcms/app/index.html"
+    },
+    {
+      "path": "extension/pcms/app/live-controls.js",
+      "mode": "100644",
+      "blobSha": "b6eadcd4b14511578c305713eeb0f4560ade67be",
+      "size": 4879,
+      "destinationPath": "docs/legacy/donor/extension/pcms/app/live-controls.js"
+    },
+    {
+      "path": "extension/pcms/app/live-runtime.js",
+      "mode": "100644",
+      "blobSha": "8d7bc4825315674fe95c4d1e206f6a3bcdc5ff17",
+      "size": 4211,
+      "destinationPath": "docs/legacy/donor/extension/pcms/app/live-runtime.js"
+    },
+    {
+      "path": "extension/pcms/app/module-actions.js",
+      "mode": "100644",
+      "blobSha": "aa51af7d682207865e2e20de87409778cc216bc4",
+      "size": 4775,
+      "destinationPath": "docs/legacy/donor/extension/pcms/app/module-actions.js"
+    },
+    {
+      "path": "extension/pcms/app/module-frame-host.js",
+      "mode": "100644",
+      "blobSha": "a79f0336a16f347709e0f75173f148c17469a26a",
+      "size": 9540,
+      "destinationPath": "docs/legacy/donor/extension/pcms/app/module-frame-host.js"
+    },
+    {
+      "path": "extension/pcms/app/module-projections.js",
+      "mode": "100644",
+      "blobSha": "c3cea783354e2757de8da75cc3809db3a93de83d",
+      "size": 3024,
+      "destinationPath": "docs/legacy/donor/extension/pcms/app/module-projections.js"
+    },
+    {
+      "path": "extension/pcms/app/module-view.js",
+      "mode": "100644",
+      "blobSha": "d92d78824c5589e2ce93a047fb68c5df56c51507",
+      "size": 13863,
+      "destinationPath": "docs/legacy/donor/extension/pcms/app/module-view.js"
+    },
+    {
+      "path": "extension/pcms/app/primitives.js",
+      "mode": "100644",
+      "blobSha": "7b739fb5d6c2d3feac1c94dbb8f8bcbb975e02fe",
+      "size": 2404,
+      "destinationPath": "docs/legacy/donor/extension/pcms/app/primitives.js"
+    },
+    {
+      "path": "extension/pcms/app/projections.js",
+      "mode": "100644",
+      "blobSha": "3b6235ebb64fabfcdc4b8ea2e511f8f0a816b839",
+      "size": 8489,
+      "destinationPath": "docs/legacy/donor/extension/pcms/app/projections.js"
+    },
+    {
+      "path": "extension/pcms/app/router-v2.js",
+      "mode": "100644",
+      "blobSha": "2c57f8f25f5177c95bd8fc97f5cd30582d0984ee",
+      "size": 9152,
+      "destinationPath": "docs/legacy/donor/extension/pcms/app/router-v2.js"
+    },
+    {
+      "path": "extension/pcms/app/startup-retry.js",
+      "mode": "100644",
+      "blobSha": "8e063d211c096b9775df3cef544ac3300c065941",
+      "size": 1034,
+      "destinationPath": "docs/legacy/donor/extension/pcms/app/startup-retry.js"
+    },
+    {
+      "path": "extension/pcms/app/ui-client.js",
+      "mode": "100644",
+      "blobSha": "33bc38b13953305795789de6d58462d2ded001e1",
+      "size": 5763,
+      "destinationPath": "docs/legacy/donor/extension/pcms/app/ui-client.js"
+    },
+    {
+      "path": "extension/pcms/app/ui/picker/entity-picker.js",
+      "mode": "100644",
+      "blobSha": "d942ed65ac0d64320a1e2020fa541eb8267e7037",
+      "size": 2865,
+      "destinationPath": "docs/legacy/donor/extension/pcms/app/ui/picker/entity-picker.js"
+    },
+    {
+      "path": "extension/pcms/app/views/accounts/accounts-view.js",
+      "mode": "100644",
+      "blobSha": "4cda6097ee69c8d9c0803e99a9634da281b20523",
+      "size": 15823,
+      "destinationPath": "docs/legacy/donor/extension/pcms/app/views/accounts/accounts-view.js"
+    },
+    {
+      "path": "extension/pcms/app/views/accounts/accounts.css",
+      "mode": "100644",
+      "blobSha": "64d3482f04e938f0f818d017de1c2ce858ff3918",
+      "size": 3616,
+      "destinationPath": "docs/legacy/donor/extension/pcms/app/views/accounts/accounts.css"
+    },
+    {
+      "path": "extension/pcms/app/views/accounts/model.js",
+      "mode": "100644",
+      "blobSha": "8c1a80f79f634e96b6db56f9f081698b334c815d",
+      "size": 4913,
+      "destinationPath": "docs/legacy/donor/extension/pcms/app/views/accounts/model.js"
+    },
+    {
+      "path": "extension/pcms/app/views/generators/generators-view.js",
+      "mode": "100644",
+      "blobSha": "d1bb088ae60c01b09c5cc3e493b6629fbb6110b8",
+      "size": 34558,
+      "destinationPath": "docs/legacy/donor/extension/pcms/app/views/generators/generators-view.js"
+    },
+    {
+      "path": "extension/pcms/app/views/generators/generators.css",
+      "mode": "100644",
+      "blobSha": "b7b21221f4801f462723dab2b05750ff7301a3ea",
+      "size": 3142,
+      "destinationPath": "docs/legacy/donor/extension/pcms/app/views/generators/generators.css"
+    },
+    {
+      "path": "extension/pcms/app/views/generators/model.js",
+      "mode": "100644",
+      "blobSha": "f34ce59b425073a61ca13aac34efbfe2d4eac50e",
+      "size": 6233,
+      "destinationPath": "docs/legacy/donor/extension/pcms/app/views/generators/model.js"
+    },
+    {
+      "path": "extension/pcms/app/views/settings/backup-model.js",
+      "mode": "100644",
+      "blobSha": "92c932876ec37a55e69e2484491567cd8547cc88",
+      "size": 6952,
+      "destinationPath": "docs/legacy/donor/extension/pcms/app/views/settings/backup-model.js"
+    },
+    {
+      "path": "extension/pcms/app/views/settings/modules-model.js",
+      "mode": "100644",
+      "blobSha": "18b6a58ecdc5247ea6bb262bb116e6f9a0cf1c35",
+      "size": 7027,
+      "destinationPath": "docs/legacy/donor/extension/pcms/app/views/settings/modules-model.js"
+    },
+    {
+      "path": "extension/pcms/app/views/settings/settings-view.js",
+      "mode": "100644",
+      "blobSha": "6e49b3174ba03c0d496682395d3bcea4af26f0a7",
+      "size": 21568,
+      "destinationPath": "docs/legacy/donor/extension/pcms/app/views/settings/settings-view.js"
+    },
+    {
+      "path": "extension/pcms/app/views/settings/settings.css",
+      "mode": "100644",
+      "blobSha": "a0f53f034e4456dcf9df17eb3c4bf5161196bfd4",
+      "size": 2566,
+      "destinationPath": "docs/legacy/donor/extension/pcms/app/views/settings/settings.css"
+    },
+    {
+      "path": "extension/pcms/audit/errors.js",
+      "mode": "100644",
+      "blobSha": "c2f3363957a8309cd9f087caffb079d6e8ab062a",
+      "size": 935,
+      "destinationPath": "docs/legacy/donor/extension/pcms/audit/errors.js"
+    },
+    {
+      "path": "extension/pcms/audit/indexeddb-journal.js",
+      "mode": "100644",
+      "blobSha": "ed3470c5c6742464fb000a255ae4273d3839945c",
+      "size": 11249,
+      "destinationPath": "docs/legacy/donor/extension/pcms/audit/indexeddb-journal.js"
+    },
+    {
+      "path": "extension/pcms/audit/journal.js",
+      "mode": "100644",
+      "blobSha": "7127cfc7205ba844346d05956e9a59ffb3451648",
+      "size": 3921,
+      "destinationPath": "docs/legacy/donor/extension/pcms/audit/journal.js"
+    },
+    {
+      "path": "extension/pcms/audit/schema.js",
+      "mode": "100644",
+      "blobSha": "b6f8b0c5a5818372d8632a0647c056c403d12239",
+      "size": 9718,
+      "destinationPath": "docs/legacy/donor/extension/pcms/audit/schema.js"
+    },
+    {
+      "path": "extension/pcms/background/alarms/continuity-fixture.js",
+      "mode": "100644",
+      "blobSha": "b516752b821056e8cec9b3099df6247ae6742aae",
+      "size": 1395,
+      "destinationPath": "docs/legacy/donor/extension/pcms/background/alarms/continuity-fixture.js"
+    },
+    {
+      "path": "extension/pcms/background/alarms/coordinator.js",
+      "mode": "100644",
+      "blobSha": "1e338f870bab5460eea68b1cdf5c7956c9608bb2",
+      "size": 4037,
+      "destinationPath": "docs/legacy/donor/extension/pcms/background/alarms/coordinator.js"
+    },
+    {
+      "path": "extension/pcms/background/core-factory.js",
+      "mode": "100644",
+      "blobSha": "19ec7613cf83676c33f6c9f7291503d9728e74c9",
+      "size": 11632,
+      "destinationPath": "docs/legacy/donor/extension/pcms/background/core-factory.js"
+    },
+    {
+      "path": "extension/pcms/background/core-host.js",
+      "mode": "100644",
+      "blobSha": "31bd15a095e9020d893825470ced82bae781e48d",
+      "size": 8504,
+      "destinationPath": "docs/legacy/donor/extension/pcms/background/core-host.js"
+    },
+    {
+      "path": "extension/pcms/background/entry.js",
+      "mode": "100644",
+      "blobSha": "32eafeb26b7904201455af080251b1702719820b",
+      "size": 3254,
+      "destinationPath": "docs/legacy/donor/extension/pcms/background/entry.js"
+    },
+    {
+      "path": "extension/pcms/background/feature-factories.js",
+      "mode": "100644",
+      "blobSha": "cf4cc84e86bfb08dfd6a372873b57cd67b3c8709",
+      "size": 951,
+      "destinationPath": "docs/legacy/donor/extension/pcms/background/feature-factories.js"
+    },
+    {
+      "path": "extension/pcms/background/modules/capabilities.js",
+      "mode": "100644",
+      "blobSha": "9c440f022c8d82fa91ce6454890867581583ed11",
+      "size": 21897,
+      "destinationPath": "docs/legacy/donor/extension/pcms/background/modules/capabilities.js"
+    },
+    {
+      "path": "extension/pcms/background/modules/host.js",
+      "mode": "100644",
+      "blobSha": "8572871250616bb8e23809edd41de4fb8d504970",
+      "size": 2145,
+      "destinationPath": "docs/legacy/donor/extension/pcms/background/modules/host.js"
+    },
+    {
+      "path": "extension/pcms/background/modules/schedules.js",
+      "mode": "100644",
+      "blobSha": "fa45fa266fe6f9d621a15c9c50711d3c5f8fdf7d",
+      "size": 4798,
+      "destinationPath": "docs/legacy/donor/extension/pcms/background/modules/schedules.js"
+    },
+    {
+      "path": "extension/pcms/background/modules/supervisor.js",
+      "mode": "100644",
+      "blobSha": "210e637d26937cfe5cf154fd7b695531469862a5",
+      "size": 28964,
+      "destinationPath": "docs/legacy/donor/extension/pcms/background/modules/supervisor.js"
+    },
+    {
+      "path": "extension/pcms/background/sandbox/frame-factory.js",
+      "mode": "100644",
+      "blobSha": "f0949919fee9f69304c140772c61947458151bce",
+      "size": 6522,
+      "destinationPath": "docs/legacy/donor/extension/pcms/background/sandbox/frame-factory.js"
+    },
+    {
+      "path": "extension/pcms/background/ui-dispatcher.js",
+      "mode": "100644",
+      "blobSha": "f3bd26ec244fb2933370010d8466b95af3b9b6c8",
+      "size": 9625,
+      "destinationPath": "docs/legacy/donor/extension/pcms/background/ui-dispatcher.js"
+    },
+    {
+      "path": "extension/pcms/core/bootstrap.js",
+      "mode": "100644",
+      "blobSha": "aff9008ceea6b5733948380a7200ed3e097f35dd",
+      "size": 1448,
+      "destinationPath": "docs/legacy/donor/extension/pcms/core/bootstrap.js"
+    },
+    {
+      "path": "extension/pcms/core/persona-broker-contract.js",
+      "mode": "100644",
+      "blobSha": "6fc09caee4bc42332b4df6f31aaba5d2405fae00",
+      "size": 22884,
+      "destinationPath": "docs/legacy/donor/extension/pcms/core/persona-broker-contract.js"
+    },
+    {
+      "path": "extension/pcms/core/persona-broker.js",
+      "mode": "100644",
+      "blobSha": "e4100b8f28ccc13055c7bb3bbb58fe04314b7e17",
+      "size": 10043,
+      "destinationPath": "docs/legacy/donor/extension/pcms/core/persona-broker.js"
+    },
+    {
+      "path": "extension/pcms/index.html",
+      "mode": "100644",
+      "blobSha": "6b8854cdeb90d3ccbf1b44135bc3b3fa83ace8ca",
+      "size": 3894,
+      "destinationPath": "docs/legacy/donor/extension/pcms/index.html"
+    },
+    {
+      "path": "extension/pcms/integration/adapters.js",
+      "mode": "100644",
+      "blobSha": "e4d8c23710889c072a527d60acf5bee01aa5200f",
+      "size": 7158,
+      "destinationPath": "docs/legacy/donor/extension/pcms/integration/adapters.js"
+    },
+    {
+      "path": "extension/pcms/integration/bundled-modules.js",
+      "mode": "100644",
+      "blobSha": "47d1b17432f13097ea489f0be85b22369e7cd366",
+      "size": 3489,
+      "destinationPath": "docs/legacy/donor/extension/pcms/integration/bundled-modules.js"
+    },
+    {
+      "path": "extension/pcms/integration/composition.js",
+      "mode": "100644",
+      "blobSha": "16abc2f10183883d963285fb5d65e167d5d07d9c",
+      "size": 13152,
+      "destinationPath": "docs/legacy/donor/extension/pcms/integration/composition.js"
+    },
+    {
+      "path": "extension/pcms/integration/deployer-automatic.js",
+      "mode": "100644",
+      "blobSha": "42934632b7d65133885f25a852917f73f147d17c",
+      "size": 1409,
+      "destinationPath": "docs/legacy/donor/extension/pcms/integration/deployer-automatic.js"
+    },
+    {
+      "path": "extension/pcms/integration/deployer-observations.js",
+      "mode": "100644",
+      "blobSha": "7a52526743fbe08dabb4da0c2d5fa2801e801b93",
+      "size": 860,
+      "destinationPath": "docs/legacy/donor/extension/pcms/integration/deployer-observations.js"
+    },
+    {
+      "path": "extension/pcms/integration/errors.js",
+      "mode": "100644",
+      "blobSha": "23f2108e0cb191b5c7972ab0a8e8fa5d1d3392e9",
+      "size": 1419,
+      "destinationPath": "docs/legacy/donor/extension/pcms/integration/errors.js"
+    },
+    {
+      "path": "extension/pcms/integration/explorer-deployer.js",
+      "mode": "100644",
+      "blobSha": "71bb477213ea6630c763f13a7d3177ad121285e0",
+      "size": 3252,
+      "destinationPath": "docs/legacy/donor/extension/pcms/integration/explorer-deployer.js"
+    },
+    {
+      "path": "extension/pcms/integration/generator-index.js",
+      "mode": "100644",
+      "blobSha": "d5bc4840626b4b7866144c2bfc4d8738e8a30854",
+      "size": 12155,
+      "destinationPath": "docs/legacy/donor/extension/pcms/integration/generator-index.js"
+    },
+    {
+      "path": "extension/pcms/integration/live-core.js",
+      "mode": "100644",
+      "blobSha": "7aa2ce962558ec7f7c69693fd96b4041a67c905c",
+      "size": 7297,
+      "destinationPath": "docs/legacy/donor/extension/pcms/integration/live-core.js"
+    },
+    {
+      "path": "extension/pcms/integration/live-mutations.js",
+      "mode": "100644",
+      "blobSha": "07a8b8d7cfb322ab435db989656006fc7db97fe3",
+      "size": 18306,
+      "destinationPath": "docs/legacy/donor/extension/pcms/integration/live-mutations.js"
+    },
+    {
+      "path": "extension/pcms/integration/provider-handoff.js",
+      "mode": "100644",
+      "blobSha": "5851f922daa0390172172d9df9de22d007eb793b",
+      "size": 9765,
+      "destinationPath": "docs/legacy/donor/extension/pcms/integration/provider-handoff.js"
+    },
+    {
+      "path": "extension/pcms/integration/recovery-checks.js",
+      "mode": "100644",
+      "blobSha": "61179315cde59e0d8cac366c5ba71a9ed2b517e4",
+      "size": 2149,
+      "destinationPath": "docs/legacy/donor/extension/pcms/integration/recovery-checks.js"
+    },
+    {
+      "path": "extension/pcms/integration/refresher-background.js",
+      "mode": "100644",
+      "blobSha": "bb7accdbb57e7933613b3637cbee2a908658bc3e",
+      "size": 5035,
+      "destinationPath": "docs/legacy/donor/extension/pcms/integration/refresher-background.js"
+    },
+    {
+      "path": "extension/pcms/integration/ui-client-contract.js",
+      "mode": "100644",
+      "blobSha": "d06bdd872c2a593c2bba2a9e91af2d3d8d023139",
+      "size": 11401,
+      "destinationPath": "docs/legacy/donor/extension/pcms/integration/ui-client-contract.js"
+    },
+    {
+      "path": "extension/pcms/integration/ui-contribution-contract.js",
+      "mode": "100644",
+      "blobSha": "088c628ad377927d3fbdc849b7175ed23e02278b",
+      "size": 32435,
+      "destinationPath": "docs/legacy/donor/extension/pcms/integration/ui-contribution-contract.js"
+    },
+    {
+      "path": "extension/pcms/integration/ui-contributions.js",
+      "mode": "100644",
+      "blobSha": "e9b11bb326bd24a6e0d82dac97dfac4782baa014",
+      "size": 33761,
+      "destinationPath": "docs/legacy/donor/extension/pcms/integration/ui-contributions.js"
+    },
+    {
+      "path": "extension/pcms/modules/authority.js",
+      "mode": "100644",
+      "blobSha": "ea5b9dce5c818c6eb9e4c2a2e23c97eccb55074e",
+      "size": 2405,
+      "destinationPath": "docs/legacy/donor/extension/pcms/modules/authority.js"
+    },
+    {
+      "path": "extension/pcms/modules/errors.js",
+      "mode": "100644",
+      "blobSha": "66f322db277e828cb4adb211388f5408e9baa423",
+      "size": 2569,
+      "destinationPath": "docs/legacy/donor/extension/pcms/modules/errors.js"
+    },
+    {
+      "path": "extension/pcms/modules/lifecycle-errors.js",
+      "mode": "100644",
+      "blobSha": "cc71580a93e1e353b84205cac8949d8104644753",
+      "size": 1747,
+      "destinationPath": "docs/legacy/donor/extension/pcms/modules/lifecycle-errors.js"
+    },
+    {
+      "path": "extension/pcms/modules/lifecycle.js",
+      "mode": "100644",
+      "blobSha": "7aaf3ef0a9e1bb6f5d8f70c648730ae8533b69c9",
+      "size": 17204,
+      "destinationPath": "docs/legacy/donor/extension/pcms/modules/lifecycle.js"
+    },
+    {
+      "path": "extension/pcms/modules/package.js",
+      "mode": "100644",
+      "blobSha": "c6ecf270e181ad03d99d5489911b7d291ed75e34",
+      "size": 9080,
+      "destinationPath": "docs/legacy/donor/extension/pcms/modules/package.js"
+    },
+    {
+      "path": "extension/pcms/modules/registry.js",
+      "mode": "100644",
+      "blobSha": "2f3a65acdecc0c799f2398aa2537a185285c31aa",
+      "size": 23376,
+      "destinationPath": "docs/legacy/donor/extension/pcms/modules/registry.js"
+    },
+    {
+      "path": "extension/pcms/pcms.css",
+      "mode": "100644",
+      "blobSha": "03e4b13d36be04c1a142390eb6b248b293f0b987",
+      "size": 10223,
+      "destinationPath": "docs/legacy/donor/extension/pcms/pcms.css"
+    },
+    {
+      "path": "extension/pcms/pcms.js",
+      "mode": "100644",
+      "blobSha": "1b2881f30fa270e67e8b51ce298640dfd9feee3f",
+      "size": 27693,
+      "destinationPath": "docs/legacy/donor/extension/pcms/pcms.js"
+    },
+    {
+      "path": "extension/pcms/platform/firefox-persona-broker-transport.js",
+      "mode": "100644",
+      "blobSha": "3988d6160cd4bbe003cc39d346846cc6538bfa17",
+      "size": 1671,
+      "destinationPath": "docs/legacy/donor/extension/pcms/platform/firefox-persona-broker-transport.js"
+    },
+    {
+      "path": "extension/pcms/platform/firefox-ui-client-transport.js",
+      "mode": "100644",
+      "blobSha": "97c8c215fda61547a0bc9cc485d2e55835dd7e0a",
+      "size": 1857,
+      "destinationPath": "docs/legacy/donor/extension/pcms/platform/firefox-ui-client-transport.js"
+    },
+    {
+      "path": "extension/pcms/providers/perchance/adapter.js",
+      "mode": "100644",
+      "blobSha": "eaf6fff46ae93011857f81a24019ec311f7335a1",
+      "size": 6789,
+      "destinationPath": "docs/legacy/donor/extension/pcms/providers/perchance/adapter.js"
+    },
+    {
+      "path": "extension/pcms/providers/perchance/assisted-driver.js",
+      "mode": "100644",
+      "blobSha": "980670f2360715644732560a52d36790d3304eb6",
+      "size": 3465,
+      "destinationPath": "docs/legacy/donor/extension/pcms/providers/perchance/assisted-driver.js"
+    },
+    {
+      "path": "extension/pcms/providers/perchance/contract.js",
+      "mode": "100644",
+      "blobSha": "af6c8af54485cc93bf7ada39d917ea06ed66875f",
+      "size": 14737,
+      "destinationPath": "docs/legacy/donor/extension/pcms/providers/perchance/contract.js"
+    },
+    {
+      "path": "extension/pcms/providers/perchance/deploy-artifact.js",
+      "mode": "100644",
+      "blobSha": "7b0d82dcee9d0ef0cb0f9f66c6aaa64eb55fcc1e",
+      "size": 3931,
+      "destinationPath": "docs/legacy/donor/extension/pcms/providers/perchance/deploy-artifact.js"
+    },
+    {
+      "path": "extension/pcms/providers/perchance/emulator.js",
+      "mode": "100644",
+      "blobSha": "d739140676a98637a170069ca40cab1ee1c8bb36",
+      "size": 6451,
+      "destinationPath": "docs/legacy/donor/extension/pcms/providers/perchance/emulator.js"
+    },
+    {
+      "path": "extension/pcms/providers/perchance/errors.js",
+      "mode": "100644",
+      "blobSha": "12e92b09a7273533a50d87cebed352b2f2c4c8ee",
+      "size": 850,
+      "destinationPath": "docs/legacy/donor/extension/pcms/providers/perchance/errors.js"
+    },
+    {
+      "path": "extension/pcms/providers/perchance/execution-read-driver.js",
+      "mode": "100644",
+      "blobSha": "10ab9bd28793073399b820314dadc22bab4df698",
+      "size": 5378,
+      "destinationPath": "docs/legacy/donor/extension/pcms/providers/perchance/execution-read-driver.js"
+    },
+    {
+      "path": "extension/pcms/providers/perchance/execution-update-driver.js",
+      "mode": "100644",
+      "blobSha": "1ec2200d7baabd1e0353f972e0a74fdc508d4f19",
+      "size": 9838,
+      "destinationPath": "docs/legacy/donor/extension/pcms/providers/perchance/execution-update-driver.js"
+    },
+    {
+      "path": "extension/pcms/providers/perchance/listing.js",
+      "mode": "100644",
+      "blobSha": "416bdd74420062c92e41943f18a30ac022e86f40",
+      "size": 2257,
+      "destinationPath": "docs/legacy/donor/extension/pcms/providers/perchance/listing.js"
+    },
+    {
+      "path": "extension/pcms/providers/perchance/observation.js",
+      "mode": "100644",
+      "blobSha": "3c48e78cad82523e761ff6b8280771d40315fc83",
+      "size": 2722,
+      "destinationPath": "docs/legacy/donor/extension/pcms/providers/perchance/observation.js"
+    },
+    {
+      "path": "extension/pcms/providers/perchance/observe-artifact.js",
+      "mode": "100644",
+      "blobSha": "31b5189b1b0b8da64bb5e1e05bc3c99c4e366a38",
+      "size": 3497,
+      "destinationPath": "docs/legacy/donor/extension/pcms/providers/perchance/observe-artifact.js"
+    },
+    {
+      "path": "extension/pcms/providers/repository/contract.js",
+      "mode": "100644",
+      "blobSha": "c51f496e4b9ee3d0126091912e081e62b1981853",
+      "size": 4707,
+      "destinationPath": "docs/legacy/donor/extension/pcms/providers/repository/contract.js"
+    },
+    {
+      "path": "extension/pcms/providers/repository/fixture.js",
+      "mode": "100644",
+      "blobSha": "3f594aaee8fc82b20279979cf129709a6aa6df10",
+      "size": 3436,
+      "destinationPath": "docs/legacy/donor/extension/pcms/providers/repository/fixture.js"
+    },
+    {
+      "path": "extension/pcms/providers/repository/github.js",
+      "mode": "100644",
+      "blobSha": "26649d578aa1d27c2bdbbd153c6051936bd561f0",
+      "size": 7978,
+      "destinationPath": "docs/legacy/donor/extension/pcms/providers/repository/github.js"
+    },
+    {
+      "path": "extension/pcms/recovery/backup-restore.js",
+      "mode": "100644",
+      "blobSha": "42bfafada6d3fb96ee2551d6594ee72d13a6965d",
+      "size": 15498,
+      "destinationPath": "docs/legacy/donor/extension/pcms/recovery/backup-restore.js"
+    },
+    {
+      "path": "extension/pcms/recovery/errors.js",
+      "mode": "100644",
+      "blobSha": "86800d196a6d3b951d568d36c62bd9ac2dcc2dd3",
+      "size": 1948,
+      "destinationPath": "docs/legacy/donor/extension/pcms/recovery/errors.js"
+    },
+    {
+      "path": "extension/pcms/recovery/preview.js",
+      "mode": "100644",
+      "blobSha": "46b3d98491909a6d6aeb206783658eacc58743eb",
+      "size": 3969,
+      "destinationPath": "docs/legacy/donor/extension/pcms/recovery/preview.js"
+    },
+    {
+      "path": "extension/pcms/recovery/retention.js",
+      "mode": "100644",
+      "blobSha": "3f1ee300e2623906c83f103679fed9bb3bf0d19b",
+      "size": 1106,
+      "destinationPath": "docs/legacy/donor/extension/pcms/recovery/retention.js"
+    },
+    {
+      "path": "extension/pcms/recovery/schema.js",
+      "mode": "100644",
+      "blobSha": "b36fbe58372eb8805f68087acc7596904e315d78",
+      "size": 8081,
+      "destinationPath": "docs/legacy/donor/extension/pcms/recovery/schema.js"
+    },
+    {
+      "path": "extension/pcms/remoteops/errors.js",
+      "mode": "100644",
+      "blobSha": "bee36fdbefcb48bb2358d3eef21f986d354300fc",
+      "size": 2181,
+      "destinationPath": "docs/legacy/donor/extension/pcms/remoteops/errors.js"
+    },
+    {
+      "path": "extension/pcms/remoteops/provider-gate.js",
+      "mode": "100644",
+      "blobSha": "025f80fed85caa5d95c483c522e6c9da09238626",
+      "size": 5413,
+      "destinationPath": "docs/legacy/donor/extension/pcms/remoteops/provider-gate.js"
+    },
+    {
+      "path": "extension/pcms/remoteops/recovery-hold.js",
+      "mode": "100644",
+      "blobSha": "0e33f659d5f001b24c9e0207654fa55bb3ad0881",
+      "size": 5095,
+      "destinationPath": "docs/legacy/donor/extension/pcms/remoteops/recovery-hold.js"
+    },
+    {
+      "path": "extension/pcms/remoteops/remote-ops.js",
+      "mode": "100644",
+      "blobSha": "6a4b8e221a8aab99c684cdd1a16dc7496fd246fc",
+      "size": 7713,
+      "destinationPath": "docs/legacy/donor/extension/pcms/remoteops/remote-ops.js"
+    },
+    {
+      "path": "extension/pcms/remoteops/schema.js",
+      "mode": "100644",
+      "blobSha": "55b66d5de2ded664cc012abe199be1d7f6a6ad8c",
+      "size": 5909,
+      "destinationPath": "docs/legacy/donor/extension/pcms/remoteops/schema.js"
+    },
+    {
+      "path": "extension/pcms/runtime/browser-floor.js",
+      "mode": "100644",
+      "blobSha": "011dbe271e14390fd042fa4f931d9eb2e8aa22d2",
+      "size": 5972,
+      "destinationPath": "docs/legacy/donor/extension/pcms/runtime/browser-floor.js"
+    },
+    {
+      "path": "extension/pcms/runtime/errors.js",
+      "mode": "100644",
+      "blobSha": "6a5c4ef883baec67e536afc8105d0e0aa9421b3d",
+      "size": 2307,
+      "destinationPath": "docs/legacy/donor/extension/pcms/runtime/errors.js"
+    },
+    {
+      "path": "extension/pcms/runtime/module-runtime.js",
+      "mode": "100644",
+      "blobSha": "0ebc62fff68178055563b3bf789cd3621b396ed0",
+      "size": 21156,
+      "destinationPath": "docs/legacy/donor/extension/pcms/runtime/module-runtime.js"
+    },
+    {
+      "path": "extension/pcms/runtime/sandbox-host.js",
+      "mode": "100644",
+      "blobSha": "e781d4f1f881415926a461e0415b65069ce2b817",
+      "size": 10439,
+      "destinationPath": "docs/legacy/donor/extension/pcms/runtime/sandbox-host.js"
+    },
+    {
+      "path": "extension/pcms/sandbox/controller-runtime.js",
+      "mode": "100644",
+      "blobSha": "bc8bc701adcc7e43d64e9c5bc7f9d2e3753c20a7",
+      "size": 10471,
+      "destinationPath": "docs/legacy/donor/extension/pcms/sandbox/controller-runtime.js"
+    },
+    {
+      "path": "extension/pcms/sandbox/controller.html",
+      "mode": "100644",
+      "blobSha": "b637df4570f204bc099b3e34e2d6a0ed9efca72a",
+      "size": 580,
+      "destinationPath": "docs/legacy/donor/extension/pcms/sandbox/controller.html"
+    },
+    {
+      "path": "extension/pcms/sandbox/controller.js",
+      "mode": "100644",
+      "blobSha": "e17d2fa642362b5bdb79bd199963544cf8e7f030",
+      "size": 21143,
+      "destinationPath": "docs/legacy/donor/extension/pcms/sandbox/controller.js"
+    },
+    {
+      "path": "extension/pcms/sandbox/manifest-fragment.json",
+      "mode": "100644",
+      "blobSha": "24c50b000696b6773dc6e22843b42f7e5c73b841",
+      "size": 372,
+      "destinationPath": "docs/legacy/donor/extension/pcms/sandbox/manifest-fragment.json"
+    },
+    {
+      "path": "extension/pcms/sandbox/module-ui.css",
+      "mode": "100644",
+      "blobSha": "22cc95a5a009ad7d8f92c8403d6a6260d98a74e8",
+      "size": 2527,
+      "destinationPath": "docs/legacy/donor/extension/pcms/sandbox/module-ui.css"
+    },
+    {
+      "path": "extension/pcms/sandbox/module-ui.html",
+      "mode": "100644",
+      "blobSha": "d1b5826e0eaee93e3df2c415ab9f36231b54b5a5",
+      "size": 792,
+      "destinationPath": "docs/legacy/donor/extension/pcms/sandbox/module-ui.html"
+    },
+    {
+      "path": "extension/pcms/sandbox/module-ui.js",
+      "mode": "100644",
+      "blobSha": "965400e64a03af766e9f87b908686b3629fa0175",
+      "size": 8290,
+      "destinationPath": "docs/legacy/donor/extension/pcms/sandbox/module-ui.js"
+    },
+    {
+      "path": "extension/pcms/sandbox/protocol.js",
+      "mode": "100644",
+      "blobSha": "af59387bc18913ec010f9625848751b662f45e55",
+      "size": 9857,
+      "destinationPath": "docs/legacy/donor/extension/pcms/sandbox/protocol.js"
+    },
+    {
+      "path": "extension/pcms/secrets/errors.js",
+      "mode": "100644",
+      "blobSha": "be2584b5447ddc59bb04ebb1d488549bfb65bebb",
+      "size": 1784,
+      "destinationPath": "docs/legacy/donor/extension/pcms/secrets/errors.js"
+    },
+    {
+      "path": "extension/pcms/secrets/native-secret-backend.js",
+      "mode": "100644",
+      "blobSha": "046116819f537ba105d552faa8231a77d9518e6d",
+      "size": 3266,
+      "destinationPath": "docs/legacy/donor/extension/pcms/secrets/native-secret-backend.js"
+    },
+    {
+      "path": "extension/pcms/secrets/protocol.js",
+      "mode": "100644",
+      "blobSha": "2c1df200d391e7c7491082e3e350a03af809bcb7",
+      "size": 4237,
+      "destinationPath": "docs/legacy/donor/extension/pcms/secrets/protocol.js"
+    },
+    {
+      "path": "extension/pcms/secrets/secret-ref.js",
+      "mode": "100644",
+      "blobSha": "f5c3009d1745d23c047285fbacaa4aacb942a2c5",
+      "size": 1126,
+      "destinationPath": "docs/legacy/donor/extension/pcms/secrets/secret-ref.js"
+    },
+    {
+      "path": "extension/pcms/secrets/secret-store.js",
+      "mode": "100644",
+      "blobSha": "a913708cb9e8656aa4fcb4a1ce57c661b0387475",
+      "size": 2831,
+      "destinationPath": "docs/legacy/donor/extension/pcms/secrets/secret-store.js"
+    },
+    {
+      "path": "extension/pcms/services/errors.js",
+      "mode": "100644",
+      "blobSha": "03dce3e0e9318493b4b70b192513ca448be13ffa",
+      "size": 1903,
+      "destinationPath": "docs/legacy/donor/extension/pcms/services/errors.js"
+    },
+    {
+      "path": "extension/pcms/services/human-tasks.js",
+      "mode": "100644",
+      "blobSha": "dfab2d71c5503caa00e87eb14288f5603073c278",
+      "size": 8120,
+      "destinationPath": "docs/legacy/donor/extension/pcms/services/human-tasks.js"
+    },
+    {
+      "path": "extension/pcms/services/registry.js",
+      "mode": "100644",
+      "blobSha": "37126d963d6da05b15074585d984df2af423ff93",
+      "size": 5090,
+      "destinationPath": "docs/legacy/donor/extension/pcms/services/registry.js"
+    },
+    {
+      "path": "extension/pcms/services/timers.js",
+      "mode": "100644",
+      "blobSha": "f683e228018e80d373b33a42a38fbd5211363b32",
+      "size": 12732,
+      "destinationPath": "docs/legacy/donor/extension/pcms/services/timers.js"
+    },
+    {
+      "path": "extension/pcms/storage/errors.js",
+      "mode": "100644",
+      "blobSha": "90d540b843f6fa0434758928fb06e2491c4b75d8",
+      "size": 863,
+      "destinationPath": "docs/legacy/donor/extension/pcms/storage/errors.js"
+    },
+    {
+      "path": "extension/pcms/storage/indexeddb-backend.js",
+      "mode": "100644",
+      "blobSha": "45aa80856618caa068d10e00109fb3e2abe43c26",
+      "size": 10235,
+      "destinationPath": "docs/legacy/donor/extension/pcms/storage/indexeddb-backend.js"
+    },
+    {
+      "path": "extension/pcms/storage/migrations.js",
+      "mode": "100644",
+      "blobSha": "8cf87143273b0198d70dd1685790eeffdc9a85d1",
+      "size": 1805,
+      "destinationPath": "docs/legacy/donor/extension/pcms/storage/migrations.js"
+    },
+    {
+      "path": "extension/pcms/storage/storage-broker.js",
+      "mode": "100644",
+      "blobSha": "3c95c570e9818ace8710396d880fb7c02ebf7b9e",
+      "size": 9136,
+      "destinationPath": "docs/legacy/donor/extension/pcms/storage/storage-broker.js"
+    },
+    {
+      "path": "extension/popup/popup.css",
+      "mode": "100644",
+      "blobSha": "2012bbf11c101e1de002c015bc93f879f93bc825",
+      "size": 6494,
+      "destinationPath": "docs/legacy/donor/extension/popup/popup.css"
+    },
+    {
+      "path": "extension/popup/popup.html",
+      "mode": "100644",
+      "blobSha": "825e32f9212296ae0aac3118f47e45d3f020e145",
+      "size": 2211,
+      "destinationPath": "docs/legacy/donor/extension/popup/popup.html"
+    },
+    {
+      "path": "extension/popup/popup.js",
+      "mode": "100644",
+      "blobSha": "cd471af4f384692ae6a96dedee33257417170fee",
+      "size": 12940,
+      "destinationPath": "docs/legacy/donor/extension/popup/popup.js"
+    },
+    {
+      "path": "extension/tests/background-routing-init.test.mjs",
+      "mode": "100644",
+      "blobSha": "77c1971ee5aa48317da978ee7a25f0c22b5bea8e",
+      "size": 28222,
+      "destinationPath": "docs/legacy/donor/extension/tests/background-routing-init.test.mjs"
+    },
+    {
+      "path": "extension/tests/background-smoke.test.mjs",
+      "mode": "100644",
+      "blobSha": "21fbf7fe17c88f5c7c5709f0bb82aa3277871412",
+      "size": 60933,
+      "destinationPath": "docs/legacy/donor/extension/tests/background-smoke.test.mjs"
+    },
+    {
+      "path": "extension/tests/backup-import.test.mjs",
+      "mode": "100644",
+      "blobSha": "754a3ab4557da6970b98270a25167f948cc5fb6b",
+      "size": 19641,
+      "destinationPath": "docs/legacy/donor/extension/tests/backup-import.test.mjs"
+    },
+    {
+      "path": "extension/tests/backup-package.test.mjs",
+      "mode": "100644",
+      "blobSha": "3ce9bdf1321faddd36ddf29404b6b810746112eb",
+      "size": 8854,
+      "destinationPath": "docs/legacy/donor/extension/tests/backup-package.test.mjs"
+    },
+    {
+      "path": "extension/tests/confirm-dialog-focus.test.mjs",
+      "mode": "100644",
+      "blobSha": "6acaeed8352030da1a2ded260316234440b4ad6c",
+      "size": 4520,
+      "destinationPath": "docs/legacy/donor/extension/tests/confirm-dialog-focus.test.mjs"
+    },
+    {
+      "path": "extension/tests/cookie-package.test.mjs",
+      "mode": "100644",
+      "blobSha": "340c28a83190e39567041b33c70bd0cadee4eb7b",
+      "size": 3841,
+      "destinationPath": "docs/legacy/donor/extension/tests/cookie-package.test.mjs"
+    },
+    {
+      "path": "extension/tests/diagnostics.test.mjs",
+      "mode": "100644",
+      "blobSha": "a3a4126255bcee039c6c0cfc4de8fa148b4b03dd",
+      "size": 5153,
+      "destinationPath": "docs/legacy/donor/extension/tests/diagnostics.test.mjs"
+    },
+    {
+      "path": "extension/tests/fixtures/workflow-package-contract.json",
+      "mode": "100644",
+      "blobSha": "932dd260d19465173310759cdd0c4c5bdf0d5717",
+      "size": 5523,
+      "destinationPath": "docs/legacy/donor/extension/tests/fixtures/workflow-package-contract.json"
+    },
+    {
+      "path": "extension/tests/focus-return.test.mjs",
+      "mode": "100644",
+      "blobSha": "744ccee2736c39afc9b182cbe269dd698053b4d1",
+      "size": 922,
+      "destinationPath": "docs/legacy/donor/extension/tests/focus-return.test.mjs"
+    },
+    {
+      "path": "extension/tests/gm-compat.test.mjs",
+      "mode": "100644",
+      "blobSha": "e668e768af19d4ae21ab3348ff58c09bcb4edaf7",
+      "size": 1825,
+      "destinationPath": "docs/legacy/donor/extension/tests/gm-compat.test.mjs"
+    },
+    {
+      "path": "extension/tests/gm-scope.test.mjs",
+      "mode": "100644",
+      "blobSha": "526d9f5f46ae9fd018567ad1a513f3079f59d011",
+      "size": 10457,
+      "destinationPath": "docs/legacy/donor/extension/tests/gm-scope.test.mjs"
+    },
+    {
+      "path": "extension/tests/gm-security.test.mjs",
+      "mode": "100644",
+      "blobSha": "4ce8de26de05f76fd3b6166dcd5bcda5dddbc93b",
+      "size": 24575,
+      "destinationPath": "docs/legacy/donor/extension/tests/gm-security.test.mjs"
+    },
+    {
+      "path": "extension/tests/gm-signal-bridge.test.mjs",
+      "mode": "100644",
+      "blobSha": "782f842a0818b3fa5b05a073ca6ceaec7fff4ae9",
+      "size": 1827,
+      "destinationPath": "docs/legacy/donor/extension/tests/gm-signal-bridge.test.mjs"
+    },
+    {
+      "path": "extension/tests/integration-contract-parity.test.mjs",
+      "mode": "100644",
+      "blobSha": "fcb4ee12d3d656f81b60e8601fab9689c68324f0",
+      "size": 8630,
+      "destinationPath": "docs/legacy/donor/extension/tests/integration-contract-parity.test.mjs"
+    },
+    {
+      "path": "extension/tests/integration-lifecycle.test.mjs",
+      "mode": "100644",
+      "blobSha": "f0b3df44d5235eba4f0457ea341d23c33c05864a",
+      "size": 29713,
+      "destinationPath": "docs/legacy/donor/extension/tests/integration-lifecycle.test.mjs"
+    },
+    {
+      "path": "extension/tests/management-integration.test.mjs",
+      "mode": "100644",
+      "blobSha": "9d502a50defb0137b5cb226dcd68ebf8442c39bf",
+      "size": 138628,
+      "destinationPath": "docs/legacy/donor/extension/tests/management-integration.test.mjs"
+    },
+    {
+      "path": "extension/tests/mullvad-native-smoke.test.mjs",
+      "mode": "100644",
+      "blobSha": "ab22c21ffc454ff7b87e2bf8692e854be675a3cd",
+      "size": 4741,
+      "destinationPath": "docs/legacy/donor/extension/tests/mullvad-native-smoke.test.mjs"
+    },
+    {
+      "path": "extension/tests/mullvad-runtime.test.mjs",
+      "mode": "100644",
+      "blobSha": "4ef2e248330b4cf76b15ec26aa871dec184eb8a6",
+      "size": 10213,
+      "destinationPath": "docs/legacy/donor/extension/tests/mullvad-runtime.test.mjs"
+    },
+    {
+      "path": "extension/tests/orchestrator-cancel-races.test.mjs",
+      "mode": "100644",
+      "blobSha": "4025344a71d80165f0a6f6c25270a0dc04b01562",
+      "size": 5509,
+      "destinationPath": "docs/legacy/donor/extension/tests/orchestrator-cancel-races.test.mjs"
+    },
+    {
+      "path": "extension/tests/orchestrator-cancel.test.mjs",
+      "mode": "100644",
+      "blobSha": "1e92c94cf2e76063cc66e9d0015d296928cfb926",
+      "size": 3511,
+      "destinationPath": "docs/legacy/donor/extension/tests/orchestrator-cancel.test.mjs"
+    },
+    {
+      "path": "extension/tests/orchestrator-external-admission.test.mjs",
+      "mode": "100644",
+      "blobSha": "e429bef026199a2cf11b4eb892ea409635128154",
+      "size": 4653,
+      "destinationPath": "docs/legacy/donor/extension/tests/orchestrator-external-admission.test.mjs"
+    },
+    {
+      "path": "extension/tests/orchestrator-external-compaction.test.mjs",
+      "mode": "100644",
+      "blobSha": "1b2ed85f921fb6d5c972c256662b23ef99933fcb",
+      "size": 2157,
+      "destinationPath": "docs/legacy/donor/extension/tests/orchestrator-external-compaction.test.mjs"
+    },
+    {
+      "path": "extension/tests/orchestrator-external.test.mjs",
+      "mode": "100644",
+      "blobSha": "a01dacc5defad2c25419da2b33d9f68a0101238d",
+      "size": 21254,
+      "destinationPath": "docs/legacy/donor/extension/tests/orchestrator-external.test.mjs"
+    },
+    {
+      "path": "extension/tests/orchestrator-limits.test.mjs",
+      "mode": "100644",
+      "blobSha": "90b74c6e1e2abe9003585f5ae09e5eb8d43992e6",
+      "size": 4387,
+      "destinationPath": "docs/legacy/donor/extension/tests/orchestrator-limits.test.mjs"
+    },
+    {
+      "path": "extension/tests/orchestrator-recovery.test.mjs",
+      "mode": "100644",
+      "blobSha": "1be3af6b931362593ff5e439a6be430fec90002d",
+      "size": 3900,
+      "destinationPath": "docs/legacy/donor/extension/tests/orchestrator-recovery.test.mjs"
+    },
+    {
+      "path": "extension/tests/orchestrator-sequential.test.mjs",
+      "mode": "100644",
+      "blobSha": "bf0fe82ac5b00fb85860ff27d5adf8ebd984713e",
+      "size": 3388,
+      "destinationPath": "docs/legacy/donor/extension/tests/orchestrator-sequential.test.mjs"
+    },
+    {
+      "path": "extension/tests/orchestrator.test.mjs",
+      "mode": "100644",
+      "blobSha": "c9b479b9ae9fb6e09eeb9aace0f273c5442e1356",
+      "size": 19969,
+      "destinationPath": "docs/legacy/donor/extension/tests/orchestrator.test.mjs"
+    },
+    {
+      "path": "extension/tests/package-inspector.test.mjs",
+      "mode": "100644",
+      "blobSha": "0a091f8ed8c9ec9f378253ee02b03dca80a9551b",
+      "size": 2288,
+      "destinationPath": "docs/legacy/donor/extension/tests/package-inspector.test.mjs"
+    },
+    {
+      "path": "extension/tests/pcms-contract-hardening.test.mjs",
+      "mode": "100644",
+      "blobSha": "6b796579f4d34ffe6ecbefe338015ffeae7ba433",
+      "size": 5111,
+      "destinationPath": "docs/legacy/donor/extension/tests/pcms-contract-hardening.test.mjs"
+    },
+    {
+      "path": "extension/tests/pcms-control-plane.test.mjs",
+      "mode": "100644",
+      "blobSha": "e893ac4303cfccb26cffef13ae8772c03d46e358",
+      "size": 19599,
+      "destinationPath": "docs/legacy/donor/extension/tests/pcms-control-plane.test.mjs"
+    },
+    {
+      "path": "extension/tests/pcms-events-client.test.mjs",
+      "mode": "100644",
+      "blobSha": "53678bd6d6853bd17dad5e42e13b619e0022981c",
+      "size": 5159,
+      "destinationPath": "docs/legacy/donor/extension/tests/pcms-events-client.test.mjs"
+    },
+    {
+      "path": "extension/tests/pcms-pagination-cardinality.test.mjs",
+      "mode": "100644",
+      "blobSha": "1706d5284852a180cbe48cd5e37405f76f78189e",
+      "size": 7240,
+      "destinationPath": "docs/legacy/donor/extension/tests/pcms-pagination-cardinality.test.mjs"
+    },
+    {
+      "path": "extension/tests/pcms-protocol-hardening.test.mjs",
+      "mode": "100644",
+      "blobSha": "706620703fb42da3537857fb049933558ede3a56",
+      "size": 5517,
+      "destinationPath": "docs/legacy/donor/extension/tests/pcms-protocol-hardening.test.mjs"
+    },
+    {
+      "path": "extension/tests/pcms-replay.test.mjs",
+      "mode": "100644",
+      "blobSha": "40189acd3d31cc47efc0aed902f0e94c6ecb4233",
+      "size": 6449,
+      "destinationPath": "docs/legacy/donor/extension/tests/pcms-replay.test.mjs"
+    },
+    {
+      "path": "extension/tests/pcms-secret-projection.test.mjs",
+      "mode": "100644",
+      "blobSha": "2e39885d75545b5000a2a63c2c939157e1bf9dd7",
+      "size": 5025,
+      "destinationPath": "docs/legacy/donor/extension/tests/pcms-secret-projection.test.mjs"
+    },
+    {
+      "path": "extension/tests/persona-api.test.mjs",
+      "mode": "100644",
+      "blobSha": "bb354f6fd986bb363882980a835f80541f8a66d4",
+      "size": 2674,
+      "destinationPath": "docs/legacy/donor/extension/tests/persona-api.test.mjs"
+    },
+    {
+      "path": "extension/tests/persona-cookies.test.mjs",
+      "mode": "100644",
+      "blobSha": "633508d74f0be6b87e9e6320a734fa68cb88e5f8",
+      "size": 8910,
+      "destinationPath": "docs/legacy/donor/extension/tests/persona-cookies.test.mjs"
+    },
+    {
+      "path": "extension/tests/persona-event-races.test.mjs",
+      "mode": "100644",
+      "blobSha": "efab2b2c2714c3a5dfed99f973d802e3b6235778",
+      "size": 7373,
+      "destinationPath": "docs/legacy/donor/extension/tests/persona-event-races.test.mjs"
+    },
+    {
+      "path": "extension/tests/persona-identity.test.mjs",
+      "mode": "100644",
+      "blobSha": "225b7ddfca2ac34d83068da3ea45d4af51017763",
+      "size": 3534,
+      "destinationPath": "docs/legacy/donor/extension/tests/persona-identity.test.mjs"
+    },
+    {
+      "path": "extension/tests/persona-intelligence.test.mjs",
+      "mode": "100644",
+      "blobSha": "5b31a270e31b8b7acd290010f66b34a8587afe47",
+      "size": 11051,
+      "destinationPath": "docs/legacy/donor/extension/tests/persona-intelligence.test.mjs"
+    },
+    {
+      "path": "extension/tests/persona-package.test.mjs",
+      "mode": "100644",
+      "blobSha": "5b92fb079d61829aea995e152f6cc383e6d2bbd6",
+      "size": 2638,
+      "destinationPath": "docs/legacy/donor/extension/tests/persona-package.test.mjs"
+    },
+    {
+      "path": "extension/tests/persona-platform.test.mjs",
+      "mode": "100644",
+      "blobSha": "844dcaaa8dc925716cb6fe5d1d96d256427ba7ca",
+      "size": 10572,
+      "destinationPath": "docs/legacy/donor/extension/tests/persona-platform.test.mjs"
+    },
+    {
+      "path": "extension/tests/persona-rotation-recovery.test.mjs",
+      "mode": "100644",
+      "blobSha": "f7505faf09c4047307ea8ec6438a9a81d7b6ea68",
+      "size": 16567,
+      "destinationPath": "docs/legacy/donor/extension/tests/persona-rotation-recovery.test.mjs"
+    },
+    {
+      "path": "extension/tests/persona-storage.test.mjs",
+      "mode": "100644",
+      "blobSha": "6a97567189a6b558f83bf6ea5b34e0175f6e3273",
+      "size": 1739,
+      "destinationPath": "docs/legacy/donor/extension/tests/persona-storage.test.mjs"
+    },
+    {
+      "path": "extension/tests/personas-mutation.test.mjs",
+      "mode": "100644",
+      "blobSha": "8056cfc56c7bf7527cb7fbd29cc29ae814c60d2f",
+      "size": 2321,
+      "destinationPath": "docs/legacy/donor/extension/tests/personas-mutation.test.mjs"
+    },
+    {
+      "path": "extension/tests/personas.test.mjs",
+      "mode": "100644",
+      "blobSha": "788102d268ce7861fee70e9d476632837d899230",
+      "size": 11060,
+      "destinationPath": "docs/legacy/donor/extension/tests/personas.test.mjs"
+    },
+    {
+      "path": "extension/tests/policy.test.mjs",
+      "mode": "100644",
+      "blobSha": "c943c1f2746adf55980336b4512110390d347b83",
+      "size": 5291,
+      "destinationPath": "docs/legacy/donor/extension/tests/policy.test.mjs"
+    },
+    {
+      "path": "extension/tests/privacy.test.mjs",
+      "mode": "100644",
+      "blobSha": "85a6c980d35ecc1ff6534ee52a273e139e193c83",
+      "size": 2496,
+      "destinationPath": "docs/legacy/donor/extension/tests/privacy.test.mjs"
+    },
+    {
+      "path": "extension/tests/recovery-sync.test.mjs",
+      "mode": "100644",
+      "blobSha": "71f987dd9967b091e4d8b0cdb189ececb58efdde",
+      "size": 23221,
+      "destinationPath": "docs/legacy/donor/extension/tests/recovery-sync.test.mjs"
+    },
+    {
+      "path": "extension/tests/security-delta.test.mjs",
+      "mode": "100644",
+      "blobSha": "5970174b9c5857aed3669994c81af73d48c77719",
+      "size": 8939,
+      "destinationPath": "docs/legacy/donor/extension/tests/security-delta.test.mjs"
+    },
+    {
+      "path": "extension/tests/state-integrity.test.mjs",
+      "mode": "100644",
+      "blobSha": "5b64fc8b104fc13d33d9d76825ba8b285923855a",
+      "size": 3125,
+      "destinationPath": "docs/legacy/donor/extension/tests/state-integrity.test.mjs"
+    },
+    {
+      "path": "extension/tests/state-manager.test.mjs",
+      "mode": "100644",
+      "blobSha": "920d71bd64318d88f8de55b21dc831b92ff3f9f9",
+      "size": 18706,
+      "destinationPath": "docs/legacy/donor/extension/tests/state-manager.test.mjs"
+    },
+    {
+      "path": "extension/tests/storage-compat.test.mjs",
+      "mode": "100644",
+      "blobSha": "404008c7a1c71baa92a1f2abbf6ee71b523a558b",
+      "size": 3941,
+      "destinationPath": "docs/legacy/donor/extension/tests/storage-compat.test.mjs"
+    },
+    {
+      "path": "extension/tests/toast.test.mjs",
+      "mode": "100644",
+      "blobSha": "ddc84b7c1cb868b9a4dc86703003e94ac559f2f1",
+      "size": 1414,
+      "destinationPath": "docs/legacy/donor/extension/tests/toast.test.mjs"
+    },
+    {
+      "path": "extension/tests/userscript-runtime.test.mjs",
+      "mode": "100644",
+      "blobSha": "49bd838c1a438b62fabbb9d0d588f1fe32a64266",
+      "size": 7342,
+      "destinationPath": "docs/legacy/donor/extension/tests/userscript-runtime.test.mjs"
+    },
+    {
+      "path": "extension/tests/userscripts.test.mjs",
+      "mode": "100644",
+      "blobSha": "b1471faf68d333d221db7eca413f9273aae30ccc",
+      "size": 5954,
+      "destinationPath": "docs/legacy/donor/extension/tests/userscripts.test.mjs"
+    },
+    {
+      "path": "extension/tests/v062-ui-bootstrap.test.mjs",
+      "mode": "100644",
+      "blobSha": "60b2e4c5c412f7f8e832d5c1a0504c59d0315a75",
+      "size": 1414,
+      "destinationPath": "docs/legacy/donor/extension/tests/v062-ui-bootstrap.test.mjs"
+    },
+    {
+      "path": "extension/tests/workflow-control.test.mjs",
+      "mode": "100644",
+      "blobSha": "573f914cab118957cb7772a8b4396f7ef5543422",
+      "size": 3106,
+      "destinationPath": "docs/legacy/donor/extension/tests/workflow-control.test.mjs"
+    },
+    {
+      "path": "extension/tests/workflow-model.test.mjs",
+      "mode": "100644",
+      "blobSha": "8c197224befab849f28a50155af42415121766e0",
+      "size": 9116,
+      "destinationPath": "docs/legacy/donor/extension/tests/workflow-model.test.mjs"
+    },
+    {
+      "path": "extension/tests/workflow-package-schema.test.mjs",
+      "mode": "100644",
+      "blobSha": "e11d81494e6f4d2acac83f655f89af079dd7605c",
+      "size": 8545,
+      "destinationPath": "docs/legacy/donor/extension/tests/workflow-package-schema.test.mjs"
+    },
+    {
+      "path": "extension/tests/workflow-package.test.mjs",
+      "mode": "100644",
+      "blobSha": "48abc7c72132284ae9c1d4e8cadab7bf9492f528",
+      "size": 6444,
+      "destinationPath": "docs/legacy/donor/extension/tests/workflow-package.test.mjs"
+    },
+    {
+      "path": "extension/tests/workflow-route-validation.test.mjs",
+      "mode": "100644",
+      "blobSha": "41a2fc80ef1267bebe2a89d00cd8b2f4edba964e",
+      "size": 1697,
+      "destinationPath": "docs/legacy/donor/extension/tests/workflow-route-validation.test.mjs"
+    },
+    {
+      "path": "extension/tests/zip.test.mjs",
+      "mode": "100644",
+      "blobSha": "31951677597ec0ec63ac204d7d1dcc262d9e64ca",
+      "size": 7373,
+      "destinationPath": "docs/legacy/donor/extension/tests/zip.test.mjs"
+    },
+    {
+      "path": "extension/workers/package-inspector.js",
+      "mode": "100644",
+      "blobSha": "71cd5f334833f9a821605f794a346be483093490",
+      "size": 462,
+      "destinationPath": "docs/legacy/donor/extension/workers/package-inspector.js"
+    },
+    {
+      "path": "native/backup_configs.py",
+      "mode": "100755",
+      "blobSha": "aa12786c7d25143458880201e2db18ddf8bf4ad5",
+      "size": 2599,
+      "destinationPath": "docs/legacy/donor/native/backup_configs.py"
+    },
+    {
+      "path": "native/com.persona.mullvad_router.json",
+      "mode": "100644",
+      "blobSha": "3d23100468a9512843ddd5b71a2627f934cb8168",
+      "size": 268,
+      "destinationPath": "docs/legacy/donor/native/com.persona.mullvad_router.json"
+    },
+    {
+      "path": "native/native_host.py",
+      "mode": "100644",
+      "blobSha": "d15a10fce25527cfb8ae93d7dfa7dce6a2281476",
+      "size": 2809,
+      "destinationPath": "docs/legacy/donor/native/native_host.py"
+    },
+    {
+      "path": "native/persona-mullvad-router.service.in",
+      "mode": "100644",
+      "blobSha": "55bb2af323c578d02ef661029664531e7fde8dc3",
+      "size": 1107,
+      "destinationPath": "docs/legacy/donor/native/persona-mullvad-router.service.in"
+    },
+    {
+      "path": "native/routerctl.py",
+      "mode": "100755",
+      "blobSha": "f873d588e1b625899ab76b8afd9c25ded37f8e47",
+      "size": 1574,
+      "destinationPath": "docs/legacy/donor/native/routerctl.py"
+    },
+    {
+      "path": "native/routerd.py",
+      "mode": "100755",
+      "blobSha": "345911a056c4a01db86e6a805d49b7d44233e7a1",
+      "size": 54354,
+      "destinationPath": "docs/legacy/donor/native/routerd.py"
+    },
+    {
+      "path": "native/sanitize_configs.py",
+      "mode": "100644",
+      "blobSha": "297e06bd909ca9dd02d31bd3a4b1550c8b9bd825",
+      "size": 6476,
+      "destinationPath": "docs/legacy/donor/native/sanitize_configs.py"
+    },
+    {
+      "path": "operator-inputs/README.md",
+      "mode": "100644",
+      "blobSha": "9c99c2033151d866a255ab4debcb5d1ee041c2ae",
+      "size": 596,
+      "destinationPath": "docs/legacy/donor/operator-inputs/README.md"
+    },
+    {
+      "path": "package.json",
+      "mode": "100644",
+      "blobSha": "832c185e005c897c3216bc71c0257e6f2d455e6f",
+      "size": 3485,
+      "destinationPath": "docs/legacy/donor/package.json"
+    },
+    {
+      "path": "pcms-modules/p014/accounts.js",
+      "mode": "100644",
+      "blobSha": "c3df502549397397c48286cebeb66b6342629280",
+      "size": 11879,
+      "destinationPath": "docs/legacy/donor/pcms-modules/p014/accounts.js"
+    },
+    {
+      "path": "pcms-modules/p014/errors.js",
+      "mode": "100644",
+      "blobSha": "33bc9b3d0ccee90863c09694b4b0b12ee64c396a",
+      "size": 1716,
+      "destinationPath": "docs/legacy/donor/pcms-modules/p014/errors.js"
+    },
+    {
+      "path": "pcms-modules/p014/schema.js",
+      "mode": "100644",
+      "blobSha": "d3be9b6425a5679494d8a18c6949762234badc18",
+      "size": 5914,
+      "destinationPath": "docs/legacy/donor/pcms-modules/p014/schema.js"
+    },
+    {
+      "path": "pcms-modules/p015/automatic.js",
+      "mode": "100644",
+      "blobSha": "5ee186df2b40760819388cf65502d04164a7db0c",
+      "size": 14176,
+      "destinationPath": "docs/legacy/donor/pcms-modules/p015/automatic.js"
+    },
+    {
+      "path": "pcms-modules/p015/deployer.js",
+      "mode": "100644",
+      "blobSha": "01199bb55f561bd5ee47b8ab6e39af82437bb8d7",
+      "size": 39731,
+      "destinationPath": "docs/legacy/donor/pcms-modules/p015/deployer.js"
+    },
+    {
+      "path": "pcms-modules/p015/errors.js",
+      "mode": "100644",
+      "blobSha": "7611d636d0749eb2049a957755c58292d7067467",
+      "size": 2281,
+      "destinationPath": "docs/legacy/donor/pcms-modules/p015/errors.js"
+    },
+    {
+      "path": "pcms-modules/p015/listing.js",
+      "mode": "100644",
+      "blobSha": "8696f31f7e0611e5dbbec0de4f20c1c2a6587f4f",
+      "size": 2559,
+      "destinationPath": "docs/legacy/donor/pcms-modules/p015/listing.js"
+    },
+    {
+      "path": "pcms-modules/p015/migration.js",
+      "mode": "100644",
+      "blobSha": "b7c851ee1729e06948513fc59a9426a117d787b1",
+      "size": 3675,
+      "destinationPath": "docs/legacy/donor/pcms-modules/p015/migration.js"
+    },
+    {
+      "path": "pcms-modules/p015/observations.js",
+      "mode": "100644",
+      "blobSha": "16a1c839b2e886bacc6778dd42f0ff4c90b5b1f4",
+      "size": 17877,
+      "destinationPath": "docs/legacy/donor/pcms-modules/p015/observations.js"
+    },
+    {
+      "path": "pcms-modules/p015/repository-format.js",
+      "mode": "100644",
+      "blobSha": "f0002c2a550f039cfc7bfe0899db2ad88a682670",
+      "size": 14385,
+      "destinationPath": "docs/legacy/donor/pcms-modules/p015/repository-format.js"
+    },
+    {
+      "path": "pcms-modules/p015/repository-service.js",
+      "mode": "100644",
+      "blobSha": "4ce73b4216c0db5c0f212e1a4e313017805b54e8",
+      "size": 15856,
+      "destinationPath": "docs/legacy/donor/pcms-modules/p015/repository-service.js"
+    },
+    {
+      "path": "pcms-modules/p015/repository-sync.js",
+      "mode": "100644",
+      "blobSha": "2f4269c0edd7c41237987deae4c59ae9aaa88650",
+      "size": 8143,
+      "destinationPath": "docs/legacy/donor/pcms-modules/p015/repository-sync.js"
+    },
+    {
+      "path": "pcms-modules/p015/schema.js",
+      "mode": "100644",
+      "blobSha": "700e0d87d0ea83c1905f5e7974aa8a600fc94194",
+      "size": 18307,
+      "destinationPath": "docs/legacy/donor/pcms-modules/p015/schema.js"
+    },
+    {
+      "path": "pcms-modules/p015/status.js",
+      "mode": "100644",
+      "blobSha": "2d36ba1bdb5cea740a6e83aed16d95c3a6507d34",
+      "size": 11192,
+      "destinationPath": "docs/legacy/donor/pcms-modules/p015/status.js"
+    },
+    {
+      "path": "pcms-modules/p015/ui.js",
+      "mode": "100644",
+      "blobSha": "30e7d2b6587e768e77cb04f6d01fe83fb3a23cdb",
+      "size": 12240,
+      "destinationPath": "docs/legacy/donor/pcms-modules/p015/ui.js"
+    },
+    {
+      "path": "pcms-modules/p015/verification-sweep.js",
+      "mode": "100644",
+      "blobSha": "c9175c36f038711a1bd2b05b212e016ab6deac02",
+      "size": 1635,
+      "destinationPath": "docs/legacy/donor/pcms-modules/p015/verification-sweep.js"
+    },
+    {
+      "path": "pcms-modules/p016/errors.js",
+      "mode": "100644",
+      "blobSha": "b5a7ffbb7bb75b497e9ce7f6532740677f34199f",
+      "size": 1716,
+      "destinationPath": "docs/legacy/donor/pcms-modules/p016/errors.js"
+    },
+    {
+      "path": "pcms-modules/p016/explorer.js",
+      "mode": "100644",
+      "blobSha": "83d7f5eacdbdc4a8f02eb3727887382f4621afeb",
+      "size": 19153,
+      "destinationPath": "docs/legacy/donor/pcms-modules/p016/explorer.js"
+    },
+    {
+      "path": "pcms-modules/p016/schema.js",
+      "mode": "100644",
+      "blobSha": "c1f9872b8c443a92652e101f0662ab1426da9cdd",
+      "size": 15025,
+      "destinationPath": "docs/legacy/donor/pcms-modules/p016/schema.js"
+    },
+    {
+      "path": "pcms-modules/p016/ui.js",
+      "mode": "100644",
+      "blobSha": "a074d383457f2ebd7d995652c94c603cd6da95e3",
+      "size": 12875,
+      "destinationPath": "docs/legacy/donor/pcms-modules/p016/ui.js"
+    },
+    {
+      "path": "pcms-modules/p017/errors.js",
+      "mode": "100644",
+      "blobSha": "04ccf6398148b5ba95fb1c44df0ecb7dc3520177",
+      "size": 2622,
+      "destinationPath": "docs/legacy/donor/pcms-modules/p017/errors.js"
+    },
+    {
+      "path": "pcms-modules/p017/migration.js",
+      "mode": "100644",
+      "blobSha": "6eafa8cb21bb4a81fefeb4bcad7d88cde4fcec0d",
+      "size": 4460,
+      "destinationPath": "docs/legacy/donor/pcms-modules/p017/migration.js"
+    },
+    {
+      "path": "pcms-modules/p017/refresher-helpers.js",
+      "mode": "100644",
+      "blobSha": "840de3a146f4f09a2210b51972e7c2d9c451f6ab",
+      "size": 8853,
+      "destinationPath": "docs/legacy/donor/pcms-modules/p017/refresher-helpers.js"
+    },
+    {
+      "path": "pcms-modules/p017/refresher-operations.js",
+      "mode": "100644",
+      "blobSha": "5ca5d0d984a2d51ada6e5d04cde3d981c464ff3d",
+      "size": 9552,
+      "destinationPath": "docs/legacy/donor/pcms-modules/p017/refresher-operations.js"
+    },
+    {
+      "path": "pcms-modules/p017/refresher-store.js",
+      "mode": "100644",
+      "blobSha": "9da6db795e1ca90109a3669dc05837c2f80a7a1d",
+      "size": 13712,
+      "destinationPath": "docs/legacy/donor/pcms-modules/p017/refresher-store.js"
+    },
+    {
+      "path": "pcms-modules/p017/refresher.js",
+      "mode": "100644",
+      "blobSha": "62ce9b365ae6ddad0d2131add63f039fde99daa3",
+      "size": 13539,
+      "destinationPath": "docs/legacy/donor/pcms-modules/p017/refresher.js"
+    },
+    {
+      "path": "pcms-modules/p017/release-source.js",
+      "mode": "100644",
+      "blobSha": "2321bd92eceb1b9a2e734ae9dc4f90b4451eb659",
+      "size": 3513,
+      "destinationPath": "docs/legacy/donor/pcms-modules/p017/release-source.js"
+    },
+    {
+      "path": "pcms-modules/p017/schema-input.js",
+      "mode": "100644",
+      "blobSha": "191428f83b0c50a15cd7fb99b129c0e33d2efdf1",
+      "size": 7163,
+      "destinationPath": "docs/legacy/donor/pcms-modules/p017/schema-input.js"
+    },
+    {
+      "path": "pcms-modules/p017/schema.js",
+      "mode": "100644",
+      "blobSha": "934dea763090246219c47dcd867af825fccf5bcc",
+      "size": 10942,
+      "destinationPath": "docs/legacy/donor/pcms-modules/p017/schema.js"
+    },
+    {
+      "path": "pcms-modules/p017/ui.js",
+      "mode": "100644",
+      "blobSha": "7725b2cc246b97e51588bcf325c7b2d5fd5a9202",
+      "size": 22207,
+      "destinationPath": "docs/legacy/donor/pcms-modules/p017/ui.js"
+    },
+    {
+      "path": "pcms-modules/p018/errors.js",
+      "mode": "100644",
+      "blobSha": "42be524438141a833ec82c736c6cd278bbd101a8",
+      "size": 645,
+      "destinationPath": "docs/legacy/donor/pcms-modules/p018/errors.js"
+    },
+    {
+      "path": "pcms-modules/p018/projection.js",
+      "mode": "100644",
+      "blobSha": "af0ac545901c89b89518966638b499dac7ff0891",
+      "size": 10049,
+      "destinationPath": "docs/legacy/donor/pcms-modules/p018/projection.js"
+    },
+    {
+      "path": "pcms-modules/p018/schema.js",
+      "mode": "100644",
+      "blobSha": "55f0e3df001ce503fb694a19a96fcf49def46fc3",
+      "size": 7110,
+      "destinationPath": "docs/legacy/donor/pcms-modules/p018/schema.js"
+    },
+    {
+      "path": "pcms-modules/p018/statistics.js",
+      "mode": "100644",
+      "blobSha": "172b26a5b9d6e3a6b893ea268fda41c0e9b38cc6",
+      "size": 3137,
+      "destinationPath": "docs/legacy/donor/pcms-modules/p018/statistics.js"
+    },
+    {
+      "path": "pcms-modules/p018/ui.js",
+      "mode": "100644",
+      "blobSha": "f391317a5e577caf69710877ea7b74d2f6a468be",
+      "size": 4890,
+      "destinationPath": "docs/legacy/donor/pcms-modules/p018/ui.js"
+    },
+    {
+      "path": "pcms-modules/p018/view.js",
+      "mode": "100644",
+      "blobSha": "06cf2e80d0a12e27bf6f2679ab6f216b1add996a",
+      "size": 3199,
+      "destinationPath": "docs/legacy/donor/pcms-modules/p018/view.js"
+    },
+    {
+      "path": "pcms-modules/p019/errors.js",
+      "mode": "100644",
+      "blobSha": "5528f079867bd666e2c8349baba25555f8d0e76f",
+      "size": 2376,
+      "destinationPath": "docs/legacy/donor/pcms-modules/p019/errors.js"
+    },
+    {
+      "path": "pcms-modules/p019/provider.js",
+      "mode": "100644",
+      "blobSha": "01f26627940b7946f11bdff1b76058de60b549fc",
+      "size": 7576,
+      "destinationPath": "docs/legacy/donor/pcms-modules/p019/provider.js"
+    },
+    {
+      "path": "pcms-modules/p019/provisioning.js",
+      "mode": "100644",
+      "blobSha": "0b2b543ad85ee7e270eadb2c7dd0cd60e677cdad",
+      "size": 25712,
+      "destinationPath": "docs/legacy/donor/pcms-modules/p019/provisioning.js"
+    },
+    {
+      "path": "pcms-modules/p019/schema.js",
+      "mode": "100644",
+      "blobSha": "dc71d2db5c608cfd743ff67f5ed7142f017fed75",
+      "size": 9096,
+      "destinationPath": "docs/legacy/donor/pcms-modules/p019/schema.js"
+    },
+    {
+      "path": "pcms-modules/p019/ui.js",
+      "mode": "100644",
+      "blobSha": "545d203293cc8d268437363d659d892e7a7c598f",
+      "size": 11210,
+      "destinationPath": "docs/legacy/donor/pcms-modules/p019/ui.js"
+    },
+    {
+      "path": "scripts/build-extension.mjs",
+      "mode": "100644",
+      "blobSha": "48b6c20235c19f10db3221bbf2546800bb38e357",
+      "size": 6056,
+      "destinationPath": "docs/legacy/donor/scripts/build-extension.mjs"
+    },
+    {
+      "path": "scripts/build-workflow-examples.mjs",
+      "mode": "100644",
+      "blobSha": "8e36cc003cd166a660865b1e321f85455260a00c",
+      "size": 1387,
+      "destinationPath": "docs/legacy/donor/scripts/build-workflow-examples.mjs"
+    },
+    {
+      "path": "scripts/capture-browser-screenshot.mjs",
+      "mode": "100644",
+      "blobSha": "0fe6d57d40b2e3abc90576a9c8f15c53c59261c8",
+      "size": 1856,
+      "destinationPath": "docs/legacy/donor/scripts/capture-browser-screenshot.mjs"
+    },
+    {
+      "path": "scripts/librewolf_prefs.py",
+      "mode": "100644",
+      "blobSha": "5e6544aafb5b3c4b82dfdd6531f360cf75ab1b7f",
+      "size": 11781,
+      "destinationPath": "docs/legacy/donor/scripts/librewolf_prefs.py"
+    },
+    {
+      "path": "scripts/test-build-reproducibility.mjs",
+      "mode": "100644",
+      "blobSha": "f5d2d104935e9a36934d3d464ceadf510ae4d105",
+      "size": 1586,
+      "destinationPath": "docs/legacy/donor/scripts/test-build-reproducibility.mjs"
+    },
+    {
+      "path": "scripts/test-data-management-browser.mjs",
+      "mode": "100644",
+      "blobSha": "bae95cf8e6bd43241342bef8349c923f55c9948d",
+      "size": 50726,
+      "destinationPath": "docs/legacy/donor/scripts/test-data-management-browser.mjs"
+    },
+    {
+      "path": "scripts/test-extension.mjs",
+      "mode": "100644",
+      "blobSha": "708c205e883738466f243f4ebe481f77124ddc3f",
+      "size": 879,
+      "destinationPath": "docs/legacy/donor/scripts/test-extension.mjs"
+    },
+    {
+      "path": "scripts/test-options-browser.mjs",
+      "mode": "100644",
+      "blobSha": "d591ab7ac4579848997d7ffc45399cd711cf78d0",
+      "size": 52774,
+      "destinationPath": "docs/legacy/donor/scripts/test-options-browser.mjs"
+    },
+    {
+      "path": "scripts/test-pcms-browser.mjs",
+      "mode": "100644",
+      "blobSha": "d220e032782a86c43d80fa2f53612969433824c1",
+      "size": 22862,
+      "destinationPath": "docs/legacy/donor/scripts/test-pcms-browser.mjs"
+    },
+    {
+      "path": "scripts/test-popup-browser.mjs",
+      "mode": "100644",
+      "blobSha": "a74b340cdd279a1fec22488863d2df66d834f072",
+      "size": 15812,
+      "destinationPath": "docs/legacy/donor/scripts/test-popup-browser.mjs"
+    },
+    {
+      "path": "scripts/test-repository.mjs",
+      "mode": "100755",
+      "blobSha": "6ba2c4d419905e6df0e21ea0f573e7a63124eaab",
+      "size": 17806,
+      "destinationPath": "docs/legacy/donor/scripts/test-repository.mjs"
+    },
+    {
+      "path": "scripts/validate-extension.mjs",
+      "mode": "100644",
+      "blobSha": "b9a52897962d6d80eaf855c83b34682a09296e1a",
+      "size": 3215,
+      "destinationPath": "docs/legacy/donor/scripts/validate-extension.mjs"
+    },
+    {
+      "path": "scripts/validate_xpi.py",
+      "mode": "100644",
+      "blobSha": "2e6bf5ebbc0a2f954bb615514bf78d40b4ffacb4",
+      "size": 4287,
+      "destinationPath": "docs/legacy/donor/scripts/validate_xpi.py"
+    },
+    {
+      "path": "tests/firefox/lib.test.mjs",
+      "mode": "100644",
+      "blobSha": "4344cc0cf6ddb8177a3a769cc2396f1e7914e680",
+      "size": 1301,
+      "destinationPath": "docs/legacy/donor/tests/firefox/lib.test.mjs"
+    },
+    {
+      "path": "tests/firefox/pin.test.mjs",
+      "mode": "100644",
+      "blobSha": "0d3b81a73cbec65a9c1cb6c3435a5b009103a41c",
+      "size": 1402,
+      "destinationPath": "docs/legacy/donor/tests/firefox/pin.test.mjs"
+    },
+    {
+      "path": "tests/firefox/workflow.test.mjs",
+      "mode": "100644",
+      "blobSha": "f4a87bd9cd8aae82049898fe79e76b90a60833ab",
+      "size": 568,
+      "destinationPath": "docs/legacy/donor/tests/firefox/workflow.test.mjs"
+    },
+    {
+      "path": "tests/fixtures/modules/counter.mjs",
+      "mode": "100644",
+      "blobSha": "94232601a6dcc8bce22d16786b6552b2d3e749c4",
+      "size": 5073,
+      "destinationPath": "docs/legacy/donor/tests/fixtures/modules/counter.mjs"
+    },
+    {
+      "path": "tests/pcms/p003-bootstrap.test.mjs",
+      "mode": "100644",
+      "blobSha": "348a50465a374917a12218d62d545a175b326df7",
+      "size": 1591,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p003-bootstrap.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p003-boundary.test.mjs",
+      "mode": "100644",
+      "blobSha": "def75c7c04c04115a9c0d6d450f7674a6ab7af28",
+      "size": 2219,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p003-boundary.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p003-contract-parity.test.mjs",
+      "mode": "100644",
+      "blobSha": "a60f7c1fb5d5dc2b83afd0b8af7c0c7d92158b99",
+      "size": 5539,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p003-contract-parity.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p004-boundary.test.mjs",
+      "mode": "100644",
+      "blobSha": "172eff6964f9ca47762bef39eafb2a9e02af1a72",
+      "size": 2460,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p004-boundary.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p004-protocol.test.mjs",
+      "mode": "100644",
+      "blobSha": "b20117d2dedb61c0f36e9f01020b63b8bfc573be",
+      "size": 2935,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p004-protocol.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p004-runtime.test.mjs",
+      "mode": "100644",
+      "blobSha": "2953770cbe346675883bbfb5e0ac7d33fcda5944",
+      "size": 4578,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p004-runtime.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p005-boundary.test.mjs",
+      "mode": "100644",
+      "blobSha": "91aaa674d4905e0226d871e0a91f296ae4d0cdd3",
+      "size": 1603,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p005-boundary.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p005-storage.test.mjs",
+      "mode": "100644",
+      "blobSha": "ac59753cac952971ee8458a48d6dcb92493f8635",
+      "size": 12334,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p005-storage.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p006-boundary.test.mjs",
+      "mode": "100644",
+      "blobSha": "cb647e15ad62570f8d82c7c41824bae399a51d89",
+      "size": 2164,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p006-boundary.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p006-secret-store.test.mjs",
+      "mode": "100644",
+      "blobSha": "928c221bf407e3e62135d1760f36e2c0b76ed5be",
+      "size": 9800,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p006-secret-store.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p007-audit.test.mjs",
+      "mode": "100644",
+      "blobSha": "6428d561247d4afc0c7eb1e536d1870317075991",
+      "size": 14215,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p007-audit.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p007-boundary.test.mjs",
+      "mode": "100644",
+      "blobSha": "b3e47dcd63e4e486f3eb5717fd3b3d8521450ea7",
+      "size": 2053,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p007-boundary.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p008-boundary.test.mjs",
+      "mode": "100644",
+      "blobSha": "2376e47fe464f9fb53ae2d5e9f38be67cdd7cd8c",
+      "size": 1680,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p008-boundary.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p008-package.test.mjs",
+      "mode": "100644",
+      "blobSha": "10fc6dc2fd2719f8fdee7ef902714e0b6110442e",
+      "size": 3459,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p008-package.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p008-registry.test.mjs",
+      "mode": "100644",
+      "blobSha": "5dac8d947450950a542218f3712b0fffd4a9d4ff",
+      "size": 6594,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p008-registry.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p009-boundary.test.mjs",
+      "mode": "100644",
+      "blobSha": "d0c1de57200ffc443f5269198bacef841597495b",
+      "size": 937,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p009-boundary.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p009-broker.test.mjs",
+      "mode": "100644",
+      "blobSha": "6d236b4bb71ced7ff72c7abd6a514958a528b228",
+      "size": 4729,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p009-broker.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p009-capability.test.mjs",
+      "mode": "100644",
+      "blobSha": "697866b81ac9edfe522c28872b0659640a08ad26",
+      "size": 1673,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p009-capability.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p009-parity.test.mjs",
+      "mode": "100644",
+      "blobSha": "9caaac2084cbd6c9360b5d9f3a89b66ebf59139a",
+      "size": 1654,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p009-parity.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p010-boundary.test.mjs",
+      "mode": "100644",
+      "blobSha": "02ec098ed181feda327e0befc1ee618eab3818ce",
+      "size": 1506,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p010-boundary.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p010-harness.mjs",
+      "mode": "100644",
+      "blobSha": "c4580e9c928046dd464dbbad040cddaf0e383567",
+      "size": 1093,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p010-harness.mjs"
+    },
+    {
+      "path": "tests/pcms/p010-provider-gate.test.mjs",
+      "mode": "100644",
+      "blobSha": "f7fd23f5b2272a9d5f1b0a35907d4ff88e4492a5",
+      "size": 3649,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p010-provider-gate.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p010-recovery.test.mjs",
+      "mode": "100644",
+      "blobSha": "9b1267f4ee1ee6c8417f95065037e4b15440e463",
+      "size": 3727,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p010-recovery.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p010-remoteops.test.mjs",
+      "mode": "100644",
+      "blobSha": "7d2b5ea15f874ad9290e13015ab5994858cfb65e",
+      "size": 3313,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p010-remoteops.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p011-boundary.test.mjs",
+      "mode": "100644",
+      "blobSha": "6e7b8111574dd5c1b4957fb33dab2e552de09159",
+      "size": 1391,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p011-boundary.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p011-harness.mjs",
+      "mode": "100644",
+      "blobSha": "b77ff4964e46b21b63e3ec4374559bf29365fad7",
+      "size": 4712,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p011-harness.mjs"
+    },
+    {
+      "path": "tests/pcms/p011-runtime.test.mjs",
+      "mode": "100644",
+      "blobSha": "3f03809ea63058c57f6b077f239f84acc75c2e77",
+      "size": 9231,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p011-runtime.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p012-boundary.test.mjs",
+      "mode": "100644",
+      "blobSha": "50e3119f828f6b897617d202e8115004faf3ad3b",
+      "size": 1453,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p012-boundary.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p012-harness.mjs",
+      "mode": "100644",
+      "blobSha": "baa50aa3cc6f6bce6e89043d82ba259380eb4292",
+      "size": 1984,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p012-harness.mjs"
+    },
+    {
+      "path": "tests/pcms/p012-services.test.mjs",
+      "mode": "100644",
+      "blobSha": "26c84819e4560be0b79b0e8e9c9f5d1ddf842b2c",
+      "size": 11747,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p012-services.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p013-boundary.test.mjs",
+      "mode": "100644",
+      "blobSha": "2c8a9e573103944f1baa485943b039eb82c21203",
+      "size": 1306,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p013-boundary.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p013-provider.test.mjs",
+      "mode": "100644",
+      "blobSha": "2957b1e7cce2e5b8e6c88d62c7bcc811387cb6fa",
+      "size": 8612,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p013-provider.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p014/README.md",
+      "mode": "100644",
+      "blobSha": "95c4363d85edbedb8df7f6c882c526cebcf074f6",
+      "size": 4578,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p014/README.md"
+    },
+    {
+      "path": "tests/pcms/p014/accounts.test.mjs",
+      "mode": "100644",
+      "blobSha": "2a0383f08f6d09a938d8a7dce1ce29debc3abd10",
+      "size": 8803,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p014/accounts.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p014/boundary.test.mjs",
+      "mode": "100644",
+      "blobSha": "92922bc41a6386c1597af29c3b7557a6d8a2a165",
+      "size": 1227,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p014/boundary.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p014/harness.mjs",
+      "mode": "100644",
+      "blobSha": "a83aaeac216242cea8be033d1c0b9a28d19963aa",
+      "size": 1517,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p014/harness.mjs"
+    },
+    {
+      "path": "tests/pcms/p015/README.md",
+      "mode": "100644",
+      "blobSha": "6fb1b1c3ebfda91f7c23654196a38818737c1918",
+      "size": 5223,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p015/README.md"
+    },
+    {
+      "path": "tests/pcms/p015/boundary.test.mjs",
+      "mode": "100644",
+      "blobSha": "683cc60ab2d9a4a2c9fe4d4262d6cef1b0953f8b",
+      "size": 1719,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p015/boundary.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p015/deployer.test.mjs",
+      "mode": "100644",
+      "blobSha": "045ca646f10b1e094e47676eb6fd9d919e916be2",
+      "size": 12016,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p015/deployer.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p015/harness.mjs",
+      "mode": "100644",
+      "blobSha": "3c31ef68ce9f25911cf1a6482cdf0bec6fae2eb6",
+      "size": 1614,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p015/harness.mjs"
+    },
+    {
+      "path": "tests/pcms/p016/README.md",
+      "mode": "100644",
+      "blobSha": "6cf49e0b799efb96cf8cc006b1c142ef8aae574f",
+      "size": 4464,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p016/README.md"
+    },
+    {
+      "path": "tests/pcms/p016/boundary.test.mjs",
+      "mode": "100644",
+      "blobSha": "284daccae26b835b9da99573462cc5c061636296",
+      "size": 1661,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p016/boundary.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p016/explorer.test.mjs",
+      "mode": "100644",
+      "blobSha": "c8c346474692951ddfb312b698612c4ba3db6c60",
+      "size": 10750,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p016/explorer.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p016/harness.mjs",
+      "mode": "100644",
+      "blobSha": "59920bbb5b8385c54858898c8891ddb9e5cb272c",
+      "size": 1599,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p016/harness.mjs"
+    },
+    {
+      "path": "tests/pcms/p017/README.md",
+      "mode": "100644",
+      "blobSha": "c34e99460d5b2071c857a535194dfa44ae9071b7",
+      "size": 5059,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p017/README.md"
+    },
+    {
+      "path": "tests/pcms/p017/boundary.test.mjs",
+      "mode": "100644",
+      "blobSha": "8d2e9f079abf8c169b6b427fb0f4a849f8e7aa07",
+      "size": 1770,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p017/boundary.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p017/harness.mjs",
+      "mode": "100644",
+      "blobSha": "731e0ac71cae60be1235f0673c0a33f05b56cdb2",
+      "size": 3284,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p017/harness.mjs"
+    },
+    {
+      "path": "tests/pcms/p017/refresher-effects.test.mjs",
+      "mode": "100644",
+      "blobSha": "32bf5d5b32e123d4b215597075f9b1544176b6bb",
+      "size": 7190,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p017/refresher-effects.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p017/refresher-policy.test.mjs",
+      "mode": "100644",
+      "blobSha": "10bbc97a0e5fec01e6395b3aa1410ff3001f08a0",
+      "size": 5766,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p017/refresher-policy.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p018/README.md",
+      "mode": "100644",
+      "blobSha": "cc584b92faa609ad314c1f072ff8c591e66671da",
+      "size": 4672,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p018/README.md"
+    },
+    {
+      "path": "tests/pcms/p018/boundary.test.mjs",
+      "mode": "100644",
+      "blobSha": "016a290645ecb1d4f53980afdee318fb4c8353df",
+      "size": 1744,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p018/boundary.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p018/harness.mjs",
+      "mode": "100644",
+      "blobSha": "f7fc23515600b756ff82241c3b6513a59c263296",
+      "size": 1392,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p018/harness.mjs"
+    },
+    {
+      "path": "tests/pcms/p018/statistics.test.mjs",
+      "mode": "100644",
+      "blobSha": "e4da2118d2665e788127329a45aa7b67e2fea8e2",
+      "size": 7654,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p018/statistics.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p019/README.md",
+      "mode": "100644",
+      "blobSha": "21c16a4c6c2ffc9d5a59ace73b89ed43d8e44f18",
+      "size": 6154,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p019/README.md"
+    },
+    {
+      "path": "tests/pcms/p019/boundary.test.mjs",
+      "mode": "100644",
+      "blobSha": "d9c16d81fea12e0dcd08b8705b6457786a66c83b",
+      "size": 1498,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p019/boundary.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p019/harness.mjs",
+      "mode": "100644",
+      "blobSha": "023d07791812ed95ca97b24f1bb90d99222fa89a",
+      "size": 9417,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p019/harness.mjs"
+    },
+    {
+      "path": "tests/pcms/p019/provider.test.mjs",
+      "mode": "100644",
+      "blobSha": "8ca717ab706d9c70ace6abe039557297ca940281",
+      "size": 5677,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p019/provider.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p019/provisioning.test.mjs",
+      "mode": "100644",
+      "blobSha": "721eec62d2c0b5f04bf95e22abb6a6a5c76b7277",
+      "size": 9044,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p019/provisioning.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p019/schema.test.mjs",
+      "mode": "100644",
+      "blobSha": "7f912772a0d0f5d6cbe1556bfd8d37a412c7c8a5",
+      "size": 1436,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p019/schema.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p020/backup-restore.test.mjs",
+      "mode": "100644",
+      "blobSha": "0a08c1cec60c30fd5550d985ff879016a4c590df",
+      "size": 7428,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p020/backup-restore.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p020/boundary.test.mjs",
+      "mode": "100644",
+      "blobSha": "8faadf748c93e11420dbe87c71872e37b5e43020",
+      "size": 1789,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p020/boundary.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p020/harness.mjs",
+      "mode": "100644",
+      "blobSha": "d22568bbc0850f257f419c1f05a804a731ba9f30",
+      "size": 6278,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p020/harness.mjs"
+    },
+    {
+      "path": "tests/pcms/p020/retention.test.mjs",
+      "mode": "100644",
+      "blobSha": "89565692fb4c8ca289ebebde9d3505478ed5305c",
+      "size": 877,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p020/retention.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p020/storage-admin.test.mjs",
+      "mode": "100644",
+      "blobSha": "37be60437cccaed4d7482eacb8d2b028193f864c",
+      "size": 1909,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p020/storage-admin.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p021/boundary.test.mjs",
+      "mode": "100644",
+      "blobSha": "9cc65b1a4411de70e080e891ee88df6a299493b2",
+      "size": 1906,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p021/boundary.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p021/deep-links.test.mjs",
+      "mode": "100644",
+      "blobSha": "3f154138c136e845ad88c53dc8b10728d98ba701",
+      "size": 1984,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p021/deep-links.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p021/harness.mjs",
+      "mode": "100644",
+      "blobSha": "344fd0476ed28c82bd2658a8246aceb709d395ea",
+      "size": 1615,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p021/harness.mjs"
+    },
+    {
+      "path": "tests/pcms/p021/projections.test.mjs",
+      "mode": "100644",
+      "blobSha": "08ffca4041fcd16177b7143614dcf680c4431555",
+      "size": 4822,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p021/projections.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p022/boundary.test.mjs",
+      "mode": "100644",
+      "blobSha": "7dd1a29995c4fedc85a5a58e1601745faecb2d36",
+      "size": 1676,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p022/boundary.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p022/harness.mjs",
+      "mode": "100644",
+      "blobSha": "cdbc460fc5ae6e11841057e5c770e5d045f0a06a",
+      "size": 6334,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p022/harness.mjs"
+    },
+    {
+      "path": "tests/pcms/p022/lifecycle.test.mjs",
+      "mode": "100644",
+      "blobSha": "eb6ee9ee6c9f00ab63f44c28c46d9130cb4f6941",
+      "size": 11768,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p022/lifecycle.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p022/registry-management.test.mjs",
+      "mode": "100644",
+      "blobSha": "2bbd5a9d12a21d6afd218d426f1518d931e754df",
+      "size": 2095,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p022/registry-management.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p023/boundary.test.mjs",
+      "mode": "100644",
+      "blobSha": "4093e1b14914b1ac2af3da98f50dd09cd95b4ecb",
+      "size": 2322,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p023/boundary.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p023/contracts.test.mjs",
+      "mode": "100644",
+      "blobSha": "eb47d01ac8b60527adbff20536b6cea4be0fb4c5",
+      "size": 3569,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p023/contracts.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p023/harness.mjs",
+      "mode": "100644",
+      "blobSha": "f545b43c8879de81c8c5ecaad622eda56587bdff",
+      "size": 9321,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p023/harness.mjs"
+    },
+    {
+      "path": "tests/pcms/p023/integration.test.mjs",
+      "mode": "100644",
+      "blobSha": "ec1e4063d662900e919501d5d593097f315df942",
+      "size": 7927,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p023/integration.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p024/README.md",
+      "mode": "100644",
+      "blobSha": "6b32dc304c78a85cca622f90675f1420f67d8bb7",
+      "size": 1066,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p024/README.md"
+    },
+    {
+      "path": "tests/pcms/p024/boundary.test.mjs",
+      "mode": "100644",
+      "blobSha": "b03955896811e1374d21d6b377e77a5824819777",
+      "size": 1866,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p024/boundary.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p024/fault-security.test.mjs",
+      "mode": "100644",
+      "blobSha": "4286b4d5992e198f5346326098b7adb9f0ec8eb6",
+      "size": 5584,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p024/fault-security.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p024/release-candidate.test.mjs",
+      "mode": "100644",
+      "blobSha": "5f64078a14b2fe7bbd3097848375a329c873dfc9",
+      "size": 2082,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p024/release-candidate.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p024/restart.test.mjs",
+      "mode": "100644",
+      "blobSha": "0dd10876a935a2a64d5a337d3743892829a29301",
+      "size": 4201,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p024/restart.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p025/README.md",
+      "mode": "100644",
+      "blobSha": "9a9f4ef2915b20521552dd5cbc85240edea58b30",
+      "size": 883,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p025/README.md"
+    },
+    {
+      "path": "tests/pcms/p025/live-wiring.test.mjs",
+      "mode": "100644",
+      "blobSha": "3e74c09abd9ff6975c78c46add7b4d6e4ce25fe8",
+      "size": 8362,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p025/live-wiring.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p026/boundary.test.mjs",
+      "mode": "100644",
+      "blobSha": "6e97f6a4671c86f31b2059b1c482634d5fa98e82",
+      "size": 5420,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p026/boundary.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p026/live-mutations.test.mjs",
+      "mode": "100644",
+      "blobSha": "6a2b9932d5e93f13964d59245b45d6ab5d05b351",
+      "size": 7590,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p026/live-mutations.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p026/popup-esr-compat.test.mjs",
+      "mode": "100644",
+      "blobSha": "da4e74511ec4b0613beb1d01ac121d0e97a0f18e",
+      "size": 523,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p026/popup-esr-compat.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p026/recovery.test.mjs",
+      "mode": "100644",
+      "blobSha": "c54b6bc69e721fa3d8659425ceba9223cf882fd4",
+      "size": 4380,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p026/recovery.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p026/startup-retry.test.mjs",
+      "mode": "100644",
+      "blobSha": "ec35d90b9a8ffda0d46fdb030897bd79a8401781",
+      "size": 1122,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p026/startup-retry.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p027/harness.test.mjs",
+      "mode": "100644",
+      "blobSha": "f8611a3d30eaf28c9cfc2a82419ce4d5d1eb8609",
+      "size": 1636,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p027/harness.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p027/marionette.test.mjs",
+      "mode": "100644",
+      "blobSha": "42e3d4897aea5be00cb62d06e36a206cf627ce8f",
+      "size": 1967,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p027/marionette.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p027/platform-fixture/background.js",
+      "mode": "100644",
+      "blobSha": "cd3e89c55e213684a26030191c1be5739f148b2c",
+      "size": 1538,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p027/platform-fixture/background.js"
+    },
+    {
+      "path": "tests/pcms/p027/platform-fixture/manifest.json",
+      "mode": "100644",
+      "blobSha": "b9107136140c33b0caeba08b460eb33b38172df6",
+      "size": 568,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p027/platform-fixture/manifest.json"
+    },
+    {
+      "path": "tests/pcms/p027/platform-fixture/page.html",
+      "mode": "100644",
+      "blobSha": "99dd9b0b95c4792cf13c41430357e162456143a4",
+      "size": 79,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p027/platform-fixture/page.html"
+    },
+    {
+      "path": "tests/pcms/p027/platform-fixture/sandbox.html",
+      "mode": "100644",
+      "blobSha": "cd5f2cf4193fe9eb597409d9c5fcb02943fdaf91",
+      "size": 72,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p027/platform-fixture/sandbox.html"
+    },
+    {
+      "path": "tests/pcms/p027/platform-fixture/sandbox.js",
+      "mode": "100644",
+      "blobSha": "4ea3e8918c3d62a81278e9baa0cc25871382f41d",
+      "size": 483,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p027/platform-fixture/sandbox.js"
+    },
+    {
+      "path": "tests/pcms/p028/boundary.test.mjs",
+      "mode": "100644",
+      "blobSha": "108fff5e7a1ea0cd16dc4ca6588f1d41b8d01e78",
+      "size": 8239,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p028/boundary.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p028/endpoint.test.mjs",
+      "mode": "100644",
+      "blobSha": "b909eb8f234910e43a9a76e10556a9f7239c9e53",
+      "size": 6719,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p028/endpoint.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p028/harness.mjs",
+      "mode": "100644",
+      "blobSha": "0cf085a0ecb2dac24e5fdd225a9ef19604403631",
+      "size": 3997,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p028/harness.mjs"
+    },
+    {
+      "path": "tests/pcms/p028/host.test.mjs",
+      "mode": "100644",
+      "blobSha": "da4843056198e627d670b0943da7fcd7d4539f94",
+      "size": 11588,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p028/host.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p028/recovery.test.mjs",
+      "mode": "100644",
+      "blobSha": "e8b8d6f1ba240e960e2e280ecc2b1bac94091fca",
+      "size": 6833,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p028/recovery.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p028/ui-protocol.test.mjs",
+      "mode": "100644",
+      "blobSha": "167f2aea4562d4384daf09fe46df799816248b5e",
+      "size": 11456,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p028/ui-protocol.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p029/alarms.test.mjs",
+      "mode": "100644",
+      "blobSha": "6eb7b993bbc7117ac09507dcac7fedc61829375a",
+      "size": 6194,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p029/alarms.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p029/boundary.test.mjs",
+      "mode": "100644",
+      "blobSha": "42c6a142a6bc2e106050012c3900f72265ed5ed1",
+      "size": 1931,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p029/boundary.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p029/host.test.mjs",
+      "mode": "100644",
+      "blobSha": "87e368510809b1dddf6e056f779a5f24b34856cd",
+      "size": 3230,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p029/host.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p029/packaged.mjs",
+      "mode": "100644",
+      "blobSha": "db37d7c202356893718b97a20fa2d0d58dc4f716",
+      "size": 6727,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p029/packaged.mjs"
+    },
+    {
+      "path": "tests/pcms/p029/timers.test.mjs",
+      "mode": "100644",
+      "blobSha": "7d36686507b8041cc74f5912cfbc2942ea297208",
+      "size": 5391,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p029/timers.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p030/browser-floor.test.mjs",
+      "mode": "100644",
+      "blobSha": "f3c66bbbe074bf6c6cf509224126c1787dbeaffe",
+      "size": 4134,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p030/browser-floor.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p030/controller-bundle.mjs",
+      "mode": "100644",
+      "blobSha": "00ef50aad90a1d2bef3508b6c2668a9599db31bb",
+      "size": 3519,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p030/controller-bundle.mjs"
+    },
+    {
+      "path": "tests/pcms/p030/controller-bundle.test.mjs",
+      "mode": "100644",
+      "blobSha": "6250f1156252e97f484cc51fa85b90a2434226ae",
+      "size": 3323,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p030/controller-bundle.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p030/frames.test.mjs",
+      "mode": "100644",
+      "blobSha": "15c2bc6a98fb9eb38be8391cf2f40f43079220b4",
+      "size": 10325,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p030/frames.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p030/harness.mjs",
+      "mode": "100644",
+      "blobSha": "ab4ce3d3cf5f2643617a5ccc537bb63be38d6008",
+      "size": 3631,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p030/harness.mjs"
+    },
+    {
+      "path": "tests/pcms/p030/manifest.test.mjs",
+      "mode": "100644",
+      "blobSha": "4d07a61796afa336759bb2e011b571255a8598b5",
+      "size": 5055,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p030/manifest.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p030/packaged.mjs",
+      "mode": "100644",
+      "blobSha": "1a9004af82cdc3fa7928292ed7bc1822445a8a25",
+      "size": 16909,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p030/packaged.mjs"
+    },
+    {
+      "path": "tests/pcms/p031/boundary.test.mjs",
+      "mode": "100644",
+      "blobSha": "ca6403ca954f9a0ab93e16a000a44b3d2c7bc76f",
+      "size": 3054,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p031/boundary.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p031/capabilities.test.mjs",
+      "mode": "100644",
+      "blobSha": "f836294377dab145cab3af255366141869869a8e",
+      "size": 11658,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p031/capabilities.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p031/harness.mjs",
+      "mode": "100644",
+      "blobSha": "42f022fc3473c0c60ac3c73a1d3e31a6bc0aba6b",
+      "size": 6079,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p031/harness.mjs"
+    },
+    {
+      "path": "tests/pcms/p031/lifecycle.test.mjs",
+      "mode": "100644",
+      "blobSha": "6133eabaca414d89fe76a6ccedb85aa894047ed2",
+      "size": 16969,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p031/lifecycle.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p031/packaged.mjs",
+      "mode": "100644",
+      "blobSha": "e1ab4b1c529b2a597720f496cb731061046a9f3b",
+      "size": 13383,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p031/packaged.mjs"
+    },
+    {
+      "path": "tests/pcms/p031/schedules.test.mjs",
+      "mode": "100644",
+      "blobSha": "78a3747edd915247a64a8c61fece421f569bdbf1",
+      "size": 8805,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p031/schedules.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p032/durability.test.mjs",
+      "mode": "100644",
+      "blobSha": "0ea3ee509befb95443c6da66805fcbcf190a3257",
+      "size": 3559,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p032/durability.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p032/firefox-navigation.test.mjs",
+      "mode": "100644",
+      "blobSha": "2fb2de87806d76f93472632934cfcab451bd9dbe",
+      "size": 2306,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p032/firefox-navigation.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p032/packaged.mjs",
+      "mode": "100644",
+      "blobSha": "d6894be2c58ee41b114aeb6e58035a5cf0c207da",
+      "size": 5315,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p032/packaged.mjs"
+    },
+    {
+      "path": "tests/pcms/p032/primitives.test.mjs",
+      "mode": "100644",
+      "blobSha": "fd7030727597b8489c7702d6729a0ef6441c9a8b",
+      "size": 2106,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p032/primitives.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p032/receipt-read.test.mjs",
+      "mode": "100644",
+      "blobSha": "a477ada69156f2209801daf1992936c0b8e2c87c",
+      "size": 8474,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p032/receipt-read.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p032/routes.test.mjs",
+      "mode": "100644",
+      "blobSha": "ac43c2d537d4fb8a199252dbb1905ce7d6c4d70a",
+      "size": 2558,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p032/routes.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p032/shell.test.mjs",
+      "mode": "100644",
+      "blobSha": "5165723139ffd87db01cfb4cc6ff4a17d63bd9e1",
+      "size": 3959,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p032/shell.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p032/ui-client.test.mjs",
+      "mode": "100644",
+      "blobSha": "42e2caa7d2245837db28f150e6d5ec2dd2b8ca73",
+      "size": 1905,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p032/ui-client.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p033/actions.test.mjs",
+      "mode": "100644",
+      "blobSha": "e49ff5081e4cb2d02aad9fbd247cd9e547f751b9",
+      "size": 11061,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p033/actions.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p033/boundary.test.mjs",
+      "mode": "100644",
+      "blobSha": "4b3faf8234608448f88f1d5c0a6a9f70be940f7d",
+      "size": 9628,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p033/boundary.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p033/contract.test.mjs",
+      "mode": "100644",
+      "blobSha": "7cb0e925b5bed67c6cb9e7e64ff7cda557d0fa96",
+      "size": 12575,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p033/contract.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p033/fixtures.mjs",
+      "mode": "100644",
+      "blobSha": "ce839c11e9b234480a4a43ba45a3a77317f4fb4a",
+      "size": 11628,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p033/fixtures.mjs"
+    },
+    {
+      "path": "tests/pcms/p033/harness.mjs",
+      "mode": "100644",
+      "blobSha": "0655f857e6dc0901c6db425d58092214539485ad",
+      "size": 3828,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p033/harness.mjs"
+    },
+    {
+      "path": "tests/pcms/p033/lifecycle.test.mjs",
+      "mode": "100644",
+      "blobSha": "0379ebcd664a6eb21e4c557fb3b290415063d7f3",
+      "size": 13422,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p033/lifecycle.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p033/merge.test.mjs",
+      "mode": "100644",
+      "blobSha": "671b282646d5cc66bbcb9a991a00a3115c78cbec",
+      "size": 10409,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p033/merge.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p033/packaged.mjs",
+      "mode": "100644",
+      "blobSha": "3b2a981e00bebb8ba2dfe3de66ad8aa905059cd3",
+      "size": 15486,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p033/packaged.mjs"
+    },
+    {
+      "path": "tests/pcms/p034/accounts-model.test.mjs",
+      "mode": "100644",
+      "blobSha": "2715eeb1f890caf1a0a5e95b9ad0a69bdf4b2148",
+      "size": 4697,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p034/accounts-model.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p034/packaged.mjs",
+      "mode": "100644",
+      "blobSha": "3d50331fa34e41fa9daa664eb824092c37d5a17b",
+      "size": 8066,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p034/packaged.mjs"
+    },
+    {
+      "path": "tests/pcms/p034/rebind-guard.test.mjs",
+      "mode": "100644",
+      "blobSha": "811e7be655c752e665b65b890a9652a7da9631cf",
+      "size": 3186,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p034/rebind-guard.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p035/packaged.mjs",
+      "mode": "100644",
+      "blobSha": "68f7458a04be2131d37482c2bde23891c5972c65",
+      "size": 7769,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p035/packaged.mjs"
+    },
+    {
+      "path": "tests/pcms/p035/popup.test.mjs",
+      "mode": "100644",
+      "blobSha": "7d98923810d746caaf522f8e531c5fb1a09d9649",
+      "size": 7790,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p035/popup.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p036/deploy.test.mjs",
+      "mode": "100644",
+      "blobSha": "de7c2d11be7319b9f39f9085c32357d294c2ac25",
+      "size": 13471,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p036/deploy.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p036/fixture-extension.mjs",
+      "mode": "100644",
+      "blobSha": "83b1a6129d4817e6b7fb4c6852a5ee07059a93f2",
+      "size": 5130,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p036/fixture-extension.mjs"
+    },
+    {
+      "path": "tests/pcms/p036/harness.mjs",
+      "mode": "100644",
+      "blobSha": "fe715012d5427fe8a3146491c2984879bf9f55a0",
+      "size": 6120,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p036/harness.mjs"
+    },
+    {
+      "path": "tests/pcms/p036/index-boundary.test.mjs",
+      "mode": "100644",
+      "blobSha": "a77c481c0d8cfd8cffc407cdcc6035669680554f",
+      "size": 3743,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p036/index-boundary.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p036/migration.test.mjs",
+      "mode": "100644",
+      "blobSha": "8a6bc3d7b7dae419d4e78b09b3136812f05a726a",
+      "size": 8945,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p036/migration.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p036/packaged.mjs",
+      "mode": "100644",
+      "blobSha": "2b0b8b24afc5116d39097199f93b828ec07643e1",
+      "size": 8941,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p036/packaged.mjs"
+    },
+    {
+      "path": "tests/pcms/p036/perchance-v2.test.mjs",
+      "mode": "100644",
+      "blobSha": "782101293dd4502198e27895e8e53abf86388d14",
+      "size": 7647,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p036/perchance-v2.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p036/status.test.mjs",
+      "mode": "100644",
+      "blobSha": "b003b117a1c9101ebbb5a7dd800db11c3dfc0fe9",
+      "size": 11912,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p036/status.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p036/view-flow.mjs",
+      "mode": "100644",
+      "blobSha": "0b4340f79d8de12f030ae02454f8f3ba697e3e09",
+      "size": 12558,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p036/view-flow.mjs"
+    },
+    {
+      "path": "tests/pcms/p037/repository.test.mjs",
+      "mode": "100644",
+      "blobSha": "249f5d276fff0ed29d1a6c44617beebb62b78eeb",
+      "size": 15103,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p037/repository.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p038/packaged.mjs",
+      "mode": "100644",
+      "blobSha": "a250e558af615fa0fd98fdaf2b35eaf372d505e5",
+      "size": 6368,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p038/packaged.mjs"
+    },
+    {
+      "path": "tests/pcms/p038/sync.test.mjs",
+      "mode": "100644",
+      "blobSha": "949da2d42d66d6d2e1a873055378e72c281a0699",
+      "size": 8585,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p038/sync.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p039/boundaries.test.mjs",
+      "mode": "100644",
+      "blobSha": "417df932f6c9e4f7f3feaa941a67f5489ffa14fc",
+      "size": 2450,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p039/boundaries.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p039/driver.test.mjs",
+      "mode": "100644",
+      "blobSha": "37480594130bd60f7a23e56ab178995ae241f8c1",
+      "size": 7453,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p039/driver.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p039/fixture-background.js",
+      "mode": "100644",
+      "blobSha": "1e79d4489c154a52e0487b3a3a9bbd0ba7f2ad73",
+      "size": 8709,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p039/fixture-background.js"
+    },
+    {
+      "path": "tests/pcms/p039/fixture-extension.mjs",
+      "mode": "100644",
+      "blobSha": "96f1c5e70ed7dfd4378189a0527ffca01c229db2",
+      "size": 5084,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p039/fixture-extension.mjs"
+    },
+    {
+      "path": "tests/pcms/p039/observations.test.mjs",
+      "mode": "100644",
+      "blobSha": "2711dbe32c81459e863c7d0922fbbcbfec873291",
+      "size": 20515,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p039/observations.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p039/packaged.mjs",
+      "mode": "100644",
+      "blobSha": "78d800175d63c615d309e931b1601dbd0bced37c",
+      "size": 14111,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p039/packaged.mjs"
+    },
+    {
+      "path": "tests/pcms/p040/fixture-background.js",
+      "mode": "100644",
+      "blobSha": "43699aa251479092fcfa33782a2547d1101ebb18",
+      "size": 10550,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p040/fixture-background.js"
+    },
+    {
+      "path": "tests/pcms/p040/fixture-extension.mjs",
+      "mode": "100644",
+      "blobSha": "4836036414010f4a58133d4682c55b9e009b5194",
+      "size": 4091,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p040/fixture-extension.mjs"
+    },
+    {
+      "path": "tests/pcms/p040/fixture-rehearsal.test.mjs",
+      "mode": "100644",
+      "blobSha": "f16f17f9a3c9f801bf186938d3f91408598186ee",
+      "size": 3558,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p040/fixture-rehearsal.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p040/harness.mjs",
+      "mode": "100644",
+      "blobSha": "03537345045e85873e64f8c2757ab4d6314458c0",
+      "size": 4602,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p040/harness.mjs"
+    },
+    {
+      "path": "tests/pcms/p040/legacy-removal.test.mjs",
+      "mode": "100644",
+      "blobSha": "cc402c1c6fca1817193561785d19ee9b01fb81d0",
+      "size": 3400,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p040/legacy-removal.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p040/migration.test.mjs",
+      "mode": "100644",
+      "blobSha": "7299cbe7f87b611c47707ee19ffde4725ac27eda",
+      "size": 6372,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p040/migration.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p040/packaged.mjs",
+      "mode": "100644",
+      "blobSha": "fa2781c619550dd06b17511988f9b05cf34b9631",
+      "size": 7142,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p040/packaged.mjs"
+    },
+    {
+      "path": "tests/pcms/p040/refresher-background.test.mjs",
+      "mode": "100644",
+      "blobSha": "1c7223ab05f205dc29940a9af179050362e9b235",
+      "size": 10516,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p040/refresher-background.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p040/scheduler.test.mjs",
+      "mode": "100644",
+      "blobSha": "3b0e4b1bf748685aa783c91cb36f25dcb88003f4",
+      "size": 6709,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p040/scheduler.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p040/secret-input.test.mjs",
+      "mode": "100644",
+      "blobSha": "5b9654fefdaf51378e7a28093d40968f14d7ad16",
+      "size": 4573,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p040/secret-input.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p040/ui.test.mjs",
+      "mode": "100644",
+      "blobSha": "4939214abdba6856230d0278f5d3fb6c0810c3b6",
+      "size": 15887,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p040/ui.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p041/boundary.test.mjs",
+      "mode": "100644",
+      "blobSha": "e4a39d66f79f4608ba83c35e99a80160f9471ec4",
+      "size": 2601,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p041/boundary.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p041/checklist.test.mjs",
+      "mode": "100644",
+      "blobSha": "7620f5aed47a3c2da3b97bdf958d8000dc3b344d",
+      "size": 8434,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p041/checklist.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p041/fake-dom.mjs",
+      "mode": "100644",
+      "blobSha": "268796eba284751d5d776f3d289d14002d62b8a4",
+      "size": 4893,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p041/fake-dom.mjs"
+    },
+    {
+      "path": "tests/pcms/p041/harness.mjs",
+      "mode": "100644",
+      "blobSha": "17c03d55e80063b0669c74adf10da32c70c3258c",
+      "size": 4936,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p041/harness.mjs"
+    },
+    {
+      "path": "tests/pcms/p041/packaged.mjs",
+      "mode": "100644",
+      "blobSha": "5f81c33577d7c037ba9e8ae71b5990f9f96f0a94",
+      "size": 18090,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p041/packaged.mjs"
+    },
+    {
+      "path": "tests/pcms/p041/restore.test.mjs",
+      "mode": "100644",
+      "blobSha": "ee9039e10621a2f3eaa28598ca04bef75f59aa74",
+      "size": 10024,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p041/restore.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p041/settings-view.test.mjs",
+      "mode": "100644",
+      "blobSha": "0cc150591175425af9786c0bba323afcf4098d4f",
+      "size": 16446,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p041/settings-view.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p042/automatic.test.mjs",
+      "mode": "100644",
+      "blobSha": "4a2d54e1af9e61efc650d08f350e849f29fb631b",
+      "size": 12681,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p042/automatic.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p042/boundaries.test.mjs",
+      "mode": "100644",
+      "blobSha": "e72dc0221930e03818ff9b5d9b39832cdd5ada91",
+      "size": 3105,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p042/boundaries.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p042/driver.test.mjs",
+      "mode": "100644",
+      "blobSha": "c99b372fdb9fd60cb29aa0c24338f90eceb16198",
+      "size": 12103,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p042/driver.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p042/e2e.test.mjs",
+      "mode": "100644",
+      "blobSha": "71c7533b2d4994687e851ced827e66a7503120c1",
+      "size": 3336,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p042/e2e.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p042/fixture-background.js",
+      "mode": "100644",
+      "blobSha": "064df6c78f674c53fc77d74ad762e987912e37aa",
+      "size": 9400,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p042/fixture-background.js"
+    },
+    {
+      "path": "tests/pcms/p042/fixture-extension.mjs",
+      "mode": "100644",
+      "blobSha": "be9820f78a185de890927eb43b61e72b2e2aa741",
+      "size": 5098,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p042/fixture-extension.mjs"
+    },
+    {
+      "path": "tests/pcms/p042/harness.mjs",
+      "mode": "100644",
+      "blobSha": "d0f262c7d8f257c87f3ee9805f0270cea0a743a5",
+      "size": 4626,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p042/harness.mjs"
+    },
+    {
+      "path": "tests/pcms/p042/live-wiring.test.mjs",
+      "mode": "100644",
+      "blobSha": "45d582baec55bcf8ced648157be5b30d769e7e15",
+      "size": 7363,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p042/live-wiring.test.mjs"
+    },
+    {
+      "path": "tests/pcms/p042/packaged.mjs",
+      "mode": "100644",
+      "blobSha": "8b0dbdce3e3eb5a6328b2a6c648dfaee40591651",
+      "size": 18039,
+      "destinationPath": "docs/legacy/donor/tests/pcms/p042/packaged.mjs"
+    },
+    {
+      "path": "tests/test_bridge_backup.py",
+      "mode": "100644",
+      "blobSha": "23cebb837a070de71af5a030255826fd1dd979cc",
+      "size": 3391,
+      "destinationPath": "docs/legacy/donor/tests/test_bridge_backup.py"
+    },
+    {
+      "path": "tests/test_forwarder_auth.py",
+      "mode": "100644",
+      "blobSha": "54e963e54e105e81202bfa13a225126662dcb331",
+      "size": 14689,
+      "destinationPath": "docs/legacy/donor/tests/test_forwarder_auth.py"
+    },
+    {
+      "path": "tests/test_installer_upgrade.py",
+      "mode": "100644",
+      "blobSha": "2e87bd83eae7961dbdbb9c9dba99fdab1ed8e862",
+      "size": 3963,
+      "destinationPath": "docs/legacy/donor/tests/test_installer_upgrade.py"
+    },
+    {
+      "path": "tests/test_native.py",
+      "mode": "100644",
+      "blobSha": "c6dc70ca38b4ee893fafb457e1ea12a9b1096402",
+      "size": 23294,
+      "destinationPath": "docs/legacy/donor/tests/test_native.py"
+    },
+    {
+      "path": "tests/test_native_framing.py",
+      "mode": "100644",
+      "blobSha": "e509a7caae5eecd37da5a29392539de37baeccb6",
+      "size": 4476,
+      "destinationPath": "docs/legacy/donor/tests/test_native_framing.py"
+    },
+    {
+      "path": "tests/test_native_service_hardening.py",
+      "mode": "100644",
+      "blobSha": "dfe934e451f829088195feb066268077f820d64c",
+      "size": 7674,
+      "destinationPath": "docs/legacy/donor/tests/test_native_service_hardening.py"
+    },
+    {
+      "path": "tests/test_release.py",
+      "mode": "100644",
+      "blobSha": "1c00f948aee6656edbe82c265a426558a2b56fe7",
+      "size": 19817,
+      "destinationPath": "docs/legacy/donor/tests/test_release.py"
+    },
+    {
+      "path": "tests/upstream/import-integrity.test.mjs",
+      "mode": "100644",
+      "blobSha": "29732a7a7a1a1df800fc892140bf8e0e7a30c8f1",
+      "size": 5622,
+      "destinationPath": "docs/legacy/donor/tests/upstream/import-integrity.test.mjs"
+    },
+    {
+      "path": "tests/upstream/run-baseline.mjs",
+      "mode": "100644",
+      "blobSha": "3fb3735f5a4c85f29a95eb12679c9b86f0736c9a",
+      "size": 2199,
+      "destinationPath": "docs/legacy/donor/tests/upstream/run-baseline.mjs"
+    },
+    {
+      "path": "tools/firefox/install-pinned.mjs",
+      "mode": "100644",
+      "blobSha": "3692fd3dfc44e2cd2b4d1f785f1d45f227d73315",
+      "size": 2650,
+      "destinationPath": "docs/legacy/donor/tools/firefox/install-pinned.mjs"
+    },
+    {
+      "path": "tools/firefox/lib.mjs",
+      "mode": "100644",
+      "blobSha": "5e345c0118079a5ed0e24a5fabdedc06f3c7d538",
+      "size": 4360,
+      "destinationPath": "docs/legacy/donor/tools/firefox/lib.mjs"
+    },
+    {
+      "path": "tools/firefox/marionette.mjs",
+      "mode": "100644",
+      "blobSha": "dc213212976016f0c4eb444b5108d9d47620d4c8",
+      "size": 3972,
+      "destinationPath": "docs/legacy/donor/tools/firefox/marionette.mjs"
+    },
+    {
+      "path": "tools/firefox/packaged-harness.mjs",
+      "mode": "100644",
+      "blobSha": "818a86c475d7ae76213113dceeecb62ac111c3ab",
+      "size": 7806,
+      "destinationPath": "docs/legacy/donor/tools/firefox/packaged-harness.mjs"
+    },
+    {
+      "path": "tools/firefox/packaged.mjs",
+      "mode": "100644",
+      "blobSha": "5d666a8b9443b9094168672ff841128e5ae6318d",
+      "size": 15212,
+      "destinationPath": "docs/legacy/donor/tools/firefox/packaged.mjs"
+    },
+    {
+      "path": "tools/firefox/smoke.mjs",
+      "mode": "100644",
+      "blobSha": "8c6d2c233d0b603f1adabd80c2ec4d50256f16c6",
+      "size": 3295,
+      "destinationPath": "docs/legacy/donor/tools/firefox/smoke.mjs"
+    },
+    {
+      "path": "tools/generate-views.mjs",
+      "mode": "100644",
+      "blobSha": "8d07e77447ae40c2174bf555ac9a2a7951ce0793",
+      "size": 2102,
+      "destinationPath": "docs/legacy/donor/tools/generate-views.mjs"
+    },
+    {
+      "path": "tools/verify-claims.mjs",
+      "mode": "100644",
+      "blobSha": "f46e9b2cdcc4fed15a4988b78ce0855f9c3233ca",
+      "size": 2464,
+      "destinationPath": "docs/legacy/donor/tools/verify-claims.mjs"
+    },
+    {
+      "path": "tools/verify-repo.mjs",
+      "mode": "100644",
+      "blobSha": "d8f53ef78bacbd5b72cbe35a1d5e8ab880b38083",
+      "size": 2988,
+      "destinationPath": "docs/legacy/donor/tools/verify-repo.mjs"
+    }
+  ]
+}

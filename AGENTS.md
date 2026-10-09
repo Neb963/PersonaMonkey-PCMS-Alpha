@@ -1,0 +1,34 @@
+# AGENTS.md — PersonaMonkey-PCMS Alpha agent contract (accepted)
+
+**Repository**: `Neb963/PersonaMonkey-PCMS-Alpha`. **Authority order**: explicit current operator instruction; safety/security constraints; accepted `docs/specs/alpha/SPEC.md` and `docs/implementation/alpha/CONTRACTS.md`; `plan.json` and `policies.json`; active valid claim; existing implementation/tests; convenience. Historical donor roadmap and ADRs are reference, not current Alpha authority.
+
+1. **One agent → one assigned Pxxx → stop.** The operator supplies the phase ID exactly once. Do not pick another READY phase or successor. A round has five independent agent slots and a separate gate-check prompt, not an orchestrator.
+2. **Read state before any change**: latest main and current SHA; this AGENTS.md; Alpha spec, contracts, policies, plan, gates, acceptance; relevant donor architecture, code, tests, recent PRs/CI; phase claim and current owner/contracts. No valid claim or unmet dependency → stop and report.
+3. **Claim correctly** using the repository validator. Respect write paths, contract reads/writes, claim epoch, base-main SHA, exclusive resources and migration allocations. Parallel agents may edit disjoint paths only. Changes to shared contracts require gate authorization and revalidation. Never override another claim.
+4. **PersonaMonkey owns** Personas, personaUid, routes/Mullvad, browser execution, control leases, its DB and native operations. Alpha consumes typed broker semantics only; no raw native RPC, duplicated userscript authority or direct PersonaMonkey internals.
+5. **External operations** must be durable before dispatch and confirmed by authoritative readback. UNCERTAIN means reconcile first, never blind replay. Recovery hold blocks mutating work until consistency restored. Fail closed on unknown provider behavior, CAPTCHA or authorization failures.
+6. **Secrets** only in approved secret backend and, if explicitly exported through the operator-approved *unencrypted* backup, inside that local backup. No plaintext credentials in normal DB, GitHub, logs, reports, screenshots, test fixtures or CI artifacts. Backups never enter git.
+7. **Browser CI** uses an exact pinned Firefox Developer Edition, packaged XPI where applicable, deterministic Perchance fixtures/emulator. No Firefox DevTools MCP for routine development; never infer Firefox from Chromium. Only final operator-live gate verifies actual Perchance/Mullvad/Cloudflare behavior.
+8. Implement narrow complete slice; regression tests and faults, contract validation, clear failure states, no speculative abstraction or unrelated refactor. Inspect final diff, exact acceptance IDs, evidence. Run applicable local verification when available and independent GitHub CI. Never claim commands/tests ran if they did not.
+9. Commit/push coherent checkpoints on `agent/<agent-id>/<phase-id>` (or repository-authorized naming), open PR, allow auto-merge **only if** current claim/epoch/contracts, required checks and merge queue permit. Do not force push or overwrite other work. COMMITTED, CI_VERIFIED, MERGED, GATE_VERIFIED, ACCEPTED and LIVE_VERIFIED are distinct.
+10. At end report only phase, key changes, tests actually executed, CI/merge status, commit/PR, claim state, genuine blockers. Then stop. No successor phase; no changing gate state on behalf of integration checker.
+
+## Serialized G0 exception and active authority
+
+G0 is an operator-assigned serialized bootstrap, not a round phase. Its lease is
+`plan.json.bootstrap` and its context is `docs/evidence/alpha/G0/context.json`.
+Only G0 may import the pinned donor, seed approved authority, materialize shared
+interface declarations, and prepare governance/CI. No Alpha feature implementation
+is authorized in G0. All rounds stay locked until G0 is merged and independently
+verified on main, with acceptance evidence.
+
+Only Alpha authority is active. All inherited donor roadmap, ADR, architecture,
+plan, policies, claims and evidence (including files retained at original paths
+for regression checks) are historical reference. See `docs/legacy/README.md`.
+Use `docs/implementation/alpha/GOVERNANCE.md` for serialized claim acquisition,
+epoch fencing, branch verification and current-main merge procedure. Product work
+requires its acquisition claim to be present on current main. Claim and gate
+control changes are separate, serialized PRs; they may not contain feature work.
+Per-phase evidence is owned only at `docs/evidence/alpha/<phase-id>/**`. Never edit
+another phase record. Frozen declaration changes require an explicit gate
+amendment and invalidation/revalidation of affected claims.

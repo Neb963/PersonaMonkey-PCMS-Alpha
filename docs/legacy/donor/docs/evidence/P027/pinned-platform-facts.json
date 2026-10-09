@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "phase": "P027",
+  "commitSha": "3b428298cb0c7a59c08b46c9b47345802db36389",
+  "workflowRun": "37675347314",
+  "version": "154.0b10",
+  "artifactSha256": "681913108bba655d7ec6fadfac2731141b23e48dca88d1988a4d95a6bdaff164",
+  "productXpiSha256": "b8aa1dcc12bda4e0329a4436169d78bb061d05024baf6fe663def0952e533755",
+  "sourceState": "actions-checkout",
+  "osContentSandboxDisabled": false,
+  "checks": {
+    "packagedIndexedDbBackup": true,
+    "packagedBaselineAndTwoTabs": true,
+    "productForcedUnloadWithZeroDashboards": true,
+    "idleUnloadAndSynchronousMessageWake": true,
+    "persistentInstallAndProfileRestart": true
+  },
+  "platformFacts": {
+    "defaultIdleTimeoutMs": 30000,
+    "moduleBackgroundHasDom": true,
+    "defaultIdleUnloadElapsedMs": 29965,
+    "backgroundStateWithOpenView": "running",
+    "backgroundStateWithOpenViewAndPort": "running",
+    "storageSessionSurvivesIdleUnload": true,
+    "domTimerLostOnUnload": true,
+    "namedAlarmReplacesAndWakes": true,
+    "backgroundStateWithBackgroundSelfPortOnly": "stopped",
+    "manifestSandboxAndSandboxCsp": {
+      "type": "p027.sandbox.result",
+      "value": 42,
+      "browserAbsent": true,
+      "chromeAbsent": true,
+      "networkBlocked": true
+    },
+    "storageSessionClearedOnBrowserRestart": true,
+    "alarmsClearedOnBrowserRestart": true
+  },
+  "productUnload": {
+    "state": "stopped",
+    "mode": "firefox-test-hook"
+  },
+  "esr153Decision": {
+    "minimumManifestVersion": "153.0",
+    "runtimeModules": "UNAVAILABLE below Firefox 154; preserve built-in functionality (ADR-003 default b)"
+  },
+  "passed": true
+}

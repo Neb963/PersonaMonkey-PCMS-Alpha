@@ -1,0 +1,73 @@
+{
+  "format": "personamonkey.workflow-package",
+  "formatVersion": 1,
+  "package": {
+    "id": "mullvad-signal-check",
+    "name": "Mullvad signal check",
+    "description": "Two sequential protected-persona checks completed by an included Persona.complete() userscript.",
+    "author": "PersonaMonkey example",
+    "createdAt": "2026-09-14T00:00:00.000Z"
+  },
+  "personas": [
+    {
+      "key": "protected",
+      "label": "Protected Mullvad persona",
+      "description": "Map to a managed persona using a configured protected route.",
+      "routeRequirement": "protected"
+    }
+  ],
+  "scripts": [
+    {
+      "key": "mullvad-status",
+      "file": "userscripts/mullvad-status-signal.user.js",
+      "name": "PersonaMonkey Mullvad status signal",
+      "sha256": "3f60d4ebc8296814810220b78fba90498906aa4e2562a2b461b667a488b17586"
+    }
+  ],
+  "workflow": {
+    "name": "Mullvad signal check",
+    "enabled": true,
+    "steps": [
+      {
+        "id": "check-status",
+        "personaKey": "protected",
+        "urls": [
+          "https://am.i.mullvad.net/"
+        ],
+        "concurrency": 1,
+        "scriptKeys": [
+          "mullvad-status"
+        ],
+        "completion": {
+          "mode": "signal",
+          "value": "",
+          "timeoutMs": 30000
+        },
+        "retries": 1,
+        "retryDelayMs": 1500,
+        "closeTabs": true,
+        "stopOnError": true
+      },
+      {
+        "id": "check-ipv4",
+        "personaKey": "protected",
+        "urls": [
+          "https://ipv4.am.i.mullvad.net/"
+        ],
+        "concurrency": 1,
+        "scriptKeys": [
+          "mullvad-status"
+        ],
+        "completion": {
+          "mode": "signal",
+          "value": "",
+          "timeoutMs": 30000
+        },
+        "retries": 1,
+        "retryDelayMs": 1500,
+        "closeTabs": true,
+        "stopOnError": true
+      }
+    ]
+  }
+}

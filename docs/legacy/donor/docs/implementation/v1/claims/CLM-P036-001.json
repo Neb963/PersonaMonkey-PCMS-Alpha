@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "claimId": "CLM-P036-001",
+  "phaseId": "P036",
+  "taskId": "T036.1",
+  "claimEpoch": 1,
+  "state": "ACCEPTED",
+  "owner": {
+    "agentId": "claude-sweet-knuth-06661g"
+  },
+  "baseMainSha": "b89d5d244dd3a74e81226f82b906bdb81a8650f0",
+  "branch": "agent/claude-sweet-knuth-06661g/p036-t036-1",
+  "writePaths": [
+    "pcms-modules/p015/**",
+    "extension/pcms/providers/perchance/**",
+    "extension/pcms/integration/composition.js",
+    "extension/pcms/integration/explorer-deployer.js",
+    "extension/pcms/integration/live-mutations.js",
+    "extension/pcms/integration/provider-handoff.js",
+    "extension/pcms/integration/generator-index.js",
+    "extension/pcms/app/views/generators/**",
+    "extension/pcms/app/router-v2.js",
+    "extension/pcms/app/live-controls.js",
+    "tests/pcms/p015/deployer.test.mjs",
+    "tests/pcms/p036/**",
+    "docs/evidence/P036/**",
+    "extension/pcms/app/app.js",
+    "extension/pcms/integration/ui-client-contract.js",
+    "package.json",
+    ".github/workflows/firefox.yml",
+    "tests/pcms/p041/packaged.mjs",
+    "docs/implementation/v1/claims/CLM-P036-001.json"
+  ],
+  "contractReads": [
+    {
+      "id": "pcms.ui-client/v1",
+      "sha": "b89d5d244dd3a74e81226f82b906bdb81a8650f0"
+    },
+    {
+      "id": "pcms.ui-contribution/v1",
+      "sha": "b89d5d244dd3a74e81226f82b906bdb81a8650f0"
+    }
+  ],
+  "contractWrites": [
+    "pcms.perchance.driver/v2",
+    "pcms.deployer.state/v2",
+    "pcms.generator-index/v1",
+    "pcms.ui-client/v1"
+  ],
+  "resources": [
+    {
+      "key": "ci-workflows",
+      "mode": "exclusive"
+    }
+  ],
+  "migrationSlots": [
+    "MIG-P036-deployer-state-v2"
+  ],
+  "acceptanceIds": [
+    "A036-01",
+    "A036-02",
+    "A036-03"
+  ],
+  "lastCheckpointSha": "0a2073eaa0543470c7cf16f6bdfab3ff09ab18c8"
+}

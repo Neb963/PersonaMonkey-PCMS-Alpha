@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <!-- ADR-003 §1 option 1: the single manifest content_security_policy.sandbox string governs both
+       sandbox pages. A tightening meta CSP is not used: the pinned Firefox 154 build did not enforce
+       one here (P030 CI observation), and the shared policy already denies network, frames, workers
+       and same-origin. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PCMS Controller Sandbox</title>
+</head>
+<body>
+  <script src="controller.js"></script>
+</body>
+</html>

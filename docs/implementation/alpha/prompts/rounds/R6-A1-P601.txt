@@ -1,0 +1,32 @@
+Repository: https://github.com/Neb963/PersonaMonkey-PCMS-Alpha
+Agent slot: 1/5 | Round: R6 | Assigned phase: P601
+
+Implement **P601 ONLY — Production bootstrap and legacy runtime retirement**.
+Other agents may concurrently implement other assigned phases. I authorize auto-merge and phase acceptance ONLY when claim fencing, dependencies, independent CI, current-main merge validation and repository gates allow it. Do not start a successor phase. No permanent orchestrator.
+
+MANDATORY PREFLIGHT
+1. Fetch current GitHub main and read AGENTS.md, docs/specs/alpha/SPEC.md, docs/implementation/alpha/{plan.json,policies.json,CONTRACTS.md,GATES.md,ACCEPTANCE.md}, current generated STATUS, relevant PersonaMonkey donor code/docs, recent PRs/claims/CI.
+2. Verify G0 completed and this phase is READY with dependencies ACCEPTED. Confirm contract hashes and absence of conflicting ACTIVE claims. Acquire exactly one valid claim for P601 with current base SHA and claimEpoch. If invalid or blocked, STOP and report; do not choose another phase.
+3. Follow the frozen Alpha contracts and typed PersonaMonkey broker boundary; never bypass ownership, duplicate browser automation, invent Perchance capabilities, print secrets or claim live acceptance.
+
+PHASE OUTCOME
+Audit and finalize the already-wired Alpha background authority; retire verified unused dynamic module runtime and legacy PCMS product entry without touching PersonaMonkey internals. Preserve full packaged Firefox startup.
+
+DEPENDENCIES
+P201, P401, P402, P403, P404, P405, P501, P502, P503, P504, P505
+
+AUTHORIZED PRODUCT/TEST PATHS (plus own claim/evidence records only)
+- extension/manifest.json
+- extension/lib/recovery-bootstrap.js
+- extension/alpha/bootstrap/**
+- extension/pcms/**
+- pcms-modules/**
+- tests/alpha/bootstrap/**
+
+REQUIRED EVIDENCE (AP601-01, AP601-02, AP601-03)
+1. one Core no dormant legacy activation
+2. pinned Firefox packaged boot+restart
+3. PersonaMonkey regression still passes
+
+DELIVERY CONTRACT
+Implement only the claimed scope, including failure paths and smallest reproducible regressions; prefer existing services. Run applicable tests and record exact commands/results. Inspect diff for leaks and unexpected paths. Commit/push coherent changes, open/update PR, wait for independent CI, revalidate against latest main and safely auto-merge only if policy permits. Preserve COMMITTED→CI_VERIFIED→MERGED→GATE_VERIFIED→ACCEPTED distinctions; never declare GATE_VERIFIED yourself. Publish phase evidence and claim status justified by results. STOP and report phase, changes, tests/CI, commits/PR, unresolved issues. Do not claim or work on the next phase.

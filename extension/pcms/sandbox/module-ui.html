@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <!-- ADR-003 §6 module page surface (P033). A declared sandbox page under the shared manifest
+       sandbox CSP: no network, no frames, no workers, no extension APIs. The dashboard embeds it
+       with sandbox="allow-scripts" and hands it one private MessagePort; module-ui.js then runs
+       the module's own `ui` entry with the Core UI kit (module-ui.css). -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PCMS Module UI Sandbox</title>
+  <link rel="stylesheet" href="module-ui.css">
+</head>
+<body>
+  <p id="moduleUiStatus" class="ui-status" data-state="waiting">Waiting for PCMS…</p>
+  <main id="root" class="ui-root"></main>
+  <script src="module-ui.js"></script>
+</body>
+</html>

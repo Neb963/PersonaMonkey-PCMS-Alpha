@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "claimId": "CLM-P040-001",
+  "phaseId": "P040",
+  "taskId": "T040.1",
+  "claimEpoch": 1,
+  "state": "ACCEPTED",
+  "owner": {
+    "agentId": "claude-cool-darwin-ot93tn"
+  },
+  "baseMainSha": "ddf7cee38c6c9a41e500d7086f10f2eb39a82460",
+  "branch": "agent/claude-cool-darwin-ot93tn/p040-t040-1",
+  "writePaths": [
+    "pcms-modules/p016/**",
+    "pcms-modules/p017/**",
+    "pcms-modules/p019/**",
+    "extension/pcms/integration/**",
+    "extension/pcms/app/**",
+    "extension/pcms/background/core-factory.js",
+    "extension/pcms/background/ui-dispatcher.js",
+    "tests/pcms/p040/**",
+    "tests/pcms/p016/**",
+    "tests/pcms/p017/**",
+    "tests/pcms/p019/**",
+    "tests/pcms/p026/boundary.test.mjs",
+    "tests/pcms/p032/shell.test.mjs",
+    "tests/pcms/p041/boundary.test.mjs",
+    "tests/pcms/p034/accounts-model.test.mjs",
+    "tests/pcms/p025/live-wiring.test.mjs",
+    "tools/firefox/packaged.mjs",
+    "docs/evidence/P040/**",
+    "docs/implementation/v1/claims/CLM-P040-001.json",
+    "package.json",
+    ".github/workflows/firefox.yml"
+  ],
+  "contractReads": [
+    {
+      "id": "pcms.timers.ensure/v1",
+      "sha": "ddf7cee38c6c9a41e500d7086f10f2eb39a82460"
+    },
+    {
+      "id": "pcms.deployer.state/v2",
+      "sha": "ddf7cee38c6c9a41e500d7086f10f2eb39a82460"
+    },
+    {
+      "id": "pcms.generator-repository/v1",
+      "sha": "ddf7cee38c6c9a41e500d7086f10f2eb39a82460"
+    },
+    {
+      "id": "pcms.generator-index/v1",
+      "sha": "ddf7cee38c6c9a41e500d7086f10f2eb39a82460"
+    }
+  ],
+  "contractWrites": [
+    "pcms.ui-contribution/v1",
+    "pcms.ui-client/v1"
+  ],
+  "resources": [
+    {
+      "key": "ci-workflows",
+      "mode": "exclusive"
+    }
+  ],
+  "migrationSlots": [
+    "MIG-P040-refresher-state-v2"
+  ],
+  "acceptanceIds": [
+    "A040-01",
+    "A040-02",
+    "A040-03"
+  ],
+  "lastCheckpointSha": "110c820fd99970487fc1a31fa5515f0abc21e749"
+}

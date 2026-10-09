@@ -1,0 +1,27 @@
+Repository: https://github.com/Neb963/PersonaMonkey-PCMS-Alpha
+Integration gate: **GATE-R1** ONLY, covering P101, P102, P103, P104, P105
+Mode: independently verify, reconcile, and finalize this ONE round. This is an operator-invoked gate-check session, not a permanent orchestrator. Other agents may still be running; do not assume their work is finished.
+
+AUTHORIZED ACTIONS: You may inspect GitHub main, branches, claims, phase PRs, workflow runs and source; run verification where facilities exist; update gate-only evidence/generated status and complete safe merges/acceptance after all checks. You may create a narrowly scoped repair claim if governance explicitly permits; otherwise return product fixes to their owning phase agent. Never override phase-owner files, force-push, fabricate evidence, expand scope or claim LIVE acceptance.
+
+A. ESTABLISH LIVE STATE
+- Fetch latest main SHA (do NOT trust a prompt's branch or SHA); read Alpha AGENTS.md, SPEC, CONTRACTS, plan/policies, acceptance matrix, gate docs, current status, every R1 phase claim/evidence and current PRs/CI.
+- Verify bootstrap G0 accepted and prerequisite rounds accepted. Identify claims by agent slot; ensure phase IDs and current claimEpoch/baseMainSha match current governance and no abandoned/stale worker is mergeable.
+- Enumerate exactly these five phase outputs: P101, P102, P103, P104, P105. For each, record PR, source SHA, claim epoch, allowed write paths, touched paths/contracts/migrations/exclusive resources, acceptance IDs and actual test evidence. An uncompleted phase stays BLOCKED; do not skip it or start R2.
+
+B. INDEPENDENT CODE & SAFETY AUDIT
+- Inspect *actual diffs*, not only PR descriptions. Check required feature semantics, failure paths, secrets/redaction, no unexpected dependency churn, no second raw browser/native automation authority, and compliance with PersonaMonkey broker ownership.
+- Detect overlapping paths, stale contract reads, unauthorized contract writes, implicit schema/migration changes, coupled same-round APIs not in frozen contracts, ambiguous retries, lost-update risks, missing recovery holds and unbounded tab/timer behavior.
+- For each of P101, P102, P103, P104, P105, inspect actual tests mapped to its exact acceptance IDs and require evidence commit SHA plus workflow URL/run outcome. Reject “tested” without reproducible execution. Check source-linked fixtures for Perchance assumptions.
+
+C. SERIALIZED INTEGRATION
+- Rebase/update each candidate against current main when safe; if doing so changes its source head or contract assumptions, require rerun of independent CI and relevant tests. Avoid concurrent merges even if several PRs show green; use GitHub merge queue if available, otherwise serialize merges with fresh main/head preconditions and rerun post-merge CI.
+- Merge only when checks apply to exact current candidate. After each merge update main SHA and verify merge-group/combined CI. If conflict or stale epoch arises, stop that PR and send it for reconciliation, not forced acceptance.
+- Run or inspect all applicable combined alpha verification: claim validator, plan/contracts schemas, unit/integration suites, Perchance and GitHub emulators, packaged pinned-Firefox checks, recovery/fault/security suites introduced so far. Identify any test absent and record NOT_RUN, never PASS.
+- Verify the specific R1 gate outcomes: Exact Firefox pin and packaged PersonaMonkey baseline; frozen domain/storage and provider interface shape; path safety and private token redaction; UI foundation accessibility.
+
+D. STATE, EVIDENCE, AND STOP
+- If any phase is incomplete or combined tests fail, retain blocked state; isolate actionable failures, open bounded repair issues/claims or route to owner, record exact blockers, and STOP. No next round.
+- If all five phase acceptances and combined regression pass: commit immutable docs/evidence/alpha/GATE-R1 record with exact integrated main SHA, 5 phase PR/CI links, accepted IDs, commands/results, residual caveats; update only supported state in authoritative plan and regenerate STATUS/ROADMAP. CI-verify the evidence/status commit too.
+- Verify no ACTIVE/stale claims remain capable of mutating accepted work, and only then mark GATE-R1 accepted and make eligible R2 phases READY (for R6: unlock OPERATOR-LIVE, which is not automatable live acceptance).
+- Final report: integrated SHA, each phase acceptance, combined tests, merge/CI result, unresolved issues and next-round eligibility. STOP. Do not implement any successor phase or perform live Perchance mutations.

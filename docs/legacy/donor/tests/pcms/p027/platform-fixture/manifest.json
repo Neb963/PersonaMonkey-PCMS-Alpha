@@ -1,0 +1,10 @@
+{
+  "manifest_version": 3,
+  "name": "PCMS pinned Firefox platform probe",
+  "version": "1.0",
+  "browser_specific_settings": {"gecko": {"id": "pcms-platform-probe@tests", "strict_min_version": "154.0"}},
+  "permissions": ["storage", "alarms"],
+  "background": {"scripts": ["background.js"], "type": "module"},
+  "sandbox": {"pages": ["sandbox.html"]},
+  "content_security_policy": {"sandbox": "sandbox allow-scripts; default-src 'none'; script-src 'self' 'unsafe-eval'; connect-src 'none'; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'"}
+}

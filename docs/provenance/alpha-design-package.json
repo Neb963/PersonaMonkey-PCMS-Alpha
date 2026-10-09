@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "package": "PCMS-Alpha-Design-And-Prompts.zip",
+  "packageSha256": "dc01b88e35983e26c75c93aa271fcb81944396d0c51934918d922cca2a91a493",
+  "approvedBy": "operator",
+  "approvedAt": "2026-10-08T23:54:40Z",
+  "approval": "Explicit yes to committing the seven normative seed files and continuing G0.",
+  "seedFiles": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "253e12e8631098ddb4a988f8f2cd42ecc53fee67b740958175d5c21ae184097f"
+    },
+    {
+      "path": "docs/implementation/alpha/ACCEPTANCE.md",
+      "sha256": "8c2794c206c65df0fd0cac05c4e0ff73dc9513999990eb9f2d59f0e62ac41ed2"
+    },
+    {
+      "path": "docs/implementation/alpha/CONTRACTS.md",
+      "sha256": "539d573078b160df7c5c482099e8c40f7b8d59d681102637a4c66a74a5da12f4"
+    },
+    {
+      "path": "docs/implementation/alpha/GATES.md",
+      "sha256": "674c68bcd8e16d7e551ec7354798d14bfe94d23bd14350581e406e5c9bd771e8"
+    },
+    {
+      "path": "docs/implementation/alpha/plan.json",
+      "sha256": "caf72b0831d35841cfd9763897e0d383a73a9be6cdc50602edca54e6bd9cf4fc"
+    },
+    {
+      "path": "docs/implementation/alpha/policies.json",
+      "sha256": "6fc74a7c9fb66cf5c4c65cf19631a327b6345ac99a1a7cdc83ff8ac19a0c844e"
+    },
+    {
+      "path": "docs/specs/alpha/SPEC.md",
+      "sha256": "35332ed4e41e7497368a54f3fba857b2ed202fe98e2b2ace2457bf15c3ce6e63"
+    }
+  ]
+}

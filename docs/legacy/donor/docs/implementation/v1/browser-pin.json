@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "product": "firefox-developer-edition",
+  "channel": "developer",
+  "version": "154.0b10",
+  "platform": "linux-x86_64",
+  "locale": "en-US",
+  "archive": {
+    "fileName": "firefox-154.0b10.tar.xz",
+    "url": "https://archive.mozilla.org/pub/devedition/releases/154.0b10/linux-x86_64/en-US/firefox-154.0b10.tar.xz",
+    "sha256": "681913108bba655d7ec6fadfac2731141b23e48dca88d1988a4d95a6bdaff164"
+  },
+  "checksumManifest": {
+    "url": "https://archive.mozilla.org/pub/devedition/releases/154.0b10/SHA256SUMS",
+    "entry": "linux-x86_64/en-US/firefox-154.0b10.tar.xz"
+  },
+  "provenance": {
+    "publisher": "Mozilla",
+    "archive": "archive.mozilla.org",
+    "pinnedAt": "2026-10-07"
+  }
+}

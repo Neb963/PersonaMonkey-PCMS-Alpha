@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "claimId": "CLM-P001-001",
+  "phaseId": "P001",
+  "taskId": "T001.1",
+  "claimEpoch": 1,
+  "state": "ACCEPTED",
+  "owner": {
+    "agentId": "gpt-5-6-sol"
+  },
+  "baseMainSha": "306fba7aa47282c4e7ecbcf3ea80b07d4e9216d8",
+  "branch": "agent/gpt-5-6-sol/p001-t001-1",
+  "writePaths": [
+    ".github/workflows/**",
+    "tools/firefox/**",
+    "docs/implementation/v1/browser-pin.json",
+    "tests/firefox/**",
+    "package.json",
+    "docs/evidence/P001/**"
+  ],
+  "contractReads": [],
+  "contractWrites": [],
+  "resources": [],
+  "migrationSlots": [],
+  "acceptanceIds": [
+    "A001-01",
+    "A001-02",
+    "A001-03"
+  ],
+  "lastCheckpointSha": "8459112bfbce460f7381cc852e78e8d35e666ec0"
+}

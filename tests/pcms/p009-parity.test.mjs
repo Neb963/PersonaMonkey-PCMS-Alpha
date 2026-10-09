@@ -1,0 +1,35 @@
+import assert from "node:assert/strict";
+import test from "node:test";
+
+import {
+  INTEGRATION_COMMAND_DESCRIPTORS,
+  INTEGRATION_EVENTS_PORT,
+  INTEGRATION_PROTOCOL_VERSION,
+  INTEGRATION_REQUEST_TYPE,
+  MAX_INTEGRATION_EVENT_BYTES,
+  MAX_INTEGRATION_REQUEST_BYTES,
+  MAX_INTEGRATION_RESPONSE_BYTES
+} from "../../extension/lib/management-integration-protocol.js";
+import { PERSONA_BROKER_COMMAND_NAMES, PERSONA_BROKER_CONTRACT_VERSION } from "../../extension/pcms/core/persona-broker-contract.js";
+import {
+  PERSONA_BROKER_CAPABILITY_COMMANDS,
+  PERSONA_BROKER_INTEGRATION_EVENTS_PORT,
+  PERSONA_BROKER_INTEGRATION_REQUEST_TYPE,
+  PERSONA_BROKER_MAX_EVENT_BYTES,
+  PERSONA_BROKER_MAX_REQUEST_BYTES,
+  PERSONA_BROKER_MAX_RESPONSE_BYTES
+} from "../../extension/pcms/core/persona-broker.js";
+
+test("A009-03 adapter wire constants and capability map stay aligned with Integration API v1",()=>{
+  assert.equal(PERSONA_BROKER_CONTRACT_VERSION,INTEGRATION_PROTOCOL_VERSION);
+  assert.equal(PERSONA_BROKER_INTEGRATION_REQUEST_TYPE,INTEGRATION_REQUEST_TYPE);
+  assert.equal(PERSONA_BROKER_INTEGRATION_EVENTS_PORT,INTEGRATION_EVENTS_PORT);
+  assert.equal(PERSONA_BROKER_MAX_REQUEST_BYTES,MAX_INTEGRATION_REQUEST_BYTES);
+  assert.equal(PERSONA_BROKER_MAX_RESPONSE_BYTES,MAX_INTEGRATION_RESPONSE_BYTES);
+  assert.equal(PERSONA_BROKER_MAX_EVENT_BYTES,MAX_INTEGRATION_EVENT_BYTES);
+  for(const command of PERSONA_BROKER_COMMAND_NAMES){
+    const descriptor=INTEGRATION_COMMAND_DESCRIPTORS[command];
+    assert.ok(descriptor,command+" missing from Integration API");
+    assert.ok(PERSONA_BROKER_CAPABILITY_COMMANDS[descriptor.capability].includes(command));
+  }
+});

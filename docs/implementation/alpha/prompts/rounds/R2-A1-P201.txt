@@ -1,0 +1,31 @@
+Repository: https://github.com/Neb963/PersonaMonkey-PCMS-Alpha
+Agent slot: 1/5 | Round: R2 | Assigned phase: P201
+
+Implement **P201 ONLY — Background Core and durable alarms**.
+Other agents may concurrently implement other assigned phases. I authorize auto-merge and phase acceptance ONLY when claim fencing, dependencies, independent CI, current-main merge validation and repository gates allow it. Do not start a successor phase. No permanent orchestrator.
+
+MANDATORY PREFLIGHT
+1. Fetch current GitHub main and read AGENTS.md, docs/specs/alpha/SPEC.md, docs/implementation/alpha/{plan.json,policies.json,CONTRACTS.md,GATES.md,ACCEPTANCE.md}, current generated STATUS, relevant PersonaMonkey donor code/docs, recent PRs/claims/CI.
+2. Verify G0 completed and this phase is READY with dependencies ACCEPTED. Confirm contract hashes and absence of conflicting ACTIVE claims. Acquire exactly one valid claim for P201 with current base SHA and claimEpoch. If invalid or blocked, STOP and report; do not choose another phase.
+3. Follow the frozen Alpha contracts and typed PersonaMonkey broker boundary; never bypass ownership, duplicate browser automation, invent Perchance capabilities, print secrets or claim live acceptance.
+
+PHASE OUTCOME
+Implement one idempotent background Alpha Core, UI request validation, durable timers and operation/tab budget primitives using PersonaMonkey broker semantics. Wire a minimal Alpha background entry into the existing manifest/bootstrap now and disable legacy PCMS Core activation so the packaged browser can exercise Alpha early; P601 later removes unused legacy code.
+
+DEPENDENCIES
+P102, P103, P104
+
+AUTHORIZED PRODUCT/TEST PATHS (plus own claim/evidence records only)
+- extension/alpha/core/**
+- extension/alpha/bootstrap/**
+- extension/manifest.json
+- extension/lib/recovery-bootstrap.js
+- tests/alpha/core/**
+
+REQUIRED EVIDENCE (AP201-01, AP201-02, AP201-03)
+1. two clients one core
+2. idle unload/cold warm wake
+3. UNCERTAIN+RECOVERY_HOLD and bounded alarms
+
+DELIVERY CONTRACT
+Implement only the claimed scope, including failure paths and smallest reproducible regressions; prefer existing services. Run applicable tests and record exact commands/results. Inspect diff for leaks and unexpected paths. Commit/push coherent changes, open/update PR, wait for independent CI, revalidate against latest main and safely auto-merge only if policy permits. Preserve COMMITTED→CI_VERIFIED→MERGED→GATE_VERIFIED→ACCEPTED distinctions; never declare GATE_VERIFIED yourself. Publish phase evidence and claim status justified by results. STOP and report phase, changes, tests/CI, commits/PR, unresolved issues. Do not claim or work on the next phase.

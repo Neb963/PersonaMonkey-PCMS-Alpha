@@ -1,0 +1,25 @@
+export function makeStorage(shared={rows:new Map()}) {
+  const clone=(v)=>structuredClone(v);
+  return {
+    shared,
+    namespace(namespace) {
+      return {
+        namespace,
+        async get(key){ const row=shared.rows.get(namespace+"\0"+key); return row?clone(row):null; },
+        async list(){ return [...shared.rows.entries()].filter(([k])=>k.startsWith(namespace+"\0")).map(([,v])=>clone(v)); },
+        async compareAndSwap(key,{expectedRevision,value}){
+          const id=namespace+"\0"+key; const row=shared.rows.get(id); const current=row?.revision||0;
+          if(current!==expectedRevision){const e=new Error("cas");e.code="PCMS_STORAGE_CAS_MISMATCH";e.currentRevision=current;throw e;}
+          const next={key,revision:current+1,updatedAt:"storage-clock",value:clone(value)};shared.rows.set(id,next);return clone(next);
+        }
+      };
+    }
+  };
+}
+
+export function op(overrides={}) {
+  return {
+    operationId:"op-1",providerId:"perchance",action:"generator.update",
+    targetRef:{kind:"generator",id:"gen-123"},intentFingerprint:"intent:v1:abc",...overrides
+  };
+}

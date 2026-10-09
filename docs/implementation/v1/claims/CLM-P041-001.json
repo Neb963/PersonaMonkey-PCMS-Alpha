@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "claimId": "CLM-P041-001",
+  "phaseId": "P041",
+  "taskId": "T041.1",
+  "claimEpoch": 1,
+  "state": "ACCEPTED",
+  "owner": {
+    "agentId": "claude-gifted-albattani-aqqxhc"
+  },
+  "baseMainSha": "b89d5d244dd3a74e81226f82b906bdb81a8650f0",
+  "branch": "agent/claude-gifted-albattani-aqqxhc/p041-t041-1",
+  "writePaths": [
+    "extension/pcms/app/views/settings/**",
+    "extension/pcms/recovery/**",
+    "extension/pcms/app/app.js",
+    "extension/pcms/app/index.html",
+    "extension/pcms/app/app.css",
+    "extension/pcms/integration/ui-client-contract.js",
+    "tests/pcms/p020/backup-restore.test.mjs",
+    "tests/pcms/p023/integration.test.mjs",
+    "tests/pcms/p041/**",
+    "docs/evidence/P041/**",
+    "package.json",
+    ".github/workflows/firefox.yml",
+    "docs/implementation/v1/claims/CLM-P041-001.json"
+  ],
+  "contractReads": [
+    {
+      "id": "pcms.ui-client/v1",
+      "sha": "b89d5d244dd3a74e81226f82b906bdb81a8650f0"
+    },
+    {
+      "id": "pcms.ui-contribution/v1",
+      "sha": "b89d5d244dd3a74e81226f82b906bdb81a8650f0"
+    },
+    {
+      "id": "pcms.module-capabilities/v1",
+      "sha": "b89d5d244dd3a74e81226f82b906bdb81a8650f0"
+    }
+  ],
+  "contractWrites": [
+    "pcms.ui-client/v1"
+  ],
+  "resources": [
+    {
+      "key": "ci-workflows",
+      "mode": "exclusive"
+    }
+  ],
+  "migrationSlots": [],
+  "acceptanceIds": [
+    "A041-01",
+    "A041-02",
+    "A041-03"
+  ],
+  "lastCheckpointSha": "74b7a27b8f48572c62d54162d167484d58a8f499"
+}

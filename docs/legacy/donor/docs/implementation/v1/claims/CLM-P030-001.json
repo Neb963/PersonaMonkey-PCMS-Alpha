@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "claimId": "CLM-P030-001",
+  "phaseId": "P030",
+  "taskId": "T030.1",
+  "claimEpoch": 1,
+  "state": "ACCEPTED",
+  "owner": {
+    "agentId": "claude-thread-hp7i02"
+  },
+  "baseMainSha": "401fa524225b35c45eaf239112974c27492d3bbc",
+  "branch": "agent/claude-thread-hp7i02/p030-t030-1",
+  "writePaths": [
+    "extension/manifest.json",
+    "docs/upstream/source/extension/manifest.json",
+    "docs/upstream/import-manifest.json",
+    "tests/upstream/import-integrity.test.mjs",
+    "extension/pcms/sandbox/**",
+    "extension/pcms/runtime/**",
+    "extension/pcms/background/sandbox/**",
+    "tests/pcms/p030/**",
+    "docs/evidence/P030/**",
+    "package.json",
+    ".github/workflows/firefox.yml",
+    "docs/implementation/v1/claims/CLM-P030-001.json",
+    "docs/implementation/v1/plan.json",
+    "ROADMAP.md",
+    "docs/progress/STATUS.md"
+  ],
+  "contractReads": [],
+  "contractWrites": [],
+  "resources": [
+    {
+      "key": "extension-manifest",
+      "mode": "exclusive"
+    }
+  ],
+  "migrationSlots": [],
+  "acceptanceIds": [
+    "A030-01",
+    "A030-02",
+    "A030-03"
+  ],
+  "lastCheckpointSha": "7772db74a5caad9026996bb625e0460e12686c69"
+}

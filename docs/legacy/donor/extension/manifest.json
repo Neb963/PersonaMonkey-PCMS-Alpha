@@ -1,0 +1,81 @@
+{
+  "manifest_version": 3,
+  "name": "PersonaMonkey PCMS",
+  "version": "1.2.0",
+  "description": "Perchance Central Management System built on PersonaMonkey personas, protected routing, modules, diagnostics, storage, userscripts and workflows.",
+  "permissions": [
+    "storage",
+    "proxy",
+    "webRequest",
+    "webRequestBlocking",
+    "webNavigation",
+    "tabs",
+    "sessions",
+    "cookies",
+    "browsingData",
+    "contextualIdentities",
+    "privacy",
+    "scripting",
+    "nativeMessaging",
+    "alarms",
+    "downloads",
+    "notifications",
+    "clipboardWrite"
+  ],
+  "optional_permissions": [
+    "userScripts"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "scripts": [
+      "lib/recovery-bootstrap.js"
+    ],
+    "type": "module"
+  },
+  "action": {
+    "default_title": "PersonaMonkey PCMS",
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "48": "icons/icon48.png",
+      "96": "icons/icon96.png"
+    }
+  },
+  "icons": {
+    "48": "icons/icon48.png",
+    "96": "icons/icon96.png"
+  },
+  "options_ui": {
+    "page": "pcms/app/index.html",
+    "open_in_tab": true
+  },
+  "sandbox": {
+    "pages": [
+      "pcms/sandbox/controller.html",
+      "pcms/sandbox/module-ui.html"
+    ]
+  },
+  "content_security_policy": {
+    "sandbox": "sandbox allow-scripts; default-src 'none'; script-src 'self' 'unsafe-eval'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; child-src 'none'; worker-src 'none'; manifest-src 'none'; base-uri 'none'; form-action 'none'"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "persona-route-manager@local",
+      "strict_min_version": "153.0"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content/userscript-trigger.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": true,
+      "match_about_blank": true
+    }
+  ]
+}

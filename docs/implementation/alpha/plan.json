@@ -1,0 +1,1189 @@
+{
+  "schemaVersion": 1,
+  "product": "PersonaMonkey-PCMS-Alpha",
+  "authority": "docs/implementation/alpha/plan.json",
+  "designOnly": false,
+  "bootstrap": {
+    "id": "G0",
+    "state": "IN_PROGRESS",
+    "source": "Neb963/persona-monkey-pcms",
+    "rule": "No round agent until Alpha repo is bootstrapped, validated and merged",
+    "agentId": "codex-g0",
+    "claimEpoch": 1,
+    "branch": "agent/codex-g0/g0",
+    "baseMainSha": "ecec158728a320f6d71694144153dbecb89ca153",
+    "sourceCommitSha": "482dc9d9273dcdcd7d2ef4c4b0df8c7c6933d5ca",
+    "sourceTreeSha": "07e005b7b5647215a10dc957c633aae2d76435cc",
+    "evidencePath": "docs/evidence/alpha/G0/",
+    "exclusiveResources": [
+      "alpha-bootstrap-authority"
+    ]
+  },
+  "constraints": {
+    "agentSlots": 5,
+    "maxRounds": 10,
+    "rounds": 6,
+    "oneClaimPerAgent": true,
+    "noContinuousOrchestrator": true,
+    "gateChecksAfterRound": true,
+    "autoMerge": "ONLY_WITH_SERIALIZED_CURRENT_MAIN_REVALIDATION_CI_AND_CLAIM_VALIDATION",
+    "finalLiveGate": "OPERATOR-LIVE"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "id": "R1",
+      "title": "Independent foundations",
+      "phaseIds": [
+        "P101",
+        "P102",
+        "P103",
+        "P104",
+        "P105"
+      ],
+      "gateId": "GATE-R1",
+      "status": "LOCKED"
+    },
+    {
+      "round": 2,
+      "id": "R2",
+      "title": "Durable services and inventory",
+      "phaseIds": [
+        "P201",
+        "P202",
+        "P203",
+        "P204",
+        "P205"
+      ],
+      "gateId": "GATE-R2",
+      "status": "LOCKED"
+    },
+    {
+      "round": 3,
+      "id": "R3",
+      "title": "Operational engines",
+      "phaseIds": [
+        "P301",
+        "P302",
+        "P303",
+        "P304",
+        "P305"
+      ],
+      "gateId": "GATE-R3",
+      "status": "LOCKED"
+    },
+    {
+      "round": 4,
+      "id": "R4",
+      "title": "Integrated workflows and recovery",
+      "phaseIds": [
+        "P401",
+        "P402",
+        "P403",
+        "P404",
+        "P405"
+      ],
+      "gateId": "GATE-R4",
+      "status": "LOCKED"
+    },
+    {
+      "round": 5,
+      "id": "R5",
+      "title": "Operator interface",
+      "phaseIds": [
+        "P501",
+        "P502",
+        "P503",
+        "P504",
+        "P505"
+      ],
+      "gateId": "GATE-R5",
+      "status": "LOCKED"
+    },
+    {
+      "round": 6,
+      "id": "R6",
+      "title": "Production wiring and adversarial hardening",
+      "phaseIds": [
+        "P601",
+        "P602",
+        "P603",
+        "P604",
+        "P605"
+      ],
+      "gateId": "GATE-R6",
+      "status": "LOCKED"
+    }
+  ],
+  "phases": [
+    {
+      "id": "P101",
+      "round": 1,
+      "agent": 1,
+      "title": "Pinned Firefox and PersonaMonkey regression harness",
+      "status": "LOCKED",
+      "dependsOn": [
+        "G0"
+      ],
+      "goal": "Preserve donor PersonaMonkey functionality; establish exact pinned Firefox Developer Edition packaged-XPI browser regression and isolated smoke harness. Do not modify PCMS Alpha feature implementation.",
+      "ownership": {
+        "writePaths": [
+          ".github/workflows/alpha-firefox.yml",
+          "tools/alpha/firefox/**",
+          "tests/alpha/browser-baseline/**"
+        ],
+        "contractReads": [
+          "alpha.contracts.v1"
+        ],
+        "contractWrites": [],
+        "exclusiveResources": [],
+        "migrationSlots": []
+      },
+      "acceptanceIds": [
+        "AP101-01",
+        "AP101-02",
+        "AP101-03"
+      ],
+      "verify": [
+        "packaged XPI install/restart",
+        "baseline Persona/routing/broker contracts",
+        "reproducible exact Firefox artifact"
+      ]
+    },
+    {
+      "id": "P102",
+      "round": 1,
+      "agent": 2,
+      "title": "Generator/domain persistence and durability",
+      "status": "LOCKED",
+      "dependsOn": [
+        "G0"
+      ],
+      "goal": "Implement frozen Account/Generator/Release/Operation record normalization and isolated Alpha storage with migration tests, CAS and atomic journal semantics. No provider mutations or UI.",
+      "ownership": {
+        "writePaths": [
+          "extension/alpha/domain/**",
+          "extension/alpha/storage/**",
+          "tests/alpha/domain/**"
+        ],
+        "contractReads": [
+          "alpha.contracts.v1"
+        ],
+        "contractWrites": [],
+        "exclusiveResources": [],
+        "migrationSlots": []
+      },
+      "acceptanceIds": [
+        "AP102-01",
+        "AP102-02",
+        "AP102-03"
+      ],
+      "verify": [
+        "schema/CAS/revision collision",
+        "storage reopen and corruption",
+        "no credentials in normal records"
+      ]
+    },
+    {
+      "id": "P103",
+      "round": 1,
+      "agent": 3,
+      "title": "Perchance contract adapter and emulator",
+      "status": "LOCKED",
+      "dependsOn": [
+        "G0"
+      ],
+      "goal": "Build a narrow Perchance capability adapter, deterministic fixtures using discovery-v3 evidence, safe read/write classification, and unknown-capability fail-closed handling; do not assume Brave behavior is Firefox-tested.",
+      "ownership": {
+        "writePaths": [
+          "extension/alpha/providers/perchance/**",
+          "fixtures/alpha/perchance/**",
+          "tests/alpha/providers/perchance/**"
+        ],
+        "contractReads": [
+          "alpha.contracts.v1"
+        ],
+        "contractWrites": [],
+        "exclusiveResources": [],
+        "migrationSlots": []
+      },
+      "acceptanceIds": [
+        "AP103-01",
+        "AP103-02",
+        "AP103-03"
+      ],
+      "verify": [
+        "emulated saved/stale/challenge outcomes",
+        "ownership/listing/AI source observations",
+        "no unapproved direct network authority"
+      ]
+    },
+    {
+      "id": "P104",
+      "round": 1,
+      "agent": 4,
+      "title": "GitHub private-repo adapter and safe paths",
+      "status": "LOCKED",
+      "dependsOn": [
+        "G0"
+      ],
+      "goal": "Implement configured `per-gens` Contents read/write adapter, strict literal path templates, commit-pinned blobs, conditional atomic source commit and GitHub rate-limit/conflict fixtures. No source-status business logic.",
+      "ownership": {
+        "writePaths": [
+          "extension/alpha/providers/github/**",
+          "fixtures/alpha/github/**",
+          "tests/alpha/providers/github/**"
+        ],
+        "contractReads": [
+          "alpha.contracts.v1"
+        ],
+        "contractWrites": [],
+        "exclusiveResources": [],
+        "migrationSlots": []
+      },
+      "acceptanceIds": [
+        "AP104-01",
+        "AP104-02",
+        "AP104-03"
+      ],
+      "verify": [
+        "traversal/ambiguous filename rejection",
+        "branch-head conflict no overwrite",
+        "read/write token redaction"
+      ]
+    },
+    {
+      "id": "P105",
+      "round": 1,
+      "agent": 5,
+      "title": "Static Alpha UI shell and visual foundation",
+      "status": "LOCKED",
+      "dependsOn": [
+        "G0"
+      ],
+      "goal": "Create consistent native-feeling visual tokens, static accessible shell, layout and standard UI primitives; no dynamic module contribution system, business state or backend mutations.",
+      "ownership": {
+        "writePaths": [
+          "extension/alpha/ui/shell/**",
+          "extension/alpha/ui/styles/**",
+          "tests/alpha/ui-shell/**"
+        ],
+        "contractReads": [
+          "alpha.contracts.v1"
+        ],
+        "contractWrites": [],
+        "exclusiveResources": [],
+        "migrationSlots": []
+      },
+      "acceptanceIds": [
+        "AP105-01",
+        "AP105-02",
+        "AP105-03"
+      ],
+      "verify": [
+        "static navigation and keyboard focus",
+        "dark/light readable density",
+        "loading/empty/error state primitives"
+      ]
+    },
+    {
+      "id": "P201",
+      "round": 2,
+      "agent": 1,
+      "title": "Background Core and durable alarms",
+      "status": "LOCKED",
+      "dependsOn": [
+        "P102",
+        "P103",
+        "P104"
+      ],
+      "goal": "Implement one idempotent background Alpha Core, UI request validation, durable timers and operation/tab budget primitives using PersonaMonkey broker semantics. Wire a minimal Alpha background entry into the existing manifest/bootstrap now and disable legacy PCMS Core activation so the packaged browser can exercise Alpha early; P601 later removes unused legacy code.",
+      "ownership": {
+        "writePaths": [
+          "extension/alpha/core/**",
+          "extension/alpha/bootstrap/**",
+          "extension/manifest.json",
+          "extension/lib/recovery-bootstrap.js",
+          "tests/alpha/core/**"
+        ],
+        "contractReads": [
+          "alpha.contracts.v1"
+        ],
+        "contractWrites": [],
+        "exclusiveResources": [],
+        "migrationSlots": []
+      },
+      "acceptanceIds": [
+        "AP201-01",
+        "AP201-02",
+        "AP201-03"
+      ],
+      "verify": [
+        "two clients one core",
+        "idle unload/cold warm wake",
+        "UNCERTAIN+RECOVERY_HOLD and bounded alarms"
+      ]
+    },
+    {
+      "id": "P202",
+      "round": 2,
+      "agent": 2,
+      "title": "Accounts and Persona enrollment",
+      "status": "LOCKED",
+      "dependsOn": [
+        "P102",
+        "P103"
+      ],
+      "goal": "Implement manual login enrollment, dedicated Persona binding, route retry, session confirmation, account inventory metadata and safe rebinding previews using only typed Persona broker.",
+      "ownership": {
+        "writePaths": [
+          "extension/alpha/features/accounts/**",
+          "tests/alpha/accounts/**"
+        ],
+        "contractReads": [
+          "alpha.contracts.v1"
+        ],
+        "contractWrites": [],
+        "exclusiveResources": [],
+        "migrationSlots": []
+      },
+      "acceptanceIds": [
+        "AP202-01",
+        "AP202-02",
+        "AP202-03"
+      ],
+      "verify": [
+        "account\u2194personaUid epoch and rotation",
+        "manual challenge route retry without bypass",
+        "import existing account-owned generators excluded"
+      ]
+    },
+    {
+      "id": "P203",
+      "round": 2,
+      "agent": 3,
+      "title": "GitHub source catalog and READY interpreter",
+      "status": "LOCKED",
+      "dependsOn": [
+        "P102",
+        "P104"
+      ],
+      "goal": "Implement commit-pinned `DEPLOYMENT.md` status interpreter, configurable folder/slug mappings, deployable-file availability and canonical release hashing; missing/invalid status blocks.",
+      "ownership": {
+        "writePaths": [
+          "extension/alpha/features/sources/**",
+          "tests/alpha/sources/**"
+        ],
+        "contractReads": [
+          "alpha.contracts.v1"
+        ],
+        "contractWrites": [],
+        "exclusiveResources": [],
+        "migrationSlots": []
+      },
+      "acceptanceIds": [
+        "AP203-01",
+        "AP203-02",
+        "AP203-03"
+      ],
+      "verify": [
+        "READY/BLOCKED/IN_DEVELOPMENT",
+        "no redeploy on docs-only edits",
+        "different folder/slug mappings"
+      ]
+    },
+    {
+      "id": "P204",
+      "round": 2,
+      "agent": 4,
+      "title": "Generator inventory and drift facts",
+      "status": "LOCKED",
+      "dependsOn": [
+        "P102",
+        "P103"
+      ],
+      "goal": "Implement durable inventory of all account-owned generators, explicit public/unlisted and managed/excluded intent, source versions, unexpected drift evidence and indexed filtering for 1k entries.",
+      "ownership": {
+        "writePaths": [
+          "extension/alpha/features/inventory/**",
+          "tests/alpha/inventory/**"
+        ],
+        "contractReads": [
+          "alpha.contracts.v1"
+        ],
+        "contractWrites": [],
+        "exclusiveResources": [],
+        "migrationSlots": []
+      },
+      "acceptanceIds": [
+        "AP204-01",
+        "AP204-02",
+        "AP204-03"
+      ],
+      "verify": [
+        "1k inventory pagination and indexing",
+        "non-public discovery not conflated with feed",
+        "drift and ownership revisions"
+      ]
+    },
+    {
+      "id": "P205",
+      "round": 2,
+      "agent": 5,
+      "title": "Unified backup schema and safe exporter",
+      "status": "LOCKED",
+      "dependsOn": [
+        "P102"
+      ],
+      "goal": "Design/implement one explicitly unencrypted local backup container with integrity manifest, PersonaMonkey+Alpha eligible data collection, secrets exportability truth table, staged restore preview and no provider mutation.",
+      "ownership": {
+        "writePaths": [
+          "extension/alpha/backup/**",
+          "tests/alpha/backup/**"
+        ],
+        "contractReads": [
+          "alpha.contracts.v1"
+        ],
+        "contractWrites": [],
+        "exclusiveResources": [],
+        "migrationSlots": []
+      },
+      "acceptanceIds": [
+        "AP205-01",
+        "AP205-02",
+        "AP205-03"
+      ],
+      "verify": [
+        "schema/checksum and recovery preview",
+        "honest exportable vs unavailable inventory",
+        "no backup content in CI logs"
+      ]
+    },
+    {
+      "id": "P301",
+      "round": 3,
+      "agent": 1,
+      "title": "Bulk reservations and account balancing",
+      "status": "LOCKED",
+      "dependsOn": [
+        "P202",
+        "P203",
+        "P204",
+        "P201"
+      ],
+      "goal": "Implement pasted-slug validation, distributed account selection for new reservations, durable two-system Perchance creation/GitHub folder journal, collision and partial-success reconciliation.",
+      "ownership": {
+        "writePaths": [
+          "extension/alpha/features/reservation/**",
+          "tests/alpha/reservation/**"
+        ],
+        "contractReads": [
+          "alpha.contracts.v1"
+        ],
+        "contractWrites": [],
+        "exclusiveResources": [],
+        "migrationSlots": []
+      },
+      "acceptanceIds": [
+        "AP301-01",
+        "AP301-02",
+        "AP301-03"
+      ],
+      "verify": [
+        "even allocation of new slots",
+        "existing slug collision",
+        "GitHub failure after remote create no duplicate"
+      ]
+    },
+    {
+      "id": "P302",
+      "round": 3,
+      "agent": 2,
+      "title": "Sleep-only Deployer and rollback",
+      "status": "LOCKED",
+      "dependsOn": [
+        "P203",
+        "P204",
+        "P201"
+      ],
+      "goal": "Implement source-commit-pinned unlisted saves, readback/hash verification, sleeping update gate, last-good snapshot, bounded rollback and failed-revision quarantine. AI approval orchestration comes in P402.",
+      "ownership": {
+        "writePaths": [
+          "extension/alpha/features/deployer/**",
+          "tests/alpha/deployer/**"
+        ],
+        "contractReads": [
+          "alpha.contracts.v1"
+        ],
+        "contractWrites": [],
+        "exclusiveResources": [],
+        "migrationSlots": []
+      },
+      "acceptanceIds": [
+        "AP302-01",
+        "AP302-02",
+        "AP302-03"
+      ],
+      "verify": [
+        "reject writes to active generators",
+        "save/readback and source drift",
+        "failed update rollback unlisted sleeping"
+      ]
+    },
+    {
+      "id": "P303",
+      "round": 3,
+      "agent": 3,
+      "title": "Native Perchance AI session and editor overlay",
+      "status": "LOCKED",
+      "dependsOn": [
+        "P103",
+        "P201",
+        "P105"
+      ],
+      "goal": "Implement Perchance AI-helper session controller and compact #edit overlay with durable task state, per-account slots, session recovery and approval intent interface. No new AI provider.",
+      "ownership": {
+        "writePaths": [
+          "extension/alpha/features/ai/**",
+          "extension/alpha/overlay/**",
+          "tests/alpha/ai/**"
+        ],
+        "contractReads": [
+          "alpha.contracts.v1"
+        ],
+        "contractWrites": [],
+        "exclusiveResources": [],
+        "migrationSlots": []
+      },
+      "acceptanceIds": [
+        "AP303-01",
+        "AP303-02",
+        "AP303-03"
+      ],
+      "verify": [
+        "one running AI per account by default",
+        "pending review releases concurrency slot",
+        "tab reload/reconnect/stale editor"
+      ]
+    },
+    {
+      "id": "P304",
+      "round": 3,
+      "agent": 4,
+      "title": "Individual Refresher scheduler and healthy clock",
+      "status": "LOCKED",
+      "dependsOn": [
+        "P204",
+        "P201"
+      ],
+      "goal": "Implement per-generator active/sleep timing, \u00b130-minute bounded jitter, downtime/outage-paused healthy clock, automatic cap from eligible population and observed capacity, manual override and longest-waiting selection. No provider refresh mutations here.",
+      "ownership": {
+        "writePaths": [
+          "extension/alpha/features/refresher/**",
+          "tests/alpha/refresher/**"
+        ],
+        "contractReads": [
+          "alpha.contracts.v1"
+        ],
+        "contractWrites": [],
+        "exclusiveResources": [],
+        "migrationSlots": []
+      },
+      "acceptanceIds": [
+        "AP304-01",
+        "AP304-02",
+        "AP304-03"
+      ],
+      "verify": [
+        "24/72 population and cap maths",
+        "shutdown/outage but not idle unload pause",
+        "pull-in/pull-out and fairness"
+      ]
+    },
+    {
+      "id": "P305",
+      "round": 3,
+      "agent": 5,
+      "title": "Recent visibility and adaptive metrics",
+      "status": "LOCKED",
+      "dependsOn": [
+        "P204",
+        "P103"
+      ],
+      "goal": "Implement global 10-minute feed observation, rendered position/filter fixture, adaptive per-generator stats and bounded retry classification; do not dispatch source edit here.",
+      "ownership": {
+        "writePaths": [
+          "extension/alpha/features/visibility/**",
+          "tests/alpha/visibility/**"
+        ],
+        "contractReads": [
+          "alpha.contracts.v1"
+        ],
+        "contractWrites": [],
+        "exclusiveResources": [],
+        "migrationSlots": []
+      },
+      "acceptanceIds": [
+        "AP305-01",
+        "AP305-02",
+        "AP305-03"
+      ],
+      "verify": [
+        "pinned/filtered/missing classification",
+        "1k request budget",
+        "daily/weekly views with staleness"
+      ]
+    },
+    {
+      "id": "P401",
+      "round": 4,
+      "agent": 1,
+      "title": "Supply flow and two-sided reconciliation",
+      "status": "LOCKED",
+      "dependsOn": [
+        "P301",
+        "P203"
+      ],
+      "goal": "Compose reservation, Perchance ownership confirmation, GitHub folder creation, and READY GitHub-first import through concrete durable supply flow; no generic workflow framework.",
+      "ownership": {
+        "writePaths": [
+          "extension/alpha/flows/supply/**",
+          "tests/alpha/flows/supply/**"
+        ],
+        "contractReads": [
+          "alpha.contracts.v1"
+        ],
+        "contractWrites": [],
+        "exclusiveResources": [],
+        "migrationSlots": []
+      },
+      "acceptanceIds": [
+        "AP401-01",
+        "AP401-02",
+        "AP401-03"
+      ],
+      "verify": [
+        "paste 200/1k candidates with bounded tasks",
+        "GitHub-first mapping",
+        "resume partially completed reservation"
+      ]
+    },
+    {
+      "id": "P402",
+      "round": 4,
+      "agent": 2,
+      "title": "Release, approval, publication and GitHub writeback",
+      "status": "LOCKED",
+      "dependsOn": [
+        "P302",
+        "P303",
+        "P304",
+        "P203"
+      ],
+      "goal": "Compose sleep-only Deployer with AI task, human Mark ready save/readback, branch-head CAS live fixes, public switch, managed enrolment and failed-update quarantine.",
+      "ownership": {
+        "writePaths": [
+          "extension/alpha/flows/release/**",
+          "tests/alpha/flows/release/**"
+        ],
+        "contractReads": [
+          "alpha.contracts.v1"
+        ],
+        "contractWrites": [],
+        "exclusiveResources": [],
+        "migrationSlots": []
+      },
+      "acceptanceIds": [
+        "AP402-01",
+        "AP402-02",
+        "AP402-03"
+      ],
+      "verify": [
+        "READY update waits for sleep",
+        "atomic conditional live-fix commit",
+        "unlist before update and re-publication after approval"
+      ]
+    },
+    {
+      "id": "P403",
+      "round": 4,
+      "agent": 3,
+      "title": "Refresh execution and visibility feedback",
+      "status": "LOCKED",
+      "dependsOn": [
+        "P304",
+        "P305",
+        "P201"
+      ],
+      "goal": "Compose scheduler, visibility observer, Persona browser execution and transient exact-comment ledger with controlled reload/retry, staggered saves, suspension and attention.",
+      "ownership": {
+        "writePaths": [
+          "extension/alpha/flows/refresh/**",
+          "tests/alpha/flows/refresh/**"
+        ],
+        "contractReads": [
+          "alpha.contracts.v1"
+        ],
+        "contractWrites": [],
+        "exclusiveResources": [],
+        "migrationSlots": []
+      },
+      "acceptanceIds": [
+        "AP403-01",
+        "AP403-02",
+        "AP403-03"
+      ],
+      "verify": [
+        "no source hash drift from trailing comment",
+        "bounded retries/reload/suspension",
+        "top-target position not guaranteed"
+      ]
+    },
+    {
+      "id": "P404",
+      "round": 4,
+      "agent": 4,
+      "title": "Notifications, attention, and tab ownership",
+      "status": "LOCKED",
+      "dependsOn": [
+        "P201",
+        "P202",
+        "P303"
+      ],
+      "goal": "Implement central action-required inbox, deduplicated desktop+in-app notifications and bounded Alpha-owned-tab allocation; never close operator-owned tabs.",
+      "ownership": {
+        "writePaths": [
+          "extension/alpha/features/attention/**",
+          "extension/alpha/features/tabs/**",
+          "tests/alpha/attention/**"
+        ],
+        "contractReads": [
+          "alpha.contracts.v1"
+        ],
+        "contractWrites": [],
+        "exclusiveResources": [],
+        "migrationSlots": []
+      },
+      "acceptanceIds": [
+        "AP404-01",
+        "AP404-02",
+        "AP404-03"
+      ],
+      "verify": [
+        "multi-job tab ceiling",
+        "desktop warning dedup and user attention",
+        "pending AI approval reopens editor on demand"
+      ]
+    },
+    {
+      "id": "P405",
+      "round": 4,
+      "agent": 5,
+      "title": "Full backup restore and downloads retention",
+      "status": "LOCKED",
+      "dependsOn": [
+        "P205",
+        "P201",
+        "P202"
+      ],
+      "goal": "Complete backup export/restore integration across PersonaMonkey and Alpha, download to a subfolder with tracked retention, integrity preview and recovery hold. State unsupported export gaps explicitly.",
+      "ownership": {
+        "writePaths": [
+          "extension/alpha/backup/integration/**",
+          "tests/alpha/backup/integration/**"
+        ],
+        "contractReads": [
+          "alpha.contracts.v1"
+        ],
+        "contractWrites": [],
+        "exclusiveResources": [],
+        "migrationSlots": []
+      },
+      "acceptanceIds": [
+        "AP405-01",
+        "AP405-02",
+        "AP405-03"
+      ],
+      "verify": [
+        "one unencrypted local file with allowed secrets",
+        "successful restore and reconcile",
+        "known-download retention and unknown-file warning"
+      ]
+    },
+    {
+      "id": "P501",
+      "round": 5,
+      "agent": 1,
+      "title": "Bulk-first Overview and Supply UI",
+      "status": "LOCKED",
+      "dependsOn": [
+        "P401",
+        "P402",
+        "P404",
+        "P105"
+      ],
+      "goal": "Build dashboard Overview and bulk reservation/deployment queues using Core projections and fixed UI route contract. No provider state authority inside UI.",
+      "ownership": {
+        "writePaths": [
+          "extension/alpha/ui/views/overview/**",
+          "extension/alpha/ui/views/supply/**",
+          "tests/alpha/ui/overview/**"
+        ],
+        "contractReads": [
+          "alpha.contracts.v1"
+        ],
+        "contractWrites": [],
+        "exclusiveResources": [],
+        "migrationSlots": []
+      },
+      "acceptanceIds": [
+        "AP501-01",
+        "AP501-02",
+        "AP501-03"
+      ],
+      "verify": [
+        "bulk 200 slug input and queue receipts",
+        "action-needed summary",
+        "keyboard and clear partial-error messaging"
+      ]
+    },
+    {
+      "id": "P502",
+      "round": 5,
+      "agent": 2,
+      "title": "Accounts and generator management UI",
+      "status": "LOCKED",
+      "dependsOn": [
+        "P202",
+        "P204",
+        "P105",
+        "P404"
+      ],
+      "goal": "Build searchable Account wizard/list and Generator Manager detail/table with 1k rows, managed/excluded/public actions, source-drift ignore scoped per revision, delete confirmation typed yes.",
+      "ownership": {
+        "writePaths": [
+          "extension/alpha/ui/views/management/**",
+          "tests/alpha/ui/management/**"
+        ],
+        "contractReads": [
+          "alpha.contracts.v1"
+        ],
+        "contractWrites": [],
+        "exclusiveResources": [],
+        "migrationSlots": []
+      },
+      "acceptanceIds": [
+        "AP502-01",
+        "AP502-02",
+        "AP502-03"
+      ],
+      "verify": [
+        "no manual account IDs on normal flow",
+        "1k rows with fast search",
+        "safe delete and source-drift impact"
+      ]
+    },
+    {
+      "id": "P503",
+      "round": 5,
+      "agent": 3,
+      "title": "AI approval and deployment review UI",
+      "status": "LOCKED",
+      "dependsOn": [
+        "P402",
+        "P404",
+        "P105"
+      ],
+      "goal": "Build review-queue and deployment detail pages with native Perchance editor deep link, source/provenance, failed-update/quarantined states, human approval receipts and no irreversible guessing.",
+      "ownership": {
+        "writePaths": [
+          "extension/alpha/ui/views/review/**",
+          "tests/alpha/ui/review/**"
+        ],
+        "contractReads": [
+          "alpha.contracts.v1"
+        ],
+        "contractWrites": [],
+        "exclusiveResources": [],
+        "migrationSlots": []
+      },
+      "acceptanceIds": [
+        "AP503-01",
+        "AP503-02",
+        "AP503-03"
+      ],
+      "verify": [
+        "AI review queue separate from live slot",
+        "reopen #edit with correct Persona",
+        "explicit failure/UNCERTAIN states"
+      ]
+    },
+    {
+      "id": "P504",
+      "round": 5,
+      "agent": 4,
+      "title": "Refresher, settings and backup UI",
+      "status": "LOCKED",
+      "dependsOn": [
+        "P403",
+        "P405",
+        "P105"
+      ],
+      "goal": "Build simple A/S/cap/margin Refresher settings, live pool/stats, integrated backup export/restore, GitHub token/paths and diagnostics; do not expose scheduler jitter.",
+      "ownership": {
+        "writePaths": [
+          "extension/alpha/ui/views/settings/**",
+          "extension/alpha/ui/views/refresher/**",
+          "tests/alpha/ui/settings/**"
+        ],
+        "contractReads": [
+          "alpha.contracts.v1"
+        ],
+        "contractWrites": [],
+        "exclusiveResources": [],
+        "migrationSlots": []
+      },
+      "acceptanceIds": [
+        "AP504-01",
+        "AP504-02",
+        "AP504-03"
+      ],
+      "verify": [
+        "cap auto/manual validation and explanatory state",
+        "unencrypted-backup consent and restore preview",
+        "stats timestamp and failure hints"
+      ]
+    },
+    {
+      "id": "P505",
+      "round": 5,
+      "agent": 5,
+      "title": "Attention and toolbar popup UI",
+      "status": "LOCKED",
+      "dependsOn": [
+        "P404",
+        "P105"
+      ],
+      "goal": "Build action-required/notifications panel and concise toolbar PCMS status, with fixed validated UI client messages and user-facing error texts. No dynamic module UI.",
+      "ownership": {
+        "writePaths": [
+          "extension/alpha/ui/views/attention/**",
+          "extension/alpha/popup/**",
+          "tests/alpha/ui/attention/**"
+        ],
+        "contractReads": [
+          "alpha.contracts.v1"
+        ],
+        "contractWrites": [],
+        "exclusiveResources": [],
+        "migrationSlots": []
+      },
+      "acceptanceIds": [
+        "AP505-01",
+        "AP505-02",
+        "AP505-03"
+      ],
+      "verify": [
+        "notification actions/deep links",
+        "popup no Core creation",
+        "accessible status/keyboard controls"
+      ]
+    },
+    {
+      "id": "P601",
+      "round": 6,
+      "agent": 1,
+      "title": "Production bootstrap and legacy runtime retirement",
+      "status": "LOCKED",
+      "dependsOn": [
+        "P201",
+        "P401",
+        "P402",
+        "P403",
+        "P404",
+        "P405",
+        "P501",
+        "P502",
+        "P503",
+        "P504",
+        "P505"
+      ],
+      "goal": "Audit and finalize the already-wired Alpha background authority; retire verified unused dynamic module runtime and legacy PCMS product entry without touching PersonaMonkey internals. Preserve full packaged Firefox startup.",
+      "ownership": {
+        "writePaths": [
+          "extension/manifest.json",
+          "extension/lib/recovery-bootstrap.js",
+          "extension/alpha/bootstrap/**",
+          "extension/pcms/**",
+          "pcms-modules/**",
+          "tests/alpha/bootstrap/**"
+        ],
+        "contractReads": [
+          "alpha.contracts.v1"
+        ],
+        "contractWrites": [],
+        "exclusiveResources": [],
+        "migrationSlots": []
+      },
+      "acceptanceIds": [
+        "AP601-01",
+        "AP601-02",
+        "AP601-03"
+      ],
+      "verify": [
+        "one Core no dormant legacy activation",
+        "pinned Firefox packaged boot+restart",
+        "PersonaMonkey regression still passes"
+      ]
+    },
+    {
+      "id": "P602",
+      "round": 6,
+      "agent": 2,
+      "title": "Fault injection and lifecycle verification",
+      "status": "LOCKED",
+      "dependsOn": [
+        "P401",
+        "P402",
+        "P403",
+        "P405"
+      ],
+      "goal": "Add adversarial cross-feature tests for provider uncertainty, crash mid mutation, shutdown and alarm wake, Perchance outages, Cloudflare/session and stale Persona binding; file repair issues/claims for bugs outside owned paths.",
+      "ownership": {
+        "writePaths": [
+          "tests/alpha/fault/**",
+          "fixtures/alpha/fault/**",
+          "docs/evidence/alpha/P602/**"
+        ],
+        "contractReads": [
+          "alpha.contracts.v1"
+        ],
+        "contractWrites": [],
+        "exclusiveResources": [],
+        "migrationSlots": []
+      },
+      "acceptanceIds": [
+        "AP602-01",
+        "AP602-02",
+        "AP602-03"
+      ],
+      "verify": [
+        "uncertain never blindly retried",
+        "healthy-active clock under outages",
+        "safe manual challenge handling"
+      ]
+    },
+    {
+      "id": "P603",
+      "round": 6,
+      "agent": 3,
+      "title": "Security and GitHub concurrency verification",
+      "status": "LOCKED",
+      "dependsOn": [
+        "P302",
+        "P402",
+        "P405"
+      ],
+      "goal": "Add exact regression/security tests for private-repo branch races, revision conflicts, secret leakage and unencrypted backup handling, content-hash separation, path traversal, update ownership and source drift ignore.",
+      "ownership": {
+        "writePaths": [
+          "tests/alpha/security/**",
+          "fixtures/alpha/security/**",
+          "docs/evidence/alpha/P603/**"
+        ],
+        "contractReads": [
+          "alpha.contracts.v1"
+        ],
+        "contractWrites": [],
+        "exclusiveResources": [],
+        "migrationSlots": []
+      },
+      "acceptanceIds": [
+        "AP603-01",
+        "AP603-02",
+        "AP603-03"
+      ],
+      "verify": [
+        "CAS writeback race and no force",
+        "no sensitive data in normal logs or evidence",
+        "source changes ignored only for exact revision"
+      ]
+    },
+    {
+      "id": "P604",
+      "round": 6,
+      "agent": 4,
+      "title": "Packaged restore and fleet-scale acceptance",
+      "status": "LOCKED",
+      "dependsOn": [
+        "P405",
+        "P403",
+        "P204"
+      ],
+      "goal": "Add deterministic packaged Firefox recovery and scale tests for backup/restore, 50+ Accounts and 1k Generators, no 1k tabs, known download deletion/unknown warnings and multi-dashboard concurrency.",
+      "ownership": {
+        "writePaths": [
+          "tests/alpha/acceptance/recovery/**",
+          "fixtures/alpha/scale/**",
+          "docs/evidence/alpha/P604/**"
+        ],
+        "contractReads": [
+          "alpha.contracts.v1"
+        ],
+        "contractWrites": [],
+        "exclusiveResources": [],
+        "migrationSlots": []
+      },
+      "acceptanceIds": [
+        "AP604-01",
+        "AP604-02",
+        "AP604-03"
+      ],
+      "verify": [
+        "50 accounts and 1k generator state",
+        "restore hold and no replay",
+        "bounded browser tabs and downloads"
+      ]
+    },
+    {
+      "id": "P605",
+      "round": 6,
+      "agent": 5,
+      "title": "End-to-end UI, accessibility and release artifacts",
+      "status": "LOCKED",
+      "dependsOn": [
+        "P501",
+        "P502",
+        "P503",
+        "P504",
+        "P505"
+      ],
+      "goal": "Add native-feeling UI workflow e2e tests, cross-view status consistency, operator manual acceptance runbook, reproducible unsigned/private-use XPI packaging and provenance/checksum report.",
+      "ownership": {
+        "writePaths": [
+          "tests/alpha/acceptance/ui/**",
+          "tools/alpha/release/**",
+          "docs/runbooks/alpha/**",
+          "docs/evidence/alpha/P605/**"
+        ],
+        "contractReads": [
+          "alpha.contracts.v1"
+        ],
+        "contractWrites": [],
+        "exclusiveResources": [],
+        "migrationSlots": []
+      },
+      "acceptanceIds": [
+        "AP605-01",
+        "AP605-02",
+        "AP605-03"
+      ],
+      "verify": [
+        "keyboard/focus on 1k searchable list",
+        "bulk-to-approval round trip",
+        "reproducible XPI and truthful live-test checklist"
+      ]
+    }
+  ],
+  "designApproval": "docs/provenance/alpha-design-package.json"
+}

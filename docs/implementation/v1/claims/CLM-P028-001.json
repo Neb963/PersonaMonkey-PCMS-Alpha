@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "claimId": "CLM-P028-001",
+  "phaseId": "P028",
+  "taskId": "T028.1",
+  "claimEpoch": 2,
+  "state": "ACCEPTED",
+  "owner": {
+    "agentId": "claude-thread-gg298x"
+  },
+  "baseMainSha": "cfa0d07d80cae66072bae3dc693615d6d48eea73",
+  "branch": "agent/claude-thread-gg298x/p028-t028-1",
+  "writePaths": [
+    "extension/lib/recovery-bootstrap.js",
+    "extension/background.js",
+    "docs/upstream/source/extension/lib/recovery-bootstrap.js",
+    "docs/upstream/source/extension/background.js",
+    "docs/upstream/import-manifest.json",
+    "tests/upstream/import-integrity.test.mjs",
+    "extension/lib/pcms-internal-broker-endpoint.js",
+    "extension/pcms/background/**",
+    "extension/pcms/integration/**",
+    "extension/pcms/platform/**",
+    "extension/pcms/app/**",
+    "tests/pcms/p028/**",
+    "docs/evidence/P028/**",
+    "package.json",
+    ".github/workflows/firefox.yml",
+    "tools/firefox/packaged.mjs",
+    "extension/tests/background-routing-init.test.mjs",
+    "docs/upstream/source/extension/tests/background-routing-init.test.mjs",
+    "docs/implementation/v1/claims/CLM-P028-001.json",
+    "docs/implementation/v1/plan.json",
+    "ROADMAP.md",
+    "docs/progress/STATUS.md"
+  ],
+  "contractReads": [],
+  "contractWrites": [
+    "pcms.ui-client/v1",
+    "pcms.persona-broker.internal-endpoint/v1"
+  ],
+  "resources": [
+    {
+      "key": "pcms-background-entry",
+      "mode": "exclusive"
+    }
+  ],
+  "migrationSlots": [],
+  "acceptanceIds": [
+    "A028-01",
+    "A028-02",
+    "A028-03"
+  ],
+  "lastCheckpointSha": "401fa524225b35c45eaf239112974c27492d3bbc"
+}

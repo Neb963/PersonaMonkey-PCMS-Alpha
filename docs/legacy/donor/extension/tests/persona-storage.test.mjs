@@ -1,0 +1,20 @@
+import assert from "node:assert/strict";
+import { createPersonaStorageService } from "../lib/persona-storage.js";
+
+const removals=[];
+const browserApi={tabs:{query:async()=>[{id:1,url:"https://example.com/a"},{id:2,url:"https://example.com/b"}]},scripting:{executeScript:async({func})=>[{result:func.name==="inspectPageStorage"?{origin:"https://example.com",localStorage:{items:2,bytes:20},sessionStorage:{items:1,bytes:5},indexedDB:{databases:1},cacheStorage:{caches:2},estimated:{usage:100,quota:1000}}:true}]},browsingData:{remove:async(...args)=>removals.push(args)}};
+const cookieService={list:async()=>[{name:"a",value:"b",domain:"example.com",path:"/"}],clear:async()=>({removed:1})};
+const service=createPersonaStorageService({browserApi,cookieService,assertPersona:async(id)=>assert.equal(id,"p1")});
+const summary=await service.summary("p1");
+assert.equal(summary.activeTabs,2);
+assert.equal(summary.localStorage.items,2);
+assert.equal(summary.inspectedOrigins.length,1);
+assert.deepEqual(summary.cookies.byDomain,[{domain:"example.com",count:1}]);
+assert.deepEqual(await service.clearCookies("p1"),{scope:"cookies",cookies:1,siteData:false,openOriginCaches:0});
+await assert.rejects(()=>service.clear("p1","full"),/Unknown persona storage clear scope/);
+assert.equal(removals.length,0,"in-place storage clearing must not implement the full-wipe operation");
+assert.equal("fullWipe" in service,false,"container rotation remains the only full-wipe API");
+const cleared=await service.clear("p1","siteData");
+assert.deepEqual(cleared,{scope:"siteData",cookies:0,siteData:true,openOriginCaches:2});
+assert.deepEqual(removals[0],[{cookieStoreId:"p1"},{localStorage:true,indexedDB:true}]);
+console.log("persona storage tests passed");

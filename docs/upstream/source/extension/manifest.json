@@ -1,0 +1,72 @@
+{
+  "manifest_version": 3,
+  "name": "PersonaMonkey Route Manager",
+  "version": "1.2.0",
+  "description": "Firefox personas with fail-closed routing, PersonaMonkey Management, diagnostics, storage controls, portable packages, userscripts, and workflows.",
+  "permissions": [
+    "storage",
+    "proxy",
+    "webRequest",
+    "webRequestBlocking",
+    "webNavigation",
+    "tabs",
+    "sessions",
+    "cookies",
+    "browsingData",
+    "contextualIdentities",
+    "privacy",
+    "scripting",
+    "nativeMessaging",
+    "alarms",
+    "downloads",
+    "notifications",
+    "clipboardWrite"
+  ],
+  "optional_permissions": [
+    "userScripts"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "scripts": [
+      "lib/recovery-bootstrap.js"
+    ],
+    "type": "module"
+  },
+  "action": {
+    "default_title": "PersonaMonkey Route Manager",
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "48": "icons/icon48.png",
+      "96": "icons/icon96.png"
+    }
+  },
+  "icons": {
+    "48": "icons/icon48.png",
+    "96": "icons/icon96.png"
+  },
+  "options_ui": {
+    "page": "options/options.html",
+    "open_in_tab": true
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "persona-route-manager@local",
+      "strict_min_version": "153.0"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content/userscript-trigger.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": true,
+      "match_about_blank": true
+    }
+  ]
+}
