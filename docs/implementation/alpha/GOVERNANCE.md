@@ -98,3 +98,78 @@ observation-dependent acceptance. Unknown provider behavior remains fail-closed.
 The procedure is: inspect all current active claims and PRs; prepare a dedicated branch from exact main; revalidate contract-read hashes of all affected active claims **without** changing epochs, owners, paths, states or plan; run the amendment-only fixture suite and independent CI; compare the entire diff and current main again; serialize and merge only when the repository's trusted-main guard and required CI permit it, followed by merged-main CI. A candidate may not approve itself by modifying the validation code copied from current main. If the old validator does not support this one-time transition, **do not merge** based only on a self-hosted amendment workflow; obtain a separately approved trusted-validator bootstrap path first. No ordinary PHASE, CLAIM or GATE transition receives the amendment's privileges.
 
 PR #8 contains an obsolete P103 claim acquisition plus unrelated P105 control changes, based on a superseded main. It must remain unmerged; closing the draft with a recorded explanation preserves its historical branch and work. After a valid amendment, P103 remains READY/unclaimed at epoch 0 for its rightful agent's new current-main claim or separately authorized continuation. No R2 unlock or P103 acceptance is implied.
+
+## Operator-attested governance maintenance (reusable after trust bootstrap)
+
+`MAINTENANCE` is a separate **governance-only** transition, not a phase claim,
+contract amendment, gate or general escape hatch. An operator must explicitly
+authorize each transaction and attest its final **exact candidate SHA** using a
+GitHub issue comment on that maintenance PR, under the repository owner's
+GitHub identity. The context alone never confers approval: the trusted-main
+validator looks up GitHub's independently attributed `OWNER` comment.
+
+Maintenance agents use `agent/alpha-maintenance/<maintenance-id-lowercase>`,
+with a unique `MAINT-*` identifier and
+`docs/evidence/alpha/<maintenance-id>/context.json`. The context pins the
+base main SHA, contract lock hash, entire claim-epoch vector, PR number, agent,
+branch and approval mode `OWNER_PR_COMMENT_V1`. The allowed changes are
+**only** the trusted governance checker/CI code, its approval helper,
+`tests/alpha/governance/**`, this governance procedure and the dedicated
+maintenance verification workflow, plus exactly its new context. A new context
+is required for each transaction and cannot be reused after merge.
+
+No maintenance operation may change `plan.json`, `claims.json`,
+`contracts.lock.json`, `policies.json`, Alpha contract declarations,
+`AGENTS.md`, phase evidence, product code or unrelated workflows. Snapshots
+before and after must have identical plan, registry, lock and policies.
+The validator checks active claims, ownership, epochs and frozen contract reads
+before considering maintenance authorization. Normal PHASE, CLAIM, GATE,
+BOOTSTRAP and CONTRACT_AMENDMENT transitions have no maintenance privileges.
+
+Approval comment (an issue comment on the **maintenance PR** by the repository
+owner; ordinary author-supplied text, labels or candidate code do not count):
+
+```text
+ALPHA_GOVERNANCE_MAINTENANCE_APPROVAL_V1
+maintenanceId=<MAINT-ID>
+baseMainSha=<exact trusted main SHA>
+approvedHeadSha=<exact final maintenance PR head SHA>
+```
+
+On PRs the validator checks the independent comment against the actual PR
+branch and head. On `main` push it requires a non-forced **two-parent merge
+commit**, parent 1 equal to the approved base main and parent 2 equal to the
+attested PR head. It then rechecks the approval. A stale SHA, altered PR head,
+different base, non-owner, mismatched branch or missing comment fails closed.
+Future maintenance is reusable only with a **fresh context, PR and operator
+attestation**, reviewed against the validator that was already trusted on
+`main`; candidate modifications can never authorize themselves. No GitHub
+credentials or approval tokens belong in repository files.
+
+### One-time trusted-validator bootstrap: MAINT-ALPHA-GOV-001
+
+The 2026-10-09 operator instruction authorizes **one** exceptional merge for
+the introduction of the missing maintenance transition, incorporating the
+previously reviewed PR #19 test fix. Original trusted main
+`a1c9a5676921420e75e296771e95a951064c270e` rejects governance edits
+because it has no MAINTENANCE context dispatch. This is an expected
+pre-bootstrap trust limitation, **not a passing check**. PR #18's independent
+`alpha-governance` failure also stems from the historical-test drift.
+
+The one-time integration may occur **only** when the exact final candidate's
+complete diff, fixed contract hash and full epoch vector have been inspected,
+the candidate-local repaired governance suite, repository checks, derivative
+packaging and relevant pinned Firefox regressions pass in independent GitHub
+runners, and the operator has attested the exact PR head and base above.
+Record the exact candidate, files, independent CI run IDs and permission for
+the exceptional merge on that PR. Recheck `main` immediately before making
+a non-forced, expected-SHA fast-forward to a two-parent merge commit. Do not
+claim the old trusted-main validation passed or retry a substantive CI failure
+under this exception. If parentage or any check differs, stop.
+
+Immediately after the bootstrap, the **new trusted-main validator** must
+accept the merged push as MAINTENANCE; all ordinary `alpha-governance`,
+`alpha-firefox` and `firefox-developer-edition` workflows must pass on
+the exact merged `main`. Until then no governance gate is accepted. The
+bootstrap does not acquire P103, merge obsolete PR #18, accept R1, unlock R2,
+or authorize provider-live claims.
