@@ -57,7 +57,7 @@
         "P205"
       ],
       "gateId": "GATE-R2",
-      "status": "READY"
+      "status": "IN_PROGRESS"
     },
     {
       "round": 3,
@@ -330,7 +330,7 @@
       "round": 2,
       "agent": 2,
       "title": "Accounts and Persona enrollment",
-      "status": "READY",
+      "status": "CLAIMED",
       "dependsOn": [
         "P102",
         "P103"
