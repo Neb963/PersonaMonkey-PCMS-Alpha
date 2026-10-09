@@ -1,11 +1,9 @@
 {
   "schemaVersion": 1,
-  "kind": "CLAIM",
-  "action": "acquire",
+  "kind": "PHASE",
   "phaseId": "P102",
   "agentId": "codex-r1-a2",
   "branch": "agent/codex-r1-a2/p102",
   "claimEpoch": 1,
-  "expectedEpoch": 0,
   "baseMainSha": "45c00cf9673f5382fa5e7987211005e5d4557948"
 }

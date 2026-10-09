@@ -1,0 +1,57 @@
+{
+  "phaseId": "P102",
+  "version": "154.0b10",
+  "archiveSha256": "681913108bba655d7ec6fadfac2731141b23e48dca88d1988a4d95a6bdaff164",
+  "providerLive": false,
+  "commitSha": "6898991a9d811149dfc2fbb39731a9fc27cdc85d",
+  "workflowRun": null,
+  "worktreeDirty": false,
+  "contentSandboxDisabled": true,
+  "passed": true,
+  "copiedSourceSha256": {
+    "extension/alpha/domain/validation.js": "683317794d287272d0868a5d378119379d55bc429f91cd3f62594eec278c3ed3",
+    "extension/alpha/domain/records.js": "d699cb575ef65c0ca5828bb86ce5f5501335999c6c4f1a78111afa0b20104b9d",
+    "extension/alpha/storage/migrations.js": "34a502bf6b8d543b787362b270ad55b39977ad1d0b53a31a8f7711db02513342",
+    "extension/alpha/storage/store.js": "b4439c6321464f9c8f580709ecd9e4a56aea4731669a9dac8028c97a52c0cca7",
+    "tests/alpha/domain/fixtures.js": "57c42f53011ab438744bf94935c83edd852be99af359d6b877f08a901c14ba23",
+    "tests/alpha/domain/storage-cases.js": "779ab8e9188da17c9c04699ce8f05bdc99084d2c753f070ee7d8cb19c63a4ebf",
+    "tests/alpha/domain/probe.js": "9f9fdaa6256e6f2af8f8238525ea395fbe1db91dc2e7d27a8c01118f80f7774e",
+    "tests/alpha/domain/probe.html": "6486227be21e2b456c5883bb30883241b3801150d692af9f4cc53bea6cd8df3f"
+  },
+  "fixtureXpiSha256": "f219a5638a58ad7f05edaa68917e2eada4eade0c725f79a64539a47048623cef",
+  "storage": {
+    "passed": true,
+    "cases": [
+      "AP102-01: isolated schema never opens or imports legacy PCMS",
+      "AP102-01: four records and journal commit with strict durability and detached exact source bytes",
+      "AP102-02: independent connections race on CAS; exactly one wins",
+      "AP102-02: store and record revisions fence stale workers independently",
+      "AP102-02: unique dedicated Persona and binding epoch reject collisions without partial writes",
+      "AP102-02: immutable operation identity, uncertain reconciliation and terminal records",
+      "AP102-01: releases are immutable and preserve line endings and thumbnail bytes on reopen",
+      "AP102-02: transaction abort after record writes are queued rolls back everything",
+      "AP102-02: transaction abort after successful journal request rolls back everything",
+      "AP102-02: an interrupted migration rolls back schema and data, then reopens v1",
+      "AP102-02: asynchronous migrations abort and preserve the original version",
+      "AP102-02: blocked upgrade cannot migrate later after its caller was rejected",
+      "AP102-02: versionchange closes stale connections and a future schema is held",
+      "AP102-02: malformed existing schema enters hold without creating missing indexes",
+      "AP102-02: close during pending open cannot resurrect a connection",
+      "AP102-02: valid-shaped record corruption triggers hold and never resets stored data",
+      "AP102-02: journal corruption and missing metadata fail closed on reopen",
+      "AP102-02: missing or replayed valid-checksum records cannot disagree with the atomic journal",
+      "AP102-03: rejected credentials, duplicate writes and revision overflow leave no journal entries",
+      "AP102-02: journal retention is bounded and revisions never reset after compaction"
+    ],
+    "count": 20,
+    "providerLive": false
+  },
+  "restart": {
+    "passed": true,
+    "cases": [
+      "AP102-02: four records, revisions and unresolved operation survive actual Firefox process restart"
+    ],
+    "count": 1,
+    "providerLive": false
+  }
+}
