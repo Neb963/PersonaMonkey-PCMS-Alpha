@@ -11,7 +11,7 @@ State: **IN_PROGRESS**. Gate: GATE-R1.
 - P101: **CLAIMED** — Pinned Firefox and PersonaMonkey regression harness
 - P102: **CLAIMED** — Generator/domain persistence and durability
 - P103: **READY** — Perchance contract adapter and emulator
-- P104: **READY** — GitHub private-repo adapter and safe paths
+- P104: **CLAIMED** — GitHub private-repo adapter and safe paths
 - P105: **CLAIMED** — Static Alpha UI shell and visual foundation
 
 ## R2 — Durable services and inventory

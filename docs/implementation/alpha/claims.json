@@ -4,7 +4,7 @@
     "P101": 1,
     "P102": 1,
     "P103": 0,
-    "P104": 0,
+    "P104": 1,
     "P105": 1,
     "P201": 0,
     "P202": 0,
@@ -112,6 +112,33 @@
         "AP102-01",
         "AP102-02",
         "AP102-03"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "claimId": "CLM-P104-001",
+      "phaseId": "P104",
+      "agentId": "slot-four",
+      "claimEpoch": 1,
+      "state": "ACTIVE",
+      "baseMainSha": "e929a78ba8ffaea750d461d68f6a639f3b33a57e",
+      "branch": "agent/slot-four/p104",
+      "writePaths": [
+        "extension/alpha/providers/github/**",
+        "fixtures/alpha/github/**",
+        "tests/alpha/providers/github/**",
+        "docs/evidence/alpha/P104/**"
+      ],
+      "contractReads": {
+        "alpha.contracts.v1": "9b379980e16fdd557e0ea8a7f8273421f4a581c1c1563fe7661308038e29ee12"
+      },
+      "contractWrites": [],
+      "exclusiveResources": [],
+      "migrationSlots": [],
+      "acceptanceIds": [
+        "AP104-01",
+        "AP104-02",
+        "AP104-03"
       ]
     }
   ]
