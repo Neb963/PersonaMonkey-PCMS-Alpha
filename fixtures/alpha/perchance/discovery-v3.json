@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "name": "P103 deterministic Perchance surface fixtures",
+  "source": {
+    "archive": "discovery-v3.zip",
+    "sha256": "65c52533702bc210556acadd2f39f9d848e302644f6c17652e5bc9066e7a9080",
+    "observationBrowser": "Brave (CDP)",
+    "firefoxLiveVerified": false,
+    "sourceDocuments": ["DISCOVERY.md", "IMPLEMENTATION_READINESS.md", "unknowns.md", "FINAL_DELTA.md"]
+  },
+  "accountInventory": {
+    "method": "POST /api/getGeneratorsByUser in verified account Persona",
+    "observedPagination": false,
+    "identityField": "name",
+    "listingField": "isPrivate",
+    "semantics": "Authenticated account ownership is not derived from a public feed or edit key",
+    "items": [
+      {"name":"alpha-one","isPrivate":true,"sourceRevision":"r1"},
+      {"name":"beta_two","isPrivate":false,"sourceRevision":"r2"}
+    ]
+  },
+  "publicFeed": {
+    "method": "GET /api/getGeneratorList",
+    "semantics": "Recent public listing; not a source of account ownership",
+    "items": ["some-other-public-generator", "beta_two"]
+  },
+  "save": {
+    "method": "POST /api/save including srcManifest",
+    "success": ["saved", "created"],
+    "observedFailures": ["stale", "captcha-needed", "invalid-edit-key", "session-token-error", "too-big", "too-many-requests", "generator-does-not-exist", "server-error"],
+    "pendingFileEditsAreSaved": false,
+    "reconcileAfterAmbiguousMutation": true
+  },
+  "ai": {
+    "historyMethod": "POST /api/aiAgent/history",
+    "historyCarriesSavedSourceProof": false,
+    "queueFollowUpMaxObserved": 3
+  },
+  "unknowns": [
+    "No Firefox live behavior inferred from Brave captures",
+    "No native server cursor for account inventory observed",
+    "No confirmed revision restore operation",
+    "No account identity inferred from a collaborator edit key"
+  ]
+}
