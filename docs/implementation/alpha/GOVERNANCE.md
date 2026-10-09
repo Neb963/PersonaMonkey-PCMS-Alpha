@@ -146,6 +146,58 @@ attestation**, reviewed against the validator that was already trusted on
 `main`; candidate modifications can never authorize themselves. No GitHub
 credentials or approval tokens belong in repository files.
 
+### P201 CI migration scope proposal (MAINT-P201-CI-SCOPE-004)
+
+The operator's 2026-10-09 P201 CI Migration Prerequisite assignment authorizes
+preparing this proposal. It does **not** replace the exact-head owner comment
+required above. This scope amendment uses the existing ordinary MAINTENANCE
+paths only; its candidate cannot approve its own validator upgrade. No trust
+bootstrap exception is requested or permitted. Publish the complete proposal,
+run independent candidate checks, obtain the owner's exact-main/head approval,
+then pass the already-trusted main validator before serialized integration.
+
+Only after that amendment is independently approved and merged may the single
+follow-up `MAINT-P201-CI-MIGRATION-005` transaction use these additional paths:
+
+- `.github/workflows/firefox.yml`
+- `.github/workflows/alpha-firefox.yml`
+- `tools/alpha/ci-migration/donor.mjs`
+- `tools/alpha/ci-migration/policy.mjs`
+- `tools/alpha/ci-migration/prepare.mjs`
+- `tools/alpha/ci-migration/core.mjs`
+- `docs/evidence/alpha/MAINT-P201-CI-MIGRATION-005/README.md`
+- `docs/evidence/alpha/MAINT-P201-CI-MIGRATION-005/verification.json`
+
+The follow-up must name `scopeAmendmentId: MAINT-P201-CI-SCOPE-004`, find that
+amendment's context in its **predecessor main**, and obtain a second fresh owner
+comment approving its own exact main/head. Ordinary maintenance, arbitrary
+maintenance IDs and product claims gain no additional ownership. Each context
+is single-use. Plan, registry, contract lock and policies remain byte-identical
+within both transactions, preserving P201 READY/unclaimed, R2 IN_PROGRESS and
+all parallel claims. No product implementation, P201 acceptance or round gate
+transition is authorized by either transaction.
+
+The migration must execute every applicable historical product/browser suite
+on the validated 726-blob donor snapshot at
+`482dc9d9273dcdcd7d2ef4c4b0df8c7c6933d5ca`, with its exact reproducible donor XPI.
+Historical tests and snapshots retain their original semantics and bytes.
+PersonaMonkey routing/safety and Alpha tests execute on the actual derivative,
+using the unchanged exact Firefox Developer Edition pin and packaged browser.
+Candidate flags, claimed status or branch-selected settings cannot select a
+weaker verification target. The verification policy comes from trusted main;
+the first migration's candidate infrastructure may run only after the old main
+validator independently authorizes that exact owner-attested transaction.
+
+Introducing Alpha Core files or changing its production bootstrap requires
+mandatory packaged P201 cases for one Core with two clients, idle/warm alarm
+wake, cold restart, UNCERTAIN/RECOVERY_HOLD, bounded alarms/operation/tab budgets
+and sender/request authorization. Missing, failed, skipped or TODO cases fail
+verification. Before P201 implementation the result is explicitly
+NOT_IMPLEMENTED, never a feature PASS. Alpha and legacy Core authority must not
+coexist in the derivative. The migration must include regressions for donor
+corruption, missing PersonaMonkey authority, duplicate Core authority, missing
+P201 cases and attempts to select an easier verification path.
+
 ### One-time trusted-validator bootstrap: MAINT-ALPHA-GOV-001
 
 The 2026-10-09 operator instruction authorizes **one** exceptional merge for

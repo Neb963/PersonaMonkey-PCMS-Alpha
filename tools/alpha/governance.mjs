@@ -28,6 +28,24 @@ export const MAINTENANCE = Object.freeze({
     '.github/workflows/alpha-maintenance-verification.yml'
   ])
 });
+// A scope proposal has no authority until its ordinary MAINTENANCE PR is
+// owner-attested and merged. The existing trusted-main validator still owns
+// that approval. Only this subsequent, independently attested transaction may
+// migrate browser CI; ordinary maintenance and product phases gain no paths.
+export const P201_CI_MIGRATION = Object.freeze({
+  scopeAmendmentId: 'MAINT-P201-CI-SCOPE-004',
+  maintenanceId: 'MAINT-P201-CI-MIGRATION-005',
+  writePaths: Object.freeze([
+    '.github/workflows/firefox.yml',
+    '.github/workflows/alpha-firefox.yml',
+    'tools/alpha/ci-migration/donor.mjs',
+    'tools/alpha/ci-migration/policy.mjs',
+    'tools/alpha/ci-migration/prepare.mjs',
+    'tools/alpha/ci-migration/core.mjs',
+    'docs/evidence/alpha/MAINT-P201-CI-MIGRATION-005/README.md',
+    'docs/evidence/alpha/MAINT-P201-CI-MIGRATION-005/verification.json'
+  ])
+});
 export const ACTIVE = new Set(['ACTIVE', 'PR_OPEN']);
 export const SHA = /^[a-f0-9]{40}$/;
 const PHASE_STATES = new Set(['LOCKED', 'READY', 'CLAIMED', 'IN_PROGRESS', 'PR_OPEN', 'MERGED', 'ACCEPTED']);
@@ -216,7 +234,13 @@ export function validateTransition(main, head, context, { mainSha, headBranch, f
       'Maintenance cannot change plans, claims, contracts or policies');
     const contextPath = `docs/evidence/alpha/${context.maintenanceId}/context.json`;
     requireThat(files.includes(contextPath), 'Maintenance needs its own new context');
-    assertFiles(files, [...MAINTENANCE.writePaths, contextPath]);
+    const migration = context.maintenanceId === P201_CI_MIGRATION.maintenanceId;
+    if (migration) requireThat(context.scopeAmendmentId === P201_CI_MIGRATION.scopeAmendmentId,
+      'P201 CI migration requires its separate approved scope amendment');
+    else requireThat(context.scopeAmendmentId === undefined,
+      'Ordinary maintenance cannot claim P201 CI migration scope');
+    assertFiles(files, [...MAINTENANCE.writePaths, contextPath,
+      ...(migration ? P201_CI_MIGRATION.writePaths : [])]);
   } else if (context.kind === 'CONTRACT_AMENDMENT') {
     requireThat(main?.plan.bootstrap.state === 'ACCEPTED' && context.baseMainSha === mainSha, 'Contract amendment requires accepted G0 and exact current main');
     requireThat(context.amendmentId === AMENDMENT.id && context.phaseId === AMENDMENT.id &&

@@ -1,6 +1,6 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
-import { git, json, load, hasAuthority, requireThat, validateSnapshot, validateTransition, owns, ACTIVE, AMENDMENT, MAINTENANCE } from './governance.mjs';
+import { git, json, load, hasAuthority, requireThat, validateSnapshot, validateTransition, owns, ACTIVE, AMENDMENT, MAINTENANCE, P201_CI_MIGRATION } from './governance.mjs';
 import { verifyRepository, verifyG0Runtime } from './verify-repo.mjs';
 import { verifyRun } from './ci-evidence.mjs';
 import { verifyMaintenanceApproval } from './maintenance-approval.mjs';
@@ -47,6 +47,16 @@ const results = contexts.map(c => {
 });
 const context = contexts[0], report = { ...results[0], contexts: results };
 if (context.kind === 'MAINTENANCE') {
+  if (context.maintenanceId === P201_CI_MIGRATION.maintenanceId) {
+    // This must exist in the predecessor authority, not merely in the candidate.
+    // Its main-push CI checked the independently attributed exact-head approval.
+    const scopePath = `docs/evidence/alpha/${P201_CI_MIGRATION.scopeAmendmentId}/context.json`;
+    const scope = JSON.parse(git(root, ['show', `${mainRef}:${scopePath}`]));
+    requireThat(scope.kind === 'MAINTENANCE' &&
+      scope.maintenanceId === P201_CI_MIGRATION.scopeAmendmentId &&
+      scope.authorization === MAINTENANCE.authority,
+      'P201 CI migration scope must be independently approved on current main first');
+  }
   const path = `docs/evidence/alpha/${context.maintenanceId}/context.json`;
   let existsOnMain = false;
   try { git(root, ['cat-file', '-e', `${mainRef}:${path}`]); existsOnMain = true; } catch {}
