@@ -19,9 +19,41 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - uses: actions/setup-node@v5
         with:
           node-version: "24"
+
+      - &exact-main-authority
+        name: Validate exact current-main authority before selecting either product
+        id: authority
+        shell: bash
+        env:
+          ALPHA_EVENT: ${{ github.event_name }}
+          ALPHA_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          ALPHA_HEAD_BRANCH: ${{ github.event.pull_request.head.ref }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          git fetch origin main
+          authority_dir="$RUNNER_TEMP/alpha-main-authority"
+          mkdir -p "$authority_dir"
+          git archive origin/main tools/alpha docs/provenance/alpha-donor.json | tar -x -C "$authority_dir"
+          node "$authority_dir/tools/alpha/ci.mjs" --root "$GITHUB_WORKSPACE"
+          infra_dir="$authority_dir/tools/alpha/ci-migration"
+          if ! test -f "$infra_dir/prepare.mjs"; then
+            # Only the first exact-head, independently owner-attested migration
+            # may execute new infrastructure before it becomes trusted on main.
+            node --input-type=module -e 'import fs from "node:fs"; const r=JSON.parse(fs.readFileSync(".agent-runs/alpha-ci.json")); if(r.passed!==true || r.kind!=="MAINTENANCE" || r.phaseId!=="MAINT-P201-CI-MIGRATION-005") process.exit(1);'
+            infra_dir="$GITHUB_WORKSPACE/tools/alpha/ci-migration"
+          fi
+          echo "infra_dir=$infra_dir" >> "$GITHUB_OUTPUT"
+          echo "authority_dir=$authority_dir" >> "$GITHUB_OUTPUT"
+          node --input-type=module -e 'import fs from "node:fs"; const r=JSON.parse(fs.readFileSync(".agent-runs/alpha-ci.json")); fs.appendFileSync(process.env.GITHUB_OUTPUT,`main_ref=${r.validatedMainSha}\n`);'
+      - &frozen-donor
+        name: Reconstruct and package the exact frozen donor
+        run: node "${{ steps.authority.outputs.infra_dir }}/prepare.mjs" --root "$GITHUB_WORKSPACE" --authority "${{ steps.authority.outputs.authority_dir }}" --destination "$RUNNER_TEMP/alpha-frozen-donor"
 
       # Two P030 PR runs hung here (apt mirror) until cancelled: skip apt when the runner
       # image already has the libraries, bound every apt call, retry, and fail fast.
@@ -38,78 +70,142 @@ jobs:
           exit 1
 
       - name: Verify Firefox harness contracts
-        run: npm run test:firefox
+        working-directory: ${{ runner.temp }}/alpha-frozen-donor
+        run: |
+          export GITHUB_SHA=482dc9d9273dcdcd7d2ef4c4b0df8c7c6933d5ca
+          npm run test:firefox
 
       - name: Install exact pinned Firefox Developer Edition
         id: install
         env:
           FIREFOX_INSTALL_ROOT: ${{ runner.temp }}/pcms-firefox
-        run: npm run firefox:install
+        working-directory: ${{ runner.temp }}/alpha-frozen-donor
+        run: |
+          export GITHUB_SHA=482dc9d9273dcdcd7d2ef4c4b0df8c7c6933d5ca
+          npm run firefox:install
 
       - name: Smoke pinned Firefox with disposable profile
         env:
           FIREFOX_BIN: ${{ steps.install.outputs.firefox_bin }}
           FIREFOX_SMOKE_REPORT: ${{ runner.temp }}/firefox-smoke-report.json
-        run: npm run firefox:smoke
+        working-directory: ${{ runner.temp }}/alpha-frozen-donor
+        run: |
+          export GITHUB_SHA=482dc9d9273dcdcd7d2ef4c4b0df8c7c6933d5ca
+          npm run firefox:smoke
+
+      - name: Preserve historical P008 package and P009 broker boundary regressions
+        working-directory: ${{ runner.temp }}/alpha-frozen-donor
+        run: node --test tests/pcms/p008-*.test.mjs tests/pcms/p009-*.test.mjs
 
       - name: Verify P027 harness and inherited P026 regressions
-        run: npm run test:p027 && node --test tests/pcms/p026/*.test.mjs
+        working-directory: ${{ runner.temp }}/alpha-frozen-donor
+        run: |
+          export GITHUB_SHA=482dc9d9273dcdcd7d2ef4c4b0df8c7c6933d5ca
+          npm run test:p027 && node --test tests/pcms/p026/*.test.mjs
 
       - name: Verify P028 background Core, wake recovery and UI client protocol
-        run: npm run test:p028 && node extension/tests/background-routing-init.test.mjs
+        working-directory: ${{ runner.temp }}/alpha-frozen-donor
+        run: |
+          export GITHUB_SHA=482dc9d9273dcdcd7d2ef4c4b0df8c7c6933d5ca
+          npm run test:p028 && node extension/tests/background-routing-init.test.mjs
 
       - name: Verify P029 durable timers and inherited P012 timer contracts
-        run: npm run test:p029 && node --test tests/pcms/p012-services.test.mjs tests/pcms/p012-boundary.test.mjs
+        working-directory: ${{ runner.temp }}/alpha-frozen-donor
+        run: |
+          export GITHUB_SHA=482dc9d9273dcdcd7d2ef4c4b0df8c7c6933d5ca
+          npm run test:p029 && node --test tests/pcms/p012-services.test.mjs tests/pcms/p012-boundary.test.mjs
 
       - name: Verify P030 sandbox pages, browser floor and controller frame lifecycle
-        run: npm run test:p030
+        working-directory: ${{ runner.temp }}/alpha-frozen-donor
+        run: |
+          export GITHUB_SHA=482dc9d9273dcdcd7d2ef4c4b0df8c7c6933d5ca
+          npm run test:p030
 
       - name: Verify P031 live runtime-module lifecycle, schedules and capability set v1
-        run: npm run test:p031
+        working-directory: ${{ runner.temp }}/alpha-frozen-donor
+        run: |
+          export GITHUB_SHA=482dc9d9273dcdcd7d2ef4c4b0df8c7c6933d5ca
+          npm run test:p031
 
       - name: Verify P032 dashboard routes, receipt read API and multi-tab durability
-        run: npm run test:p032
+        working-directory: ${{ runner.temp }}/alpha-frozen-donor
+        run: |
+          export GITHUB_SHA=482dc9d9273dcdcd7d2ef4c4b0df8c7c6933d5ca
+          npm run test:p032
 
       - name: Verify P034 Accounts models and durable rebind fencing
-        run: npm run test:p034
+        working-directory: ${{ runner.temp }}/alpha-frozen-donor
+        run: |
+          export GITHUB_SHA=482dc9d9273dcdcd7d2ef4c4b0df8c7c6933d5ca
+          npm run test:p034
 
       - name: Verify P033 module UI contribution contract, merge points and lifecycle presentation
-        run: npm run test:p033
+        working-directory: ${{ runner.temp }}/alpha-frozen-donor
+        run: |
+          export GITHUB_SHA=482dc9d9273dcdcd7d2ef4c4b0df8c7c6933d5ca
+          npm run test:p033
 
       - name: Verify P041 previewed restore, recovery checklist and Settings views
-        run: npm run test:p041 && node --test tests/pcms/p020/*.test.mjs
+        working-directory: ${{ runner.temp }}/alpha-frozen-donor
+        run: |
+          export GITHUB_SHA=482dc9d9273dcdcd7d2ef4c4b0df8c7c6933d5ca
+          npm run test:p041 && node --test tests/pcms/p020/*.test.mjs
 
       - name: Verify P036 Deployer v2 migration, status table, Perchance driver v2 and Generators deploy flow
-        run: npm run test:p036
+        working-directory: ${{ runner.temp }}/alpha-frozen-donor
+        run: |
+          export GITHUB_SHA=482dc9d9273dcdcd7d2ef4c4b0df8c7c6933d5ca
+          npm run test:p036
 
       - name: Verify P037 repository provider, immutable releases and durable manual scans
-        run: npm run test:p037
+        working-directory: ${{ runner.temp }}/alpha-frozen-donor
+        run: |
+          export GITHUB_SHA=482dc9d9273dcdcd7d2ef4c4b0df8c7c6933d5ca
+          npm run test:p037
 
       - name: Verify P038 cadence, recovery, bounded scans and backoff
-        run: npm run test:p038
+        working-directory: ${{ runner.temp }}/alpha-frozen-donor
+        run: |
+          export GITHUB_SHA=482dc9d9273dcdcd7d2ef4c4b0df8c7c6933d5ca
+          npm run test:p038
 
       - name: Verify P039 observation gates, baselines, drift choices and restart-safe bounded sweeps
-        run: npm run test:p039
+        working-directory: ${{ runner.temp }}/alpha-frozen-donor
+        run: |
+          export GITHUB_SHA=482dc9d9273dcdcd7d2ef4c4b0df8c7c6933d5ca
+          npm run test:p039
 
       - name: Verify P040 Refresher v2 migration, background passes, module pages and legacy-form removal
-        run: npm run test:p040
+        working-directory: ${{ runner.temp }}/alpha-frozen-donor
+        run: |
+          export GITHUB_SHA=482dc9d9273dcdcd7d2ef4c4b0df8c7c6933d5ca
+          npm run test:p040
 
       - name: Verify P042 unattended execution-artifact driver, automatic gates, eligibility and bounded passes
-        run: npm run test:p042
+        working-directory: ${{ runner.temp }}/alpha-frozen-donor
+        run: |
+          export GITHUB_SHA=482dc9d9273dcdcd7d2ef4c4b0df8c7c6933d5ca
+          npm run test:p042
 
       - name: Install and drive packaged XPI, lifecycle and platform probes
         env:
           FIREFOX_BIN: ${{ steps.install.outputs.firefox_bin }}
           FIREFOX_PACKAGED_DIR: ${{ runner.temp }}/pcms-packaged
           FIREFOX_PACKAGED_REPORT: ${{ runner.temp }}/firefox-packaged-report.json
-        run: npm run firefox:packaged
+        working-directory: ${{ runner.temp }}/alpha-frozen-donor
+        run: |
+          export GITHUB_SHA=482dc9d9273dcdcd7d2ef4c4b0df8c7c6933d5ca
+          npm run firefox:packaged
 
       - name: Prove P029 timers with zero PCMS tabs across unload and restart
         env:
           FIREFOX_BIN: ${{ steps.install.outputs.firefox_bin }}
           FIREFOX_PACKAGED_DIR: ${{ runner.temp }}/pcms-packaged
           FIREFOX_P029_REPORT: ${{ runner.temp }}/firefox-p029-report.json
-        run: npm run firefox:packaged:p029
+        working-directory: ${{ runner.temp }}/alpha-frozen-donor
+        run: |
+          export GITHUB_SHA=482dc9d9273dcdcd7d2ef4c4b0df8c7c6933d5ca
+          npm run firefox:packaged:p029
 
       - name: Upload P029 packaged evidence
         if: always()
@@ -125,7 +221,10 @@ jobs:
           FIREFOX_BIN: ${{ steps.install.outputs.firefox_bin }}
           FIREFOX_PACKAGED_DIR: ${{ runner.temp }}/pcms-packaged
           FIREFOX_P030_REPORT: ${{ runner.temp }}/firefox-p030-report.json
-        run: npm run firefox:packaged:p030
+        working-directory: ${{ runner.temp }}/alpha-frozen-donor
+        run: |
+          export GITHUB_SHA=482dc9d9273dcdcd7d2ef4c4b0df8c7c6933d5ca
+          npm run firefox:packaged:p030
 
       - name: Upload P030 packaged evidence
         if: always()
@@ -154,18 +253,39 @@ jobs:
           if-no-files-found: warn
           retention-days: 7
 
+      - &recheck-donor-main
+        name: Revalidate main after historical browser verification
+        env:
+          ALPHA_EVENT: ${{ github.event_name }}
+        run: node "${{ steps.authority.outputs.authority_dir }}/tools/alpha/check-main.mjs"
+      - &donor-identity
+        name: Publish bounded frozen donor identity
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: frozen-donor-${{ github.job }}
+          path: .agent-runs/alpha-frozen-donor.json
+          if-no-files-found: error
+          retention-days: 7
+
   # Real-browser A032-02 runs on its own disposable runner. Three consecutive
   # Marionette packaged probes on one runner intermittently time out on navigation;
   # this keeps the inherited P027/P029/P030 acceptance sequence unchanged.
+
   p032-packaged:
     runs-on: ubuntu-24.04
     timeout-minutes: 12
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - uses: actions/setup-node@v5
         with:
           node-version: "24"
 
+      - *exact-main-authority
+      - *frozen-donor
       - name: Install Firefox runtime libraries
         timeout-minutes: 6
         run: |
@@ -182,14 +302,20 @@ jobs:
         id: install
         env:
           FIREFOX_INSTALL_ROOT: ${{ runner.temp }}/pcms-firefox
-        run: npm run firefox:install
+        working-directory: ${{ runner.temp }}/alpha-frozen-donor
+        run: |
+          export GITHUB_SHA=482dc9d9273dcdcd7d2ef4c4b0df8c7c6933d5ca
+          npm run firefox:install
 
       - name: Verify P032 receipts across two packaged Firefox dashboards and after forced unload
         env:
           FIREFOX_BIN: ${{ steps.install.outputs.firefox_bin }}
           FIREFOX_PACKAGED_DIR: ${{ runner.temp }}/pcms-packaged-p032
           FIREFOX_P032_REPORT: ${{ runner.temp }}/firefox-p032-report.json
-        run: npm run firefox:packaged:p032
+        working-directory: ${{ runner.temp }}/alpha-frozen-donor
+        run: |
+          export GITHUB_SHA=482dc9d9273dcdcd7d2ef4c4b0df8c7c6933d5ca
+          npm run firefox:packaged:p032
 
       - name: Upload P032 packaged receipt evidence
         if: always()
@@ -201,16 +327,26 @@ jobs:
           retention-days: 7
 
 
+      - *recheck-donor-main
+      - *donor-identity
+
   # P034 Accounts fixture runs in a separate disposable packaged Firefox,
   # avoiding shared-profile navigation races with inherited packaged checks.
+
   p034-packaged:
     runs-on: ubuntu-24.04
     timeout-minutes: 12
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - uses: actions/setup-node@v5
         with:
           node-version: "24"
+
+      - *exact-main-authority
+      - *frozen-donor
       - name: Install Firefox runtime libraries
         timeout-minutes: 6
         run: |
@@ -226,13 +362,19 @@ jobs:
         id: install
         env:
           FIREFOX_INSTALL_ROOT: ${{ runner.temp }}/pcms-firefox
-        run: npm run firefox:install
+        working-directory: ${{ runner.temp }}/alpha-frozen-donor
+        run: |
+          export GITHUB_SHA=482dc9d9273dcdcd7d2ef4c4b0df8c7c6933d5ca
+          npm run firefox:install
       - name: Exercise P034 Accounts table, detail and guarded rebind in packaged Firefox
         env:
           FIREFOX_BIN: ${{ steps.install.outputs.firefox_bin }}
           FIREFOX_PACKAGED_DIR: ${{ runner.temp }}/pcms-packaged-p034
           FIREFOX_P034_REPORT: ${{ runner.temp }}/firefox-p034-report.json
-        run: npm run firefox:packaged:p034
+        working-directory: ${{ runner.temp }}/alpha-frozen-donor
+        run: |
+          export GITHUB_SHA=482dc9d9273dcdcd7d2ef4c4b0df8c7c6933d5ca
+          npm run firefox:packaged:p034
       - name: Upload P034 packaged evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -242,16 +384,26 @@ jobs:
           if-no-files-found: warn
           retention-days: 7
 
+      - *recheck-donor-main
+      - *donor-identity
+
   # P031 runtime-module lifecycle runs in its own disposable packaged Firefox: it waits on
   # real module schedules across event-page unload and a profile restart.
+
   p031-packaged:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - uses: actions/setup-node@v5
         with:
           node-version: "24"
+
+      - *exact-main-authority
+      - *frozen-donor
       - name: Install Firefox runtime libraries
         timeout-minutes: 6
         run: |
@@ -267,13 +419,19 @@ jobs:
         id: install
         env:
           FIREFOX_INSTALL_ROOT: ${{ runner.temp }}/pcms-firefox
-        run: npm run firefox:install
+        working-directory: ${{ runner.temp }}/alpha-frozen-donor
+        run: |
+          export GITHUB_SHA=482dc9d9273dcdcd7d2ef4c4b0df8c7c6933d5ca
+          npm run firefox:install
       - name: Install, run, schedule, update and remove a runtime module in packaged Firefox
         env:
           FIREFOX_BIN: ${{ steps.install.outputs.firefox_bin }}
           FIREFOX_PACKAGED_DIR: ${{ runner.temp }}/pcms-packaged-p031
           FIREFOX_P031_REPORT: ${{ runner.temp }}/firefox-p031-report.json
-        run: npm run firefox:packaged:p031
+        working-directory: ${{ runner.temp }}/alpha-frozen-donor
+        run: |
+          export GITHUB_SHA=482dc9d9273dcdcd7d2ef4c4b0df8c7c6933d5ca
+          npm run firefox:packaged:p031
       - name: Upload P031 packaged evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -283,17 +441,27 @@ jobs:
           if-no-files-found: warn
           retention-days: 7
 
+      - *recheck-donor-main
+      - *donor-identity
+
   # P033 module UI contributions run in their own disposable packaged Firefox: a runtime
   # module page in the sandboxed module-UI frame, the Core confirmation dialog, an event-page
   # unload and every degraded presentation state, all observed in the real dashboard DOM.
+
   p033-packaged:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - uses: actions/setup-node@v5
         with:
           node-version: "24"
+
+      - *exact-main-authority
+      - *frozen-donor
       - name: Install Firefox runtime libraries
         timeout-minutes: 6
         run: |
@@ -309,13 +477,19 @@ jobs:
         id: install
         env:
           FIREFOX_INSTALL_ROOT: ${{ runner.temp }}/pcms-firefox
-        run: npm run firefox:install
+        working-directory: ${{ runner.temp }}/alpha-frozen-donor
+        run: |
+          export GITHUB_SHA=482dc9d9273dcdcd7d2ef4c4b0df8c7c6933d5ca
+          npm run firefox:install
       - name: Contribute built-in and runtime module UI, sandboxed page and Core dialog in packaged Firefox
         env:
           FIREFOX_BIN: ${{ steps.install.outputs.firefox_bin }}
           FIREFOX_PACKAGED_DIR: ${{ runner.temp }}/pcms-packaged-p033
           FIREFOX_P033_REPORT: ${{ runner.temp }}/firefox-p033-report.json
-        run: npm run firefox:packaged:p033
+        working-directory: ${{ runner.temp }}/alpha-frozen-donor
+        run: |
+          export GITHUB_SHA=482dc9d9273dcdcd7d2ef4c4b0df8c7c6933d5ca
+          npm run firefox:packaged:p033
       - name: Upload P033 packaged evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -325,16 +499,26 @@ jobs:
           if-no-files-found: warn
           retention-days: 7
 
+      - *recheck-donor-main
+      - *donor-identity
+
   # P041 Settings → Modules drives a runtime module's whole lifecycle, and Settings → Backup &
   # restore downloads, previews and restores a backup, in their own disposable packaged Firefox.
+
   p041-packaged:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - uses: actions/setup-node@v5
         with:
           node-version: "24"
+
+      - *exact-main-authority
+      - *frozen-donor
       - name: Install Firefox runtime libraries
         timeout-minutes: 6
         run: |
@@ -350,13 +534,19 @@ jobs:
         id: install
         env:
           FIREFOX_INSTALL_ROOT: ${{ runner.temp }}/pcms-firefox
-        run: npm run firefox:install
+        working-directory: ${{ runner.temp }}/alpha-frozen-donor
+        run: |
+          export GITHUB_SHA=482dc9d9273dcdcd7d2ef4c4b0df8c7c6933d5ca
+          npm run firefox:install
       - name: Install, review, update, roll back, remove and purge a runtime module, then back up and restore, from Settings in packaged Firefox
         env:
           FIREFOX_BIN: ${{ steps.install.outputs.firefox_bin }}
           FIREFOX_PACKAGED_DIR: ${{ runner.temp }}/pcms-packaged-p041
           FIREFOX_P041_REPORT: ${{ runner.temp }}/firefox-p041-report.json
-        run: npm run firefox:packaged:p041
+        working-directory: ${{ runner.temp }}/alpha-frozen-donor
+        run: |
+          export GITHUB_SHA=482dc9d9273dcdcd7d2ef4c4b0df8c7c6933d5ca
+          npm run firefox:packaged:p041
       - name: Upload P041 packaged evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -366,17 +556,27 @@ jobs:
           if-no-files-found: warn
           retention-days: 7
 
+      - *recheck-donor-main
+      - *donor-identity
+
   # P036 Generators: the real dashboard against the real background Core, then the shipped
   # Generators view and Deployer modules driving an assisted manual deploy, in their own
   # disposable packaged Firefox.
+
   p036-packaged:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - uses: actions/setup-node@v5
         with:
           node-version: "24"
+
+      - *exact-main-authority
+      - *frozen-donor
       - name: Install Firefox runtime libraries
         timeout-minutes: 6
         run: |
@@ -392,13 +592,19 @@ jobs:
         id: install
         env:
           FIREFOX_INSTALL_ROOT: ${{ runner.temp }}/pcms-firefox
-        run: npm run firefox:install
+        working-directory: ${{ runner.temp }}/alpha-frozen-donor
+        run: |
+          export GITHUB_SHA=482dc9d9273dcdcd7d2ef4c4b0df8c7c6933d5ca
+          npm run firefox:install
       - name: Render Generators from the Core index and run an assisted manual deploy in packaged Firefox
         env:
           FIREFOX_BIN: ${{ steps.install.outputs.firefox_bin }}
           FIREFOX_PACKAGED_DIR: ${{ runner.temp }}/pcms-packaged-p036
           FIREFOX_P036_REPORT: ${{ runner.temp }}/firefox-p036-report.json
-        run: npm run firefox:packaged:p036
+        working-directory: ${{ runner.temp }}/alpha-frozen-donor
+        run: |
+          export GITHUB_SHA=482dc9d9273dcdcd7d2ef4c4b0df8c7c6933d5ca
+          npm run firefox:packaged:p036
       - name: Upload P036 packaged evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -408,16 +614,26 @@ jobs:
           if-no-files-found: warn
           retention-days: 7
 
+      - *recheck-donor-main
+      - *donor-identity
+
   # P038 uses a dedicated pinned-FDE runner: a failed network scan should be
   # durable across a real extension event-page unload and profile restart.
+
   p038-packaged:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - uses: actions/setup-node@v5
         with:
           node-version: "24"
+
+      - *exact-main-authority
+      - *frozen-donor
       - name: Install Firefox runtime libraries
         timeout-minutes: 6
         run: |
@@ -433,13 +649,19 @@ jobs:
         id: install
         env:
           FIREFOX_INSTALL_ROOT: ${{ runner.temp }}/pcms-firefox
-        run: npm run firefox:install
+        working-directory: ${{ runner.temp }}/alpha-frozen-donor
+        run: |
+          export GITHUB_SHA=482dc9d9273dcdcd7d2ef4c4b0df8c7c6933d5ca
+          npm run firefox:install
       - name: Verify real background repository checks without PCMS tabs and across restart
         env:
           FIREFOX_BIN: ${{ steps.install.outputs.firefox_bin }}
           FIREFOX_PACKAGED_DIR: ${{ runner.temp }}/pcms-packaged-p038
           FIREFOX_P038_REPORT: ${{ runner.temp }}/firefox-p038-report.json
-        run: npm run firefox:packaged:p038
+        working-directory: ${{ runner.temp }}/alpha-frozen-donor
+        run: |
+          export GITHUB_SHA=482dc9d9273dcdcd7d2ef4c4b0df8c7c6933d5ca
+          npm run firefox:packaged:p038
       - name: Upload P038 packaged evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -449,15 +671,25 @@ jobs:
           if-no-files-found: warn
           retention-days: 7
 
+      - *recheck-donor-main
+      - *donor-identity
+
   # P039: actual PersonaMonkey execution-artifact reads against loopback fixtures.
+
   p039-packaged:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - uses: actions/setup-node@v5
         with:
           node-version: "24"
+
+      - *exact-main-authority
+      - *frozen-donor
       - name: Install Firefox runtime libraries
         timeout-minutes: 6
         run: |
@@ -473,13 +705,19 @@ jobs:
         id: install
         env:
           FIREFOX_INSTALL_ROOT: ${{ runner.temp }}/pcms-firefox
-        run: npm run firefox:install
+        working-directory: ${{ runner.temp }}/alpha-frozen-donor
+        run: |
+          export GITHUB_SHA=482dc9d9273dcdcd7d2ef4c4b0df8c7c6933d5ca
+          npm run firefox:install
       - name: Verify execution-artifact reads, drift and challenge stop after a zero-tab alarm wake in packaged Firefox
         env:
           FIREFOX_BIN: ${{ steps.install.outputs.firefox_bin }}
           FIREFOX_PACKAGED_DIR: ${{ runner.temp }}/pcms-packaged-p039
           FIREFOX_P039_REPORT: ${{ runner.temp }}/firefox-p039-report.json
-        run: npm run firefox:packaged:p039
+        working-directory: ${{ runner.temp }}/alpha-frozen-donor
+        run: |
+          export GITHUB_SHA=482dc9d9273dcdcd7d2ef4c4b0df8c7c6933d5ca
+          npm run firefox:packaged:p039
       - name: Upload P039 packaged evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -489,15 +727,25 @@ jobs:
           if-no-files-found: warn
           retention-days: 7
 
+      - *recheck-donor-main
+      - *donor-identity
+
   # P040: the shipped Refresher pass, woken only by its durable timer alarm with zero tabs.
+
   p040-packaged:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - uses: actions/setup-node@v5
         with:
           node-version: "24"
+
+      - *exact-main-authority
+      - *frozen-donor
       - name: Install Firefox runtime libraries
         timeout-minutes: 6
         run: |
@@ -513,13 +761,19 @@ jobs:
         id: install
         env:
           FIREFOX_INSTALL_ROOT: ${{ runner.temp }}/pcms-firefox
-        run: npm run firefox:install
+        working-directory: ${{ runner.temp }}/alpha-frozen-donor
+        run: |
+          export GITHUB_SHA=482dc9d9273dcdcd7d2ef4c4b0df8c7c6933d5ca
+          npm run firefox:install
       - name: Refresh within budget from Deployer-confirmed releases after a zero-tab alarm wake in packaged Firefox
         env:
           FIREFOX_BIN: ${{ steps.install.outputs.firefox_bin }}
           FIREFOX_PACKAGED_DIR: ${{ runner.temp }}/pcms-packaged-p040
           FIREFOX_P040_REPORT: ${{ runner.temp }}/firefox-p040-report.json
-        run: npm run firefox:packaged:p040
+        working-directory: ${{ runner.temp }}/alpha-frozen-donor
+        run: |
+          export GITHUB_SHA=482dc9d9273dcdcd7d2ef4c4b0df8c7c6933d5ca
+          npm run firefox:packaged:p040
       - name: Upload P040 packaged evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -529,15 +783,25 @@ jobs:
           if-no-files-found: warn
           retention-days: 7
 
+      - *recheck-donor-main
+      - *donor-identity
+
   # P042: automatic deployment woken only by its durable timer alarm with zero tabs.
+
   p042-packaged:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - uses: actions/setup-node@v5
         with:
           node-version: "24"
+
+      - *exact-main-authority
+      - *frozen-donor
       - name: Install Firefox runtime libraries
         timeout-minutes: 6
         run: |
@@ -553,13 +817,19 @@ jobs:
         id: install
         env:
           FIREFOX_INSTALL_ROOT: ${{ runner.temp }}/pcms-firefox
-        run: npm run firefox:install
+        working-directory: ${{ runner.temp }}/alpha-frozen-donor
+        run: |
+          export GITHUB_SHA=482dc9d9273dcdcd7d2ef4c4b0df8c7c6933d5ca
+          npm run firefox:install
       - name: Deploy unattended through a leased execution artifact and verify it after a zero-tab alarm wake in packaged Firefox
         env:
           FIREFOX_BIN: ${{ steps.install.outputs.firefox_bin }}
           FIREFOX_PACKAGED_DIR: ${{ runner.temp }}/pcms-packaged-p042
           FIREFOX_P042_REPORT: ${{ runner.temp }}/firefox-p042-report.json
-        run: npm run firefox:packaged:p042
+        working-directory: ${{ runner.temp }}/alpha-frozen-donor
+        run: |
+          export GITHUB_SHA=482dc9d9273dcdcd7d2ef4c4b0df8c7c6933d5ca
+          npm run firefox:packaged:p042
       - name: Upload P042 packaged evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -567,4 +837,81 @@ jobs:
           name: firefox-packaged-p042
           path: ${{ runner.temp }}/firefox-p042-report.json
           if-no-files-found: warn
+          retention-days: 7
+
+      - *recheck-donor-main
+      - *donor-identity
+  alpha-core:
+    # Always mandatory. Product-byte detection reports NOT_IMPLEMENTED before
+    # P201; introducing Core or removing a prior Core requires packaged cases.
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - *exact-main-authority
+      - name: Verify actual derivative pin, typed broker faults and PersonaMonkey authority
+        run: |
+          node --test tests/alpha/browser-baseline/*.test.mjs tests/firefox/*.test.mjs
+          node extension/tests/persona-identity.test.mjs
+          node extension/tests/management-integration.test.mjs
+          node extension/tests/integration-lifecycle.test.mjs
+          node extension/tests/integration-contract-parity.test.mjs
+          node extension/tests/background-routing-init.test.mjs
+      - name: Install Firefox runtime libraries if missing
+        timeout-minutes: 6
+        shell: bash
+        run: |
+          packages="libgtk-3-0 libdbus-glib-1-2 libasound2t64 libx11-xcb1 libxt6"
+          if dpkg -s $packages >/dev/null 2>&1; then exit 0; fi
+          apt_opts="-o Acquire::Retries=3 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30"
+          for attempt in 1 2 3; do
+            if sudo timeout 150 apt-get $apt_opts update && sudo timeout 150 apt-get $apt_opts install -y $packages; then exit 0; fi
+            sleep 5
+          done
+          exit 1
+      - name: Install unchanged exact Alpha Firefox pin
+        id: install
+        env:
+          FIREFOX_INSTALL_ROOT: ${{ runner.temp }}/alpha-p201-firefox
+        run: node tools/alpha/firefox/install-pinned.mjs
+      - name: Verify isolated derivative loopback smoke and blocked unlisted origin
+        env:
+          FIREFOX_BIN: ${{ steps.install.outputs.firefox_bin }}
+          FIREFOX_INSTALL_MANIFEST: ${{ steps.install.outputs.alpha_install_manifest }}
+          FIREFOX_SMOKE_DIR: ${{ runner.temp }}/alpha-p201-smoke
+          FIREFOX_SMOKE_REPORT: ${{ runner.temp }}/alpha-p201-smoke-report.json
+        run: node tools/alpha/firefox/smoke.mjs
+      - name: Require PersonaMonkey safety and routing on the actual derivative XPI
+        env:
+          FIREFOX_BIN: ${{ steps.install.outputs.firefox_bin }}
+          FIREFOX_INSTALL_MANIFEST: ${{ steps.install.outputs.alpha_install_manifest }}
+          FIREFOX_PACKAGED_DIR: ${{ runner.temp }}/alpha-p201-personamonkey-packaged
+          FIREFOX_PACKAGED_REPORT: ${{ runner.temp }}/alpha-p201-personamonkey-report.json
+        run: node tests/alpha/browser-baseline/packaged.mjs
+      - name: Require all packaged P201 acceptance cases when Core is introduced
+        env:
+          FIREFOX_BIN: ${{ steps.install.outputs.firefox_bin }}
+          FIREFOX_INSTALL_MANIFEST: ${{ steps.install.outputs.alpha_install_manifest }}
+          FIREFOX_PACKAGED_DIR: ${{ runner.temp }}/alpha-p201-packaged
+        run: node "${{ steps.authority.outputs.infra_dir }}/core.mjs" --root "$GITHUB_WORKSPACE" --main-ref "${{ steps.authority.outputs.main_ref }}"
+      - name: Revalidate exact main after derivative Core verification
+        env:
+          ALPHA_EVENT: ${{ github.event_name }}
+        run: node "${{ steps.authority.outputs.authority_dir }}/tools/alpha/check-main.mjs"
+      - name: Publish P201 verification state without inventing acceptance
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: alpha-p201-verification
+          path: |
+            .agent-runs/alpha-p201-verification.json
+            ${{ runner.temp }}/alpha-p201-smoke-report.json
+            ${{ runner.temp }}/alpha-p201-personamonkey-report.json
+          if-no-files-found: error
           retention-days: 7

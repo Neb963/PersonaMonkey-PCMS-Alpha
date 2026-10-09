@@ -4,6 +4,7 @@ import { git, json, load, hasAuthority, requireThat, validateSnapshot, validateT
 import { verifyRepository, verifyG0Runtime } from './verify-repo.mjs';
 import { verifyRun } from './ci-evidence.mjs';
 import { verifyMaintenanceApproval } from './maintenance-approval.mjs';
+import { verifyDerivative } from './ci-migration/policy.mjs';
 
 const options = {};
 for (let i = 2; i < process.argv.length; i += 2) {
@@ -112,6 +113,7 @@ if (process.env.GITHUB_ACTIONS === 'true') {
   const observed = git(root, ['ls-remote', 'origin', 'refs/heads/main']).split(/\s/)[0];
   requireThat(observed === (event === 'push' ? headSha : mainSha), 'Main moved during validation; refresh and rerun instead of merging stale CI');
 }
+await verifyDerivative(root, mainRef);
 validateSnapshot(head, { root });
 const path = resolve(root, process.env.ALPHA_REPORT || '.agent-runs/alpha-ci.json');
 await mkdir(dirname(path), { recursive: true });
