@@ -97,6 +97,55 @@ test('GitHub owner approval is tied to exact PR head and main, never candidate-a
     request: async () => ({ ok: false, status: 403 }) }), /Cannot independently verify/);
 });
 
+test('approval lookup uses a bounded GitHub Actions token without leaking it', async () => {
+  const sha = context.baseMainSha, approvedHeadSha = 'c'.repeat(40);
+  const token = 'test-secret-authorization-token';
+  const body = approvalBody({
+    maintenanceId: context.maintenanceId, baseMainSha: sha, approvedHeadSha
+  });
+  const urls = [], observed = [];
+  const request = async (url, options) => {
+    urls.push(url);
+    observed.push(options.headers);
+    const data = url.includes('/pulls/')
+      ? { base: { ref: 'main' }, head: { ref: context.branch, sha: approvedHeadSha } }
+      : [{ user: { login: 'Neb963' }, author_association: 'OWNER',
+           body: body.replace(/\n/g, '\r\n') }];
+    return { ok: true, status: 200, json: async () => data };
+  };
+  const args = {
+    repository: 'Neb963/PersonaMonkey-PCMS-Alpha',
+    mainSha: sha, approvedHeadSha, token, request
+  };
+  assert.equal((await verifyMaintenanceApproval(context, args)).approved, true);
+  assert.equal(urls.length, 2);
+  assert.ok(urls.every(url => url.startsWith('https://api.github.com/repos/Neb963/PersonaMonkey-PCMS-Alpha/')));
+  assert.ok(observed.every(headers => headers.Authorization === `Bearer ${token}`));
+
+  // Public-only mode remains supported for local use but never pretends an
+  // HTTP failure confirms approval. Untrusted comment variations also fail.
+  let unauth = false;
+  await verifyMaintenanceApproval(context, { ...args, token: '', request: async (url, options) => {
+    unauth ||= !('Authorization' in options.headers);
+    return request(url, options);
+  } });
+  assert.equal(unauth, true);
+  await assert.rejects(verifyMaintenanceApproval(context, {
+    ...args, request: async () => ({ ok: false, status: 403 })
+  }), error => error.message.includes('HTTP 403') && !error.message.includes(token));
+  await assert.rejects(verifyMaintenanceApproval(context, {
+    ...args, request: async (url, options) => {
+      const response = await request(url, options);
+      if (url.includes('/comments')) {
+        const comments = await response.json();
+        comments[0].body += '\r\nUNAPPROVED EXTRA LINE';
+        return { ...response, json: async () => comments };
+      }
+      return response;
+    }
+  }), /Missing exact repository-owner/);
+});
+
 test('historical maintenance stays valid through new claims and later owner-attested maintenance', () => {
   // A normal fifth claim must not retroactively change a completed maintenance.
   const acquired = acquire(main, {
