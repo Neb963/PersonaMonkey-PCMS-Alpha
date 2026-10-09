@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "claimId": "CLM-P033-001",
+  "phaseId": "P033",
+  "taskId": "T033.1",
+  "claimEpoch": 1,
+  "state": "ACCEPTED",
+  "owner": {
+    "agentId": "claude-awesome-dirac-ac6ja1"
+  },
+  "baseMainSha": "9717eb215c7485bda84830d4a69c9cb610df0b76",
+  "branch": "agent/claude-awesome-dirac-ac6ja1/p033-t033-1",
+  "writePaths": [
+    "extension/pcms/app/**",
+    "extension/pcms/integration/**",
+    "extension/pcms/modules/**",
+    "extension/pcms/sandbox/module-ui.html",
+    "extension/pcms/sandbox/module-ui.js",
+    "extension/pcms/sandbox/module-ui.css",
+    "extension/pcms/background/core-factory.js",
+    "pcms-modules/p018/**",
+    "tests/pcms/p033/**",
+    "tests/pcms/p030/manifest.test.mjs",
+    "docs/evidence/P033/**",
+    "package.json",
+    ".github/workflows/firefox.yml",
+    "docs/implementation/v1/claims/CLM-P033-001.json"
+  ],
+  "contractReads": [
+    {
+      "id": "pcms.module-capabilities/v1",
+      "sha": "9717eb215c7485bda84830d4a69c9cb610df0b76"
+    },
+    {
+      "id": "pcms.ui-client/v1",
+      "sha": "9717eb215c7485bda84830d4a69c9cb610df0b76"
+    }
+  ],
+  "contractWrites": [
+    "pcms.ui-contribution/v1",
+    "pcms.module-manifest/v2",
+    "pcms.ui-client/v1"
+  ],
+  "resources": [
+    {
+      "key": "ci-workflows",
+      "mode": "exclusive"
+    }
+  ],
+  "migrationSlots": [],
+  "acceptanceIds": [
+    "A033-01",
+    "A033-02",
+    "A033-03"
+  ],
+  "lastCheckpointSha": "06cd88c26ecac403eaf9a35adedf30baefcc89ad"
+}

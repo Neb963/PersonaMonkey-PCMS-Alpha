@@ -1,0 +1,75 @@
+{
+  "baseline": "v1",
+  "git": {
+    "sourceOfTruth": "GitHub",
+    "branchPattern": "agent/<agent-id>/<phase-id>-<task-id>",
+    "forcePush": "FORBIDDEN",
+    "durability": "Push after each coherent acceptance slice and before handoff/risky work."
+  },
+  "parallelism": {
+    "claimAcquisition": "SERIALIZED",
+    "implementation": "PARALLEL_IF_NON_CONFLICTING",
+    "conflictDimensions": [
+      "writePaths",
+      "contractWrites",
+      "staleContractReads",
+      "exclusiveResources",
+      "migrationSlots",
+      "manualAuthorityFiles"
+    ],
+    "claimEpochFencing": true
+  },
+  "ci": {
+    "budget": "UNLIMITED",
+    "principle": "CI_FIRST_LIVE_LAST",
+    "browser": "exact pinned Firefox Developer Edition",
+    "mcp": "NOT_REQUIRED",
+    "finalLivePhases": [
+      "P043",
+      "P044"
+    ],
+    "historicalLivePhases": [
+      "P025",
+      "P026"
+    ]
+  },
+  "personaMonkey": {
+    "authority": [
+      "personaUid",
+      "contextual identities",
+      "routing",
+      "Mullvad",
+      "userscripts",
+      "workflows",
+      "browser execution",
+      "control leases"
+    ],
+    "pcmsAccess": "Persona Broker preserving Integration API semantics",
+    "rawInternals": false
+  },
+  "modules": {
+    "controllerRuntime": "Firefox WebExtension sandbox page",
+    "browserAutomation": "PersonaMonkey external automation",
+    "privilegedDynamicEval": false,
+    "rawBrowserApi": false,
+    "rawIndexedDb": false
+  },
+  "secrets": {
+    "storage": "SecretRef + dedicated secret backend",
+    "ordinaryDb": false,
+    "logs": false,
+    "publicOperatorInputs": "ignored local/operator path only"
+  },
+  "externalOperations": {
+    "durableBeforeDispatch": true,
+    "uncertainRetry": "RECONCILE_FIRST",
+    "unknownProvider": "FAIL_CLOSED"
+  },
+  "runtime": {
+    "pcmsCoreHost": "extension background event page (ADR-002)",
+    "dashboard": "UI client; never constructs Core",
+    "timerAuthority": "durable PCMS timer service; browser.alarms wake only",
+    "moduleLifecycle": "live install/update/disable/enable/rollback/remove without extension reload (ADR-003)",
+    "runtimeModuleMinFirefox": "154"
+  }
+}

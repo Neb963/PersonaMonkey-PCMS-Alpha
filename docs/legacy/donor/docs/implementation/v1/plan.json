@@ -1,0 +1,2085 @@
+{
+  "schemaVersion": 1,
+  "authority": "docs/implementation/v1/plan.json",
+  "baseline": "v1",
+  "executionModel": {
+    "eligibility": "All dependencies ACCEPTED and no conflicting ACTIVE claim.",
+    "claimAcquisition": "serialized",
+    "implementation": "parallel when mechanically non-conflicting",
+    "finalLivePhases": [
+      "P043",
+      "P044"
+    ]
+  },
+  "statuses": [
+    "BLOCKED",
+    "READY",
+    "CLAIMED",
+    "IN_PROGRESS",
+    "PR_OPEN",
+    "MERGED",
+    "ACCEPTED"
+  ],
+  "phases": [
+    {
+      "id": "P000",
+      "title": "Repository bootstrap / architecture freeze",
+      "status": "ACCEPTED",
+      "dependsOn": [],
+      "mergeWave": 0,
+      "ownership": {
+        "writePaths": [
+          "AGENTS.md",
+          "README.md",
+          "docs/**",
+          "tools/**",
+          ".github/**",
+          "package.json",
+          ".gitignore",
+          "SECURITY.md",
+          "CONTRIBUTING.md",
+          "operator-inputs/README.md"
+        ],
+        "contractReads": [],
+        "contractWrites": [],
+        "resources": [],
+        "migrationSlots": []
+      },
+      "tasks": [
+        {
+          "id": "T000.1",
+          "title": "T000.1 Bootstrap authority and provenance"
+        },
+        {
+          "id": "T000.2",
+          "title": "T000.2 Establish claim/CI governance"
+        },
+        {
+          "id": "T000.3",
+          "title": "T000.3 Verify generated views"
+        }
+      ],
+      "acceptanceIds": [
+        "A000-01",
+        "A000-02",
+        "A000-03"
+      ]
+    },
+    {
+      "id": "P001",
+      "title": "Hosted CI + pinned Firefox Developer Edition harness",
+      "status": "ACCEPTED",
+      "dependsOn": [
+        "P000"
+      ],
+      "mergeWave": 1,
+      "ownership": {
+        "writePaths": [
+          ".github/workflows/**",
+          "tools/firefox/**",
+          "docs/implementation/v1/browser-pin.json",
+          "tests/firefox/**",
+          "package.json",
+          "docs/evidence/P001/**"
+        ],
+        "contractReads": [],
+        "contractWrites": [],
+        "resources": [],
+        "migrationSlots": []
+      },
+      "tasks": [
+        {
+          "id": "T001.1",
+          "title": "T001.1 Pin exact Mozilla FDE artifact"
+        },
+        {
+          "id": "T001.2",
+          "title": "T001.2 Build isolated profile/install harness"
+        },
+        {
+          "id": "T001.3",
+          "title": "T001.3 Prove browser CI evidence"
+        }
+      ],
+      "acceptanceIds": [
+        "A001-01",
+        "A001-02",
+        "A001-03"
+      ]
+    },
+    {
+      "id": "P002",
+      "title": "Import and preserve PersonaMonkey baseline",
+      "status": "ACCEPTED",
+      "dependsOn": [
+        "P001"
+      ],
+      "mergeWave": 1,
+      "ownership": {
+        "writePaths": [
+          "extension/**",
+          "native/**",
+          "scripts/**",
+          "tests/**",
+          "docs/upstream/**",
+          "package.json",
+          "CHANGELOG.md",
+          "LICENSE"
+        ],
+        "contractReads": [],
+        "contractWrites": [],
+        "resources": [],
+        "migrationSlots": []
+      },
+      "tasks": [
+        {
+          "id": "T002.1",
+          "title": "T002.1 Import exact upstream tree"
+        },
+        {
+          "id": "T002.2",
+          "title": "T002.2 Reconcile public-repo provenance"
+        },
+        {
+          "id": "T002.3",
+          "title": "T002.3 Prove inherited release baseline"
+        }
+      ],
+      "acceptanceIds": [
+        "A002-01",
+        "A002-02",
+        "A002-03"
+      ]
+    },
+    {
+      "id": "P003",
+      "title": "PCMS namespace/UI entry + internal Persona Broker contract",
+      "status": "ACCEPTED",
+      "dependsOn": [
+        "P002"
+      ],
+      "mergeWave": 2,
+      "ownership": {
+        "writePaths": [
+          "extension/pcms/**",
+          "tests/pcms/**",
+          "docs/evidence/**"
+        ],
+        "contractReads": [],
+        "contractWrites": [],
+        "resources": [],
+        "migrationSlots": []
+      },
+      "tasks": [
+        {
+          "id": "T003.1",
+          "title": "T003.1 Define broker contract"
+        },
+        {
+          "id": "T003.2",
+          "title": "T003.2 Add PCMS namespace/bootstrap"
+        },
+        {
+          "id": "T003.3",
+          "title": "T003.3 Contract parity tests"
+        }
+      ],
+      "acceptanceIds": [
+        "A003-01",
+        "A003-02",
+        "A003-03"
+      ]
+    },
+    {
+      "id": "P004",
+      "title": "Firefox sandbox dynamic-controller capability spike",
+      "status": "ACCEPTED",
+      "dependsOn": [
+        "P002"
+      ],
+      "mergeWave": 2,
+      "ownership": {
+        "writePaths": [
+          "extension/pcms/**",
+          "tests/pcms/**",
+          "docs/evidence/**"
+        ],
+        "contractReads": [],
+        "contractWrites": [],
+        "resources": [],
+        "migrationSlots": []
+      },
+      "tasks": [
+        {
+          "id": "T004.1",
+          "title": "T004.1 Sandbox runtime probe"
+        },
+        {
+          "id": "T004.2",
+          "title": "T004.2 Authenticated bounded RPC"
+        },
+        {
+          "id": "T004.3",
+          "title": "T004.3 Lifecycle/isolation acceptance"
+        }
+      ],
+      "acceptanceIds": [
+        "A004-01",
+        "A004-02",
+        "A004-03"
+      ]
+    },
+    {
+      "id": "P005",
+      "title": "PCMS IndexedDB storage broker + migrations",
+      "status": "ACCEPTED",
+      "dependsOn": [
+        "P002"
+      ],
+      "mergeWave": 2,
+      "ownership": {
+        "writePaths": [
+          "extension/pcms/**",
+          "tests/pcms/**",
+          "docs/evidence/**"
+        ],
+        "contractReads": [],
+        "contractWrites": [],
+        "resources": [],
+        "migrationSlots": []
+      },
+      "tasks": [
+        {
+          "id": "T005.1",
+          "title": "T005.1 DB/migration authority"
+        },
+        {
+          "id": "T005.2",
+          "title": "T005.2 Namespaced storage/CAS"
+        },
+        {
+          "id": "T005.3",
+          "title": "T005.3 restart/failure tests"
+        }
+      ],
+      "acceptanceIds": [
+        "A005-01",
+        "A005-02",
+        "A005-03"
+      ]
+    },
+    {
+      "id": "P006",
+      "title": "PCMS SecretStore host + SecretRef abstraction",
+      "status": "ACCEPTED",
+      "dependsOn": [
+        "P002"
+      ],
+      "mergeWave": 2,
+      "ownership": {
+        "writePaths": [
+          "extension/pcms/**",
+          "tests/pcms/**",
+          "docs/evidence/**"
+        ],
+        "contractReads": [],
+        "contractWrites": [],
+        "resources": [],
+        "migrationSlots": []
+      },
+      "tasks": [
+        {
+          "id": "T006.1",
+          "title": "T006.1 SecretRef contract"
+        },
+        {
+          "id": "T006.2",
+          "title": "T006.2 narrow native host/backend"
+        },
+        {
+          "id": "T006.3",
+          "title": "T006.3 redaction/failure tests"
+        }
+      ],
+      "acceptanceIds": [
+        "A006-01",
+        "A006-02",
+        "A006-03"
+      ]
+    },
+    {
+      "id": "P007",
+      "title": "Minimal Audit Journal",
+      "status": "ACCEPTED",
+      "dependsOn": [
+        "P005"
+      ],
+      "mergeWave": 3,
+      "ownership": {
+        "writePaths": [
+          "extension/pcms/**",
+          "tests/pcms/**",
+          "docs/evidence/**"
+        ],
+        "contractReads": [],
+        "contractWrites": [],
+        "resources": [],
+        "migrationSlots": []
+      },
+      "tasks": [
+        {
+          "id": "T007.1",
+          "title": "T007.1 Event schema/atomic append"
+        },
+        {
+          "id": "T007.2",
+          "title": "T007.2 read/projection API"
+        },
+        {
+          "id": "T007.3",
+          "title": "T007.3 replay tests"
+        }
+      ],
+      "acceptanceIds": [
+        "A007-01",
+        "A007-02",
+        "A007-03"
+      ]
+    },
+    {
+      "id": "P008",
+      "title": "Module archive/package/authority model",
+      "status": "ACCEPTED",
+      "dependsOn": [
+        "P004",
+        "P005"
+      ],
+      "mergeWave": 3,
+      "ownership": {
+        "writePaths": [
+          "extension/pcms/**",
+          "tests/pcms/**",
+          "docs/evidence/**"
+        ],
+        "contractReads": [],
+        "contractWrites": [],
+        "resources": [],
+        "migrationSlots": []
+      },
+      "tasks": [
+        {
+          "id": "T008.1",
+          "title": "T008.1 bounded parser/hash identity"
+        },
+        {
+          "id": "T008.2",
+          "title": "T008.2 authority envelope/delta"
+        },
+        {
+          "id": "T008.3",
+          "title": "T008.3 immutable candidate lifecycle"
+        }
+      ],
+      "acceptanceIds": [
+        "A008-01",
+        "A008-02",
+        "A008-03"
+      ]
+    },
+    {
+      "id": "P009",
+      "title": "Persona Broker implementation",
+      "status": "ACCEPTED",
+      "dependsOn": [
+        "P003"
+      ],
+      "mergeWave": 3,
+      "ownership": {
+        "writePaths": [
+          "extension/pcms/**",
+          "tests/pcms/**",
+          "docs/evidence/**"
+        ],
+        "contractReads": [],
+        "contractWrites": [],
+        "resources": [],
+        "migrationSlots": []
+      },
+      "tasks": [
+        {
+          "id": "T009.1",
+          "title": "T009.1 Integration-semantic facade"
+        },
+        {
+          "id": "T009.2",
+          "title": "T009.2 capability/lease/execution mapping"
+        },
+        {
+          "id": "T009.3",
+          "title": "T009.3 parity/failure tests"
+        }
+      ],
+      "acceptanceIds": [
+        "A009-01",
+        "A009-02",
+        "A009-03"
+      ]
+    },
+    {
+      "id": "P010",
+      "title": "RemoteOps + ProviderGate + recovery hold",
+      "status": "ACCEPTED",
+      "dependsOn": [
+        "P005",
+        "P009"
+      ],
+      "mergeWave": 4,
+      "ownership": {
+        "writePaths": [
+          "extension/pcms/**",
+          "tests/pcms/**",
+          "docs/evidence/**"
+        ],
+        "contractReads": [],
+        "contractWrites": [],
+        "resources": [],
+        "migrationSlots": []
+      },
+      "tasks": [
+        {
+          "id": "T010.1",
+          "title": "T010.1 durable RemoteOps"
+        },
+        {
+          "id": "T010.2",
+          "title": "T010.2 ProviderGate"
+        },
+        {
+          "id": "T010.3",
+          "title": "T010.3 uncertain/recovery tests"
+        }
+      ],
+      "acceptanceIds": [
+        "A010-01",
+        "A010-02",
+        "A010-03"
+      ]
+    },
+    {
+      "id": "P011",
+      "title": "Module runtime / capability RPC / generation fencing",
+      "status": "ACCEPTED",
+      "dependsOn": [
+        "P008",
+        "P010"
+      ],
+      "mergeWave": 4,
+      "ownership": {
+        "writePaths": [
+          "extension/pcms/**",
+          "tests/pcms/**",
+          "docs/evidence/**"
+        ],
+        "contractReads": [],
+        "contractWrites": [],
+        "resources": [],
+        "migrationSlots": []
+      },
+      "tasks": [
+        {
+          "id": "T011.1",
+          "title": "T011.1 runtime broker/mailboxes"
+        },
+        {
+          "id": "T011.2",
+          "title": "T011.2 capability RPC"
+        },
+        {
+          "id": "T011.3",
+          "title": "T011.3 draining/update/recovery"
+        }
+      ],
+      "acceptanceIds": [
+        "A011-01",
+        "A011-02",
+        "A011-03"
+      ]
+    },
+    {
+      "id": "P012",
+      "title": "HumanTask/Attention + timers/services",
+      "status": "ACCEPTED",
+      "dependsOn": [
+        "P007",
+        "P011"
+      ],
+      "mergeWave": 4,
+      "ownership": {
+        "writePaths": [
+          "extension/pcms/**",
+          "tests/pcms/**",
+          "docs/evidence/**"
+        ],
+        "contractReads": [],
+        "contractWrites": [],
+        "resources": [],
+        "migrationSlots": []
+      },
+      "tasks": [
+        {
+          "id": "T012.1",
+          "title": "T012.1 HumanTask/Attention"
+        },
+        {
+          "id": "T012.2",
+          "title": "T012.2 timers"
+        },
+        {
+          "id": "T012.3",
+          "title": "T012.3 service registry/restart tests"
+        }
+      ],
+      "acceptanceIds": [
+        "A012-01",
+        "A012-02",
+        "A012-03"
+      ]
+    },
+    {
+      "id": "P013",
+      "title": "Perchance provider adapter + emulator",
+      "status": "ACCEPTED",
+      "dependsOn": [
+        "P009",
+        "P010"
+      ],
+      "mergeWave": 4,
+      "ownership": {
+        "writePaths": [
+          "extension/pcms/**",
+          "tests/pcms/**",
+          "docs/evidence/**"
+        ],
+        "contractReads": [],
+        "contractWrites": [],
+        "resources": [],
+        "migrationSlots": []
+      },
+      "tasks": [
+        {
+          "id": "T013.1",
+          "title": "T013.1 compatibility probe"
+        },
+        {
+          "id": "T013.2",
+          "title": "T013.2 deterministic emulator"
+        },
+        {
+          "id": "T013.3",
+          "title": "T013.3 fail-closed adapter tests"
+        }
+      ],
+      "acceptanceIds": [
+        "A013-01",
+        "A013-02",
+        "A013-03"
+      ]
+    },
+    {
+      "id": "P014",
+      "title": "Accounts module + Account\u2194personaUid binding",
+      "status": "ACCEPTED",
+      "dependsOn": [
+        "P011",
+        "P013"
+      ],
+      "mergeWave": 5,
+      "ownership": {
+        "writePaths": [
+          "pcms-modules/p014/**",
+          "tests/**/p014/**"
+        ],
+        "contractReads": [],
+        "contractWrites": [],
+        "resources": [],
+        "migrationSlots": []
+      },
+      "tasks": [
+        {
+          "id": "T014.1",
+          "title": "T014.1 account model"
+        },
+        {
+          "id": "T014.2",
+          "title": "T014.2 Persona binding/rebind"
+        },
+        {
+          "id": "T014.3",
+          "title": "T014.3 rotation continuity"
+        }
+      ],
+      "acceptanceIds": [
+        "A014-01",
+        "A014-02",
+        "A014-03"
+      ]
+    },
+    {
+      "id": "P015",
+      "title": "Deployer module",
+      "status": "ACCEPTED",
+      "dependsOn": [
+        "P014",
+        "P013"
+      ],
+      "mergeWave": 5,
+      "ownership": {
+        "writePaths": [
+          "pcms-modules/p015/**",
+          "tests/**/p015/**"
+        ],
+        "contractReads": [],
+        "contractWrites": [],
+        "resources": [],
+        "migrationSlots": []
+      },
+      "tasks": [
+        {
+          "id": "T015.1",
+          "title": "T015.1 desired/observed model"
+        },
+        {
+          "id": "T015.2",
+          "title": "T015.2 stable target mutation"
+        },
+        {
+          "id": "T015.3",
+          "title": "T015.3 reconciliation/UI"
+        }
+      ],
+      "acceptanceIds": [
+        "A015-01",
+        "A015-02",
+        "A015-03"
+      ]
+    },
+    {
+      "id": "P016",
+      "title": "Explorer module",
+      "status": "ACCEPTED",
+      "dependsOn": [
+        "P014",
+        "P013"
+      ],
+      "mergeWave": 5,
+      "ownership": {
+        "writePaths": [
+          "pcms-modules/p016/**",
+          "tests/**/p016/**"
+        ],
+        "contractReads": [],
+        "contractWrites": [],
+        "resources": [],
+        "migrationSlots": []
+      },
+      "tasks": [
+        {
+          "id": "T016.1",
+          "title": "T016.1 discovery/candidates"
+        },
+        {
+          "id": "T016.2",
+          "title": "T016.2 durable claim/reconciliation"
+        },
+        {
+          "id": "T016.3",
+          "title": "T016.3 module UI/integration"
+        }
+      ],
+      "acceptanceIds": [
+        "A016-01",
+        "A016-02",
+        "A016-03"
+      ]
+    },
+    {
+      "id": "P017",
+      "title": "Refresher module",
+      "status": "ACCEPTED",
+      "dependsOn": [
+        "P014",
+        "P013"
+      ],
+      "mergeWave": 5,
+      "ownership": {
+        "writePaths": [
+          "pcms-modules/p017/**",
+          "tests/**/p017/**"
+        ],
+        "contractReads": [],
+        "contractWrites": [],
+        "resources": [],
+        "migrationSlots": []
+      },
+      "tasks": [
+        {
+          "id": "T017.1",
+          "title": "T017.1 cohort/eligibility"
+        },
+        {
+          "id": "T017.2",
+          "title": "T017.2 schedules/budgets"
+        },
+        {
+          "id": "T017.3",
+          "title": "T017.3 isolation/confirmed-effect tests"
+        }
+      ],
+      "acceptanceIds": [
+        "A017-01",
+        "A017-02",
+        "A017-03"
+      ]
+    },
+    {
+      "id": "P018",
+      "title": "Statistics module",
+      "status": "ACCEPTED",
+      "dependsOn": [
+        "P007",
+        "P011"
+      ],
+      "mergeWave": 5,
+      "ownership": {
+        "writePaths": [
+          "pcms-modules/p018/**",
+          "tests/**/p018/**"
+        ],
+        "contractReads": [],
+        "contractWrites": [],
+        "resources": [],
+        "migrationSlots": []
+      },
+      "tasks": [
+        {
+          "id": "T018.1",
+          "title": "T018.1 metric projection model"
+        },
+        {
+          "id": "T018.2",
+          "title": "T018.2 replay/late-event handling"
+        },
+        {
+          "id": "T018.3",
+          "title": "T018.3 UI/export"
+        }
+      ],
+      "acceptanceIds": [
+        "A018-01",
+        "A018-02",
+        "A018-03"
+      ]
+    },
+    {
+      "id": "P019",
+      "title": "Account Provisioning module",
+      "status": "ACCEPTED",
+      "dependsOn": [
+        "P006",
+        "P012",
+        "P014",
+        "P013"
+      ],
+      "mergeWave": 5,
+      "ownership": {
+        "writePaths": [
+          "pcms-modules/p019/**",
+          "tests/**/p019/**"
+        ],
+        "contractReads": [],
+        "contractWrites": [],
+        "resources": [],
+        "migrationSlots": []
+      },
+      "tasks": [
+        {
+          "id": "T019.1",
+          "title": "T019.1 provisioning state machine"
+        },
+        {
+          "id": "T019.2",
+          "title": "T019.2 HumanTask/session guard"
+        },
+        {
+          "id": "T019.3",
+          "title": "T019.3 uncertain/CAPTCHA-safe tests"
+        }
+      ],
+      "acceptanceIds": [
+        "A019-01",
+        "A019-02",
+        "A019-03"
+      ]
+    },
+    {
+      "id": "P020",
+      "title": "Backup/restore + retention",
+      "status": "ACCEPTED",
+      "dependsOn": [
+        "P007",
+        "P010",
+        "P011"
+      ],
+      "mergeWave": 6,
+      "ownership": {
+        "writePaths": [
+          "extension/pcms/**",
+          "tests/pcms/**",
+          "docs/evidence/**"
+        ],
+        "contractReads": [],
+        "contractWrites": [],
+        "resources": [],
+        "migrationSlots": []
+      },
+      "tasks": [
+        {
+          "id": "T020.1",
+          "title": "T020.1 snapshot/backup"
+        },
+        {
+          "id": "T020.2",
+          "title": "T020.2 staged restore"
+        },
+        {
+          "id": "T020.3",
+          "title": "T020.3 RECOVERY_HOLD reconciliation"
+        }
+      ],
+      "acceptanceIds": [
+        "A020-01",
+        "A020-02",
+        "A020-03"
+      ]
+    },
+    {
+      "id": "P021",
+      "title": "PCMS UI shell / notifications / search",
+      "status": "ACCEPTED",
+      "dependsOn": [
+        "P012",
+        "P014"
+      ],
+      "mergeWave": 6,
+      "ownership": {
+        "writePaths": [
+          "extension/pcms/**",
+          "tests/pcms/**",
+          "docs/evidence/**"
+        ],
+        "contractReads": [],
+        "contractWrites": [],
+        "resources": [],
+        "migrationSlots": []
+      },
+      "tasks": [
+        {
+          "id": "T021.1",
+          "title": "T021.1 navigation/attention shell"
+        },
+        {
+          "id": "T021.2",
+          "title": "T021.2 search/projections"
+        },
+        {
+          "id": "T021.3",
+          "title": "T021.3 deep-link safety"
+        }
+      ],
+      "acceptanceIds": [
+        "A021-01",
+        "A021-02",
+        "A021-03"
+      ]
+    },
+    {
+      "id": "P022",
+      "title": "Module lifecycle end-to-end",
+      "status": "ACCEPTED",
+      "dependsOn": [
+        "P011",
+        "P020"
+      ],
+      "mergeWave": 6,
+      "ownership": {
+        "writePaths": [
+          "extension/pcms/**",
+          "tests/pcms/**",
+          "docs/evidence/**"
+        ],
+        "contractReads": [],
+        "contractWrites": [],
+        "resources": [],
+        "migrationSlots": []
+      },
+      "tasks": [
+        {
+          "id": "T022.1",
+          "title": "T022.1 install/update"
+        },
+        {
+          "id": "T022.2",
+          "title": "T022.2 disable/remove/purge"
+        },
+        {
+          "id": "T022.3",
+          "title": "T022.3 rollback/retention acceptance"
+        }
+      ],
+      "acceptanceIds": [
+        "A022-01",
+        "A022-02",
+        "A022-03"
+      ]
+    },
+    {
+      "id": "P023",
+      "title": "Full module integration wave",
+      "status": "ACCEPTED",
+      "dependsOn": [
+        "P015",
+        "P016",
+        "P017",
+        "P018",
+        "P019",
+        "P020",
+        "P021",
+        "P022"
+      ],
+      "mergeWave": 7,
+      "ownership": {
+        "writePaths": [
+          "extension/pcms/**",
+          "tests/pcms/**",
+          "docs/evidence/**"
+        ],
+        "contractReads": [],
+        "contractWrites": [],
+        "resources": [],
+        "migrationSlots": []
+      },
+      "tasks": [
+        {
+          "id": "T023.1",
+          "title": "T023.1 cross-module contracts"
+        },
+        {
+          "id": "T023.2",
+          "title": "T023.2 integration-wave CI"
+        },
+        {
+          "id": "T023.3",
+          "title": "T023.3 combined recovery acceptance"
+        }
+      ],
+      "acceptanceIds": [
+        "A023-01",
+        "A023-02",
+        "A023-03"
+      ]
+    },
+    {
+      "id": "P024",
+      "title": "Adversarial/security/fault/release-candidate hardening",
+      "status": "ACCEPTED",
+      "dependsOn": [
+        "P023"
+      ],
+      "mergeWave": 8,
+      "ownership": {
+        "writePaths": [
+          "extension/pcms/**",
+          "tests/pcms/**",
+          "docs/evidence/**"
+        ],
+        "contractReads": [],
+        "contractWrites": [],
+        "resources": [],
+        "migrationSlots": []
+      },
+      "tasks": [
+        {
+          "id": "T024.1",
+          "title": "T024.1 fault/security matrix"
+        },
+        {
+          "id": "T024.2",
+          "title": "T024.2 reproducible package"
+        },
+        {
+          "id": "T024.3",
+          "title": "T024.3 clean install/update/restart"
+        }
+      ],
+      "acceptanceIds": [
+        "A024-01",
+        "A024-02",
+        "A024-03"
+      ]
+    },
+    {
+      "id": "P025",
+      "title": "Live acceptance 1 \u2014 installed FDE + PersonaMonkey/Mullvad/Perchance",
+      "status": "ACCEPTED",
+      "dependsOn": [
+        "P024"
+      ],
+      "mergeWave": 9,
+      "ownership": {
+        "writePaths": [
+          "extension/pcms/**",
+          "tests/pcms/**",
+          "docs/evidence/**",
+          "extension/background.js",
+          "extension/lib/management-integration.js",
+          "extension/popup/popup.html",
+          "scripts/build-extension.mjs",
+          "tests/upstream/import-integrity.test.mjs",
+          "docs/upstream/import-manifest.json",
+          "docs/upstream/source/extension/background.js",
+          "docs/upstream/source/extension/lib/management-integration.js",
+          "docs/upstream/source/extension/popup/popup.html",
+          "docs/upstream/source/scripts/build-extension.mjs",
+          "extension/manifest.json",
+          "docs/upstream/source/extension/manifest.json"
+        ],
+        "contractReads": [],
+        "contractWrites": [],
+        "resources": [],
+        "migrationSlots": []
+      },
+      "tasks": [
+        {
+          "id": "T025.1",
+          "title": "T025.1 clean live install"
+        },
+        {
+          "id": "T025.2",
+          "title": "T025.2 protected routing/Persona continuity"
+        },
+        {
+          "id": "T025.3",
+          "title": "T025.3 provider/session compatibility"
+        }
+      ],
+      "acceptanceIds": [
+        "A025-01",
+        "A025-02",
+        "A025-03"
+      ]
+    },
+    {
+      "id": "P026",
+      "title": "Live acceptance 2 \u2014 representative mutations + recovery + final acceptance",
+      "status": "ACCEPTED",
+      "dependsOn": [
+        "P025"
+      ],
+      "mergeWave": 10,
+      "ownership": {
+        "writePaths": [
+          "extension/pcms/**",
+          "tests/pcms/**",
+          "docs/evidence/**",
+          "extension/popup/popup.css",
+          "tests/upstream/import-integrity.test.mjs",
+          "docs/upstream/import-manifest.json",
+          "docs/upstream/source/extension/popup/popup.css"
+        ],
+        "contractReads": [],
+        "contractWrites": [],
+        "resources": [],
+        "migrationSlots": []
+      },
+      "tasks": [
+        {
+          "id": "T026.1",
+          "title": "T026.1 representative feature mutations"
+        },
+        {
+          "id": "T026.2",
+          "title": "T026.2 restore/update/recovery"
+        },
+        {
+          "id": "T026.3",
+          "title": "T026.3 final human acceptance"
+        }
+      ],
+      "acceptanceIds": [
+        "A026-01",
+        "A026-02",
+        "A026-03"
+      ]
+    },
+    {
+      "id": "P027",
+      "title": "Packaged-XPI Firefox harness + browser pin >=154",
+      "status": "ACCEPTED",
+      "dependsOn": [
+        "P026"
+      ],
+      "mergeWave": 11,
+      "ownership": {
+        "writePaths": [
+          "docs/implementation/v1/browser-pin.json",
+          "tools/firefox/**",
+          "tests/firefox/**",
+          ".github/workflows/firefox.yml",
+          "package.json",
+          "tests/pcms/p027/**",
+          "docs/evidence/P027/**"
+        ],
+        "contractReads": [],
+        "contractWrites": [],
+        "resources": [
+          {
+            "key": "firefox-browser-pin",
+            "mode": "exclusive"
+          },
+          {
+            "key": "ci-workflows",
+            "mode": "exclusive"
+          }
+        ],
+        "migrationSlots": []
+      },
+      "tasks": [
+        {
+          "id": "T027.1",
+          "title": "T027.1 Pin exact Firefox Developer Edition build >=154"
+        },
+        {
+          "id": "T027.2",
+          "title": "T027.2 Packaged-XPI install/drive harness (tabs, idle unload, profile restart)"
+        },
+        {
+          "id": "T027.3",
+          "title": "T027.3 Baseline packaged regression and pinned-build platform facts"
+        }
+      ],
+      "acceptanceIds": [
+        "A027-01",
+        "A027-02",
+        "A027-03"
+      ]
+    },
+    {
+      "id": "P028",
+      "title": "Background-authoritative PCMS Core + UI client protocol",
+      "status": "ACCEPTED",
+      "dependsOn": [
+        "P027"
+      ],
+      "mergeWave": 12,
+      "ownership": {
+        "writePaths": [
+          "extension/lib/recovery-bootstrap.js",
+          "extension/background.js",
+          "docs/upstream/source/extension/lib/recovery-bootstrap.js",
+          "docs/upstream/source/extension/background.js",
+          "docs/upstream/import-manifest.json",
+          "tests/upstream/import-integrity.test.mjs",
+          "extension/lib/pcms-internal-broker-endpoint.js",
+          "extension/pcms/background/**",
+          "extension/pcms/integration/**",
+          "extension/pcms/platform/**",
+          "extension/pcms/app/**",
+          "tests/pcms/p028/**",
+          "docs/evidence/P028/**",
+          "package.json",
+          ".github/workflows/firefox.yml",
+          "tools/firefox/packaged.mjs",
+          "extension/tests/background-routing-init.test.mjs",
+          "docs/upstream/source/extension/tests/background-routing-init.test.mjs"
+        ],
+        "contractReads": [],
+        "contractWrites": [
+          "pcms.ui-client/v1",
+          "pcms.persona-broker.internal-endpoint/v1"
+        ],
+        "resources": [
+          {
+            "key": "pcms-background-entry",
+            "mode": "exclusive"
+          }
+        ],
+        "migrationSlots": []
+      },
+      "tasks": [
+        {
+          "id": "T028.1",
+          "title": "T028.1 Background entry, PersonaMonkey-ready ordering, idempotent Core, in-process broker endpoint"
+        },
+        {
+          "id": "T028.2",
+          "title": "T028.2 Cold-start/warm-wake recovery and durable HumanTask handoff for assisted provider steps"
+        },
+        {
+          "id": "T028.3",
+          "title": "T028.3 UI client protocol, revision signal, status summary; dashboard becomes a client"
+        }
+      ],
+      "acceptanceIds": [
+        "A028-01",
+        "A028-02",
+        "A028-03"
+      ]
+    },
+    {
+      "id": "P029",
+      "title": "Durable PCMS timers woken by extension alarms",
+      "status": "ACCEPTED",
+      "dependsOn": [
+        "P028"
+      ],
+      "mergeWave": 13,
+      "ownership": {
+        "writePaths": [
+          "extension/pcms/services/**",
+          "extension/pcms/background/alarms/**",
+          "tests/pcms/p029/**",
+          "docs/evidence/P029/**",
+          "extension/pcms/background/core-factory.js",
+          "extension/pcms/background/core-host.js",
+          "extension/pcms/background/entry.js",
+          "package.json",
+          ".github/workflows/firefox.yml"
+        ],
+        "contractReads": [],
+        "contractWrites": [
+          "pcms.timers.ensure/v1"
+        ],
+        "resources": [
+          {
+            "key": "ci-workflows",
+            "mode": "exclusive"
+          }
+        ],
+        "migrationSlots": []
+      },
+      "tasks": [
+        {
+          "id": "T029.1",
+          "title": "T029.1 Alarm mapping (next-due + heartbeat) and cold-start recreation"
+        },
+        {
+          "id": "T029.2",
+          "title": "T029.2 Due pass, interrupted-timer recovery, declared schedules (timers.ensure), bounded work steps"
+        },
+        {
+          "id": "T029.3",
+          "title": "T029.3 Background continuity proof with zero PCMS tabs and forced unloads"
+        }
+      ],
+      "acceptanceIds": [
+        "A029-01",
+        "A029-02",
+        "A029-03"
+      ]
+    },
+    {
+      "id": "P030",
+      "title": "Production sandbox pages + background-hosted controller frames",
+      "status": "ACCEPTED",
+      "dependsOn": [
+        "P028"
+      ],
+      "mergeWave": 13,
+      "ownership": {
+        "writePaths": [
+          "extension/manifest.json",
+          "docs/upstream/source/extension/manifest.json",
+          "docs/upstream/import-manifest.json",
+          "tests/upstream/import-integrity.test.mjs",
+          "extension/pcms/sandbox/**",
+          "extension/pcms/runtime/**",
+          "extension/pcms/background/sandbox/**",
+          "tests/pcms/p030/**",
+          "docs/evidence/P030/**",
+          "package.json",
+          ".github/workflows/firefox.yml"
+        ],
+        "contractReads": [],
+        "contractWrites": [],
+        "resources": [
+          {
+            "key": "extension-manifest",
+            "mode": "exclusive"
+          }
+        ],
+        "migrationSlots": []
+      },
+      "tasks": [
+        {
+          "id": "T030.1",
+          "title": "T030.1 Declare sandbox pages/CSP in the production manifest; browser-floor detection"
+        },
+        {
+          "id": "T030.2",
+          "title": "T030.2 Background frame factory and frame lifecycle bound to generations"
+        },
+        {
+          "id": "T030.3",
+          "title": "T030.3 Packaged proof that runtime-supplied controller source executes in a real sandbox page"
+        }
+      ],
+      "acceptanceIds": [
+        "A030-01",
+        "A030-02",
+        "A030-03"
+      ]
+    },
+    {
+      "id": "P031",
+      "title": "Runtime module lifecycle live in production",
+      "status": "ACCEPTED",
+      "dependsOn": [
+        "P029",
+        "P030"
+      ],
+      "mergeWave": 14,
+      "ownership": {
+        "writePaths": [
+          "extension/pcms/modules/**",
+          "extension/pcms/runtime/**",
+          "extension/pcms/background/modules/**",
+          "extension/pcms/background/core-factory.js",
+          "extension/pcms/integration/live-core.js",
+          "extension/pcms/integration/ui-client-contract.js",
+          "tests/fixtures/modules/**",
+          "tests/pcms/p031/**",
+          "docs/evidence/P031/**",
+          "package.json",
+          ".github/workflows/firefox.yml"
+        ],
+        "contractReads": [
+          "pcms.timers.ensure/v1",
+          "pcms.ui-client/v1"
+        ],
+        "contractWrites": [
+          "pcms.module-capabilities/v1",
+          "pcms.ui-client/v1"
+        ],
+        "resources": [
+          {
+            "key": "ci-workflows",
+            "mode": "exclusive"
+          }
+        ],
+        "migrationSlots": []
+      },
+      "tasks": [
+        {
+          "id": "T031.1",
+          "title": "T031.1 Install/approve/admit/activate via UI client commands; module supervisor with lazy rehydration"
+        },
+        {
+          "id": "T031.2",
+          "title": "T031.2 Capability set v1 (module storage, timers, attention, audit, read projections, provider via ProviderGate)"
+        },
+        {
+          "id": "T031.3",
+          "title": "T031.3 Live update/disable/enable/rollback/remove/purge and packaged end-to-end proof"
+        }
+      ],
+      "acceptanceIds": [
+        "A031-01",
+        "A031-02",
+        "A031-03"
+      ]
+    },
+    {
+      "id": "P032",
+      "title": "PCMS dashboard shell v2 as UI client",
+      "status": "ACCEPTED",
+      "dependsOn": [
+        "P028"
+      ],
+      "mergeWave": 13,
+      "ownership": {
+        "writePaths": [
+          "extension/pcms/app/**",
+          "tests/pcms/p032/**",
+          "docs/evidence/P032/**",
+          "extension/pcms/integration/ui-client-contract.js",
+          "extension/pcms/background/ui-dispatcher.js",
+          "package.json",
+          ".github/workflows/firefox.yml",
+          "tools/firefox/packaged-harness.mjs"
+        ],
+        "contractReads": [
+          "pcms.ui-client/v1"
+        ],
+        "contractWrites": [
+          "pcms.ui-client/v1"
+        ],
+        "resources": [
+          {
+            "key": "ci-workflows",
+            "mode": "exclusive"
+          }
+        ],
+        "migrationSlots": []
+      },
+      "tasks": [
+        {
+          "id": "T032.1",
+          "title": "T032.1 Shell, tokens, primitives, router v2 with legacy routes"
+        },
+        {
+          "id": "T032.2",
+          "title": "T032.2 Core status, durable receipts and Attention v2 over durable HumanTasks"
+        },
+        {
+          "id": "T032.3",
+          "title": "T032.3 Diagnostics page and multi-tab behaviour"
+        }
+      ],
+      "acceptanceIds": [
+        "A032-01",
+        "A032-02",
+        "A032-03"
+      ]
+    },
+    {
+      "id": "P033",
+      "title": "Module UI contribution contract v1 for built-in and runtime modules",
+      "status": "ACCEPTED",
+      "dependsOn": [
+        "P031",
+        "P032"
+      ],
+      "mergeWave": 15,
+      "ownership": {
+        "writePaths": [
+          "extension/pcms/app/**",
+          "extension/pcms/integration/**",
+          "extension/pcms/modules/**",
+          "extension/pcms/sandbox/module-ui.html",
+          "extension/pcms/sandbox/module-ui.js",
+          "extension/pcms/sandbox/module-ui.css",
+          "extension/pcms/background/core-factory.js",
+          "pcms-modules/p018/**",
+          "tests/pcms/p033/**",
+          "tests/pcms/p030/manifest.test.mjs",
+          "docs/evidence/P033/**",
+          "package.json",
+          ".github/workflows/firefox.yml"
+        ],
+        "contractReads": [
+          "pcms.module-capabilities/v1",
+          "pcms.ui-client/v1"
+        ],
+        "contractWrites": [
+          "pcms.ui-contribution/v1",
+          "pcms.module-manifest/v2",
+          "pcms.ui-client/v1"
+        ],
+        "resources": [
+          {
+            "key": "ci-workflows",
+            "mode": "exclusive"
+          }
+        ],
+        "migrationSlots": []
+      },
+      "tasks": [
+        {
+          "id": "T033.1",
+          "title": "T033.1 Contribution validator and Core merge points (nav, overview, search, conditions, settings, activity)"
+        },
+        {
+          "id": "T033.2",
+          "title": "T033.2 Runtime-module contributions via core.ui.publish and the sandboxed module page surface"
+        },
+        {
+          "id": "T033.3",
+          "title": "T033.3 Statistics pilot and fixture runtime-module UI proof, including lifecycle presentation states"
+        }
+      ],
+      "acceptanceIds": [
+        "A033-01",
+        "A033-02",
+        "A033-03"
+      ]
+    },
+    {
+      "id": "P034",
+      "title": "Accounts UX with Persona/account pickers",
+      "status": "ACCEPTED",
+      "dependsOn": [
+        "P032"
+      ],
+      "mergeWave": 14,
+      "ownership": {
+        "writePaths": [
+          "extension/pcms/app/views/accounts/**",
+          "extension/pcms/app/ui/picker/**",
+          "pcms-modules/p014/**",
+          "tests/pcms/p034/**",
+          "docs/evidence/P034/**",
+          "extension/pcms/app/app.js",
+          "extension/pcms/app/index.html",
+          "extension/pcms/app/app.css",
+          "extension/pcms/integration/composition.js",
+          "package.json",
+          ".github/workflows/firefox.yml"
+        ],
+        "contractReads": [],
+        "contractWrites": [],
+        "resources": [
+          {
+            "key": "ci-workflows",
+            "mode": "exclusive"
+          }
+        ],
+        "migrationSlots": []
+      },
+      "tasks": [
+        {
+          "id": "T034.1",
+          "title": "T034.1 Accounts table and detail"
+        },
+        {
+          "id": "T034.2",
+          "title": "T034.2 Add-account dialog with generated IDs and shared EntityPicker"
+        },
+        {
+          "id": "T034.3",
+          "title": "T034.3 Guarded rebind and visible-row route/session state"
+        }
+      ],
+      "acceptanceIds": [
+        "A034-01",
+        "A034-02",
+        "A034-03"
+      ]
+    },
+    {
+      "id": "P035",
+      "title": "Toolbar popup PCMS status block",
+      "status": "ACCEPTED",
+      "dependsOn": [
+        "P028",
+        "P032"
+      ],
+      "mergeWave": 14,
+      "ownership": {
+        "writePaths": [
+          "extension/popup/popup.html",
+          "extension/popup/popup.css",
+          "extension/popup/popup.js",
+          "docs/upstream/source/extension/popup/popup.html",
+          "docs/upstream/source/extension/popup/popup.css",
+          "docs/upstream/source/extension/popup/popup.js",
+          "docs/upstream/import-manifest.json",
+          "tests/upstream/import-integrity.test.mjs",
+          "tests/pcms/p035/**",
+          "docs/evidence/P035/**"
+        ],
+        "contractReads": [],
+        "contractWrites": [],
+        "resources": [],
+        "migrationSlots": []
+      },
+      "tasks": [
+        {
+          "id": "T035.1",
+          "title": "T035.1 Read the non-secret storage.session status summary"
+        },
+        {
+          "id": "T035.2",
+          "title": "T035.2 PCMS line and account-for-active-Persona deep link"
+        },
+        {
+          "id": "T035.3",
+          "title": "T035.3 ESR sizing regression extension"
+        }
+      ],
+      "acceptanceIds": [
+        "A035-01",
+        "A035-02",
+        "A035-03"
+      ]
+    },
+    {
+      "id": "P036",
+      "title": "Deployer v2 domain, Perchance contract v2 and Generators views",
+      "status": "ACCEPTED",
+      "dependsOn": [
+        "P033",
+        "P034"
+      ],
+      "mergeWave": 16,
+      "ownership": {
+        "writePaths": [
+          "pcms-modules/p015/**",
+          "extension/pcms/providers/perchance/**",
+          "extension/pcms/integration/composition.js",
+          "extension/pcms/integration/explorer-deployer.js",
+          "extension/pcms/integration/live-mutations.js",
+          "extension/pcms/integration/provider-handoff.js",
+          "extension/pcms/integration/generator-index.js",
+          "extension/pcms/app/views/generators/**",
+          "extension/pcms/app/router-v2.js",
+          "extension/pcms/app/live-controls.js",
+          "tests/pcms/p015/deployer.test.mjs",
+          "tests/pcms/p036/**",
+          "docs/evidence/P036/**",
+          "extension/pcms/app/app.js",
+          "extension/pcms/integration/ui-client-contract.js",
+          "package.json",
+          ".github/workflows/firefox.yml",
+          "tests/pcms/p041/packaged.mjs"
+        ],
+        "contractReads": [
+          "pcms.ui-client/v1",
+          "pcms.ui-contribution/v1"
+        ],
+        "contractWrites": [
+          "pcms.perchance.driver/v2",
+          "pcms.deployer.state/v2",
+          "pcms.generator-index/v1",
+          "pcms.ui-client/v1"
+        ],
+        "resources": [
+          {
+            "key": "ci-workflows",
+            "mode": "exclusive"
+          }
+        ],
+        "migrationSlots": [
+          "MIG-P036-deployer-state-v2"
+        ]
+      },
+      "tasks": [
+        {
+          "id": "T036.1",
+          "title": "T036.1 Deployer state v2 migration and status derivation"
+        },
+        {
+          "id": "T036.2",
+          "title": "T036.2 Perchance driver v2 (code/HTML/thumbnail/listing) with GeneratorListing adapter mapping and emulator"
+        },
+        {
+          "id": "T036.3",
+          "title": "T036.3 Generator index, Generators list/detail and assisted manual deploy"
+        }
+      ],
+      "acceptanceIds": [
+        "A036-01",
+        "A036-02",
+        "A036-03"
+      ]
+    },
+    {
+      "id": "P037",
+      "title": "Generator repository provider, manual scan and assisted repository deployments",
+      "status": "ACCEPTED",
+      "dependsOn": [
+        "P036"
+      ],
+      "mergeWave": 17,
+      "ownership": {
+        "writePaths": [
+          "extension/pcms/providers/repository/**",
+          "pcms-modules/p015/**",
+          "extension/pcms/integration/**",
+          "extension/pcms/app/views/settings/connections/**",
+          "tests/pcms/p037/**",
+          "docs/evidence/P037/**",
+          "package.json",
+          ".github/workflows/firefox.yml",
+          "extension/pcms/background/feature-factories.js"
+        ],
+        "contractReads": [],
+        "contractWrites": [
+          "pcms.repository-provider/v1",
+          "pcms.generator-repository/v1"
+        ],
+        "resources": [
+          {
+            "key": "ci-workflows",
+            "mode": "exclusive"
+          }
+        ],
+        "migrationSlots": []
+      },
+      "tasks": [
+        {
+          "id": "T037.1",
+          "title": "T037.1 Repository provider boundary, GitHub implementation and fixture provider"
+        },
+        {
+          "id": "T037.2",
+          "title": "T037.2 Repository format validation, payload identity, release ledger and snapshot"
+        },
+        {
+          "id": "T037.3",
+          "title": "T037.3 Snapshot application to Deployer, account-folder linking, adoption and Deployer page"
+        }
+      ],
+      "acceptanceIds": [
+        "A037-01",
+        "A037-02",
+        "A037-03"
+      ]
+    },
+    {
+      "id": "P038",
+      "title": "Scheduled background repository synchronization",
+      "status": "ACCEPTED",
+      "dependsOn": [
+        "P037",
+        "P029"
+      ],
+      "mergeWave": 18,
+      "ownership": {
+        "writePaths": [
+          "pcms-modules/p015/**",
+          "tests/pcms/p038/**",
+          "docs/evidence/P038/**",
+          "extension/pcms/background/core-factory.js",
+          "package.json",
+          ".github/workflows/firefox.yml"
+        ],
+        "contractReads": [
+          "pcms.timers.ensure/v1"
+        ],
+        "contractWrites": [],
+        "resources": [
+          {
+            "key": "ci-workflows",
+            "mode": "exclusive"
+          }
+        ],
+        "migrationSlots": []
+      },
+      "tasks": [
+        {
+          "id": "T038.1",
+          "title": "T038.1 Deployer repository-sync service on declared schedules"
+        },
+        {
+          "id": "T038.2",
+          "title": "T038.2 Cadence, backoff, rate-limit and offline handling"
+        },
+        {
+          "id": "T038.3",
+          "title": "T038.3 Interrupted-scan recovery and packaged continuity proof"
+        }
+      ],
+      "acceptanceIds": [
+        "A038-01",
+        "A038-02",
+        "A038-03"
+      ]
+    },
+    {
+      "id": "P039",
+      "title": "Perchance observation, verification and drift (capability-gated)",
+      "status": "ACCEPTED",
+      "dependsOn": [
+        "P038"
+      ],
+      "mergeWave": 19,
+      "ownership": {
+        "writePaths": [
+          "extension/pcms/providers/perchance/**",
+          "pcms-modules/p015/**",
+          "extension/pcms/integration/**",
+          "extension/pcms/app/views/generators/**",
+          "tests/pcms/p039/**",
+          "docs/evidence/P039/**",
+          "extension/pcms/background/core-factory.js",
+          "package.json",
+          ".github/workflows/firefox.yml"
+        ],
+        "contractReads": [],
+        "contractWrites": [
+          "pcms.perchance.driver/v2",
+          "pcms.ui-client/v1"
+        ],
+        "resources": [
+          {
+            "key": "ci-workflows",
+            "mode": "exclusive"
+          }
+        ],
+        "migrationSlots": []
+      },
+      "tasks": [
+        {
+          "id": "T039.1",
+          "title": "T039.1 generator.observe contract and PersonaMonkey execution-artifact read driver (fixture page)"
+        },
+        {
+          "id": "T039.2",
+          "title": "T039.2 Post-apply baseline, bounded background verification sweep"
+        },
+        {
+          "id": "T039.3",
+          "title": "T039.3 Drift detection, comparison and operator choices"
+        }
+      ],
+      "acceptanceIds": [
+        "A039-01",
+        "A039-02",
+        "A039-03"
+      ]
+    },
+    {
+      "id": "P040",
+      "title": "Refresher, Explorer and Provisioning background services and UI migration",
+      "status": "ACCEPTED",
+      "dependsOn": [
+        "P033",
+        "P036",
+        "P029"
+      ],
+      "mergeWave": 17,
+      "ownership": {
+        "writePaths": [
+          "pcms-modules/p016/**",
+          "pcms-modules/p017/**",
+          "pcms-modules/p019/**",
+          "extension/pcms/integration/**",
+          "extension/pcms/app/**",
+          "tests/pcms/p040/**",
+          "docs/evidence/P040/**"
+        ],
+        "contractReads": [],
+        "contractWrites": [],
+        "resources": [],
+        "migrationSlots": [
+          "MIG-P040-refresher-state-v2"
+        ]
+      },
+      "tasks": [
+        {
+          "id": "T040.1",
+          "title": "T040.1 Refresher background schedules and content from Deployer confirmed release"
+        },
+        {
+          "id": "T040.2",
+          "title": "T040.2 Explorer and Provisioning contribution UIs with pickers and SecretRef creation"
+        },
+        {
+          "id": "T040.3",
+          "title": "T040.3 Removal of P026 legacy operator forms with superseding assertions"
+        }
+      ],
+      "acceptanceIds": [
+        "A040-01",
+        "A040-02",
+        "A040-03"
+      ]
+    },
+    {
+      "id": "P041",
+      "title": "Backup/restore and module management UX",
+      "status": "ACCEPTED",
+      "dependsOn": [
+        "P033",
+        "P031"
+      ],
+      "mergeWave": 16,
+      "ownership": {
+        "writePaths": [
+          "extension/pcms/app/views/settings/**",
+          "extension/pcms/recovery/**",
+          "extension/pcms/app/app.js",
+          "extension/pcms/app/index.html",
+          "extension/pcms/app/app.css",
+          "extension/pcms/integration/ui-client-contract.js",
+          "tests/pcms/p020/backup-restore.test.mjs",
+          "tests/pcms/p023/integration.test.mjs",
+          "tests/pcms/p041/**",
+          "docs/evidence/P041/**",
+          "package.json",
+          ".github/workflows/firefox.yml"
+        ],
+        "contractReads": [
+          "pcms.ui-client/v1",
+          "pcms.ui-contribution/v1",
+          "pcms.module-capabilities/v1"
+        ],
+        "contractWrites": [
+          "pcms.ui-client/v1"
+        ],
+        "resources": [
+          {
+            "key": "ci-workflows",
+            "mode": "exclusive"
+          }
+        ],
+        "migrationSlots": []
+      },
+      "tasks": [
+        {
+          "id": "T041.1",
+          "title": "T041.1 File-based backup and previewed restore with typed confirmation"
+        },
+        {
+          "id": "T041.2",
+          "title": "T041.2 Recovery checklist with per-item reconciliation"
+        },
+        {
+          "id": "T041.3",
+          "title": "T041.3 Modules page driving live install/review/update/rollback/remove/purge"
+        }
+      ],
+      "acceptanceIds": [
+        "A041-01",
+        "A041-02",
+        "A041-03"
+      ]
+    },
+    {
+      "id": "P042",
+      "title": "Unattended Perchance automation via PersonaMonkey execution artifacts (gated)",
+      "status": "ACCEPTED",
+      "dependsOn": [
+        "P039"
+      ],
+      "mergeWave": 20,
+      "ownership": {
+        "writePaths": [
+          "extension/pcms/providers/perchance/**",
+          "extension/pcms/integration/**",
+          "pcms-modules/p015/**",
+          "tests/pcms/p042/**",
+          "docs/evidence/P042/**",
+          "extension/pcms/background/core-factory.js",
+          "tests/pcms/p015/**",
+          "package.json",
+          ".github/workflows/firefox.yml"
+        ],
+        "contractReads": [],
+        "contractWrites": [
+          "pcms.perchance.driver/v2"
+        ],
+        "resources": [
+          {
+            "key": "ci-workflows",
+            "mode": "exclusive"
+          }
+        ],
+        "migrationSlots": []
+      },
+      "tasks": [
+        {
+          "id": "T042.1",
+          "title": "T042.1 Unattended generator.update v2 (and optional create) as PersonaMonkey execution artifacts under control lease"
+        },
+        {
+          "id": "T042.2",
+          "title": "T042.2 Automatic-mode gates, eligibility and bounded serial background pass"
+        },
+        {
+          "id": "T042.3",
+          "title": "T042.3 Emulator/FDE fixture end-to-end deploy-verify proof"
+        }
+      ],
+      "acceptanceIds": [
+        "A042-01",
+        "A042-02",
+        "A042-03"
+      ]
+    },
+    {
+      "id": "P043",
+      "title": "Live acceptance 3 \u2014 background continuity, runtime modules, repository/provider compatibility",
+      "status": "BLOCKED",
+      "dependsOn": [
+        "P035",
+        "P038",
+        "P040",
+        "P041",
+        "P042"
+      ],
+      "mergeWave": 21,
+      "ownership": {
+        "writePaths": [
+          "extension/pcms/**",
+          "pcms-modules/**",
+          "tests/**",
+          "docs/evidence/**"
+        ],
+        "contractReads": [],
+        "contractWrites": [],
+        "resources": [],
+        "migrationSlots": []
+      },
+      "tasks": [
+        {
+          "id": "T043.1",
+          "title": "T043.1 Operator-installed background continuity"
+        },
+        {
+          "id": "T043.2",
+          "title": "T043.2 Live runtime-module lifecycle without reload"
+        },
+        {
+          "id": "T043.3",
+          "title": "T043.3 Real repository and Perchance read/listing compatibility capture"
+        }
+      ],
+      "acceptanceIds": [
+        "A043-01",
+        "A043-02",
+        "A043-03"
+      ]
+    },
+    {
+      "id": "P044",
+      "title": "Live acceptance 4 \u2014 representative mutations, drift, unattended operation, recovery, final human acceptance",
+      "status": "BLOCKED",
+      "dependsOn": [
+        "P043"
+      ],
+      "mergeWave": 22,
+      "ownership": {
+        "writePaths": [
+          "extension/pcms/**",
+          "pcms-modules/**",
+          "tests/**",
+          "docs/evidence/**"
+        ],
+        "contractReads": [],
+        "contractWrites": [],
+        "resources": [],
+        "migrationSlots": []
+      },
+      "tasks": [
+        {
+          "id": "T044.1",
+          "title": "T044.1 Assisted and unattended deployments verified on real Perchance"
+        },
+        {
+          "id": "T044.2",
+          "title": "T044.2 Induced drift, uncertain reconciliation, restore/hold/release"
+        },
+        {
+          "id": "T044.3",
+          "title": "T044.3 Final human acceptance"
+        }
+      ],
+      "acceptanceIds": [
+        "A044-01",
+        "A044-02",
+        "A044-03"
+      ]
+    }
+  ]
+}

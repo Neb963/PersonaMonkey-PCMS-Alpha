@@ -1,0 +1,59 @@
+name: alpha-governance
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  merge_group:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: alpha-governance-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name != 'merge_group' }}
+
+jobs:
+  authority:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      ALPHA_EVENT: ${{ github.event_name }}
+      ALPHA_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+      ALPHA_HEAD_BRANCH: ${{ github.event.pull_request.head.ref }}
+      GITHUB_TOKEN: ${{ github.token }}
+      ALPHA_REPORT: .agent-runs/alpha-ci.json
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Fetch current main and run its trusted claim validator
+        shell: bash
+        run: |
+          git fetch origin main
+          if git cat-file -e origin/main:tools/alpha/ci.mjs 2>/dev/null; then
+            authority_dir="$RUNNER_TEMP/alpha-main-authority"
+            mkdir -p "$authority_dir"
+            git archive origin/main tools/alpha | tar -x -C "$authority_dir"
+            node "$authority_dir/tools/alpha/ci.mjs" --root "$GITHUB_WORKSPACE"
+          else
+            node tools/alpha/ci.mjs
+          fi
+      - name: Alpha contracts, epoch and overlap regressions plus frozen donor baseline
+        run: npm run verify
+      - name: Validate and package the actual derivative
+        run: node scripts/build-extension.mjs
+      - name: Confirm main has not moved after the full acceptance suite
+        shell: bash
+        run: |
+          node tools/alpha/check-main.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: alpha-governance-evidence
+          path: .agent-runs/alpha-ci.json
+          if-no-files-found: error

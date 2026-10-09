@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "claimId": "CLM-P031-001",
+  "phaseId": "P031",
+  "taskId": "T031.1",
+  "claimEpoch": 1,
+  "state": "ACCEPTED",
+  "owner": {
+    "agentId": "claude-thread-1xtuan"
+  },
+  "baseMainSha": "0d81b897ca83835d06304be7848f8865f7b92328",
+  "branch": "agent/claude-thread-1xtuan/p031-t031-1",
+  "writePaths": [
+    "extension/pcms/modules/**",
+    "extension/pcms/runtime/**",
+    "extension/pcms/background/modules/**",
+    "extension/pcms/background/core-factory.js",
+    "extension/pcms/integration/live-core.js",
+    "extension/pcms/integration/ui-client-contract.js",
+    "tests/fixtures/modules/**",
+    "tests/pcms/p031/**",
+    "docs/evidence/P031/**",
+    "package.json",
+    ".github/workflows/firefox.yml",
+    "docs/implementation/v1/claims/CLM-P031-001.json"
+  ],
+  "contractReads": [
+    {
+      "id": "pcms.timers.ensure/v1",
+      "sha": "0d81b897ca83835d06304be7848f8865f7b92328"
+    },
+    {
+      "id": "pcms.ui-client/v1",
+      "sha": "0d81b897ca83835d06304be7848f8865f7b92328"
+    }
+  ],
+  "contractWrites": [
+    "pcms.module-capabilities/v1",
+    "pcms.ui-client/v1"
+  ],
+  "resources": [
+    {
+      "key": "ci-workflows",
+      "mode": "exclusive"
+    }
+  ],
+  "migrationSlots": [],
+  "acceptanceIds": [
+    "A031-01",
+    "A031-02",
+    "A031-03"
+  ],
+  "lastCheckpointSha": "370131a9c337cd9f5272f6f8e4c6b732ed1992ff"
+}

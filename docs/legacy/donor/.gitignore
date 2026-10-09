@@ -1,0 +1,16 @@
+node_modules/
+dist/
+coverage/
+.tmp/
+.cache/
+*.log
+*.xpi
+*.zip
+
+# Operator-supplied private/disposable inputs are never committed.
+operator-inputs/*
+!operator-inputs/README.md
+
+# Agent-local worktree/runtime state.
+.agent-runs/
+.worktrees/

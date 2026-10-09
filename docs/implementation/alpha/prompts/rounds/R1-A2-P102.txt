@@ -1,0 +1,29 @@
+Repository: https://github.com/Neb963/PersonaMonkey-PCMS-Alpha
+Agent slot: 2/5 | Round: R1 | Assigned phase: P102
+
+Implement **P102 ONLY — Generator/domain persistence and durability**.
+Other agents may concurrently implement other assigned phases. I authorize auto-merge and phase acceptance ONLY when claim fencing, dependencies, independent CI, current-main merge validation and repository gates allow it. Do not start a successor phase. No permanent orchestrator.
+
+MANDATORY PREFLIGHT
+1. Fetch current GitHub main and read AGENTS.md, docs/specs/alpha/SPEC.md, docs/implementation/alpha/{plan.json,policies.json,CONTRACTS.md,GATES.md,ACCEPTANCE.md}, current generated STATUS, relevant PersonaMonkey donor code/docs, recent PRs/claims/CI.
+2. Verify G0 completed and this phase is READY with dependencies ACCEPTED. Confirm contract hashes and absence of conflicting ACTIVE claims. Acquire exactly one valid claim for P102 with current base SHA and claimEpoch. If invalid or blocked, STOP and report; do not choose another phase.
+3. Follow the frozen Alpha contracts and typed PersonaMonkey broker boundary; never bypass ownership, duplicate browser automation, invent Perchance capabilities, print secrets or claim live acceptance.
+
+PHASE OUTCOME
+Implement frozen Account/Generator/Release/Operation record normalization and isolated Alpha storage with migration tests, CAS and atomic journal semantics. No provider mutations or UI.
+
+DEPENDENCIES
+G0
+
+AUTHORIZED PRODUCT/TEST PATHS (plus own claim/evidence records only)
+- extension/alpha/domain/**
+- extension/alpha/storage/**
+- tests/alpha/domain/**
+
+REQUIRED EVIDENCE (AP102-01, AP102-02, AP102-03)
+1. schema/CAS/revision collision
+2. storage reopen and corruption
+3. no credentials in normal records
+
+DELIVERY CONTRACT
+Implement only the claimed scope, including failure paths and smallest reproducible regressions; prefer existing services. Run applicable tests and record exact commands/results. Inspect diff for leaks and unexpected paths. Commit/push coherent changes, open/update PR, wait for independent CI, revalidate against latest main and safely auto-merge only if policy permits. Preserve COMMITTED→CI_VERIFIED→MERGED→GATE_VERIFIED→ACCEPTED distinctions; never declare GATE_VERIFIED yourself. Publish phase evidence and claim status justified by results. STOP and report phase, changes, tests/CI, commits/PR, unresolved issues. Do not claim or work on the next phase.

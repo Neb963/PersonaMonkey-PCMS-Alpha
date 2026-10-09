@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PersonaMonkey PCMS</title>
+  <link rel="stylesheet" href="app.css">
+  <link rel="stylesheet" href="views/accounts/accounts.css">
+  <link rel="stylesheet" href="views/settings/settings.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <span class="eyebrow">PersonaMonkey PCMS</span>
+        <h1>Perchance Central Management System</h1>
+      </div>
+      <a class="header-search-link" href="#/search">Search PCMS</a>
+      <div class="topbar-tools">
+        <div id="coreStatusPill" class="core-pill" role="status" aria-live="polite">Starting</div>
+        <p id="notificationStatus" class="notification-status" role="status" aria-live="polite">Loading PCMS…</p>
+        <a class="secondary-link" href="../../options/options.html">PersonaMonkey settings</a>
+      </div>
+    </header>
+
+    <nav id="primaryNav" class="primary-nav" aria-label="PCMS"></nav>
+    <aside id="liveActionStatus" class="action-tray" aria-label="PCMS actions" aria-live="polite">
+      <div class="action-tray-head"><strong>Actions</strong><span id="actionTrayCount" class="badge"></span></div>
+      <div id="actionTrayDurableList" class="action-tray-list"></div>
+      <div id="actionTrayReceiptList" class="action-tray-list"></div>
+      <div id="actionTrayLocalList" class="action-tray-list"></div>
+      <p id="actionTrayEmpty" class="action-tray-empty">No actions need attention.</p>
+    </aside>
+
+    <main class="content">
+      <section id="viewOverview" aria-labelledby="overviewHeading">
+        <div class="section-heading">
+          <span class="eyebrow">Overview</span>
+          <h2 id="overviewHeading">PCMS control plane</h2>
+          <p>This is the PCMS product surface. PersonaMonkey remains the execution and routing authority underneath it.</p>
+        </div>
+        <div class="metric-grid">
+          <article><strong id="overviewAttentionCount">0</strong><span>Open attention</span></article>
+          <article><strong id="overviewAccountCount">0</strong><span>Accounts</span></article>
+          <article><strong id="overviewModuleCount">5</strong><span>Feature modules</span></article>
+        </div>
+        <div id="overviewModuleCards" class="module-cards" aria-label="Module overview"></div>
+        <p class="diagnostics-link"><a href="#/settings/diagnostics">Open Settings → Diagnostics for Core and Broker details.</a></p>
+      </section>
+
+      <section id="viewModules" hidden aria-labelledby="modulesHeading">
+        <div class="section-heading">
+          <span class="eyebrow">Modules</span>
+          <h2 id="modulesHeading">PCMS modules</h2>
+          <p>Each module has its own page in the sidebar. Provider effects remain fenced by RemoteOperation and explicit operator confirmation.</p>
+        </div>
+
+        <section class="core-status" aria-labelledby="settingsModulesHeading">
+          <h3 id="settingsModulesHeading">Settings → Modules</h3>
+          <div id="settingsModulesManager" class="settings-panel" aria-label="Module management"></div>
+        </section>
+
+        <section class="core-status" aria-labelledby="installedModulesHeading">
+          <h3 id="installedModulesHeading">Installed modules</h3>
+          <div id="contributedModuleList" class="module-items"></div>
+        </section>
+      </section>
+
+      <section id="viewAttention" hidden aria-labelledby="attentionHeading">
+        <div class="section-heading">
+          <span class="eyebrow">Attention</span>
+          <h2 id="attentionHeading">Operator attention</h2>
+          <p>Open HumanTasks appear here in priority order.</p>
+        </div>
+        <div id="attentionList" class="item-list"></div>
+        <p id="attentionEmpty" class="empty-state">No open HumanTasks.</p>
+        <h3 id="attentionConditionsHeading" hidden>Module conditions</h3>
+        <div id="attentionConditions" class="item-list" aria-labelledby="attentionConditionsHeading"></div>
+        <section id="handoffDetail" class="handoff-detail" hidden aria-labelledby="handoffTitle">
+          <h3 id="handoffTitle">Waiting for your confirmation</h3>
+          <p id="handoffInstructions"></p>
+          <code id="handoffHash" class="operator-hash"></code>
+          <label id="handoffSourceLabel" hidden>Desired source
+            <textarea id="handoffSource" class="operator-source" rows="12" readonly></textarea>
+          </label>
+          <div class="operator-actions">
+            <button type="button" id="handoffCopy" hidden>Copy source</button>
+            <button type="button" id="handoffClose">Close</button>
+          </div>
+        </section>
+      </section>
+
+      <section id="viewAccounts" hidden aria-labelledby="accountsHeading">
+        <div class="section-heading">
+          <span class="eyebrow">Accounts</span>
+          <h2 id="accountsHeading">Accounts & Persona bindings</h2>
+          <p>Manage named accounts using managed Personas. Account keys are generated automatically; provider sessions are never assumed to be signed in.</p>
+        </div>
+        <div id="accountsV2" class="accounts-v2" aria-label="Accounts manager"></div>
+        <div id="accountFacets" class="module-facets" aria-label="Module information for this account"></div>
+        <div id="accountList" class="item-list" hidden></div>
+        <p id="accountsEmpty" class="empty-state" hidden>No accounts are available.</p>
+      </section>
+
+      <section id="viewSearch" hidden aria-labelledby="searchHeading">
+        <div class="section-heading">
+          <span class="eyebrow">Search</span>
+          <h2 id="searchHeading">Search PCMS</h2>
+          <p>Search covers bounded non-secret Account and open HumanTask projection fields.</p>
+        </div>
+        <form id="searchForm" class="search-form" role="search">
+          <label for="searchInput">Search</label>
+          <div class="search-row">
+            <input id="searchInput" type="search" maxlength="200" autocomplete="off" spellcheck="false">
+            <button type="submit">Search</button>
+          </div>
+        </form>
+        <div id="searchResults" class="item-list"></div>
+        <p id="searchEmpty" class="empty-state">No matching projections.</p>
+      </section>
+
+      <section id="viewSettingsBackup" hidden aria-labelledby="settingsBackupHeading">
+        <div class="section-heading">
+          <span class="eyebrow">Settings → Backup &amp; restore</span>
+          <h2 id="settingsBackupHeading">Backup &amp; restore</h2>
+          <p>Back up PCMS data to a file, or restore one after reviewing what it changes.</p>
+        </div>
+        <section class="core-status">
+          <div id="settingsBackup" class="settings-panel" aria-label="Backup and restore"></div>
+        </section>
+      </section>
+
+      <section id="viewDiagnostics" hidden aria-labelledby="diagnosticsHeading">
+        <div class="section-heading">
+          <span class="eyebrow">Settings → Diagnostics</span>
+          <h2 id="diagnosticsHeading">Diagnostics</h2>
+          <p>Read-only technical state for the background Core and Persona Broker.</p>
+        </div>
+        <section class="core-status">
+          <dl>
+            <div><dt>Core state</dt><dd id="diagnosticCoreState">STARTING</dd></div>
+            <div><dt>Last Core summary</dt><dd id="diagnosticCoreAsOf">—</dd></div>
+            <div><dt>UI revision signal</dt><dd id="diagnosticUiRevision">—</dd></div>
+            <div><dt>Namespace</dt><dd id="namespaceVersion">—</dd></div>
+            <div><dt>Persona Broker contract</dt><dd id="brokerVersion">—</dd></div>
+            <div><dt>Broker commands</dt><dd id="commandCount">—</dd></div>
+            <div><dt>Broker implementation</dt><dd id="brokerImplementation">—</dd></div>
+            <div><dt>Broker boot ID</dt><dd id="diagnosticBrokerBootId">—</dd></div>
+            <div><dt>Broker revision</dt><dd id="diagnosticBrokerRevision">—</dd></div>
+            <div><dt>Live Integration v1</dt><dd id="brokerLiveStatus">Connecting…</dd></div>
+            <div><dt>Core host</dt><dd id="coreHostStatus">Background · connecting…</dd></div>
+          </dl>
+        </section>
+      </section>
+
+      <section id="viewPlaceholder" hidden aria-labelledby="placeholderHeading">
+        <div class="section-heading">
+          <span class="eyebrow">PCMS v2</span>
+          <h2 id="placeholderHeading">PCMS</h2>
+          <p id="placeholderBody"></p>
+        </div>
+        <div id="activityList" class="item-list" hidden></div>
+      </section>
+
+      <section id="viewModulePage" class="module-page" hidden aria-live="polite"></section>
+    </main>
+
+    <dialog id="moduleInputDialog" class="confirm-dialog input-dialog" hidden aria-labelledby="moduleInputTitle" data-state="closed">
+      <form id="moduleInputForm" class="live-form" novalidate>
+        <h3 id="moduleInputTitle">Details</h3>
+        <div id="moduleInputFields" class="input-dialog-fields"></div>
+        <p id="moduleInputError" class="module-status" role="alert"></p>
+        <div class="operator-actions">
+          <button type="button" id="moduleInputCancel">Cancel</button>
+          <button type="submit" id="moduleInputSubmit">Continue</button>
+        </div>
+      </form>
+    </dialog>
+    <dialog id="moduleConfirmDialog" class="confirm-dialog" hidden aria-labelledby="moduleConfirmTitle" data-state="closed">
+      <h3 id="moduleConfirmTitle">Confirm</h3>
+      <p id="moduleConfirmModule" class="module-status"></p>
+      <ul id="moduleConfirmConsequences"></ul>
+      <div class="operator-actions">
+        <button type="button" id="moduleConfirmCancel">Cancel</button>
+        <button type="button" id="moduleConfirmAccept" class="danger">Confirm</button>
+      </div>
+    </dialog>
+
+    <footer>
+      <p>PCMS uses bounded services and Persona Broker Integration v1. It does not take raw browser, routing, native-RPC, or PersonaMonkey-internal authority.</p>
+    </footer>
+  </div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

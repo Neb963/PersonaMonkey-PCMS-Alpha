@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "claimId": "CLM-P026-001",
+  "phaseId": "P026",
+  "taskId": "T026.1",
+  "claimEpoch": 1,
+  "state": "ACCEPTED",
+  "owner": {
+    "agentId": "gpt-5-6-sol"
+  },
+  "baseMainSha": "a896a85cfc0705b90e03339daebac9ae5db137f8",
+  "branch": "agent/gpt-5-6-sol/p026-t026-1",
+  "writePaths": [
+    "extension/pcms/**",
+    "tests/pcms/**",
+    "docs/evidence/**",
+    "extension/popup/popup.css",
+    "tests/upstream/import-integrity.test.mjs",
+    "docs/upstream/import-manifest.json",
+    "docs/upstream/source/extension/popup/popup.css"
+  ],
+  "contractReads": [],
+  "contractWrites": [],
+  "resources": [],
+  "migrationSlots": [],
+  "acceptanceIds": [
+    "A026-01",
+    "A026-02",
+    "A026-03"
+  ],
+  "lastCheckpointSha": "ae032f3eb457d9d07a9092d5ff2611e87a97649b"
+}

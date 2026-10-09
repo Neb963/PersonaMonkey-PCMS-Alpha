@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>PersonaMonkey Route Manager</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <main>
+    <header class="head">
+      <div><span class="eyebrow">PersonaMonkey</span><strong>Current persona</strong></div>
+      <span id="status" class="badge" role="status" aria-live="polite" aria-atomic="true">…</span>
+    </header>
+    <div id="context" class="card context-card"></div>
+    <section class="route-section">
+      <label>Active route<select id="route" disabled></select></label>
+      <div id="directWarning" class="direct-warning hidden" role="group" aria-labelledby="directWarningTitle">
+        <strong id="directWarningTitle">Direct network bypasses protected routing.</strong>
+        <p>Traffic from this persona will use Firefox's normal network path without the configured VPN/proxy route.</p>
+        <div class="direct-warning-actions"><button id="confirmDirect" type="button" class="danger">Use Direct network</button><button id="cancelDirect" type="button">Cancel</button></div>
+      </div>
+      <div class="actions"><button id="test" class="primary" aria-describedby="actionHint" disabled>Verify route</button><button id="options">Open settings</button></div>
+      <p id="actionHint" class="action-hint"></p>
+    </section>
+    <div id="result" class="result" role="status" aria-live="polite" aria-atomic="true"></div>
+  </main>
+  <script type="module" src="popup.js"></script>
+</body>
+</html>

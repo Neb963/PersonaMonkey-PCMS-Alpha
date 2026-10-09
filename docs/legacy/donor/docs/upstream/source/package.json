@@ -1,0 +1,20 @@
+{
+  "name": "personamonkey-route-manager",
+  "version": "1.2.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "npm run test:repository && npm run test:build-reproducibility && npm run test:extension && npm run test:native",
+    "test:repository": "node scripts/test-repository.mjs",
+    "test:build-reproducibility": "node scripts/test-build-reproducibility.mjs",
+    "test:extension": "node scripts/test-extension.mjs",
+    "test:native": "python3 -m unittest discover -v -s tests -p 'test_*.py'",
+    "test:browser": "node scripts/test-popup-browser.mjs && node scripts/test-options-browser.mjs && node scripts/test-data-management-browser.mjs && node scripts/test-pcms-browser.mjs",
+    "validate": "node scripts/validate-extension.mjs",
+    "build": "node scripts/build-extension.mjs && node scripts/build-workflow-examples.mjs",
+    "release:check": "npm test && npm run test:browser && npm run validate && npm run build"
+  }
+}

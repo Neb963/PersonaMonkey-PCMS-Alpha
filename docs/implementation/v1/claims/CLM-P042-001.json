@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "claimId": "CLM-P042-001",
+  "phaseId": "P042",
+  "taskId": "T042.1",
+  "claimEpoch": 1,
+  "state": "ACCEPTED",
+  "owner": {
+    "agentId": "claude-hopeful-bell-kga3ze"
+  },
+  "baseMainSha": "fbbd5c6727035f010cd5a76b3103719f01c6cdce",
+  "branch": "agent/claude-hopeful-bell-kga3ze/p042-t042-1",
+  "writePaths": [
+    "extension/pcms/providers/perchance/**",
+    "extension/pcms/integration/**",
+    "pcms-modules/p015/**",
+    "tests/pcms/p042/**",
+    "docs/evidence/P042/**",
+    "extension/pcms/background/core-factory.js",
+    "tests/pcms/p015/**",
+    "package.json",
+    ".github/workflows/firefox.yml",
+    "docs/implementation/v1/claims/CLM-P042-001.json",
+    "docs/implementation/v1/plan.json",
+    "ROADMAP.md",
+    "docs/progress/STATUS.md"
+  ],
+  "contractReads": [],
+  "contractWrites": [
+    "pcms.perchance.driver/v2"
+  ],
+  "resources": [
+    {
+      "key": "ci-workflows",
+      "mode": "exclusive"
+    }
+  ],
+  "migrationSlots": [],
+  "acceptanceIds": [
+    "A042-01",
+    "A042-02",
+    "A042-03"
+  ],
+  "lastCheckpointSha": "51bac5b402b30ce7c2ee9f69f090d642481065e2"
+}

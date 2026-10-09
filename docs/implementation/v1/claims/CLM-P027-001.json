@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "claimId": "CLM-P027-001",
+  "phaseId": "P027",
+  "taskId": "T027.1",
+  "claimEpoch": 1,
+  "state": "ACCEPTED",
+  "owner": {
+    "agentId": "codex"
+  },
+  "baseMainSha": "f95873fc9fff4c3f5a29ed3ec02fe6ac857769a4",
+  "branch": "agent/codex/p027-t027-1",
+  "writePaths": [
+    "docs/implementation/v1/browser-pin.json",
+    "tools/firefox/**",
+    "tests/firefox/**",
+    ".github/workflows/firefox.yml",
+    "package.json",
+    "tests/pcms/p027/**",
+    "docs/evidence/P027/**",
+    "docs/implementation/v1/claims/CLM-P027-001.json",
+    "docs/implementation/v1/plan.json",
+    "ROADMAP.md",
+    "docs/progress/STATUS.md"
+  ],
+  "contractReads": [],
+  "contractWrites": [],
+  "resources": [
+    {
+      "key": "firefox-browser-pin",
+      "mode": "exclusive"
+    },
+    {
+      "key": "ci-workflows",
+      "mode": "exclusive"
+    }
+  ],
+  "migrationSlots": [],
+  "acceptanceIds": [
+    "A027-01",
+    "A027-02",
+    "A027-03"
+  ],
+  "lastCheckpointSha": "a9b2fb9f00aa06aea0541261db47a494945faf39"
+}

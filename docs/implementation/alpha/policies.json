@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "sourceOfTruth": "GitHub Alpha main",
+  "promptPack": "offline convenience only; plan.json on current main is normative",
+  "claims": {
+    "serialized": true,
+    "perAgentActiveMax": 1,
+    "epochFencing": true,
+    "writePathOverlap": "FORBIDDEN",
+    "contractReadStaleness": "REJECT",
+    "branch": "agent/<agent-id>/<phase-id>",
+    "registry": "docs/implementation/alpha/claims.json",
+    "context": "docs/evidence/alpha/<phase-id>/context.json",
+    "evidencePaths": "docs/evidence/alpha/<phase-id>/**",
+    "acquisition": "Separate control-only PR from exact current main; claim merged before product work"
+  },
+  "verification": {
+    "mergeQueuePreferred": true,
+    "serializedMergeAlternativeRequired": true,
+    "independentCIRequired": true,
+    "combinedRoundGateRequired": true,
+    "noUntestedPASS": true,
+    "noFalseLiveClaims": true,
+    "pinnedBrowser": "Firefox Developer Edition exact pin, CI-first",
+    "noFirefoxDevToolsMCP": true,
+    "requiredWorkflows": [
+      "alpha-governance",
+      "firefox-developer-edition"
+    ],
+    "trustedMainValidator": true,
+    "currentMainMerge": "Exact main and head snapshots, successful independent CI, serialized non-forced ref update with expected main SHA"
+  },
+  "integration": {
+    "merger": "agent may auto-merge verified PR under policy",
+    "acceptance": "only GATE-Rn on merged main and accepted ids",
+    "checker": "ephemeral, manually prompted; not permanent orchestrator"
+  },
+  "product": {
+    "personaAuthority": "PersonaMonkey typed broker",
+    "moduleRuntime": "NONE",
+    "oneBackgroundCore": true,
+    "externalMutation": "DURABLE_RECONCILE_FIRST",
+    "unknownProvider": "FAIL_CLOSED"
+  },
+  "backup": {
+    "oneFile": true,
+    "encrypted": false,
+    "location": "Downloads/PersonaMonkey-PCMS-Alpha-backups/",
+    "retention": "known Firefox download IDs, warn if unmanaged",
+    "sensitiveData": "allowed only in local user-requested archive; never repo/log/CI"
+  },
+  "security": {
+    "noSecretInNormalState": true,
+    "noSecretInCI": true,
+    "noAutoCaptchaBypass": true,
+    "noForcePush": true
+  }
+}

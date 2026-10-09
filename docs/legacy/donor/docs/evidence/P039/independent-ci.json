@@ -1,0 +1,424 @@
+{
+  "schemaVersion": 1,
+  "phaseId": "P039",
+  "claimId": "CLM-P039-001",
+  "claimEpoch": 1,
+  "state": "ACCEPTED",
+  "recordedAt": "2026-10-08T16:53:26.955Z",
+  "repository": "Neb963/persona-monkey-pcms",
+  "acceptanceIds": [
+    "A039-01",
+    "A039-02",
+    "A039-03"
+  ],
+  "productPR": {
+    "number": 66,
+    "url": "https://github.com/Neb963/persona-monkey-pcms/pull/66",
+    "baseSha": "6a9f9f43ddf6289ec1e902b4317b4f350911d72b",
+    "headSha": "60dda591709c963aea2b38623de586c8e66eaff5",
+    "integrationCandidateSha": "cee02bb32090b0b7cb46b0eaf16eb1b98158f9ae",
+    "mergeSha": "4d2d4a2a40bfea8cd6b11874c3a35c00102ba455",
+    "workflowRuns": [
+      {
+        "id": 37809086388,
+        "name": "verify",
+        "event": "pull_request",
+        "status": "completed",
+        "conclusion": "success",
+        "headSha": "60dda591709c963aea2b38623de586c8e66eaff5",
+        "url": "https://github.com/Neb963/persona-monkey-pcms/actions/runs/37809086388"
+      },
+      {
+        "id": 37809086414,
+        "name": "firefox-developer-edition",
+        "event": "pull_request",
+        "status": "completed",
+        "conclusion": "success",
+        "headSha": "60dda591709c963aea2b38623de586c8e66eaff5",
+        "url": "https://github.com/Neb963/persona-monkey-pcms/actions/runs/37809086414"
+      }
+    ],
+    "firefoxJobs": [
+      {
+        "id": 113420957526,
+        "name": "p032-packaged",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 113420957719,
+        "name": "p039-packaged",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 113420957736,
+        "name": "pinned-firefox",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 113420957803,
+        "name": "p038-packaged",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 113420957822,
+        "name": "p033-packaged",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 113420957868,
+        "name": "p031-packaged",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 113420957897,
+        "name": "p041-packaged",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 113420957930,
+        "name": "p036-packaged",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 113420957939,
+        "name": "p034-packaged",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 113420958216,
+        "name": "p040-packaged",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ],
+    "packagedReport": "packaged-pr-ci.json",
+    "artifact": {
+      "id": 11563738401,
+      "name": "firefox-packaged-p039",
+      "size_in_bytes": 1147,
+      "url": "https://api.github.com/repos/Neb963/persona-monkey-pcms/actions/artifacts/11563738401",
+      "archive_download_url": "https://api.github.com/repos/Neb963/persona-monkey-pcms/actions/artifacts/11563738401/zip",
+      "expired": false,
+      "created_at": "2026-10-08T16:30:07Z",
+      "expires_at": "2026-10-15T16:30:06Z",
+      "updated_at": "2026-10-08T16:30:07Z",
+      "digest": "sha256:b27da2a6b608e52f801e996d19e3689464bce054f6c451063d08c979d63ac3a5",
+      "workflow_run": {
+        "id": 37809086414,
+        "repository_id": 1404729748,
+        "head_repository_id": 1404729748,
+        "head_branch": "agent/gpt-6-p039-20261008/p039-t039-1",
+        "head_sha": "60dda591709c963aea2b38623de586c8e66eaff5"
+      }
+    }
+  },
+  "timingFixPR": {
+    "number": 67,
+    "url": "https://github.com/Neb963/persona-monkey-pcms/pull/67",
+    "baseSha": "4d2d4a2a40bfea8cd6b11874c3a35c00102ba455",
+    "headSha": "c91f8961e9af0d1359a487d016813e91b94a42af",
+    "integrationCandidateSha": "f2816d6412815b035ea97bfacc1a7228103200ad",
+    "mergeSha": "29f2fcec3a19a661abf871d779e57634650dfba1",
+    "workflowRuns": [
+      {
+        "id": 37810887281,
+        "name": "verify",
+        "status": "completed",
+        "conclusion": "success",
+        "event": "pull_request",
+        "headSha": "c91f8961e9af0d1359a487d016813e91b94a42af",
+        "url": "https://github.com/Neb963/persona-monkey-pcms/actions/runs/37810887281"
+      },
+      {
+        "id": 37810887573,
+        "name": "firefox-developer-edition",
+        "status": "completed",
+        "conclusion": "success",
+        "event": "pull_request",
+        "headSha": "c91f8961e9af0d1359a487d016813e91b94a42af",
+        "url": "https://github.com/Neb963/persona-monkey-pcms/actions/runs/37810887573"
+      }
+    ],
+    "firefoxJobs": [
+      {
+        "id": 113427120785,
+        "name": "p031-packaged",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 113427120820,
+        "name": "p036-packaged",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 113427120869,
+        "name": "p039-packaged",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 113427120908,
+        "name": "p033-packaged",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 113427121025,
+        "name": "p040-packaged",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 113427121038,
+        "name": "p041-packaged",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 113427121329,
+        "name": "p032-packaged",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 113427122017,
+        "name": "p034-packaged",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 113427122043,
+        "name": "pinned-firefox",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 113427122061,
+        "name": "p038-packaged",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ],
+    "packagedReport": "packaged-fix-pr-ci.json",
+    "artifact": {
+      "id": 11565660099,
+      "name": "firefox-packaged-p039",
+      "size_in_bytes": 1225,
+      "url": "https://api.github.com/repos/Neb963/persona-monkey-pcms/actions/artifacts/11565660099",
+      "archive_download_url": "https://api.github.com/repos/Neb963/persona-monkey-pcms/actions/artifacts/11565660099/zip",
+      "expired": false,
+      "created_at": "2026-10-08T16:43:51Z",
+      "expires_at": "2026-10-15T16:43:50Z",
+      "updated_at": "2026-10-08T16:43:51Z",
+      "digest": "sha256:b941618f714a4df3201348450195151395d218950c3e78a235ea0d0f087e700a",
+      "workflow_run": {
+        "id": 37810887573,
+        "repository_id": 1404729748,
+        "head_repository_id": 1404729748,
+        "head_branch": "agent/gpt-6-p039-20261008/p039-t039-1",
+        "head_sha": "c91f8961e9af0d1359a487d016813e91b94a42af"
+      }
+    }
+  },
+  "initialMergedMainFailure": {
+    "runId": 37809824252,
+    "jobId": 113423472014,
+    "headSha": "4d2d4a2a40bfea8cd6b11874c3a35c00102ba455",
+    "artifact": {
+      "id": 11564871535,
+      "name": "firefox-packaged-p039",
+      "size_in_bytes": 1851,
+      "url": "https://api.github.com/repos/Neb963/persona-monkey-pcms/actions/artifacts/11564871535",
+      "archive_download_url": "https://api.github.com/repos/Neb963/persona-monkey-pcms/actions/artifacts/11564871535/zip",
+      "expired": false,
+      "created_at": "2026-10-08T16:35:43Z",
+      "expires_at": "2026-10-15T16:35:43Z",
+      "updated_at": "2026-10-08T16:35:43Z",
+      "digest": "sha256:b16b912d7a898537706d6168b67f66ff3b3e22eea71f9d216458ffe9b2c3fe7e",
+      "workflow_run": {
+        "id": 37809824252,
+        "repository_id": 1404729748,
+        "head_repository_id": 1404729748,
+        "head_branch": "main",
+        "head_sha": "4d2d4a2a40bfea8cd6b11874c3a35c00102ba455"
+      }
+    },
+    "cause": "Inspection opened at nominal due time +12.5 s before the delayed second alarm read. Strict zero-tab assertion failed; completion receipt and deliberate alarm delivery delay fix this timing race.",
+    "state": "FAILED_NOT_ACCEPTED",
+    "packagedReport": "packaged-main-initial-failure.json"
+  },
+  "mergedMain": {
+    "headSha": "29f2fcec3a19a661abf871d779e57634650dfba1",
+    "workflowRuns": [
+      {
+        "id": 37811636044,
+        "name": "verify",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "success",
+        "headSha": "29f2fcec3a19a661abf871d779e57634650dfba1",
+        "url": "https://github.com/Neb963/persona-monkey-pcms/actions/runs/37811636044"
+      },
+      {
+        "id": 37811636104,
+        "name": "firefox-developer-edition",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "success",
+        "headSha": "29f2fcec3a19a661abf871d779e57634650dfba1",
+        "url": "https://github.com/Neb963/persona-monkey-pcms/actions/runs/37811636104"
+      }
+    ],
+    "firefoxJobs": [
+      {
+        "id": 113429695244,
+        "name": "p031-packaged",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 113429695286,
+        "name": "p034-packaged",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 113429695372,
+        "name": "p032-packaged",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 113429695415,
+        "name": "p036-packaged",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 113429695419,
+        "name": "p033-packaged",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 113429695475,
+        "name": "p041-packaged",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 113429695551,
+        "name": "pinned-firefox",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 113429695676,
+        "name": "p040-packaged",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 113429695775,
+        "name": "p039-packaged",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 113429695958,
+        "name": "p038-packaged",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ],
+    "packagedReport": "packaged-merged-main.json",
+    "artifact": {
+      "id": 11564933710,
+      "name": "firefox-packaged-p039",
+      "size_in_bytes": 1229,
+      "url": "https://api.github.com/repos/Neb963/persona-monkey-pcms/actions/artifacts/11564933710",
+      "archive_download_url": "https://api.github.com/repos/Neb963/persona-monkey-pcms/actions/artifacts/11564933710/zip",
+      "expired": false,
+      "created_at": "2026-10-08T16:49:44Z",
+      "expires_at": "2026-10-15T16:49:43Z",
+      "updated_at": "2026-10-08T16:49:44Z",
+      "digest": "sha256:c871657993079e78703b83109aeb45e447dc7e264f4fa0c609527cf841c195ce",
+      "workflow_run": {
+        "id": 37811636104,
+        "repository_id": 1404729748,
+        "head_repository_id": 1404729748,
+        "head_branch": "main",
+        "head_sha": "29f2fcec3a19a661abf871d779e57634650dfba1"
+      }
+    },
+    "zipDigestChecked": true,
+    "reportMatchedJobLog": true
+  },
+  "stages": [
+    {
+      "state": "COMMITTED",
+      "headSha": "c91f8961e9af0d1359a487d016813e91b94a42af"
+    },
+    {
+      "state": "CI_VERIFIED",
+      "headSha": "c91f8961e9af0d1359a487d016813e91b94a42af",
+      "workflowRuns": [
+        37810887281,
+        37810887573
+      ]
+    },
+    {
+      "state": "INTEGRATION_VERIFIED",
+      "candidateSha": "f2816d6412815b035ea97bfacc1a7228103200ad",
+      "baseSha": "4d2d4a2a40bfea8cd6b11874c3a35c00102ba455",
+      "headSha": "c91f8961e9af0d1359a487d016813e91b94a42af",
+      "workflowRuns": [
+        37810887281,
+        37810887573
+      ]
+    },
+    {
+      "state": "MERGED",
+      "headSha": "29f2fcec3a19a661abf871d779e57634650dfba1",
+      "productPR": 66,
+      "timingFixPR": 67
+    },
+    {
+      "state": "ACCEPTED",
+      "headSha": "29f2fcec3a19a661abf871d779e57634650dfba1",
+      "workflowRuns": [
+        37811636044,
+        37811636104
+      ],
+      "acceptanceIds": [
+        "A039-01",
+        "A039-02",
+        "A039-03"
+      ]
+    }
+  ],
+  "browser": {
+    "version": "154.0b10",
+    "archiveSha256": "681913108bba655d7ec6fadfac2731141b23e48dca88d1988a4d95a6bdaff164",
+    "productXpiSha256": "a9bf90b68126cfb0973eb38b301c94556ddd730ba6fb643264a8093996f356e3",
+    "contentSandboxDisabled": false,
+    "evidenceClass": [
+      "FDE",
+      "PKG"
+    ],
+    "providerLive": false
+  },
+  "liveProviderObservation": "DISABLED_PENDING_FINAL_LIVE_ACCEPTANCE",
+  "successorPhasesStarted": []
+}

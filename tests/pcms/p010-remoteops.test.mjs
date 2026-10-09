@@ -1,0 +1,47 @@
+import assert from "node:assert/strict";
+import test from "node:test";
+import { createRemoteOps } from "../../extension/pcms/remoteops/remote-ops.js";
+import { REMOTE_OP_ERROR_CODES } from "../../extension/pcms/remoteops/errors.js";
+import { makeStorage, op } from "./p010-harness.mjs";
+
+function clock(){let i=0;return()=>`2026-10-05T03:00:${String(++i).padStart(2,"0")}Z`;}
+
+test("A010-01 RemoteOperation identity is durable and conflicting reuse fails closed",async()=>{
+ const storage=makeStorage();const ops=createRemoteOps({storageBroker:storage,clock:clock()});
+ const first=await ops.prepare(op());assert.equal(first.revision,1);assert.equal(first.value.state,"PREPARED");
+ const same=await ops.prepare(op());assert.equal(same.revision,1);
+ await assert.rejects(ops.prepare(op({action:"generator.delete"})),e=>e?.code===REMOTE_OP_ERROR_CODES.OPERATION_CONFLICT);
+ const restarted=createRemoteOps({storageBroker:makeStorage(storage.shared),clock:clock()});
+ assert.equal((await restarted.get("op-1")).value.targetRef.id,"gen-123");
+});
+
+test("A010-01 interrupted dispatch is recovered as UNCERTAIN and cannot dispatch again",async()=>{
+ const storage=makeStorage();const ops=createRemoteOps({storageBroker:storage,clock:clock()});
+ let row=await ops.prepare(op());row=await ops.beginDispatch("op-1",{expectedRevision:row.revision});
+ assert.equal(row.value.state,"DISPATCHING");
+ const restarted=createRemoteOps({storageBroker:makeStorage(storage.shared),clock:clock()});
+ assert.deepEqual(await restarted.recoverInterruptedDispatches(),["op-1"]);
+ const uncertain=await restarted.get("op-1");assert.equal(uncertain.value.state,"UNCERTAIN");assert.equal(uncertain.value.resolution,"INTERRUPTED");
+ await assert.rejects(restarted.beginDispatch("op-1",{expectedRevision:uncertain.revision}),e=>e?.code===REMOTE_OP_ERROR_CODES.RECONCILE_REQUIRED);
+});
+
+test("A010-01 reconciliation NOT_APPLIED is the only path back to retryable",async()=>{
+ const ops=createRemoteOps({storageBroker:makeStorage(),clock:clock()});
+ let row=await ops.prepare(op());row=await ops.beginDispatch("op-1",{expectedRevision:row.revision});row=await ops.markUncertain("op-1",{expectedRevision:row.revision});
+ row=await ops.reconcile("op-1",{expectedRevision:row.revision,outcome:"UNKNOWN"});assert.equal(row.value.state,"UNCERTAIN");
+ row=await ops.reconcile("op-1",{expectedRevision:row.revision,outcome:"NOT_APPLIED"});assert.equal(row.value.state,"RETRYABLE");
+ row=await ops.beginDispatch("op-1",{expectedRevision:row.revision});assert.equal(row.value.attempt,2);
+});
+
+test("A010-01 corrupt persisted operation state fails closed",async()=>{
+ const storage=makeStorage();const ops=createRemoteOps({storageBroker:storage,clock:clock()});await ops.prepare(op());
+ storage.shared.rows.get("core.remoteops\0operation:op-1").value.state="MAGIC";
+ await assert.rejects(ops.get("op-1"),e=>e?.code===REMOTE_OP_ERROR_CODES.CORRUPT_STATE);
+});
+
+
+test("A010-01 stored key/operation identity mismatch fails closed",async()=>{
+ const storage=makeStorage();const ops=createRemoteOps({storageBroker:storage,clock:clock()});await ops.prepare(op());
+ const row=storage.shared.rows.get("core.remoteops\0operation:op-1");row.value.operationId="other-op";
+ await assert.rejects(ops.get("op-1"),e=>e?.code===REMOTE_OP_ERROR_CODES.CORRUPT_STATE);
+});

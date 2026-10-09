@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "claimId": "CLM-P032-001",
+  "phaseId": "P032",
+  "taskId": "T032.1",
+  "claimEpoch": 1,
+  "state": "ACCEPTED",
+  "owner": {
+    "agentId": "gpt-5-6-sol"
+  },
+  "baseMainSha": "4d1dfb314fef2f64bf5e89c67f6060c8d897d899",
+  "branch": "agent/gpt-5-6-sol/p032-t032-1",
+  "writePaths": [
+    "extension/pcms/app/**",
+    "tests/pcms/p032/**",
+    "docs/evidence/P032/**",
+    "extension/pcms/integration/ui-client-contract.js",
+    "extension/pcms/background/ui-dispatcher.js",
+    "package.json",
+    ".github/workflows/firefox.yml",
+    "tools/firefox/packaged-harness.mjs"
+  ],
+  "contractReads": [
+    {
+      "id": "pcms.ui-client/v1",
+      "sha": "401fa524225b35c45eaf239112974c27492d3bbc"
+    }
+  ],
+  "contractWrites": [
+    "pcms.ui-client/v1"
+  ],
+  "resources": [
+    {
+      "key": "ci-workflows",
+      "mode": "exclusive"
+    }
+  ],
+  "migrationSlots": [],
+  "acceptanceIds": [
+    "A032-01",
+    "A032-02",
+    "A032-03"
+  ]
+}

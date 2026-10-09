@@ -1,0 +1,54 @@
+{
+  "repository": "Neb963/persona-monkey-pcms",
+  "branch": "agent/gpt-6-p039-20261008/p039-t039-1",
+  "method": "connected-github-git-data-api",
+  "productHeadSha": "60dda591709c963aea2b38623de586c8e66eaff5",
+  "productPR": 66,
+  "checkpoints": [
+    {
+      "localSha": "bdf0bb36df17e12df289b9cc32a85bcf8254b4c0",
+      "remoteSha": "3b37f6e4f7367171c87faae0b5f5130e08ba5911",
+      "tree": "f5b1d08f704e3d78c53609c8f2c73ce567b42032"
+    },
+    {
+      "localSha": "5de9e43d4609d04b37b8eff96c171dbc88ed956b",
+      "remoteSha": "a3fc653f4fd622506bff6fae9dc11975ad397726",
+      "tree": "4d74aabbe5d584cfb2339cb03d1a7c07ebcd8515"
+    },
+    {
+      "localSha": "b7a0e5eb65aaa98ee2a84a62977fad36caed8281",
+      "remoteSha": "5a56fe730b973fe2671388cda8cf6c5e40fe4ba3",
+      "tree": "719a91b36fa0a530bccff595bf710353a23ddb37"
+    },
+    {
+      "localSha": "eedc258b1910cb329085ad9fbb49226c54594d61",
+      "remoteSha": "01e20a3d66a0d6d4c5a0efc8ea259379331d98b8",
+      "tree": "b1ec98f04f219fbcd227e20727bbf32059a425f4"
+    },
+    {
+      "localSha": "334923f02480ce2ee18440ba567faa76966db896",
+      "remoteSha": "63627eead7429d4b3a8c30707538539cb6585b4b",
+      "tree": "cdee214377559fb28e346f7944b2cbaf544ddaa0"
+    },
+    {
+      "localSha": "9996f36ad60f0ead25bc9026613a19e624573cf6",
+      "remoteSha": "e9212cc704154689678a539e989aa9488fec040a",
+      "tree": "ffe19fd4d3d10e94900118fe814bf3abfbb046af"
+    },
+    {
+      "localSha": "b884c0a3f5375e66f9fa3b460ec1213102bda162",
+      "remoteSha": "60dda591709c963aea2b38623de586c8e66eaff5",
+      "tree": "b7f53a55123fc1be598e0bc617ee60fabf3e0ca8"
+    }
+  ],
+  "state": "PUBLISHED",
+  "fix": {
+    "repository": "Neb963/persona-monkey-pcms",
+    "branch": "agent/gpt-6-p039-20261008/p039-t039-1",
+    "pr": 67,
+    "localSha": "229b856a0c7bae55c429cb7b670c5929f5a2c90e",
+    "remoteSha": "c91f8961e9af0d1359a487d016813e91b94a42af",
+    "tree": "459c24d061c293b3e5b68ef8df88b448543890eb",
+    "productParentSha": "4d2d4a2a40bfea8cd6b11874c3a35c00102ba455"
+  }
+}

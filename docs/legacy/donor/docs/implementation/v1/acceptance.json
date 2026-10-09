@@ -1,0 +1,1316 @@
+{
+  "schemaVersion": 1,
+  "gates": [
+    {
+      "id": "A000-01",
+      "phaseId": "P000",
+      "requirement": "Repository bootstrap / architecture freeze: acceptance slice 1",
+      "evidence": [
+        "C"
+      ]
+    },
+    {
+      "id": "A000-02",
+      "phaseId": "P000",
+      "requirement": "Repository bootstrap / architecture freeze: acceptance slice 2",
+      "evidence": [
+        "C"
+      ]
+    },
+    {
+      "id": "A000-03",
+      "phaseId": "P000",
+      "requirement": "Repository bootstrap / architecture freeze: acceptance slice 3",
+      "evidence": [
+        "C"
+      ]
+    },
+    {
+      "id": "A001-01",
+      "phaseId": "P001",
+      "requirement": "Hosted CI + pinned Firefox Developer Edition harness: acceptance slice 1",
+      "evidence": [
+        "C",
+        "FDE"
+      ]
+    },
+    {
+      "id": "A001-02",
+      "phaseId": "P001",
+      "requirement": "Hosted CI + pinned Firefox Developer Edition harness: acceptance slice 2",
+      "evidence": [
+        "C",
+        "FDE"
+      ]
+    },
+    {
+      "id": "A001-03",
+      "phaseId": "P001",
+      "requirement": "Hosted CI + pinned Firefox Developer Edition harness: acceptance slice 3",
+      "evidence": [
+        "C",
+        "FDE"
+      ]
+    },
+    {
+      "id": "A002-01",
+      "phaseId": "P002",
+      "requirement": "Import and preserve PersonaMonkey baseline: acceptance slice 1",
+      "evidence": [
+        "C",
+        "I",
+        "PKG"
+      ]
+    },
+    {
+      "id": "A002-02",
+      "phaseId": "P002",
+      "requirement": "Import and preserve PersonaMonkey baseline: acceptance slice 2",
+      "evidence": [
+        "C",
+        "I",
+        "PKG"
+      ]
+    },
+    {
+      "id": "A002-03",
+      "phaseId": "P002",
+      "requirement": "Import and preserve PersonaMonkey baseline: acceptance slice 3",
+      "evidence": [
+        "C",
+        "I",
+        "PKG"
+      ]
+    },
+    {
+      "id": "A003-01",
+      "phaseId": "P003",
+      "requirement": "PCMS namespace/UI entry + internal Persona Broker contract: acceptance slice 1",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A003-02",
+      "phaseId": "P003",
+      "requirement": "PCMS namespace/UI entry + internal Persona Broker contract: acceptance slice 2",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A003-03",
+      "phaseId": "P003",
+      "requirement": "PCMS namespace/UI entry + internal Persona Broker contract: acceptance slice 3",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A004-01",
+      "phaseId": "P004",
+      "requirement": "Firefox sandbox dynamic-controller capability spike: acceptance slice 1",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A004-02",
+      "phaseId": "P004",
+      "requirement": "Firefox sandbox dynamic-controller capability spike: acceptance slice 2",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A004-03",
+      "phaseId": "P004",
+      "requirement": "Firefox sandbox dynamic-controller capability spike: acceptance slice 3",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A005-01",
+      "phaseId": "P005",
+      "requirement": "PCMS IndexedDB storage broker + migrations: acceptance slice 1",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A005-02",
+      "phaseId": "P005",
+      "requirement": "PCMS IndexedDB storage broker + migrations: acceptance slice 2",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A005-03",
+      "phaseId": "P005",
+      "requirement": "PCMS IndexedDB storage broker + migrations: acceptance slice 3",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A006-01",
+      "phaseId": "P006",
+      "requirement": "PCMS SecretStore host + SecretRef abstraction: acceptance slice 1",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A006-02",
+      "phaseId": "P006",
+      "requirement": "PCMS SecretStore host + SecretRef abstraction: acceptance slice 2",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A006-03",
+      "phaseId": "P006",
+      "requirement": "PCMS SecretStore host + SecretRef abstraction: acceptance slice 3",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A007-01",
+      "phaseId": "P007",
+      "requirement": "Minimal Audit Journal: acceptance slice 1",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A007-02",
+      "phaseId": "P007",
+      "requirement": "Minimal Audit Journal: acceptance slice 2",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A007-03",
+      "phaseId": "P007",
+      "requirement": "Minimal Audit Journal: acceptance slice 3",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A008-01",
+      "phaseId": "P008",
+      "requirement": "Module archive/package/authority model: acceptance slice 1",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A008-02",
+      "phaseId": "P008",
+      "requirement": "Module archive/package/authority model: acceptance slice 2",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A008-03",
+      "phaseId": "P008",
+      "requirement": "Module archive/package/authority model: acceptance slice 3",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A009-01",
+      "phaseId": "P009",
+      "requirement": "Persona Broker implementation: acceptance slice 1",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A009-02",
+      "phaseId": "P009",
+      "requirement": "Persona Broker implementation: acceptance slice 2",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A009-03",
+      "phaseId": "P009",
+      "requirement": "Persona Broker implementation: acceptance slice 3",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A010-01",
+      "phaseId": "P010",
+      "requirement": "RemoteOps + ProviderGate + recovery hold: acceptance slice 1",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A010-02",
+      "phaseId": "P010",
+      "requirement": "RemoteOps + ProviderGate + recovery hold: acceptance slice 2",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A010-03",
+      "phaseId": "P010",
+      "requirement": "RemoteOps + ProviderGate + recovery hold: acceptance slice 3",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A011-01",
+      "phaseId": "P011",
+      "requirement": "Module runtime / capability RPC / generation fencing: acceptance slice 1",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A011-02",
+      "phaseId": "P011",
+      "requirement": "Module runtime / capability RPC / generation fencing: acceptance slice 2",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A011-03",
+      "phaseId": "P011",
+      "requirement": "Module runtime / capability RPC / generation fencing: acceptance slice 3",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A012-01",
+      "phaseId": "P012",
+      "requirement": "HumanTask/Attention + timers/services: acceptance slice 1",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A012-02",
+      "phaseId": "P012",
+      "requirement": "HumanTask/Attention + timers/services: acceptance slice 2",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A012-03",
+      "phaseId": "P012",
+      "requirement": "HumanTask/Attention + timers/services: acceptance slice 3",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A013-01",
+      "phaseId": "P013",
+      "requirement": "Perchance provider adapter + emulator: acceptance slice 1",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A013-02",
+      "phaseId": "P013",
+      "requirement": "Perchance provider adapter + emulator: acceptance slice 2",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A013-03",
+      "phaseId": "P013",
+      "requirement": "Perchance provider adapter + emulator: acceptance slice 3",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A014-01",
+      "phaseId": "P014",
+      "requirement": "Accounts module + Account↔personaUid binding: acceptance slice 1",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A014-02",
+      "phaseId": "P014",
+      "requirement": "Accounts module + Account↔personaUid binding: acceptance slice 2",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A014-03",
+      "phaseId": "P014",
+      "requirement": "Accounts module + Account↔personaUid binding: acceptance slice 3",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A015-01",
+      "phaseId": "P015",
+      "requirement": "Deployer module: acceptance slice 1",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A015-02",
+      "phaseId": "P015",
+      "requirement": "Deployer module: acceptance slice 2",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A015-03",
+      "phaseId": "P015",
+      "requirement": "Deployer module: acceptance slice 3",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A016-01",
+      "phaseId": "P016",
+      "requirement": "Explorer module: acceptance slice 1",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A016-02",
+      "phaseId": "P016",
+      "requirement": "Explorer module: acceptance slice 2",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A016-03",
+      "phaseId": "P016",
+      "requirement": "Explorer module: acceptance slice 3",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A017-01",
+      "phaseId": "P017",
+      "requirement": "Refresher module: acceptance slice 1",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A017-02",
+      "phaseId": "P017",
+      "requirement": "Refresher module: acceptance slice 2",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A017-03",
+      "phaseId": "P017",
+      "requirement": "Refresher module: acceptance slice 3",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A018-01",
+      "phaseId": "P018",
+      "requirement": "Statistics module: acceptance slice 1",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A018-02",
+      "phaseId": "P018",
+      "requirement": "Statistics module: acceptance slice 2",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A018-03",
+      "phaseId": "P018",
+      "requirement": "Statistics module: acceptance slice 3",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A019-01",
+      "phaseId": "P019",
+      "requirement": "Account Provisioning module: acceptance slice 1",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A019-02",
+      "phaseId": "P019",
+      "requirement": "Account Provisioning module: acceptance slice 2",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A019-03",
+      "phaseId": "P019",
+      "requirement": "Account Provisioning module: acceptance slice 3",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A020-01",
+      "phaseId": "P020",
+      "requirement": "Backup/restore + retention: acceptance slice 1",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A020-02",
+      "phaseId": "P020",
+      "requirement": "Backup/restore + retention: acceptance slice 2",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A020-03",
+      "phaseId": "P020",
+      "requirement": "Backup/restore + retention: acceptance slice 3",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A021-01",
+      "phaseId": "P021",
+      "requirement": "PCMS UI shell / notifications / search: acceptance slice 1",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A021-02",
+      "phaseId": "P021",
+      "requirement": "PCMS UI shell / notifications / search: acceptance slice 2",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A021-03",
+      "phaseId": "P021",
+      "requirement": "PCMS UI shell / notifications / search: acceptance slice 3",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A022-01",
+      "phaseId": "P022",
+      "requirement": "Module lifecycle end-to-end: acceptance slice 1",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A022-02",
+      "phaseId": "P022",
+      "requirement": "Module lifecycle end-to-end: acceptance slice 2",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A022-03",
+      "phaseId": "P022",
+      "requirement": "Module lifecycle end-to-end: acceptance slice 3",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A023-01",
+      "phaseId": "P023",
+      "requirement": "Full module integration wave: acceptance slice 1",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A023-02",
+      "phaseId": "P023",
+      "requirement": "Full module integration wave: acceptance slice 2",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A023-03",
+      "phaseId": "P023",
+      "requirement": "Full module integration wave: acceptance slice 3",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A024-01",
+      "phaseId": "P024",
+      "requirement": "Adversarial/security/fault/release-candidate hardening: acceptance slice 1",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A024-02",
+      "phaseId": "P024",
+      "requirement": "Adversarial/security/fault/release-candidate hardening: acceptance slice 2",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A024-03",
+      "phaseId": "P024",
+      "requirement": "Adversarial/security/fault/release-candidate hardening: acceptance slice 3",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A025-01",
+      "phaseId": "P025",
+      "requirement": "Live acceptance 1: acceptance slice 1",
+      "evidence": [
+        "LIVE"
+      ]
+    },
+    {
+      "id": "A025-02",
+      "phaseId": "P025",
+      "requirement": "Live acceptance 1: acceptance slice 2",
+      "evidence": [
+        "LIVE"
+      ]
+    },
+    {
+      "id": "A025-03",
+      "phaseId": "P025",
+      "requirement": "Live acceptance 1: acceptance slice 3",
+      "evidence": [
+        "LIVE"
+      ]
+    },
+    {
+      "id": "A026-01",
+      "phaseId": "P026",
+      "requirement": "Live acceptance 2: acceptance slice 1",
+      "evidence": [
+        "LIVE"
+      ]
+    },
+    {
+      "id": "A026-02",
+      "phaseId": "P026",
+      "requirement": "Live acceptance 2: acceptance slice 2",
+      "evidence": [
+        "LIVE"
+      ]
+    },
+    {
+      "id": "A026-03",
+      "phaseId": "P026",
+      "requirement": "Live acceptance 2: acceptance slice 3",
+      "evidence": [
+        "LIVE"
+      ]
+    },
+    {
+      "id": "A027-01",
+      "phaseId": "P027",
+      "requirement": "CI installs an exact, checksum-verified Firefox Developer Edition build >=154 recorded in browser-pin.json",
+      "evidence": [
+        "C",
+        "FDE"
+      ]
+    },
+    {
+      "id": "A027-02",
+      "phaseId": "P027",
+      "requirement": "The repository harness installs the packaged XPI once and can open/close extension pages, force event-page idle unload via test-profile prefs, and restart the profile, without Firefox DevTools MCP",
+      "evidence": [
+        "FDE",
+        "PKG"
+      ]
+    },
+    {
+      "id": "A027-03",
+      "phaseId": "P027",
+      "requirement": "The accepted P026 product passes baseline packaged checks under the new pin, and every ADR-002/ADR-003 platform fact marked (verify) is recorded as pinned-build evidence; the ESR-153 decision is recorded",
+      "evidence": [
+        "FDE",
+        "PKG",
+        "C"
+      ]
+    },
+    {
+      "id": "A028-01",
+      "phaseId": "P028",
+      "requirement": "Exactly one PCMS Core exists per extension background context; dashboard/popup code constructs no Core service; PersonaMonkey fail-closed bootstrap ordering is preserved; in-process broker endpoint is Integration-v1-parity",
+      "evidence": [
+        "U",
+        "I",
+        "C",
+        "SEC",
+        "FDE"
+      ]
+    },
+    {
+      "id": "A028-02",
+      "phaseId": "P028",
+      "requirement": "Cold-start recovery is unchanged from P026; a warm wake turns interrupted DISPATCHING into UNCERTAIN + RECOVERY_HOLD and never replays; assisted provider steps persist as HumanTasks reconcilable from any tab or after all tabs close",
+      "evidence": [
+        "U",
+        "I",
+        "FAULT",
+        "PKG"
+      ]
+    },
+    {
+      "id": "A028-03",
+      "phaseId": "P028",
+      "requirement": "UI requests are sender- and schema-validated, commands idempotent, projections refreshed by the storage.session revision signal; opening/closing any number of PCMS tabs never starts, stops or recovers Core",
+      "evidence": [
+        "U",
+        "I",
+        "SEC",
+        "FDE",
+        "PKG"
+      ]
+    },
+    {
+      "id": "A029-01",
+      "phaseId": "P029",
+      "requirement": "The durable Core timer service is the only timer authority; alarms are recreated from durable timers on cold start; duplicate and spurious wakes are harmless",
+      "evidence": [
+        "U",
+        "I",
+        "FAULT"
+      ]
+    },
+    {
+      "id": "A029-02",
+      "phaseId": "P029",
+      "requirement": "Missed or interrupted work yields at most one catch-up per declared schedule; no backlog replay; an unload at any step boundary recovers deterministically",
+      "evidence": [
+        "U",
+        "I",
+        "FAULT"
+      ]
+    },
+    {
+      "id": "A029-03",
+      "phaseId": "P029",
+      "requirement": "In the packaged XPI under the pinned FDE, a Core-scheduled job runs with zero PCMS tabs open, across forced event-page unloads and a profile restart",
+      "evidence": [
+        "FDE",
+        "PKG"
+      ]
+    },
+    {
+      "id": "A030-01",
+      "phaseId": "P030",
+      "requirement": "The production manifest declares the controller and module-UI sandbox pages with CSPs granting no network, no allow-same-origin and no extension APIs; unsupported Firefox versions report the module runtime UNAVAILABLE",
+      "evidence": [
+        "C",
+        "SEC",
+        "FDE"
+      ]
+    },
+    {
+      "id": "A030-02",
+      "phaseId": "P030",
+      "requirement": "Controller source supplied at runtime (not in the XPI) executes in a background-hosted sandbox frame of the packaged XPI; browser/chrome are absent; ungranted capabilities are denied",
+      "evidence": [
+        "FDE",
+        "PKG",
+        "SEC"
+      ]
+    },
+    {
+      "id": "A030-03",
+      "phaseId": "P030",
+      "requirement": "Frames are created per generation and disposed on fence or unload; P004 bootstrap/RPC bounds are preserved",
+      "evidence": [
+        "U",
+        "I",
+        "FDE"
+      ]
+    },
+    {
+      "id": "A031-01",
+      "phaseId": "P031",
+      "requirement": "A fixture module package not compiled into the XPI is installed through PCMS and its controller starts and executes in the packaged XPI, with no rebuild, reinstall, reload or Firefox restart",
+      "evidence": [
+        "PKG",
+        "FDE"
+      ]
+    },
+    {
+      "id": "A031-02",
+      "phaseId": "P031",
+      "requirement": "The module can use only approved capabilities; its declared scheduled work runs with zero PCMS tabs, survives event-page unload and profile restart with bounded catch-up",
+      "evidence": [
+        "PKG",
+        "FDE",
+        "FAULT",
+        "SEC"
+      ]
+    },
+    {
+      "id": "A031-03",
+      "phaseId": "P031",
+      "requirement": "Update activates a new generation without reload and the previous generation can no longer write, call services or dispatch; disable/enable/rollback/remove work live",
+      "evidence": [
+        "PKG",
+        "FDE",
+        "U",
+        "I"
+      ]
+    },
+    {
+      "id": "A032-01",
+      "phaseId": "P032",
+      "requirement": "Routes are canonical and fail closed; legacy links resolve; no dashboard code constructs Core services",
+      "evidence": [
+        "U",
+        "C",
+        "SEC"
+      ]
+    },
+    {
+      "id": "A032-02",
+      "phaseId": "P032",
+      "requirement": "Receipts and HumanTasks are durable and consistent across two tabs and persist after all tabs close; there is no global 'Working' state",
+      "evidence": [
+        "U",
+        "I",
+        "FDE"
+      ]
+    },
+    {
+      "id": "A032-03",
+      "phaseId": "P032",
+      "requirement": "The shell shows Core running/idle/unavailable correctly and refreshes from the revision signal, never from UI timers driving operations",
+      "evidence": [
+        "U",
+        "FDE"
+      ]
+    },
+    {
+      "id": "A033-01",
+      "phaseId": "P033",
+      "requirement": "A fixture built-in module and a fixture runtime module appear in navigation, Overview, search and facets without Core edits beyond the bundled-module list",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A033-02",
+      "phaseId": "P033",
+      "requirement": "A runtime module page runs in the sandboxed module-UI frame without extension APIs or network; risky actions are confirmed by Core-rendered dialogs",
+      "evidence": [
+        "SEC",
+        "FDE",
+        "PKG"
+      ]
+    },
+    {
+      "id": "A033-03",
+      "phaseId": "P033",
+      "requirement": "Disabled, updating, failed, incompatible and removed modules degrade gracefully; dashboards keep working while modules are unloaded",
+      "evidence": [
+        "U",
+        "I",
+        "FDE"
+      ]
+    },
+    {
+      "id": "A034-01",
+      "phaseId": "P034",
+      "requirement": "No Accounts workflow requires typing an Account ID or personaUid",
+      "evidence": [
+        "U",
+        "I"
+      ]
+    },
+    {
+      "id": "A034-02",
+      "phaseId": "P034",
+      "requirement": "Persona rebind is refused with a visible reason while unresolved operations exist for the account",
+      "evidence": [
+        "U",
+        "I"
+      ]
+    },
+    {
+      "id": "A034-03",
+      "phaseId": "P034",
+      "requirement": "A 52-account fixture is navigable with paging, filtering, sorting and deep links",
+      "evidence": [
+        "U",
+        "FDE"
+      ]
+    },
+    {
+      "id": "A035-01",
+      "phaseId": "P035",
+      "requirement": "The popup body keeps a fixed 370px intrinsic width; the ESR regression test covers the new block",
+      "evidence": [
+        "U",
+        "FDE"
+      ]
+    },
+    {
+      "id": "A035-02",
+      "phaseId": "P035",
+      "requirement": "The status summary contains no secret, cookieStoreId or HumanTask instruction text",
+      "evidence": [
+        "U",
+        "SEC"
+      ]
+    },
+    {
+      "id": "A035-03",
+      "phaseId": "P035",
+      "requirement": "The popup reports Core running/idle/unavailable and opens the correct PCMS deep link",
+      "evidence": [
+        "U",
+        "FDE"
+      ]
+    },
+    {
+      "id": "A036-01",
+      "phaseId": "P036",
+      "requirement": "Deployer v1 records migrate losslessly and existing RemoteOperations remain linked",
+      "evidence": [
+        "U",
+        "I",
+        "C"
+      ]
+    },
+    {
+      "id": "A036-02",
+      "phaseId": "P036",
+      "requirement": "The generator status derivation table passes exhaustively; isPrivate appears only inside the Perchance adapter with UNKNOWN fallback",
+      "evidence": [
+        "U",
+        "C",
+        "SEC"
+      ]
+    },
+    {
+      "id": "A036-03",
+      "phaseId": "P036",
+      "requirement": "Manual deployment needs no typed IDs, runs as a background command with a durable assisted handoff, and never replays UNCERTAIN",
+      "evidence": [
+        "U",
+        "I",
+        "E",
+        "FDE"
+      ]
+    },
+    {
+      "id": "A037-01",
+      "phaseId": "P037",
+      "requirement": "The same commit yields identical snapshots and payload hashes across runs and time zones; no GitHub response object crosses the provider boundary",
+      "evidence": [
+        "U",
+        "C"
+      ]
+    },
+    {
+      "id": "A037-02",
+      "phaseId": "P037",
+      "requirement": "Changed releases become update-ready, unchanged ones are untouched, and a modified published release is blocked",
+      "evidence": [
+        "U",
+        "I"
+      ]
+    },
+    {
+      "id": "A037-03",
+      "phaseId": "P037",
+      "requirement": "Scans execute as bounded background steps; failures keep the previous snapshot and never mark generators removed",
+      "evidence": [
+        "U",
+        "I",
+        "FAULT"
+      ]
+    },
+    {
+      "id": "A038-01",
+      "phaseId": "P038",
+      "requirement": "Repository checks run on cadence with zero PCMS tabs; after sleep or restart exactly one catch-up check runs",
+      "evidence": [
+        "U",
+        "I",
+        "PKG",
+        "FDE"
+      ]
+    },
+    {
+      "id": "A038-02",
+      "phaseId": "P038",
+      "requirement": "At most one pending scan schedule exists; duplicate wakes are harmless; backoff honours rate-limit resets; failed scans never remove desired state",
+      "evidence": [
+        "U",
+        "I",
+        "FAULT"
+      ]
+    },
+    {
+      "id": "A038-03",
+      "phaseId": "P038",
+      "requirement": "An event-page unload during any scan step recovers deterministically without duplicate deployment preparation",
+      "evidence": [
+        "FAULT",
+        "PKG"
+      ]
+    },
+    {
+      "id": "A039-01",
+      "phaseId": "P039",
+      "requirement": "Observation stays disabled and fails closed until its compatibility probe passes; status shows 'not verified' instead of 'in sync'",
+      "evidence": [
+        "U",
+        "I",
+        "E",
+        "SEC"
+      ]
+    },
+    {
+      "id": "A039-02",
+      "phaseId": "P039",
+      "requirement": "Drift against the confirmed baseline is detected on emulator and FDE fixture pages and is never overwritten automatically; listing UNKNOWN is never treated as mismatch",
+      "evidence": [
+        "U",
+        "I",
+        "E",
+        "FDE"
+      ]
+    },
+    {
+      "id": "A039-03",
+      "phaseId": "P039",
+      "requirement": "The verification sweep runs in the background with zero PCMS tabs within its bounds; a provider challenge produces one HumanTask and stops automatic passes",
+      "evidence": [
+        "U",
+        "I",
+        "PKG"
+      ]
+    },
+    {
+      "id": "A040-01",
+      "phaseId": "P040",
+      "requirement": "No primary workflow requires typing durable IDs, hashes or SecretRef strings; cohorts are never created implicitly",
+      "evidence": [
+        "U",
+        "I"
+      ]
+    },
+    {
+      "id": "A040-02",
+      "phaseId": "P040",
+      "requirement": "Refresher schedules run in the background with zero PCMS tabs within budgets and never ask for pasted source",
+      "evidence": [
+        "U",
+        "I",
+        "PKG"
+      ]
+    },
+    {
+      "id": "A040-03",
+      "phaseId": "P040",
+      "requirement": "Legacy P026 operator forms are removed and every superseded P026 DOM assertion is replaced by an equivalent assertion",
+      "evidence": [
+        "U",
+        "C"
+      ]
+    },
+    {
+      "id": "A041-01",
+      "phaseId": "P041",
+      "requirement": "A restore cannot start without a preview and typed confirmation; secrets are never included",
+      "evidence": [
+        "U",
+        "I",
+        "SEC"
+      ]
+    },
+    {
+      "id": "A041-02",
+      "phaseId": "P041",
+      "requirement": "Hold release is impossible while checks fail and every failing check links to its subject",
+      "evidence": [
+        "U",
+        "I"
+      ]
+    },
+    {
+      "id": "A041-03",
+      "phaseId": "P041",
+      "requirement": "The Modules page installs, approves, updates, rolls back, removes and purges a fixture runtime module in the packaged XPI without extension reload",
+      "evidence": [
+        "PKG",
+        "FDE"
+      ]
+    },
+    {
+      "id": "A042-01",
+      "phaseId": "P042",
+      "requirement": "The unattended driver runs only as a PersonaMonkey execution artifact through the Persona Broker under a control lease; PCMS creates no userScripts or browser-execution authority",
+      "evidence": [
+        "U",
+        "I",
+        "SEC",
+        "C"
+      ]
+    },
+    {
+      "id": "A042-02",
+      "phaseId": "P042",
+      "requirement": "Automatic mode refuses to enable while any gate is unmet; drifted, uncertain, paused and failed targets are never dispatched; passes are bounded and run with zero PCMS tabs",
+      "evidence": [
+        "U",
+        "I",
+        "PKG"
+      ]
+    },
+    {
+      "id": "A042-03",
+      "phaseId": "P042",
+      "requirement": "Fixture end-to-end deploy and verify succeed; the capability stays disabled for real Perchance until confirmed in a final live phase",
+      "evidence": [
+        "E",
+        "FDE"
+      ]
+    },
+    {
+      "id": "A043-01",
+      "phaseId": "P043",
+      "requirement": "In the operator's Firefox the installed XPI keeps scheduled PCMS work running with all dashboards closed, across idle, sleep and restart",
+      "evidence": [
+        "LIVE"
+      ]
+    },
+    {
+      "id": "A043-02",
+      "phaseId": "P043",
+      "requirement": "A runtime module is installed, updated, disabled and re-enabled through PCMS with no rebuild, reinstall, reload or restart",
+      "evidence": [
+        "LIVE"
+      ]
+    },
+    {
+      "id": "A043-03",
+      "phaseId": "P043",
+      "requirement": "The real generator repository scans correctly and Perchance read/listing/normalization behaviour is observed live and encoded as deterministic fixtures before any resulting fix",
+      "evidence": [
+        "LIVE",
+        "FDE"
+      ]
+    },
+    {
+      "id": "A044-01",
+      "phaseId": "P044",
+      "requirement": "Assisted and (if its gate passed) unattended deployments are applied and verified on real Perchance",
+      "evidence": [
+        "LIVE"
+      ]
+    },
+    {
+      "id": "A044-02",
+      "phaseId": "P044",
+      "requirement": "Induced drift and an uncertain outcome are surfaced and resolved without replay; restore, hold and release work",
+      "evidence": [
+        "LIVE"
+      ]
+    },
+    {
+      "id": "A044-03",
+      "phaseId": "P044",
+      "requirement": "The operator gives final human acceptance of the extended roadmap",
+      "evidence": [
+        "LIVE"
+      ]
+    }
+  ]
+}

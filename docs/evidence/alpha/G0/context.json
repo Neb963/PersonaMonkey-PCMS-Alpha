@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "kind": "BOOTSTRAP",
+  "phaseId": "G0",
+  "agentId": "codex-g0",
+  "claimEpoch": 1,
+  "branch": "agent/codex-g0/g0",
+  "baseMainSha": "ecec158728a320f6d71694144153dbecb89ca153"
+}

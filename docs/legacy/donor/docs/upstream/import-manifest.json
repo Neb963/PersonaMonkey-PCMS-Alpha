@@ -1,0 +1,1881 @@
+{
+  "schemaVersion": 1,
+  "upstream": {
+    "repository": "Neb963/persona-router",
+    "commitSha": "9995f6eadfa54be6cc0001f4e04f2a2d9b9401bf",
+    "treeSha": "9d59d800c3a687b2e7360c64d9dd859d701d6ba5",
+    "version": "1.2.0",
+    "frozenCiRunId": 36412342425,
+    "frozenCiJobId": 108895260160,
+    "frozenCiConclusion": "success",
+    "expectedXpiSha256": "928b94a871d70455e42c2a8269a7adec27c59b3c5937e7618f80da218fb126e1",
+    "frozenArtifactId": 10966145159,
+    "frozenArtifactDigest": "sha256:18481aba740245f057772001e96d4a1f65ce1c7c5d227134afa886616a0fcf91"
+  },
+  "mapping": {
+    "exactRootPrefixes": [
+      "extension/",
+      "native/",
+      "scripts/",
+      "tests/"
+    ],
+    "exactRootFiles": [
+      "CHANGELOG.md",
+      "LICENSE"
+    ],
+    "snapshotPrefix": "docs/upstream/source/",
+    "rootPackagePolicy": "composed",
+    "note": "PCMS root governance and P001 CI remain authoritative. Every upstream blob not placed at its original root path is preserved exactly below docs/upstream/source/."
+  },
+  "entries": [
+    {
+      "sourcePath": ".github/workflows/extension-tests.yml",
+      "destinationPath": "docs/upstream/source/.github/workflows/extension-tests.yml",
+      "sourceBlobSha": "8d7bb88fc5917aa26363f28184f0a95e1f55a3b3",
+      "mode": "100644",
+      "size": 1340,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": ".gitignore",
+      "destinationPath": "docs/upstream/source/.gitignore",
+      "sourceBlobSha": "1a1c4b3434afca30b003087469d142257abdc5af",
+      "mode": "100644",
+      "size": 657,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "AGENTS.md",
+      "destinationPath": "docs/upstream/source/AGENTS.md",
+      "sourceBlobSha": "d386b30fa0e9f7d6fb3e3cfce1ae1168ffb2d63e",
+      "mode": "100644",
+      "size": 4101,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "CHANGELOG.md",
+      "destinationPath": "CHANGELOG.md",
+      "sourceBlobSha": "fa57cd37ec5ac800c16e45b598e6308077137876",
+      "mode": "100644",
+      "size": 10365,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "CONTRIBUTING.md",
+      "destinationPath": "docs/upstream/source/CONTRIBUTING.md",
+      "sourceBlobSha": "e295888a76895cb193ba1d7eb513d2abb68e7125",
+      "mode": "100644",
+      "size": 2947,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "DEVELOPMENT.md",
+      "destinationPath": "docs/upstream/source/DEVELOPMENT.md",
+      "sourceBlobSha": "eeadbe47566cbce66e158e9fb11b040ad140fdea",
+      "mode": "100644",
+      "size": 4796,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "LICENSE",
+      "destinationPath": "LICENSE",
+      "sourceBlobSha": "14fac913ccf80234b1848540089a3bbcb6e5283d",
+      "mode": "100644",
+      "size": 1056,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "README.md",
+      "destinationPath": "docs/upstream/source/README.md",
+      "sourceBlobSha": "79d2674effb8e2f322d3df4196e598273650bdd5",
+      "mode": "100644",
+      "size": 4556,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "SECURITY.md",
+      "destinationPath": "docs/upstream/source/SECURITY.md",
+      "sourceBlobSha": "d46c38d7e0f0b699ac8f37f20ec01cdcc234fe1a",
+      "mode": "100644",
+      "size": 7192,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "diagnose.sh",
+      "destinationPath": "docs/upstream/source/diagnose.sh",
+      "sourceBlobSha": "625323d0b42d6406008463971ac4e392953c8072",
+      "mode": "100755",
+      "size": 2770,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "docs/README.md",
+      "destinationPath": "docs/upstream/source/docs/README.md",
+      "sourceBlobSha": "1f31b661c03cb8ed218cd65e5e552659a230e723",
+      "mode": "100644",
+      "size": 4052,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "docs/api/integration-v1.md",
+      "destinationPath": "docs/upstream/source/docs/api/integration-v1.md",
+      "sourceBlobSha": "0221774456577571284f6a2257c3785cdc61394d",
+      "mode": "100644",
+      "size": 46065,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "docs/api/management-v1.md",
+      "destinationPath": "docs/upstream/source/docs/api/management-v1.md",
+      "sourceBlobSha": "a3fbfd88847cab0d14b0d9ad10c8743e4c7bbaf2",
+      "mode": "100644",
+      "size": 11550,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "docs/api/persona-os.md",
+      "destinationPath": "docs/upstream/source/docs/api/persona-os.md",
+      "sourceBlobSha": "7feff19f3528098add3375a7e29e0d114b92748f",
+      "mode": "100644",
+      "size": 7944,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "docs/architecture/overview.md",
+      "destinationPath": "docs/upstream/source/docs/architecture/overview.md",
+      "sourceBlobSha": "3d824a54b2d29106fc20cbb479efd74e982c276c",
+      "mode": "100644",
+      "size": 6121,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "docs/architecture/persona-model.md",
+      "destinationPath": "docs/upstream/source/docs/architecture/persona-model.md",
+      "sourceBlobSha": "dbe5a86e655522f3b595eb0b1a09b578450a73f4",
+      "mode": "100644",
+      "size": 6259,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "docs/development/branching.md",
+      "destinationPath": "docs/upstream/source/docs/development/branching.md",
+      "sourceBlobSha": "4f6111d4ec1515d1ffddf2ad3e62f10ce7243a9c",
+      "mode": "100644",
+      "size": 2295,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "docs/development/external-automation-integration-plan.md",
+      "destinationPath": "docs/upstream/source/docs/development/external-automation-integration-plan.md",
+      "sourceBlobSha": "f645c5eaf09114b290f5112ff95b76dfa3e2097c",
+      "mode": "100644",
+      "size": 7500,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "docs/development/release.md",
+      "destinationPath": "docs/upstream/source/docs/development/release.md",
+      "sourceBlobSha": "e1241adbbd2406d9f8000fe8c52ceff0a8cb8a8b",
+      "mode": "100644",
+      "size": 6970,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "docs/development/testing.md",
+      "destinationPath": "docs/upstream/source/docs/development/testing.md",
+      "sourceBlobSha": "9dc1a8b9f5e083f62d665691f8684b4687b3c7e9",
+      "mode": "100644",
+      "size": 4730,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "docs/getting-started/installation.md",
+      "destinationPath": "docs/upstream/source/docs/getting-started/installation.md",
+      "sourceBlobSha": "08454abbf9dd7ee6085fb8930c6c21fbca27e562",
+      "mode": "100644",
+      "size": 6827,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "docs/guides/data-portability.md",
+      "destinationPath": "docs/upstream/source/docs/guides/data-portability.md",
+      "sourceBlobSha": "88e8a02a926e23bc97450a1327d5148883cdb538",
+      "mode": "100644",
+      "size": 14936,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "docs/guides/workflow-packages.md",
+      "destinationPath": "docs/upstream/source/docs/guides/workflow-packages.md",
+      "sourceBlobSha": "eb0a1ac9d57f03f9aba39274a5dcdd8ba52b8e33",
+      "mode": "100644",
+      "size": 7498,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "docs/history/planning/phase-01-f02-closure.md",
+      "destinationPath": "docs/upstream/source/docs/history/planning/phase-01-f02-closure.md",
+      "sourceBlobSha": "97048a4d448dacb63f988992229687454b014218",
+      "mode": "100644",
+      "size": 6277,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "docs/history/planning/phase-02-f03-f11-closure.md",
+      "destinationPath": "docs/upstream/source/docs/history/planning/phase-02-f03-f11-closure.md",
+      "sourceBlobSha": "a11638d46f20842b254841aeefefcc9cf29efef8",
+      "mode": "100644",
+      "size": 5796,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "docs/history/planning/phase-03-f04-f16-closure.md",
+      "destinationPath": "docs/upstream/source/docs/history/planning/phase-03-f04-f16-closure.md",
+      "sourceBlobSha": "59bfb219a4fbdf659512e189678ddfed9323390c",
+      "mode": "100644",
+      "size": 6965,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "docs/history/planning/phase-04-f09-closure.md",
+      "destinationPath": "docs/upstream/source/docs/history/planning/phase-04-f09-closure.md",
+      "sourceBlobSha": "cc1bbe0d82e14a78ddc59cd5e9ae7230cacc9fcc",
+      "mode": "100644",
+      "size": 9749,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "docs/history/planning/phase-05-f05-f06-f10-closure.md",
+      "destinationPath": "docs/upstream/source/docs/history/planning/phase-05-f05-f06-f10-closure.md",
+      "sourceBlobSha": "45336ef4508b135335a2c06e5979dc5e6cb4a49b",
+      "mode": "100644",
+      "size": 10550,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "docs/history/planning/phase-06-f07-f08-native-framing-closure.md",
+      "destinationPath": "docs/upstream/source/docs/history/planning/phase-06-f07-f08-native-framing-closure.md",
+      "sourceBlobSha": "6dbd09be6da12d909848f69b64d00b5eeb0e4dfe",
+      "mode": "100644",
+      "size": 9269,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "docs/history/planning/phase-07-f12-f14-f15-f16-focus-closure.md",
+      "destinationPath": "docs/upstream/source/docs/history/planning/phase-07-f12-f14-f15-f16-focus-closure.md",
+      "sourceBlobSha": "aabdbda646f5c1b7d82ac432e501731353325d25",
+      "mode": "100644",
+      "size": 8013,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "docs/history/planning/phase-08-firefox-acceptance-audit-closure.md",
+      "destinationPath": "docs/upstream/source/docs/history/planning/phase-08-firefox-acceptance-audit-closure.md",
+      "sourceBlobSha": "cc6bbbfc8bb6e829cade822caebcd0df68a2d3f7",
+      "mode": "100644",
+      "size": 46345,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "docs/history/planning/prompts-pcms-integration-readiness.md",
+      "destinationPath": "docs/upstream/source/docs/history/planning/prompts-pcms-integration-readiness.md",
+      "sourceBlobSha": "7b8f88a9ecf195570581e441a3dfd4bae66db0f9",
+      "mode": "100644",
+      "size": 28086,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "docs/history/planning/specification-pcms-integration-readiness.md",
+      "destinationPath": "docs/upstream/source/docs/history/planning/specification-pcms-integration-readiness.md",
+      "sourceBlobSha": "392005edc7a5570c9be13879974f2de67f68f8dc",
+      "mode": "100644",
+      "size": 35963,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "docs/history/releases/v0.5/RELEASE_NOTES_v0.5.0.md",
+      "destinationPath": "docs/upstream/source/docs/history/releases/v0.5/RELEASE_NOTES_v0.5.0.md",
+      "sourceBlobSha": "c8a2374c4cb46c72ffab10c664cab46b02b71323",
+      "mode": "100644",
+      "size": 2655,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "docs/history/releases/v0.5/V0.5.0.md",
+      "destinationPath": "docs/upstream/source/docs/history/releases/v0.5/V0.5.0.md",
+      "sourceBlobSha": "4253719eb67ea4f88a75a56bef994ec22c7b926f",
+      "mode": "100644",
+      "size": 2405,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "docs/history/releases/v0.6/RELEASE_NOTES_v0.6.0.md",
+      "destinationPath": "docs/upstream/source/docs/history/releases/v0.6/RELEASE_NOTES_v0.6.0.md",
+      "sourceBlobSha": "d58885ed856652ec0a36eafa367ab7900c80d175",
+      "mode": "100644",
+      "size": 4758,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "docs/history/releases/v0.6/RELEASE_NOTES_v0.6.1.md",
+      "destinationPath": "docs/upstream/source/docs/history/releases/v0.6/RELEASE_NOTES_v0.6.1.md",
+      "sourceBlobSha": "2eed8f80f72ef70e8cb1ddf71b45ed90e0b81bdd",
+      "mode": "100644",
+      "size": 3837,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "docs/history/releases/v0.6/RELEASE_NOTES_v0.6.2.md",
+      "destinationPath": "docs/upstream/source/docs/history/releases/v0.6/RELEASE_NOTES_v0.6.2.md",
+      "sourceBlobSha": "28b3d1f524ea9a87119fc16d95e73d66a3a931b4",
+      "mode": "100644",
+      "size": 2723,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "docs/history/releases/v0.6/RELEASE_NOTES_v0.6.3.md",
+      "destinationPath": "docs/upstream/source/docs/history/releases/v0.6/RELEASE_NOTES_v0.6.3.md",
+      "sourceBlobSha": "e9040cd0f460d618afb265620adda84879e70603",
+      "mode": "100644",
+      "size": 2142,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "docs/history/releases/v0.6/V0.6.0.md",
+      "destinationPath": "docs/upstream/source/docs/history/releases/v0.6/V0.6.0.md",
+      "sourceBlobSha": "ced8abaa629f4f7d127705c1242abe7b408d84be",
+      "mode": "100644",
+      "size": 5157,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "docs/history/releases/v0.6/V0.6.1.md",
+      "destinationPath": "docs/upstream/source/docs/history/releases/v0.6/V0.6.1.md",
+      "sourceBlobSha": "124ea29e6c487effbd01c9dd81df40b0a7d51466",
+      "mode": "100644",
+      "size": 4843,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "docs/history/releases/v0.6/V0.6.2.md",
+      "destinationPath": "docs/upstream/source/docs/history/releases/v0.6/V0.6.2.md",
+      "sourceBlobSha": "fd956cf529488cc8accc745ad4621d11f0e72539",
+      "mode": "100644",
+      "size": 3798,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "docs/history/releases/v0.6/V0.6.3.md",
+      "destinationPath": "docs/upstream/source/docs/history/releases/v0.6/V0.6.3.md",
+      "sourceBlobSha": "bfd29de2a2d48fa3e7fabd3a219d21d11643d23f",
+      "mode": "100644",
+      "size": 3389,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "docs/history/releases/v0.7/RELEASE_NOTES_v0.7.0.md",
+      "destinationPath": "docs/upstream/source/docs/history/releases/v0.7/RELEASE_NOTES_v0.7.0.md",
+      "sourceBlobSha": "4a3eb15eda098c669851d05e3759ea62832f505a",
+      "mode": "100644",
+      "size": 1716,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "docs/history/releases/v0.7/RELEASE_NOTES_v0.7.4.md",
+      "destinationPath": "docs/upstream/source/docs/history/releases/v0.7/RELEASE_NOTES_v0.7.4.md",
+      "sourceBlobSha": "a90da5f0fdd852d2e07dec288fe5d7361018008f",
+      "mode": "100644",
+      "size": 1936,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "docs/history/releases/v0.7/V0.7.0.md",
+      "destinationPath": "docs/upstream/source/docs/history/releases/v0.7/V0.7.0.md",
+      "sourceBlobSha": "d05ce67eada8b2859581d1f46358459b3a7968f1",
+      "mode": "100644",
+      "size": 3325,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "docs/history/releases/v0.8/PCMS_API.md",
+      "destinationPath": "docs/upstream/source/docs/history/releases/v0.8/PCMS_API.md",
+      "sourceBlobSha": "854b9355a5f9d33e514cf5fe34cdde86190d3f02",
+      "mode": "100644",
+      "size": 11758,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "docs/history/releases/v0.8/RELEASE_NOTES_v0.8.0.md",
+      "destinationPath": "docs/upstream/source/docs/history/releases/v0.8/RELEASE_NOTES_v0.8.0.md",
+      "sourceBlobSha": "7f3f6e37feb3865897d2b096bc3acadf4246fa20",
+      "mode": "100644",
+      "size": 4406,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "docs/history/releases/v0.8/V0.8.0_CURRENT_RELEASE_GATES.md",
+      "destinationPath": "docs/upstream/source/docs/history/releases/v0.8/V0.8.0_CURRENT_RELEASE_GATES.md",
+      "sourceBlobSha": "8d4e2af202df377df56ba9cf2898acf19c069d7e",
+      "mode": "100644",
+      "size": 17759,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "docs/history/releases/v0.8/V0.8.0_ENGINEERING_HANDOFF.md",
+      "destinationPath": "docs/upstream/source/docs/history/releases/v0.8/V0.8.0_ENGINEERING_HANDOFF.md",
+      "sourceBlobSha": "e6356eb802e506a324b845fafadb094aa187bef4",
+      "mode": "100644",
+      "size": 6304,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "docs/history/releases/v0.8/V0.8.0_PCMS_CONTEXT.md",
+      "destinationPath": "docs/upstream/source/docs/history/releases/v0.8/V0.8.0_PCMS_CONTEXT.md",
+      "sourceBlobSha": "9da1b653b090d950f010a58daa2f0c2e574c4ec5",
+      "mode": "100644",
+      "size": 15528,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "docs/history/releases/v0.8/V0.8.0_RELEASE_AUDIT.md",
+      "destinationPath": "docs/upstream/source/docs/history/releases/v0.8/V0.8.0_RELEASE_AUDIT.md",
+      "sourceBlobSha": "8d2ca0ed1644d011957e8da3116b1b063172a21a",
+      "mode": "100644",
+      "size": 19075,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "docs/reference/compatibility.md",
+      "destinationPath": "docs/upstream/source/docs/reference/compatibility.md",
+      "sourceBlobSha": "9dbe1058e855a81d021cce6616457fcdf0f306dd",
+      "mode": "100644",
+      "size": 8783,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "docs/reference/personamonkey-workflow-package.schema.json",
+      "destinationPath": "docs/upstream/source/docs/reference/personamonkey-workflow-package.schema.json",
+      "sourceBlobSha": "30457f17c9e336db5f02436b9935791cfbdc8dcb",
+      "mode": "100644",
+      "size": 4535,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "examples/workflow-packages/mullvad-signal-check/manifest.json",
+      "destinationPath": "docs/upstream/source/examples/workflow-packages/mullvad-signal-check/manifest.json",
+      "sourceBlobSha": "b0da5787556efaac7b2bbdb7034f57c0f072010e",
+      "mode": "100644",
+      "size": 1865,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "examples/workflow-packages/mullvad-signal-check/userscripts/mullvad-status-signal.user.js",
+      "destinationPath": "docs/upstream/source/examples/workflow-packages/mullvad-signal-check/userscripts/mullvad-status-signal.user.js",
+      "sourceBlobSha": "38de52defcf2e1cb8f026f3bf4678275e98b7052",
+      "mode": "100644",
+      "size": 638,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "extension/LICENSE",
+      "destinationPath": "extension/LICENSE",
+      "sourceBlobSha": "14fac913ccf80234b1848540089a3bbcb6e5283d",
+      "mode": "100644",
+      "size": 1056,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/README.md",
+      "destinationPath": "extension/README.md",
+      "sourceBlobSha": "e4616aa9be3c64782a5a1355708f878d877f173c",
+      "mode": "100644",
+      "size": 917,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/background.js",
+      "destinationPath": "docs/upstream/source/extension/background.js",
+      "sourceBlobSha": "4fbbe2125dd6f325acf1c31696af76b35e2ebef9",
+      "mode": "100644",
+      "size": 59871,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "extension/content/userscript-trigger.js",
+      "destinationPath": "extension/content/userscript-trigger.js",
+      "sourceBlobSha": "863de936aaf293f68acd4b79774418550e994e1e",
+      "mode": "100644",
+      "size": 582,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/icons/icon48.png",
+      "destinationPath": "extension/icons/icon48.png",
+      "sourceBlobSha": "5b436961a13f3333acfe6f8ac8ef8250098e090b",
+      "mode": "100644",
+      "size": 409,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/icons/icon96.png",
+      "destinationPath": "extension/icons/icon96.png",
+      "sourceBlobSha": "bbd2427e313b0b26ae5e363a0bae582ceb8cb637",
+      "mode": "100644",
+      "size": 765,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/lib/automation-history.js",
+      "destinationPath": "extension/lib/automation-history.js",
+      "sourceBlobSha": "1a218dace0756ffd466de78fdc82abd2ca082a6b",
+      "mode": "100644",
+      "size": 689,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/lib/backup-crypto.js",
+      "destinationPath": "extension/lib/backup-crypto.js",
+      "sourceBlobSha": "be942232ee619f3943777b9fe0d4c84b38f4665d",
+      "mode": "100644",
+      "size": 2843,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/lib/backup-import.js",
+      "destinationPath": "extension/lib/backup-import.js",
+      "sourceBlobSha": "45d3d381c97a9b782890dfb7dcc790bdc99857ea",
+      "mode": "100644",
+      "size": 11891,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/lib/backup-package.js",
+      "destinationPath": "extension/lib/backup-package.js",
+      "sourceBlobSha": "44a9cd873e2798978281a13234a3467a20033564",
+      "mode": "100644",
+      "size": 15924,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/lib/constants.js",
+      "destinationPath": "extension/lib/constants.js",
+      "sourceBlobSha": "30a3c361a0b486a8577a585cc8af095a8a6b9067",
+      "mode": "100644",
+      "size": 1725,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/lib/cookie-package.js",
+      "destinationPath": "extension/lib/cookie-package.js",
+      "sourceBlobSha": "bf88c148924e95268990d1cd8be2fc6e5e7d50bf",
+      "mode": "100644",
+      "size": 2733,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/lib/diagnostics.js",
+      "destinationPath": "extension/lib/diagnostics.js",
+      "sourceBlobSha": "b22d650e18969acc67c0a4e4bddb89cf60ebf24b",
+      "mode": "100644",
+      "size": 7923,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/lib/external-artifact-integrity.js",
+      "destinationPath": "extension/lib/external-artifact-integrity.js",
+      "sourceBlobSha": "a8da0d6dbf6fa8b080f3af24acd4fd240655cd0f",
+      "mode": "100644",
+      "size": 4293,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/lib/gm-compat.js",
+      "destinationPath": "extension/lib/gm-compat.js",
+      "sourceBlobSha": "fbfa4107f9c02b866efda9814a537b8359ef434d",
+      "mode": "100644",
+      "size": 51754,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/lib/management-integration-protocol.js",
+      "destinationPath": "extension/lib/management-integration-protocol.js",
+      "sourceBlobSha": "d784fa643ce3fd5d7cdff78b612a16accb24c953",
+      "mode": "100644",
+      "size": 45431,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/lib/management-integration.js",
+      "destinationPath": "docs/upstream/source/extension/lib/management-integration.js",
+      "sourceBlobSha": "6abee91e8a83e08083a6dc6f473e3f1b9f5d20a0",
+      "mode": "100644",
+      "size": 146745,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "extension/lib/mullvad-native.js",
+      "destinationPath": "extension/lib/mullvad-native.js",
+      "sourceBlobSha": "0a31c0a8b880caad89cfe9bfe26d8a660acc27f6",
+      "mode": "100644",
+      "size": 5093,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/lib/mullvad-runtime.js",
+      "destinationPath": "extension/lib/mullvad-runtime.js",
+      "sourceBlobSha": "03c03b3039f4dc788e780cdcf60476183b92c746",
+      "mode": "100644",
+      "size": 8613,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/lib/orchestrator.js",
+      "destinationPath": "extension/lib/orchestrator.js",
+      "sourceBlobSha": "f228560ada7938bc6bf73e5c9dff321866b4d7bb",
+      "mode": "100644",
+      "size": 54854,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/lib/package-inspector-client.js",
+      "destinationPath": "extension/lib/package-inspector-client.js",
+      "sourceBlobSha": "f04a17fc472f120040ba8accd600046fb8cfbfec",
+      "mode": "100644",
+      "size": 2239,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/lib/package-limits.js",
+      "destinationPath": "extension/lib/package-limits.js",
+      "sourceBlobSha": "be4d79286e9c503cee6c5129ca551a6cea1b686a",
+      "mode": "100644",
+      "size": 709,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/lib/pcms-client.js",
+      "destinationPath": "extension/lib/pcms-client.js",
+      "sourceBlobSha": "7b259c6a7fd63ba975e1d8dabfef80a5bdb0d5d6",
+      "mode": "100644",
+      "size": 5111,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/lib/pcms-control-plane.js",
+      "destinationPath": "extension/lib/pcms-control-plane.js",
+      "sourceBlobSha": "c92c9d332339b117a18ef944581cc13b921c34c5",
+      "mode": "100644",
+      "size": 39872,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/lib/pcms-events.js",
+      "destinationPath": "extension/lib/pcms-events.js",
+      "sourceBlobSha": "f047ea0dd03c462a080f2651acbaf3ac8920dc5b",
+      "mode": "100644",
+      "size": 2017,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/lib/pcms-pagination.js",
+      "destinationPath": "extension/lib/pcms-pagination.js",
+      "sourceBlobSha": "bced86ed972c71caa4a984cc242740c2cc9c018c",
+      "mode": "100644",
+      "size": 5900,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/lib/pcms-protocol.js",
+      "destinationPath": "extension/lib/pcms-protocol.js",
+      "sourceBlobSha": "137a047195851ecdc6e080b758bf576f8bd19359",
+      "mode": "100644",
+      "size": 15140,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/lib/persona-api.js",
+      "destinationPath": "extension/lib/persona-api.js",
+      "sourceBlobSha": "9ae26c510c7e88b03590813e6dbb30375e205c31",
+      "mode": "100644",
+      "size": 6090,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/lib/persona-cookies.js",
+      "destinationPath": "extension/lib/persona-cookies.js",
+      "sourceBlobSha": "fb4ccd7b109c58e243728d80283c39bd582f27c1",
+      "mode": "100644",
+      "size": 8412,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/lib/persona-identity.js",
+      "destinationPath": "extension/lib/persona-identity.js",
+      "sourceBlobSha": "977572c4b5206283d0b084e6a8108b2e29df3fcb",
+      "mode": "100644",
+      "size": 4604,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/lib/persona-intelligence.js",
+      "destinationPath": "extension/lib/persona-intelligence.js",
+      "sourceBlobSha": "293747407d3f91f78d1fe475868537ed32dca100",
+      "mode": "100644",
+      "size": 8404,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/lib/persona-package.js",
+      "destinationPath": "extension/lib/persona-package.js",
+      "sourceBlobSha": "4dbe37c0f542e7956dd6574f6df4e5358814d190",
+      "mode": "100644",
+      "size": 8293,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/lib/persona-platform.js",
+      "destinationPath": "extension/lib/persona-platform.js",
+      "sourceBlobSha": "6064ca332b66fad97c919b5849e61dfab9467923",
+      "mode": "100644",
+      "size": 20137,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/lib/persona-rotation.js",
+      "destinationPath": "extension/lib/persona-rotation.js",
+      "sourceBlobSha": "ea147165e8b3addf6c94807ad4ac97e5e7cb830e",
+      "mode": "100644",
+      "size": 21696,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/lib/persona-storage.js",
+      "destinationPath": "extension/lib/persona-storage.js",
+      "sourceBlobSha": "44f6d56fa350fcdb044f46cf65fbf9b03257071c",
+      "mode": "100644",
+      "size": 5164,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/lib/personas.js",
+      "destinationPath": "extension/lib/personas.js",
+      "sourceBlobSha": "80f00b8d9f1754aeb53398b39a78c19be75ed776",
+      "mode": "100644",
+      "size": 26604,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/lib/policy.js",
+      "destinationPath": "extension/lib/policy.js",
+      "sourceBlobSha": "e96aadd6be6c220f85d1ec5cf046f9c2d2799257",
+      "mode": "100644",
+      "size": 12458,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/lib/privacy.js",
+      "destinationPath": "extension/lib/privacy.js",
+      "sourceBlobSha": "a6aab01b286ebeec6e065a6f13c64ccfb71f4747",
+      "mode": "100644",
+      "size": 2583,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/lib/recovery-bootstrap.js",
+      "destinationPath": "docs/upstream/source/extension/lib/recovery-bootstrap.js",
+      "sourceBlobSha": "69a1b535372e1d303415e80503d8b3c29afae051",
+      "mode": "100644",
+      "size": 4937,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "extension/lib/recovery-sync.js",
+      "destinationPath": "extension/lib/recovery-sync.js",
+      "sourceBlobSha": "7537c5f0db5320e0494f428f3baa463c5f253d03",
+      "mode": "100644",
+      "size": 19348,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/lib/routing-gate.js",
+      "destinationPath": "extension/lib/routing-gate.js",
+      "sourceBlobSha": "4404a919308bab877937d363bd0ec3425b14d250",
+      "mode": "100644",
+      "size": 2618,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/lib/security-delta.js",
+      "destinationPath": "extension/lib/security-delta.js",
+      "sourceBlobSha": "df41e5008a87193b378c82e2ec2612c08a42512c",
+      "mode": "100644",
+      "size": 6500,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/lib/state-manager.js",
+      "destinationPath": "extension/lib/state-manager.js",
+      "sourceBlobSha": "291f0e9c1a6161857c9df5a71e8d92ed1f549a77",
+      "mode": "100644",
+      "size": 14462,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/lib/storage.js",
+      "destinationPath": "extension/lib/storage.js",
+      "sourceBlobSha": "66c027fff1b38dde473d7be4bed0e27cd908b2aa",
+      "mode": "100644",
+      "size": 16420,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/lib/userscript-runtime.js",
+      "destinationPath": "extension/lib/userscript-runtime.js",
+      "sourceBlobSha": "b0840c35a05142dc6b6b68088252f06129848465",
+      "mode": "100644",
+      "size": 5979,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/lib/userscripts.js",
+      "destinationPath": "extension/lib/userscripts.js",
+      "sourceBlobSha": "22afb4edd36ef0390a97a4f95269da6241ca87f7",
+      "mode": "100644",
+      "size": 6366,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/lib/workflow-model.js",
+      "destinationPath": "extension/lib/workflow-model.js",
+      "sourceBlobSha": "c5d8a2fa6f9c475907e90fdf9cf987a9cb39efd9",
+      "mode": "100644",
+      "size": 9214,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/lib/workflow-package.js",
+      "destinationPath": "extension/lib/workflow-package.js",
+      "sourceBlobSha": "c6e4535e2bd1af59885fe54cfd3650d10d809043",
+      "mode": "100644",
+      "size": 22425,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/lib/zip.js",
+      "destinationPath": "extension/lib/zip.js",
+      "sourceBlobSha": "9f26ff1d8ed1d9c928cfcc88e84e27f2b81da87b",
+      "mode": "100644",
+      "size": 13551,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/manifest.json",
+      "destinationPath": "docs/upstream/source/extension/manifest.json",
+      "sourceBlobSha": "d24bea98aaae52bd0c4776bfdefc7f47b6f19bc6",
+      "mode": "100644",
+      "size": 1538,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "extension/options/automations.js",
+      "destinationPath": "extension/options/automations.js",
+      "sourceBlobSha": "356c14f044b71dca2055ef28d11d1b77c7177723",
+      "mode": "100644",
+      "size": 32211,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/options/confirm-dialog.js",
+      "destinationPath": "extension/options/confirm-dialog.js",
+      "sourceBlobSha": "79ecd3140e8c5b83e2aa9599aaafcffeea04631e",
+      "mode": "100644",
+      "size": 3697,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/options/cookies.js",
+      "destinationPath": "extension/options/cookies.js",
+      "sourceBlobSha": "e5470414472d9a505e969fc35fb6f5fa2f02d9b1",
+      "mode": "100644",
+      "size": 32052,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/options/data-management.js",
+      "destinationPath": "extension/options/data-management.js",
+      "sourceBlobSha": "ce3c66222be1c356fb17ebf5390f6f53f8673886",
+      "mode": "100644",
+      "size": 42421,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/options/diagnostics.js",
+      "destinationPath": "extension/options/diagnostics.js",
+      "sourceBlobSha": "0521a5ebe06f78674998c0ce8ee82d70f676c335",
+      "mode": "100644",
+      "size": 15684,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/options/focus-return.js",
+      "destinationPath": "extension/options/focus-return.js",
+      "sourceBlobSha": "53f638e5f0d03f0a2bc787a5a39a3ae7e1a70b14",
+      "mode": "100644",
+      "size": 392,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/options/integration-settings.js",
+      "destinationPath": "extension/options/integration-settings.js",
+      "sourceBlobSha": "6147984acb32a8490cf714d32dc13cd6bc3f1a2c",
+      "mode": "100644",
+      "size": 7454,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/options/options.css",
+      "destinationPath": "extension/options/options.css",
+      "sourceBlobSha": "ee66a3c938ea352669dd498311e3bfff8098e8b1",
+      "mode": "100644",
+      "size": 47735,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/options/options.html",
+      "destinationPath": "extension/options/options.html",
+      "sourceBlobSha": "7ce9acf007cb97f8f552bb6ea55edd085f4901cd",
+      "mode": "100644",
+      "size": 23518,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/options/options.js",
+      "destinationPath": "extension/options/options.js",
+      "sourceBlobSha": "a29ba739726e2d436a617810d885673b5df8c2f3",
+      "mode": "100644",
+      "size": 69159,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/options/personas-v07.js",
+      "destinationPath": "extension/options/personas-v07.js",
+      "sourceBlobSha": "20991144df46c1cae6fa2847b7d5dfb66b6560be",
+      "mode": "100644",
+      "size": 28054,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/options/profile-ui.js",
+      "destinationPath": "extension/options/profile-ui.js",
+      "sourceBlobSha": "4fc8b55c1d33f70004481500ba1deff823761076",
+      "mode": "100644",
+      "size": 5766,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/options/recovery-ui.js",
+      "destinationPath": "extension/options/recovery-ui.js",
+      "sourceBlobSha": "9019d1a61e1d04a222c8fac01c5f73a2b8e03fc5",
+      "mode": "100644",
+      "size": 485,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/options/security-review.js",
+      "destinationPath": "extension/options/security-review.js",
+      "sourceBlobSha": "cba050267e3fa223f44c3aa8bf985125efa1bce0",
+      "mode": "100644",
+      "size": 1562,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/options/toast.js",
+      "destinationPath": "extension/options/toast.js",
+      "sourceBlobSha": "b310e7e908db3e4572b9cd760064984c52c0b9ea",
+      "mode": "100644",
+      "size": 1755,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/options/v062.css",
+      "destinationPath": "extension/options/v062.css",
+      "sourceBlobSha": "f215c89c728e4eb44de0e022f6cbf916ed00b6e5",
+      "mode": "100644",
+      "size": 19572,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/options/workflow-control.js",
+      "destinationPath": "extension/options/workflow-control.js",
+      "sourceBlobSha": "0307e98c6594a13820ac96129d99377b3a20bdb1",
+      "mode": "100644",
+      "size": 2269,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/pcms/index.html",
+      "destinationPath": "extension/pcms/index.html",
+      "sourceBlobSha": "6b8854cdeb90d3ccbf1b44135bc3b3fa83ace8ca",
+      "mode": "100644",
+      "size": 3894,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/pcms/pcms.css",
+      "destinationPath": "extension/pcms/pcms.css",
+      "sourceBlobSha": "03e4b13d36be04c1a142390eb6b248b293f0b987",
+      "mode": "100644",
+      "size": 10223,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/pcms/pcms.js",
+      "destinationPath": "extension/pcms/pcms.js",
+      "sourceBlobSha": "1b2881f30fa270e67e8b51ce298640dfd9feee3f",
+      "mode": "100644",
+      "size": 27693,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/popup/popup.css",
+      "destinationPath": "docs/upstream/source/extension/popup/popup.css",
+      "sourceBlobSha": "72d4e7d3e1014c85d9041bfc71599ff28f7beef7",
+      "mode": "100644",
+      "size": 5603,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "extension/popup/popup.html",
+      "destinationPath": "docs/upstream/source/extension/popup/popup.html",
+      "sourceBlobSha": "700aff9da9276f87beb88062d1a1df7b1abcf4d7",
+      "mode": "100644",
+      "size": 1573,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "extension/popup/popup.js",
+      "destinationPath": "docs/upstream/source/extension/popup/popup.js",
+      "sourceBlobSha": "dce9344adac4825bae77030cd73b5e99029266fb",
+      "mode": "100644",
+      "size": 8126,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "extension/tests/background-routing-init.test.mjs",
+      "destinationPath": "docs/upstream/source/extension/tests/background-routing-init.test.mjs",
+      "sourceBlobSha": "dce269c4ccfc2e646758c48e950a9d20a52b608f",
+      "mode": "100644",
+      "size": 27576,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "extension/tests/background-smoke.test.mjs",
+      "destinationPath": "extension/tests/background-smoke.test.mjs",
+      "sourceBlobSha": "21fbf7fe17c88f5c7c5709f0bb82aa3277871412",
+      "mode": "100644",
+      "size": 60933,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/backup-import.test.mjs",
+      "destinationPath": "extension/tests/backup-import.test.mjs",
+      "sourceBlobSha": "754a3ab4557da6970b98270a25167f948cc5fb6b",
+      "mode": "100644",
+      "size": 19641,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/backup-package.test.mjs",
+      "destinationPath": "extension/tests/backup-package.test.mjs",
+      "sourceBlobSha": "3ce9bdf1321faddd36ddf29404b6b810746112eb",
+      "mode": "100644",
+      "size": 8854,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/confirm-dialog-focus.test.mjs",
+      "destinationPath": "extension/tests/confirm-dialog-focus.test.mjs",
+      "sourceBlobSha": "6acaeed8352030da1a2ded260316234440b4ad6c",
+      "mode": "100644",
+      "size": 4520,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/cookie-package.test.mjs",
+      "destinationPath": "extension/tests/cookie-package.test.mjs",
+      "sourceBlobSha": "340c28a83190e39567041b33c70bd0cadee4eb7b",
+      "mode": "100644",
+      "size": 3841,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/diagnostics.test.mjs",
+      "destinationPath": "extension/tests/diagnostics.test.mjs",
+      "sourceBlobSha": "a3a4126255bcee039c6c0cfc4de8fa148b4b03dd",
+      "mode": "100644",
+      "size": 5153,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/fixtures/workflow-package-contract.json",
+      "destinationPath": "extension/tests/fixtures/workflow-package-contract.json",
+      "sourceBlobSha": "932dd260d19465173310759cdd0c4c5bdf0d5717",
+      "mode": "100644",
+      "size": 5523,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/focus-return.test.mjs",
+      "destinationPath": "extension/tests/focus-return.test.mjs",
+      "sourceBlobSha": "744ccee2736c39afc9b182cbe269dd698053b4d1",
+      "mode": "100644",
+      "size": 922,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/gm-compat.test.mjs",
+      "destinationPath": "extension/tests/gm-compat.test.mjs",
+      "sourceBlobSha": "e668e768af19d4ae21ab3348ff58c09bcb4edaf7",
+      "mode": "100644",
+      "size": 1825,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/gm-scope.test.mjs",
+      "destinationPath": "extension/tests/gm-scope.test.mjs",
+      "sourceBlobSha": "526d9f5f46ae9fd018567ad1a513f3079f59d011",
+      "mode": "100644",
+      "size": 10457,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/gm-security.test.mjs",
+      "destinationPath": "extension/tests/gm-security.test.mjs",
+      "sourceBlobSha": "4ce8de26de05f76fd3b6166dcd5bcda5dddbc93b",
+      "mode": "100644",
+      "size": 24575,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/gm-signal-bridge.test.mjs",
+      "destinationPath": "extension/tests/gm-signal-bridge.test.mjs",
+      "sourceBlobSha": "782f842a0818b3fa5b05a073ca6ceaec7fff4ae9",
+      "mode": "100644",
+      "size": 1827,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/integration-contract-parity.test.mjs",
+      "destinationPath": "extension/tests/integration-contract-parity.test.mjs",
+      "sourceBlobSha": "fcb4ee12d3d656f81b60e8601fab9689c68324f0",
+      "mode": "100644",
+      "size": 8630,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/integration-lifecycle.test.mjs",
+      "destinationPath": "extension/tests/integration-lifecycle.test.mjs",
+      "sourceBlobSha": "f0b3df44d5235eba4f0457ea341d23c33c05864a",
+      "mode": "100644",
+      "size": 29713,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/management-integration.test.mjs",
+      "destinationPath": "extension/tests/management-integration.test.mjs",
+      "sourceBlobSha": "9d502a50defb0137b5cb226dcd68ebf8442c39bf",
+      "mode": "100644",
+      "size": 138628,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/mullvad-native-smoke.test.mjs",
+      "destinationPath": "extension/tests/mullvad-native-smoke.test.mjs",
+      "sourceBlobSha": "ab22c21ffc454ff7b87e2bf8692e854be675a3cd",
+      "mode": "100644",
+      "size": 4741,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/mullvad-runtime.test.mjs",
+      "destinationPath": "extension/tests/mullvad-runtime.test.mjs",
+      "sourceBlobSha": "4ef2e248330b4cf76b15ec26aa871dec184eb8a6",
+      "mode": "100644",
+      "size": 10213,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/orchestrator-cancel-races.test.mjs",
+      "destinationPath": "extension/tests/orchestrator-cancel-races.test.mjs",
+      "sourceBlobSha": "4025344a71d80165f0a6f6c25270a0dc04b01562",
+      "mode": "100644",
+      "size": 5509,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/orchestrator-cancel.test.mjs",
+      "destinationPath": "extension/tests/orchestrator-cancel.test.mjs",
+      "sourceBlobSha": "1e92c94cf2e76063cc66e9d0015d296928cfb926",
+      "mode": "100644",
+      "size": 3511,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/orchestrator-external-admission.test.mjs",
+      "destinationPath": "extension/tests/orchestrator-external-admission.test.mjs",
+      "sourceBlobSha": "e429bef026199a2cf11b4eb892ea409635128154",
+      "mode": "100644",
+      "size": 4653,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/orchestrator-external-compaction.test.mjs",
+      "destinationPath": "extension/tests/orchestrator-external-compaction.test.mjs",
+      "sourceBlobSha": "1b2ed85f921fb6d5c972c256662b23ef99933fcb",
+      "mode": "100644",
+      "size": 2157,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/orchestrator-external.test.mjs",
+      "destinationPath": "extension/tests/orchestrator-external.test.mjs",
+      "sourceBlobSha": "a01dacc5defad2c25419da2b33d9f68a0101238d",
+      "mode": "100644",
+      "size": 21254,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/orchestrator-limits.test.mjs",
+      "destinationPath": "extension/tests/orchestrator-limits.test.mjs",
+      "sourceBlobSha": "90b74c6e1e2abe9003585f5ae09e5eb8d43992e6",
+      "mode": "100644",
+      "size": 4387,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/orchestrator-recovery.test.mjs",
+      "destinationPath": "extension/tests/orchestrator-recovery.test.mjs",
+      "sourceBlobSha": "1be3af6b931362593ff5e439a6be430fec90002d",
+      "mode": "100644",
+      "size": 3900,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/orchestrator-sequential.test.mjs",
+      "destinationPath": "extension/tests/orchestrator-sequential.test.mjs",
+      "sourceBlobSha": "bf0fe82ac5b00fb85860ff27d5adf8ebd984713e",
+      "mode": "100644",
+      "size": 3388,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/orchestrator.test.mjs",
+      "destinationPath": "extension/tests/orchestrator.test.mjs",
+      "sourceBlobSha": "c9b479b9ae9fb6e09eeb9aace0f273c5442e1356",
+      "mode": "100644",
+      "size": 19969,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/package-inspector.test.mjs",
+      "destinationPath": "extension/tests/package-inspector.test.mjs",
+      "sourceBlobSha": "0a091f8ed8c9ec9f378253ee02b03dca80a9551b",
+      "mode": "100644",
+      "size": 2288,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/pcms-contract-hardening.test.mjs",
+      "destinationPath": "extension/tests/pcms-contract-hardening.test.mjs",
+      "sourceBlobSha": "6b796579f4d34ffe6ecbefe338015ffeae7ba433",
+      "mode": "100644",
+      "size": 5111,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/pcms-control-plane.test.mjs",
+      "destinationPath": "extension/tests/pcms-control-plane.test.mjs",
+      "sourceBlobSha": "e893ac4303cfccb26cffef13ae8772c03d46e358",
+      "mode": "100644",
+      "size": 19599,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/pcms-events-client.test.mjs",
+      "destinationPath": "extension/tests/pcms-events-client.test.mjs",
+      "sourceBlobSha": "53678bd6d6853bd17dad5e42e13b619e0022981c",
+      "mode": "100644",
+      "size": 5159,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/pcms-pagination-cardinality.test.mjs",
+      "destinationPath": "extension/tests/pcms-pagination-cardinality.test.mjs",
+      "sourceBlobSha": "1706d5284852a180cbe48cd5e37405f76f78189e",
+      "mode": "100644",
+      "size": 7240,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/pcms-protocol-hardening.test.mjs",
+      "destinationPath": "extension/tests/pcms-protocol-hardening.test.mjs",
+      "sourceBlobSha": "706620703fb42da3537857fb049933558ede3a56",
+      "mode": "100644",
+      "size": 5517,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/pcms-replay.test.mjs",
+      "destinationPath": "extension/tests/pcms-replay.test.mjs",
+      "sourceBlobSha": "40189acd3d31cc47efc0aed902f0e94c6ecb4233",
+      "mode": "100644",
+      "size": 6449,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/pcms-secret-projection.test.mjs",
+      "destinationPath": "extension/tests/pcms-secret-projection.test.mjs",
+      "sourceBlobSha": "2e39885d75545b5000a2a63c2c939157e1bf9dd7",
+      "mode": "100644",
+      "size": 5025,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/persona-api.test.mjs",
+      "destinationPath": "extension/tests/persona-api.test.mjs",
+      "sourceBlobSha": "bb354f6fd986bb363882980a835f80541f8a66d4",
+      "mode": "100644",
+      "size": 2674,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/persona-cookies.test.mjs",
+      "destinationPath": "extension/tests/persona-cookies.test.mjs",
+      "sourceBlobSha": "633508d74f0be6b87e9e6320a734fa68cb88e5f8",
+      "mode": "100644",
+      "size": 8910,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/persona-event-races.test.mjs",
+      "destinationPath": "extension/tests/persona-event-races.test.mjs",
+      "sourceBlobSha": "efab2b2c2714c3a5dfed99f973d802e3b6235778",
+      "mode": "100644",
+      "size": 7373,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/persona-identity.test.mjs",
+      "destinationPath": "extension/tests/persona-identity.test.mjs",
+      "sourceBlobSha": "225b7ddfca2ac34d83068da3ea45d4af51017763",
+      "mode": "100644",
+      "size": 3534,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/persona-intelligence.test.mjs",
+      "destinationPath": "extension/tests/persona-intelligence.test.mjs",
+      "sourceBlobSha": "5b31a270e31b8b7acd290010f66b34a8587afe47",
+      "mode": "100644",
+      "size": 11051,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/persona-package.test.mjs",
+      "destinationPath": "extension/tests/persona-package.test.mjs",
+      "sourceBlobSha": "5b92fb079d61829aea995e152f6cc383e6d2bbd6",
+      "mode": "100644",
+      "size": 2638,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/persona-platform.test.mjs",
+      "destinationPath": "extension/tests/persona-platform.test.mjs",
+      "sourceBlobSha": "844dcaaa8dc925716cb6fe5d1d96d256427ba7ca",
+      "mode": "100644",
+      "size": 10572,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/persona-rotation-recovery.test.mjs",
+      "destinationPath": "extension/tests/persona-rotation-recovery.test.mjs",
+      "sourceBlobSha": "f7505faf09c4047307ea8ec6438a9a81d7b6ea68",
+      "mode": "100644",
+      "size": 16567,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/persona-storage.test.mjs",
+      "destinationPath": "extension/tests/persona-storage.test.mjs",
+      "sourceBlobSha": "6a97567189a6b558f83bf6ea5b34e0175f6e3273",
+      "mode": "100644",
+      "size": 1739,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/personas-mutation.test.mjs",
+      "destinationPath": "extension/tests/personas-mutation.test.mjs",
+      "sourceBlobSha": "8056cfc56c7bf7527cb7fbd29cc29ae814c60d2f",
+      "mode": "100644",
+      "size": 2321,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/personas.test.mjs",
+      "destinationPath": "extension/tests/personas.test.mjs",
+      "sourceBlobSha": "788102d268ce7861fee70e9d476632837d899230",
+      "mode": "100644",
+      "size": 11060,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/policy.test.mjs",
+      "destinationPath": "extension/tests/policy.test.mjs",
+      "sourceBlobSha": "c943c1f2746adf55980336b4512110390d347b83",
+      "mode": "100644",
+      "size": 5291,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/privacy.test.mjs",
+      "destinationPath": "extension/tests/privacy.test.mjs",
+      "sourceBlobSha": "85a6c980d35ecc1ff6534ee52a273e139e193c83",
+      "mode": "100644",
+      "size": 2496,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/recovery-sync.test.mjs",
+      "destinationPath": "extension/tests/recovery-sync.test.mjs",
+      "sourceBlobSha": "71f987dd9967b091e4d8b0cdb189ececb58efdde",
+      "mode": "100644",
+      "size": 23221,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/security-delta.test.mjs",
+      "destinationPath": "extension/tests/security-delta.test.mjs",
+      "sourceBlobSha": "5970174b9c5857aed3669994c81af73d48c77719",
+      "mode": "100644",
+      "size": 8939,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/state-integrity.test.mjs",
+      "destinationPath": "extension/tests/state-integrity.test.mjs",
+      "sourceBlobSha": "5b64fc8b104fc13d33d9d76825ba8b285923855a",
+      "mode": "100644",
+      "size": 3125,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/state-manager.test.mjs",
+      "destinationPath": "extension/tests/state-manager.test.mjs",
+      "sourceBlobSha": "920d71bd64318d88f8de55b21dc831b92ff3f9f9",
+      "mode": "100644",
+      "size": 18706,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/storage-compat.test.mjs",
+      "destinationPath": "extension/tests/storage-compat.test.mjs",
+      "sourceBlobSha": "404008c7a1c71baa92a1f2abbf6ee71b523a558b",
+      "mode": "100644",
+      "size": 3941,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/toast.test.mjs",
+      "destinationPath": "extension/tests/toast.test.mjs",
+      "sourceBlobSha": "ddc84b7c1cb868b9a4dc86703003e94ac559f2f1",
+      "mode": "100644",
+      "size": 1414,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/userscript-runtime.test.mjs",
+      "destinationPath": "extension/tests/userscript-runtime.test.mjs",
+      "sourceBlobSha": "49bd838c1a438b62fabbb9d0d588f1fe32a64266",
+      "mode": "100644",
+      "size": 7342,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/userscripts.test.mjs",
+      "destinationPath": "extension/tests/userscripts.test.mjs",
+      "sourceBlobSha": "b1471faf68d333d221db7eca413f9273aae30ccc",
+      "mode": "100644",
+      "size": 5954,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/v062-ui-bootstrap.test.mjs",
+      "destinationPath": "extension/tests/v062-ui-bootstrap.test.mjs",
+      "sourceBlobSha": "60b2e4c5c412f7f8e832d5c1a0504c59d0315a75",
+      "mode": "100644",
+      "size": 1414,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/workflow-control.test.mjs",
+      "destinationPath": "extension/tests/workflow-control.test.mjs",
+      "sourceBlobSha": "573f914cab118957cb7772a8b4396f7ef5543422",
+      "mode": "100644",
+      "size": 3106,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/workflow-model.test.mjs",
+      "destinationPath": "extension/tests/workflow-model.test.mjs",
+      "sourceBlobSha": "8c197224befab849f28a50155af42415121766e0",
+      "mode": "100644",
+      "size": 9116,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/workflow-package-schema.test.mjs",
+      "destinationPath": "extension/tests/workflow-package-schema.test.mjs",
+      "sourceBlobSha": "e11d81494e6f4d2acac83f655f89af079dd7605c",
+      "mode": "100644",
+      "size": 8545,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/workflow-package.test.mjs",
+      "destinationPath": "extension/tests/workflow-package.test.mjs",
+      "sourceBlobSha": "48abc7c72132284ae9c1d4e8cadab7bf9492f528",
+      "mode": "100644",
+      "size": 6444,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/workflow-route-validation.test.mjs",
+      "destinationPath": "extension/tests/workflow-route-validation.test.mjs",
+      "sourceBlobSha": "41a2fc80ef1267bebe2a89d00cd8b2f4edba964e",
+      "mode": "100644",
+      "size": 1697,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/tests/zip.test.mjs",
+      "destinationPath": "extension/tests/zip.test.mjs",
+      "sourceBlobSha": "31951677597ec0ec63ac204d7d1dcc262d9e64ca",
+      "mode": "100644",
+      "size": 7373,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "extension/workers/package-inspector.js",
+      "destinationPath": "extension/workers/package-inspector.js",
+      "sourceBlobSha": "71cd5f334833f9a821605f794a346be483093490",
+      "mode": "100644",
+      "size": 462,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "install.sh",
+      "destinationPath": "docs/upstream/source/install.sh",
+      "sourceBlobSha": "14a7daa41f90f9a0378659a75531965653320850",
+      "mode": "100755",
+      "size": 24008,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "native/backup_configs.py",
+      "destinationPath": "native/backup_configs.py",
+      "sourceBlobSha": "aa12786c7d25143458880201e2db18ddf8bf4ad5",
+      "mode": "100755",
+      "size": 2599,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "native/com.persona.mullvad_router.json",
+      "destinationPath": "native/com.persona.mullvad_router.json",
+      "sourceBlobSha": "3d23100468a9512843ddd5b71a2627f934cb8168",
+      "mode": "100644",
+      "size": 268,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "native/native_host.py",
+      "destinationPath": "native/native_host.py",
+      "sourceBlobSha": "d15a10fce25527cfb8ae93d7dfa7dce6a2281476",
+      "mode": "100644",
+      "size": 2809,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "native/persona-mullvad-router.service.in",
+      "destinationPath": "native/persona-mullvad-router.service.in",
+      "sourceBlobSha": "55bb2af323c578d02ef661029664531e7fde8dc3",
+      "mode": "100644",
+      "size": 1107,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "native/routerctl.py",
+      "destinationPath": "native/routerctl.py",
+      "sourceBlobSha": "f873d588e1b625899ab76b8afd9c25ded37f8e47",
+      "mode": "100755",
+      "size": 1574,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "native/routerd.py",
+      "destinationPath": "native/routerd.py",
+      "sourceBlobSha": "345911a056c4a01db86e6a805d49b7d44233e7a1",
+      "mode": "100755",
+      "size": 54354,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "native/sanitize_configs.py",
+      "destinationPath": "native/sanitize_configs.py",
+      "sourceBlobSha": "297e06bd909ca9dd02d31bd3a4b1550c8b9bd825",
+      "mode": "100644",
+      "size": 6476,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "package.json",
+      "destinationPath": "docs/upstream/source/package.json",
+      "sourceBlobSha": "30c4fbc8a9bb1f87229ecf3d91d1a8ec748c7048",
+      "mode": "100644",
+      "size": 993,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "scripts/build-extension.mjs",
+      "destinationPath": "docs/upstream/source/scripts/build-extension.mjs",
+      "sourceBlobSha": "512c437e4a07400e8553340ccfb12e5c7adfae53",
+      "mode": "100644",
+      "size": 3582,
+      "disposition": "snapshot-exact"
+    },
+    {
+      "sourcePath": "scripts/build-workflow-examples.mjs",
+      "destinationPath": "scripts/build-workflow-examples.mjs",
+      "sourceBlobSha": "8e36cc003cd166a660865b1e321f85455260a00c",
+      "mode": "100644",
+      "size": 1387,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "scripts/capture-browser-screenshot.mjs",
+      "destinationPath": "scripts/capture-browser-screenshot.mjs",
+      "sourceBlobSha": "0fe6d57d40b2e3abc90576a9c8f15c53c59261c8",
+      "mode": "100644",
+      "size": 1856,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "scripts/librewolf_prefs.py",
+      "destinationPath": "scripts/librewolf_prefs.py",
+      "sourceBlobSha": "5e6544aafb5b3c4b82dfdd6531f360cf75ab1b7f",
+      "mode": "100644",
+      "size": 11781,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "scripts/test-build-reproducibility.mjs",
+      "destinationPath": "scripts/test-build-reproducibility.mjs",
+      "sourceBlobSha": "f5d2d104935e9a36934d3d464ceadf510ae4d105",
+      "mode": "100644",
+      "size": 1586,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "scripts/test-data-management-browser.mjs",
+      "destinationPath": "scripts/test-data-management-browser.mjs",
+      "sourceBlobSha": "bae95cf8e6bd43241342bef8349c923f55c9948d",
+      "mode": "100644",
+      "size": 50726,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "scripts/test-extension.mjs",
+      "destinationPath": "scripts/test-extension.mjs",
+      "sourceBlobSha": "708c205e883738466f243f4ebe481f77124ddc3f",
+      "mode": "100644",
+      "size": 879,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "scripts/test-options-browser.mjs",
+      "destinationPath": "scripts/test-options-browser.mjs",
+      "sourceBlobSha": "d591ab7ac4579848997d7ffc45399cd711cf78d0",
+      "mode": "100644",
+      "size": 52774,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "scripts/test-pcms-browser.mjs",
+      "destinationPath": "scripts/test-pcms-browser.mjs",
+      "sourceBlobSha": "d220e032782a86c43d80fa2f53612969433824c1",
+      "mode": "100644",
+      "size": 22862,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "scripts/test-popup-browser.mjs",
+      "destinationPath": "scripts/test-popup-browser.mjs",
+      "sourceBlobSha": "a74b340cdd279a1fec22488863d2df66d834f072",
+      "mode": "100644",
+      "size": 15812,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "scripts/test-repository.mjs",
+      "destinationPath": "scripts/test-repository.mjs",
+      "sourceBlobSha": "6ba2c4d419905e6df0e21ea0f573e7a63124eaab",
+      "mode": "100755",
+      "size": 17806,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "scripts/validate-extension.mjs",
+      "destinationPath": "scripts/validate-extension.mjs",
+      "sourceBlobSha": "b9a52897962d6d80eaf855c83b34682a09296e1a",
+      "mode": "100644",
+      "size": 3215,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "scripts/validate_xpi.py",
+      "destinationPath": "scripts/validate_xpi.py",
+      "sourceBlobSha": "2e6bf5ebbc0a2f954bb615514bf78d40b4ffacb4",
+      "mode": "100644",
+      "size": 4287,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "tests/test_bridge_backup.py",
+      "destinationPath": "tests/test_bridge_backup.py",
+      "sourceBlobSha": "23cebb837a070de71af5a030255826fd1dd979cc",
+      "mode": "100644",
+      "size": 3391,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "tests/test_forwarder_auth.py",
+      "destinationPath": "tests/test_forwarder_auth.py",
+      "sourceBlobSha": "54e963e54e105e81202bfa13a225126662dcb331",
+      "mode": "100644",
+      "size": 14689,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "tests/test_installer_upgrade.py",
+      "destinationPath": "tests/test_installer_upgrade.py",
+      "sourceBlobSha": "2e87bd83eae7961dbdbb9c9dba99fdab1ed8e862",
+      "mode": "100644",
+      "size": 3963,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "tests/test_native.py",
+      "destinationPath": "tests/test_native.py",
+      "sourceBlobSha": "c6dc70ca38b4ee893fafb457e1ea12a9b1096402",
+      "mode": "100644",
+      "size": 23294,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "tests/test_native_framing.py",
+      "destinationPath": "tests/test_native_framing.py",
+      "sourceBlobSha": "e509a7caae5eecd37da5a29392539de37baeccb6",
+      "mode": "100644",
+      "size": 4476,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "tests/test_native_service_hardening.py",
+      "destinationPath": "tests/test_native_service_hardening.py",
+      "sourceBlobSha": "dfe934e451f829088195feb066268077f820d64c",
+      "mode": "100644",
+      "size": 7674,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "tests/test_release.py",
+      "destinationPath": "tests/test_release.py",
+      "sourceBlobSha": "1c00f948aee6656edbe82c265a426558a2b56fe7",
+      "mode": "100644",
+      "size": 19817,
+      "disposition": "root-exact"
+    },
+    {
+      "sourcePath": "uninstall.sh",
+      "destinationPath": "docs/upstream/source/uninstall.sh",
+      "sourceBlobSha": "a35f24e17a1ab667e7b8122005f573e00141ed4d",
+      "mode": "100755",
+      "size": 2581,
+      "disposition": "snapshot-exact"
+    }
+  ],
+  "derivativeOverrides": [
+    {
+      "destinationPath": "extension/background.js",
+      "upstreamBlobSha": "4fbbe2125dd6f325acf1c31696af76b35e2ebef9",
+      "derivativeBlobSha": "aeaf680d363b621bfe438197a9af44b3ecce1d13",
+      "derivativeSize": 61623,
+      "reason": "P025 same-extension PCMS bridge into the existing Integration-v1 dispatcher; P028 in-process internal Persona Broker endpoint registration and PCMS UI request hand-off to the PCMS background entry"
+    },
+    {
+      "destinationPath": "extension/lib/management-integration.js",
+      "upstreamBlobSha": "6abee91e8a83e08083a6dc6f473e3f1b9f5d20a0",
+      "derivativeBlobSha": "3ad8e5cf27ff64aae06462288144dc3a6ccf9bc7",
+      "derivativeSize": 148045,
+      "reason": "P025 built-in PCMS Integration-v1 principal with existing operation-level policy gates preserved"
+    },
+    {
+      "destinationPath": "extension/manifest.json",
+      "upstreamBlobSha": "d24bea98aaae52bd0c4776bfdefc7f47b6f19bc6",
+      "derivativeBlobSha": "777a1dc01cdc7ac8a98c863160b4f6c308591e90",
+      "derivativeSize": 1988,
+      "reason": "P025 corrective release makes PersonaMonkey PCMS the primary installed product and routes Preferences to PCMS; P030 declares the controller and module-UI sandbox pages and their sandbox CSP (ADR-003)"
+    },
+    {
+      "destinationPath": "extension/popup/popup.html",
+      "upstreamBlobSha": "700aff9da9276f87beb88062d1a1df7b1abcf4d7",
+      "derivativeBlobSha": "825e32f9212296ae0aac3118f47e45d3f020e145",
+      "derivativeSize": 2211,
+      "reason": "P035 popup status and account navigation extend PersonaMonkey's fixed-width ESR-safe toolbar surface"
+    },
+    {
+      "destinationPath": "scripts/build-extension.mjs",
+      "upstreamBlobSha": "512c437e4a07400e8553340ccfb12e5c7adfae53",
+      "derivativeBlobSha": "48b6c20235c19f10db3221bbf2546800bb38e357",
+      "derivativeSize": 6056,
+      "reason": "P025 release packaging relocates accepted top-level PCMS feature-module imports into the XPI root and fails the build on broken packaged PCMS module edges"
+    },
+    {
+      "destinationPath": "extension/popup/popup.css",
+      "upstreamBlobSha": "72d4e7d3e1014c85d9041bfc71599ff28f7beef7",
+      "derivativeBlobSha": "2012bbf11c101e1de002c015bc93f879f93bc825",
+      "derivativeSize": 6494,
+      "reason": "P035 popup status and account navigation extend PersonaMonkey's fixed-width ESR-safe toolbar surface"
+    },
+    {
+      "destinationPath": "extension/lib/recovery-bootstrap.js",
+      "upstreamBlobSha": "69a1b535372e1d303415e80503d8b3c29afae051",
+      "derivativeBlobSha": "2d1aa89a9eb903289f862b50f4cc5922f1d2542e",
+      "derivativeSize": 5282,
+      "reason": "P028 static PCMS background entry import after the fail-closed routing gate; Core work waits for PersonaMonkey bootstrap (ADR-002)"
+    },
+    {
+      "destinationPath": "extension/tests/background-routing-init.test.mjs",
+      "upstreamBlobSha": "dce269c4ccfc2e646758c48e950a9d20a52b608f",
+      "derivativeBlobSha": "77c1971ee5aa48317da978ee7a25f0c22b5bea8e",
+      "derivativeSize": 28222,
+      "reason": "P028 regression evidence: the PCMS background entry's synchronous message listener precedes PersonaMonkey's, after the routing guards"
+    },
+    {
+      "destinationPath": "extension/popup/popup.js",
+      "upstreamBlobSha": "dce9344adac4825bae77030cd73b5e99029266fb",
+      "derivativeBlobSha": "cd471af4f384692ae6a96dedee33257417170fee",
+      "derivativeSize": 12940,
+      "reason": "P035 preserves the frozen PersonaMonkey popup source while adding read-only PCMS status and account deep linking"
+    }
+  ]
+}

@@ -1,0 +1,116 @@
+{
+    "schemaVersion": 1,
+    "phase": "P030",
+    "commitSha": "b0ec91b327b919962dd752313ada5998a3ef5d5e",
+    "workflowRun": "37688575913",
+    "version": "154.0b10",
+    "artifactSha256": "681913108bba655d7ec6fadfac2731141b23e48dca88d1988a4d95a6bdaff164",
+    "productXpiSha256": "688f74054f904940810326eccbc8e5601d5e4ec38e72a0af31425b9bed36d382",
+    "osContentSandboxDisabled": false,
+    "checks": {
+        "floorAvailableInPinnedBuild": true,
+        "pinnedBuildAcceptsSandboxManifest": true,
+        "declaredSandboxPagesAreIsolatedBackgroundFrames": true,
+        "backgroundFrameIgnoresNonParentBootstrap": true,
+        "runtimeControllerExecutesInPackagedSandboxPage": true,
+        "ungrantedCapabilityDeniedAndNoAmbientAuthority": true,
+        "framesDisposedOnUnload": true
+    },
+    "facts": {
+        "browser": {
+            "name": "Firefox",
+            "version": "154.0"
+        },
+        "pcms/sandbox/controller.html": {
+            "hostKind": "background",
+            "backgroundUrl": "moz-extension://3fc75644-e88e-49eb-9d6a-e1904b855e07/_generated_background_page.html",
+            "framesBefore": 0,
+            "frameInHostDocument": true,
+            "contentDocumentNull": true,
+            "contentWindowDocumentThrows": true,
+            "framesAfterRemove": 0
+        },
+        "pcms/sandbox/module-ui.html": {
+            "hostKind": "background",
+            "backgroundUrl": "moz-extension://3fc75644-e88e-49eb-9d6a-e1904b855e07/_generated_background_page.html",
+            "framesBefore": 0,
+            "frameInHostDocument": true,
+            "contentDocumentNull": true,
+            "contentWindowDocumentThrows": true,
+            "framesAfterRemove": 0
+        },
+        "foreignBootstrap": {
+            "hostKind": "background",
+            "backgroundUrl": "moz-extension://3fc75644-e88e-49eb-9d6a-e1904b855e07/_generated_background_page.html",
+            "framesBefore": 0,
+            "frameInHostDocument": true,
+            "contentDocumentNull": true,
+            "contentWindowDocumentThrows": true,
+            "foreignBootstrapDelivery": "posted",
+            "foreignBootstrapIgnored": true,
+            "framesAfterRemove": 0
+        },
+        "controllerRun": {
+            "hostKind": "page",
+            "backgroundUrl": "moz-extension://3fc75644-e88e-49eb-9d6a-e1904b855e07/_generated_background_page.html",
+            "framesBefore": 0,
+            "frameInHostDocument": true,
+            "contentDocumentNull": true,
+            "contentWindowDocumentThrows": true,
+            "bootstrapAttempts": [],
+            "bootstrapTransfer": "sandbox-array",
+            "bootstrapped": true,
+            "load": {
+                "version": 1,
+                "sessionId": "p030-03f32aefccd27",
+                "type": "response",
+                "requestId": "req-1",
+                "ok": true,
+                "result": {
+                    "nonce": "113b24e74e66ca8ea67540dd6ee62c5f",
+                    "computed": 42,
+                    "protocolVersion": 1,
+                    "browserAbsent": true,
+                    "chromeAbsent": true,
+                    "selfOrigin": "null",
+                    "parentDocumentBlocked": true,
+                    "networkBlocked": true,
+                    "indexedDbBlocked": true,
+                    "localStorageBlocked": true,
+                    "extensionImage": "loaded",
+                    "remoteImage": "blocked"
+                }
+            },
+            "denied": {
+                "version": 1,
+                "sessionId": "p030-03f32aefccd27",
+                "type": "response",
+                "requestId": "req-2",
+                "ok": true,
+                "result": {
+                    "denied": true,
+                    "code": "PCMS_SANDBOX_CAPABILITY_DENIED"
+                }
+            },
+            "capabilityCalls": [
+                "module.storage.write"
+            ],
+            "dispose": {
+                "version": 1,
+                "sessionId": "p030-03f32aefccd27",
+                "type": "response",
+                "requestId": "req-3",
+                "ok": true,
+                "result": {
+                    "disposed": true
+                }
+            },
+            "framesAfterRemove": 0
+        }
+    },
+    "unload": {
+        "state": "stopped",
+        "mode": "firefox-test-hook"
+    },
+    "passed": true
+}

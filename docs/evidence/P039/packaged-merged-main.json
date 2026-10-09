@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "phase": "P039",
+  "commitSha": "29f2fcec3a19a661abf871d779e57634650dfba1",
+  "workflowRun": "37811636104",
+  "version": "154.0b10",
+  "artifactSha256": "681913108bba655d7ec6fadfac2731141b23e48dca88d1988a4d95a6bdaff164",
+  "productXpiSha256": "a9bf90b68126cfb0973eb38b301c94556ddd730ba6fb643264a8093996f356e3",
+  "checks": {
+    "realExecutionArtifactVerifiedExactPanels": true,
+    "zeroTabAlarmWake": true,
+    "oldestFirstLimitAndDurableSpacing": true,
+    "realFixtureDriftPausedWithoutOverwrite": true,
+    "oneChallengeTaskStopsSweep": true,
+    "hashOnlyDurableState": true,
+    "challengeSurvivesUnloadWithoutDuplicate": true
+  },
+  "facts": {
+    "networkIsolation": {
+      "mode": "startup-rejecting-proxy-and-parent-http-observer",
+      "allowedOrigin": "http://127.0.0.1:33457"
+    },
+    "fixture": {
+      "copiedProductFiles": 161,
+      "productTreeDigest": "c3b38efbcc5e4704c0ee8498b5cf93ab33c69bfa9226be7d6729746189aa3067",
+      "fixtureXpiSha256": "51e4cde556151fd6c47b3a73bf52897fd31a5e2760d1214077761e01e7fe4eaf",
+      "alarmDeliveryDelayMs": 3000
+    },
+    "seeded": {
+      "baselineHash": "6f1f8688aef111c3260ce6ca4f6a163424a7509654c509ff59b6d91125f555a9",
+      "queue": [
+        "gen:beta",
+        "gen:gamma"
+      ],
+      "dueAt": "2026-10-08T16:49:26.972Z"
+    },
+    "unload": {
+      "state": "stopped",
+      "mode": "firefox-test-hook"
+    },
+    "zeroTabInterval": {
+      "unloadedAt": "2026-10-08T16:48:52.070Z",
+      "probeOpenedAt": "2026-10-08T16:49:42.731Z",
+      "completionReceiptAt": "2026-10-08T16:49:42.659Z"
+    },
+    "after": {
+      "reads": [
+        {
+          "at": "2026-10-08T16:48:51.688Z",
+          "slug": "alpha"
+        },
+        {
+          "at": "2026-10-08T16:49:29.311Z",
+          "slug": "beta"
+        },
+        {
+          "at": "2026-10-08T16:49:42.346Z",
+          "slug": "gamma"
+        }
+      ],
+      "starts": [
+        {
+          "at": "2026-10-08T16:48:51.999Z",
+          "wake": "COLD"
+        },
+        {
+          "at": "2026-10-08T16:49:29.266Z",
+          "wake": "WARM"
+        }
+      ],
+      "queue": [
+        "gen:gamma"
+      ],
+      "paused": {
+        "paused": true,
+        "pauseReason": "DRIFT"
+      },
+      "taskCount": 1
+    }
+  },
+  "sourceState": "actions-checkout",
+  "contentSandboxDisabled": false,
+  "worktreeDirty": false,
+  "passed": true
+}

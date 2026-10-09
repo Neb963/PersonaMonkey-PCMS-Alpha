@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "phase": "P039",
+  "commitSha": "4d2d4a2a40bfea8cd6b11874c3a35c00102ba455",
+  "workflowRun": "37809824252",
+  "version": "154.0b10",
+  "artifactSha256": "681913108bba655d7ec6fadfac2731141b23e48dca88d1988a4d95a6bdaff164",
+  "productXpiSha256": "a9bf90b68126cfb0973eb38b301c94556ddd730ba6fb643264a8093996f356e3",
+  "checks": {
+    "realExecutionArtifactVerifiedExactPanels": true
+  },
+  "facts": {
+    "networkIsolation": {
+      "mode": "startup-rejecting-proxy-and-parent-http-observer",
+      "allowedOrigin": "http://127.0.0.1:46085"
+    },
+    "fixture": {
+      "copiedProductFiles": 161,
+      "productTreeDigest": "c3b38efbcc5e4704c0ee8498b5cf93ab33c69bfa9226be7d6729746189aa3067",
+      "fixtureXpiSha256": "0dfc1a1ead2dc8c9ab837af796d80c92d543e532db8459d65fcc6f6719866980"
+    },
+    "seeded": {
+      "baselineHash": "6f1f8688aef111c3260ce6ca4f6a163424a7509654c509ff59b6d91125f555a9",
+      "queue": [
+        "gen:beta",
+        "gen:gamma"
+      ],
+      "dueAt": "2026-10-08T16:35:29.369Z"
+    },
+    "unload": {
+      "state": "stopped",
+      "mode": "firefox-test-hook"
+    }
+  },
+  "sourceState": "actions-checkout",
+  "contentSandboxDisabled": false,
+  "worktreeDirty": false,
+  "passed": false,
+  "failure": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert.ok(after.reads.slice(1).every(r=>Date.parse(r.at)>unloadedAt&&Date.parse(r.at)<probeOpenedAt))\n\n    at file:///home/runner/work/persona-monkey-pcms/persona-monkey-pcms/tests/pcms/p039/packaged.mjs:128:10\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)",
+  "browserStderr": "[4481] Sandbox: CanCreateUserNamespace() unshare(CLONE_NEWPID): EPERM\n*** You are running in headless mode.\nJavaScript error: chrome://remote/content/marionette/actors/MarionetteCommandsChild.sys.mjs, line 166: InactiveActor: Actor is no longer active\nJavaScript error: moz-extension://971f32e6-465a-46a6-9d91-5c5c29ac5649/options/data-management.js, line 198: TypeError: can't access property \"state\", snap is undefined\nJavaScript error: chrome://remote/content/marionette/actors/MarionetteCommandsChild.sys.mjs, line 166: InactiveActor: Actor is no longer active\nJavaScript error: resource:///modules/backup/BackupService.sys.mjs, line 4401: NotAllowedError: PathUtils.join: PathUtils does not support empty paths\n",
+  "fixtureRequests": [
+    {
+      "path": "/alpha",
+      "at": "2026-10-08T16:34:54.176Z"
+    },
+    {
+      "path": "/favicon.ico",
+      "at": "2026-10-08T16:34:54.223Z"
+    },
+    {
+      "path": "/beta",
+      "at": "2026-10-08T16:35:32.139Z"
+    },
+    {
+      "path": "/gamma",
+      "at": "2026-10-08T16:35:42.189Z"
+    }
+  ],
+  "fixtureConsole": [],
+  "currentUrl": "moz-extension://41fc1db1-8253-4dad-87bf-73e3df86b815/pcms/p039/probe.html",
+  "fixtureTaskErrors": [
+    {
+      "state": "completed",
+      "error": null
+    },
+    {
+      "state": "completed",
+      "error": null
+    },
+    {
+      "state": "completed",
+      "error": null
+    }
+  ],
+  "fixtureMetadata": {
+    "profiles": [
+      {
+        "id": "firefox-container-6",
+        "managed": true,
+        "routeId": "__direct__",
+        "blockLocalNetwork": false
+      }
+    ],
+    "scripts": [
+      {
+        "id": "external-artifact-654993566cfc05c42c65c92d6887b87a",
+        "name": "PCMS Perchance fixture observation",
+        "enabled": true,
+        "runAt": "document_idle",
+        "matches": [
+          "http://127.0.0.1/*"
+        ],
+        "profileIds": [
+          "firefox-container-6"
+        ],
+        "autoRun": false
+      }
+    ]
+  }
+}

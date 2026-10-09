@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "phaseId": "P042",
+  "claimId": "CLM-P042-001",
+  "claimEpoch": 1,
+  "state": "ACCEPTED",
+  "recordedAt": "2026-10-08T19:33:00.000Z",
+  "repository": "Neb963/persona-monkey-pcms",
+  "acceptanceIds": ["A042-01", "A042-02", "A042-03"],
+  "states": {
+    "COMMITTED": "2e2de4e9f84c4cb41145ba2d48a905cecc8f17f8",
+    "CI_VERIFIED": { "headSha": "2e2de4e9f84c4cb41145ba2d48a905cecc8f17f8", "runs": [37830200398, 37830200413] },
+    "INTEGRATION_VERIFIED": { "integrationCandidateSha": "ebeb38bff205bb81d54e1901a2314310c8b074cb", "runs": [37830200398, 37830200413] },
+    "MERGED": "51bac5b402b30ce7c2ee9f69f090d642481065e2",
+    "ACCEPTED": { "mergedMainSha": "51bac5b402b30ce7c2ee9f69f090d642481065e2", "runs": [37830815327, 37830815141] }
+  },
+  "claimPR": {
+    "number": 69,
+    "url": "https://github.com/Neb963/persona-monkey-pcms/pull/69",
+    "headSha": "f4e8212e69b4992e45a7913206d3d3d3f9cb3858",
+    "mergeSha": "5532b90873fc158e96e9fc9ed6111ec55b5e22df"
+  },
+  "productPR": {
+    "number": 70,
+    "url": "https://github.com/Neb963/persona-monkey-pcms/pull/70",
+    "baseSha": "5532b90873fc158e96e9fc9ed6111ec55b5e22df",
+    "headSha": "2e2de4e9f84c4cb41145ba2d48a905cecc8f17f8",
+    "integrationCandidateSha": "ebeb38bff205bb81d54e1901a2314310c8b074cb",
+    "mergeSha": "51bac5b402b30ce7c2ee9f69f090d642481065e2",
+    "workflowRuns": [
+      { "id": 37830200398, "name": "verify", "event": "pull_request", "conclusion": "success",
+        "url": "https://github.com/Neb963/persona-monkey-pcms/actions/runs/37830200398" },
+      { "id": 37830200413, "name": "firefox-developer-edition", "event": "pull_request", "conclusion": "success",
+        "url": "https://github.com/Neb963/persona-monkey-pcms/actions/runs/37830200413",
+        "p042PackagedJob": 113493259221, "p042ReportArtifact": 11573261087, "jobs": 11, "failedJobs": 0 }
+    ]
+  },
+  "mergedMain": {
+    "sha": "51bac5b402b30ce7c2ee9f69f090d642481065e2",
+    "productXpiSha256": "bbe084a0f3495a1a505f87f69c5a29cfdfd538bf15ec35afee35d34b9ae6b5f1",
+    "workflowRuns": [
+      { "id": 37830815327, "name": "verify", "event": "push", "attempt": 1, "conclusion": "success",
+        "url": "https://github.com/Neb963/persona-monkey-pcms/actions/runs/37830815327" },
+      { "id": 37830815141, "name": "firefox-developer-edition", "event": "push", "attempt": 2, "conclusion": "success",
+        "url": "https://github.com/Neb963/persona-monkey-pcms/actions/runs/37830815141",
+        "p042PackagedJob": 113495365721, "jobs": 11, "failedJobsFinalAttempt": 0 }
+    ],
+    "initialFailure": {
+      "attempt": 1,
+      "job": "p031-packaged",
+      "jobId": 113495366245,
+      "reportArtifact": 11574050910,
+      "error": "Timed out: module schedule wakes the unloaded background (20 s wake window after the P031 module tick deadline)",
+      "assessment": "Inherited P031 zero-tab wake timing; identical product XPI passed the same job on PR run 37830200413. With Automatic off P042 declares no timers, and the P031 test configures no repository, so the P042 cycle hook does not run. One re-run of the failed job only, as the CI policy allows.",
+      "rerun": { "attempt": 2, "jobId": 113499143885, "conclusion": "success" }
+    }
+  },
+  "browser": {
+    "product": "firefox-developer-edition",
+    "version": "154.0b10",
+    "archiveSha256": "681913108bba655d7ec6fadfac2731141b23e48dca88d1988a4d95a6bdaff164",
+    "contentSandboxDisabled": false
+  },
+  "realPerchance": "unattended capability disabled; production composes no automation profile (P044 confirms live)"
+}

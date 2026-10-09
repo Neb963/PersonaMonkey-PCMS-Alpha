@@ -1,0 +1,54 @@
+/* Core UI kit for sandboxed module pages (pcms.ui-contribution/v1 §5): the same tokens as the
+   dashboard so runtime module pages look like built-ins, light and dark aware. */
+:root {
+  color-scheme: light dark;
+  --bg: #f7f8fa;
+  --surface: #ffffff;
+  --text: #1d2330;
+  --muted: #5d6676;
+  --line: #d9dee7;
+  --accent: #2f5bd3;
+  --ok: #1f7a43;
+  --info: #2f5bd3;
+  --active: #6a4fc4;
+  --waiting: #9a6a00;
+  --warning: #b45309;
+  --error: #b42318;
+  --uncertain: #8a3ffc;
+  --held: #555f73;
+  --unavailable: #6b7280;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #12151c;
+    --surface: #1a1f29;
+    --text: #e6e9ef;
+    --muted: #a3acbb;
+    --line: #2c3442;
+    --accent: #7ea0ff;
+  }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font: 14px/1.45 system-ui, sans-serif; }
+.ui-root { padding: 12px; display: grid; gap: 12px; }
+.ui-status { margin: 0; padding: 8px 12px; color: var(--muted); font-size: 12px; }
+.ui-status[data-state="ready"] { display: none; }
+.ui-status[data-state="error"] { color: var(--error); }
+h2, h3, h4 { margin: 0; }
+section, .card { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px; }
+button { font: inherit; padding: 6px 12px; border-radius: 6px; border: 1px solid var(--line); background: var(--surface); color: var(--text); cursor: pointer; }
+button:hover { border-color: var(--accent); }
+input, select, textarea { font: inherit; padding: 5px 8px; border-radius: 6px; border: 1px solid var(--line); background: var(--surface); color: var(--text); }
+.ui-table { width: 100%; border-collapse: collapse; }
+.ui-table th, .ui-table td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); }
+.ui-table th { color: var(--muted); font-weight: 600; font-size: 12px; }
+.status-token { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 12px; border: 1px solid currentColor; }
+.status-token[data-token="OK"] { color: var(--ok); }
+.status-token[data-token="INFO"] { color: var(--info); }
+.status-token[data-token="ACTIVE"] { color: var(--active); }
+.status-token[data-token="WAITING_HUMAN"] { color: var(--waiting); }
+.status-token[data-token="WARNING"] { color: var(--warning); }
+.status-token[data-token="ERROR"] { color: var(--error); }
+.status-token[data-token="UNCERTAIN"] { color: var(--uncertain); }
+.status-token[data-token="HELD"] { color: var(--held); }
+.status-token[data-token="UNAVAILABLE"] { color: var(--unavailable); }

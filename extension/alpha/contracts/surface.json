@@ -1,0 +1,358 @@
+{
+  "schemaVersion": 1,
+  "contractId": "alpha.contracts.v1",
+  "declarations": "extension/alpha/contracts/index.d.ts",
+  "runtimeImplementation": false,
+  "services": {
+    "Accounts": [
+      "list",
+      "get",
+      "enroll",
+      "verifySession",
+      "previewRebind",
+      "rebind"
+    ],
+    "Inventory": [
+      "list",
+      "get",
+      "observe",
+      "setIntent",
+      "inspectDrift",
+      "previewDelete",
+      "delete"
+    ],
+    "SourceCatalog": [
+      "scan",
+      "get",
+      "bind",
+      "resolveRelease"
+    ],
+    "Reservation": [
+      "preview",
+      "reserve",
+      "reconcile"
+    ],
+    "Deployer": [
+      "prepare",
+      "apply",
+      "reconcile",
+      "rollback"
+    ],
+    "AiReview": [
+      "queue",
+      "get",
+      "start",
+      "recordReview",
+      "approveIntent"
+    ],
+    "Refresher": [
+      "status",
+      "configure",
+      "setEligibility",
+      "planPass"
+    ],
+    "Visibility": [
+      "observeRecent",
+      "getPosition",
+      "collectStats"
+    ],
+    "Attention": [
+      "list",
+      "get",
+      "acknowledge",
+      "raise"
+    ],
+    "Backup": [
+      "previewExport",
+      "export",
+      "previewRestore",
+      "restore",
+      "retain"
+    ]
+  },
+  "personaBroker": {
+    "implementation": "extension/pcms/core/persona-broker.js",
+    "commands": [
+      {
+        "name": "system.describe",
+        "requiresOperation": false
+      },
+      {
+        "name": "system.status",
+        "requiresOperation": false
+      },
+      {
+        "name": "persona.list",
+        "requiresOperation": false
+      },
+      {
+        "name": "persona.get",
+        "requiresOperation": false
+      },
+      {
+        "name": "persona.create",
+        "requiresOperation": true
+      },
+      {
+        "name": "persona.open",
+        "requiresOperation": true
+      },
+      {
+        "name": "persona.updateIdentity",
+        "requiresOperation": true
+      },
+      {
+        "name": "persona.archive",
+        "requiresOperation": true
+      },
+      {
+        "name": "persona.destroy",
+        "requiresOperation": true
+      },
+      {
+        "name": "storage.inspect",
+        "requiresOperation": false
+      },
+      {
+        "name": "storage.clearCookies",
+        "requiresOperation": true
+      },
+      {
+        "name": "storage.clearSiteData",
+        "requiresOperation": true
+      },
+      {
+        "name": "storage.fullWipe",
+        "requiresOperation": true
+      },
+      {
+        "name": "route.list",
+        "requiresOperation": false
+      },
+      {
+        "name": "route.get",
+        "requiresOperation": false
+      },
+      {
+        "name": "route.assign",
+        "requiresOperation": true
+      },
+      {
+        "name": "route.test",
+        "requiresOperation": true
+      },
+      {
+        "name": "userscript.list",
+        "requiresOperation": false
+      },
+      {
+        "name": "userscript.get",
+        "requiresOperation": false
+      },
+      {
+        "name": "userscript.assign",
+        "requiresOperation": true
+      },
+      {
+        "name": "userscript.unassign",
+        "requiresOperation": true
+      },
+      {
+        "name": "userscript.artifact.install",
+        "requiresOperation": true
+      },
+      {
+        "name": "userscript.artifact.list",
+        "requiresOperation": false
+      },
+      {
+        "name": "userscript.artifact.get",
+        "requiresOperation": false
+      },
+      {
+        "name": "userscript.artifact.assign",
+        "requiresOperation": true
+      },
+      {
+        "name": "userscript.artifact.unassign",
+        "requiresOperation": true
+      },
+      {
+        "name": "userscript.artifact.release",
+        "requiresOperation": true
+      },
+      {
+        "name": "persona.control.acquire",
+        "requiresOperation": true
+      },
+      {
+        "name": "persona.control.renew",
+        "requiresOperation": true
+      },
+      {
+        "name": "persona.control.release",
+        "requiresOperation": true
+      },
+      {
+        "name": "persona.control.get",
+        "requiresOperation": false
+      },
+      {
+        "name": "execution.input.begin",
+        "requiresOperation": true
+      },
+      {
+        "name": "execution.input.append",
+        "requiresOperation": true
+      },
+      {
+        "name": "execution.input.commit",
+        "requiresOperation": true
+      },
+      {
+        "name": "execution.input.discard",
+        "requiresOperation": true
+      },
+      {
+        "name": "execution.secret.stage",
+        "requiresOperation": true
+      },
+      {
+        "name": "execution.secret.discard",
+        "requiresOperation": true
+      },
+      {
+        "name": "execution.input.submit",
+        "requiresOperation": true
+      },
+      {
+        "name": "execution.start",
+        "requiresOperation": true
+      },
+      {
+        "name": "execution.list",
+        "requiresOperation": false
+      },
+      {
+        "name": "execution.get",
+        "requiresOperation": false
+      },
+      {
+        "name": "execution.result.get",
+        "requiresOperation": false
+      },
+      {
+        "name": "execution.result.ack",
+        "requiresOperation": true
+      },
+      {
+        "name": "execution.cancel",
+        "requiresOperation": true
+      },
+      {
+        "name": "execution.focus",
+        "requiresOperation": true
+      },
+      {
+        "name": "workflow.list",
+        "requiresOperation": false
+      },
+      {
+        "name": "workflow.get",
+        "requiresOperation": false
+      },
+      {
+        "name": "workflow.create",
+        "requiresOperation": true
+      },
+      {
+        "name": "workflow.update",
+        "requiresOperation": true
+      },
+      {
+        "name": "workflow.delete",
+        "requiresOperation": true
+      },
+      {
+        "name": "workflow.run",
+        "requiresOperation": true
+      },
+      {
+        "name": "workflow.jobs.list",
+        "requiresOperation": false
+      },
+      {
+        "name": "workflow.jobs.get",
+        "requiresOperation": false
+      },
+      {
+        "name": "workflow.jobs.stop",
+        "requiresOperation": true
+      },
+      {
+        "name": "workflow.jobs.clearFinished",
+        "requiresOperation": true
+      }
+    ],
+    "rawBrowserApi": false,
+    "rawNativeRpc": false
+  },
+  "records": [
+    "AccountBinding",
+    "AccountRecord",
+    "GeneratorRecord",
+    "SourceBinding",
+    "ReleaseRecord",
+    "Operation",
+    "ProviderContext",
+    "ProviderMutation",
+    "ProviderReadback",
+    "HealthyActiveClock",
+    "RefresherCommentLedger",
+    "VisibilityObservation",
+    "AiReviewRecord",
+    "AttentionRecord",
+    "BackupManifest",
+    "BackupBundle"
+  ],
+  "rules": {
+    "unknownCapability": "FAIL_CLOSED",
+    "ambiguousMutation": "RECONCILE_BEFORE_RETRY",
+    "release": "EXACT_DEPLOYABLE_BYTES_EXCLUDING_TRACKED_REFRESHER_COMMENT",
+    "ui": "CORE_AUTHORITY_ONLY",
+    "backup": "LOCAL_OPERATOR_AUTHORIZED_UNENCRYPTED_ARCHIVE"
+  },
+  "enums": {
+    "FleetIntent": [
+      "MANAGED",
+      "EXCLUDED"
+    ],
+    "ListingObserved": [
+      "PUBLIC",
+      "UNLISTED",
+      "UNKNOWN"
+    ],
+    "OperationPhase": [
+      "PREPARED",
+      "DISPATCHING",
+      "APPLIED",
+      "NOT_APPLIED",
+      "UNCERTAIN",
+      "FAILED",
+      "HELD"
+    ],
+    "AiState": [
+      "READY",
+      "ACTIVE",
+      "WAITING_HUMAN",
+      "COMPLETED",
+      "FAILED",
+      "RECOVERING"
+    ],
+    "SourceStatus": [
+      "BLOCKED",
+      "IN_DEVELOPMENT",
+      "READY"
+    ]
+  }
+}

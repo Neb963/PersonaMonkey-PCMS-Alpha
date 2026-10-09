@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "requirements": [
+    {
+      "id": "R-001",
+      "text": "PersonaMonkey remains authoritative for Persona identity, Firefox contextual identities, routing/Mullvad, userscripts, workflows and browser execution.",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "R-002",
+      "text": "PCMS accesses PersonaMonkey only through the typed Persona Broker preserving Integration API semantics.",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "R-003",
+      "text": "PCMS modules never receive raw browser.*, raw PersonaMonkey service objects, raw native-host RPC or raw PCMS IndexedDB.",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "R-004",
+      "text": "Durable PCMS Account-to-Persona binding uses personaUid rather than cookieStoreId.",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "R-005",
+      "text": "Every external mutation has a durable RemoteOperation before dispatch.",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "R-006",
+      "text": "UNCERTAIN external mutation state must reconcile before retry.",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "R-007",
+      "text": "Unknown provider behavior fails closed.",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "R-008",
+      "text": "Dynamic module controller/UI code runs only in Firefox sandbox pages behind bounded authenticated RPC.",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "R-009",
+      "text": "Browser/page automation uses PersonaMonkey external execution; PCMS does not create a second userScripts authority.",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "R-010",
+      "text": "Module lifecycle uses immutable exact package identity and runtime-generation fencing.",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "R-011",
+      "text": "Secret values do not enter ordinary PCMS state, audit, logs, reports or workflow artifacts.",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "R-012",
+      "text": "Restore enters RECOVERY_HOLD and reconciles before mutation resumes.",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "R-013",
+      "text": "Firefox Developer Edition is the browser authority; deterministic CI pins an exact Mozilla build.",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "R-014",
+      "text": "GitHub Actions is the independent verification authority for every non-live phase; P025-P026 were the final live acceptance of the original v1 roadmap, and in the extended roadmap only the final two phases (executionModel.finalLivePhases) require live acceptance.",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "R-015",
+      "text": "Parallel implementation is permitted only for mechanically non-conflicting claims with epoch fencing.",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "R-016",
+      "text": "PCMS operational authority runs in the extension background context; closing every PCMS dashboard tab does not stop schedules, timers, module work, scans, reconciliation, recovery handling or eligible unattended provider work (ADR-002).",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "R-017",
+      "text": "PCMS dashboards and the popup are UI clients; any number may be open simultaneously and opening or closing them never instantiates a competing Core, runs startup recovery, changes RemoteOperation state or enters RECOVERY_HOLD (ADR-002).",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "R-018",
+      "text": "Runtime modules installed through PCMS execute immediately; install, update, disable, re-enable, rollback and removal never require an XPI rebuild, manifest edit, extension reload, reinstall or Firefox restart, while package identity, authority envelopes, bounded RPC and generation fencing remain enforced (ADR-003).",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "R-019",
+      "text": "Background correctness never depends on ephemeral event-page memory; durable state, idempotent re-initialisation, alarms recreated from durable timers and bounded catch-up are authoritative (ADR-002).",
+      "status": "ACCEPTED"
+    }
+  ]
+}

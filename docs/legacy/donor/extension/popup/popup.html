@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>PersonaMonkey PCMS</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <main>
+    <header class="head">
+      <div><span class="eyebrow">PersonaMonkey PCMS</span><strong>Current persona</strong></div>
+      <span id="status" class="badge" role="status" aria-live="polite" aria-atomic="true">…</span>
+    </header>
+    <div id="context" class="card context-card"></div>
+    <section id="pcmsBlock" class="card pcms-block hidden" aria-label="PCMS status">
+      <div class="pcms-heading"><strong>PCMS</strong><span id="pcmsState" role="status" aria-live="polite">Starting</span></div>
+      <p id="pcmsAccount" class="pcms-detail"></p>
+      <p id="pcmsAttention" class="pcms-detail" aria-live="polite"></p>
+      <p id="pcmsAsOf" class="pcms-asof"></p>
+      <button id="pcmsOpenAccount" type="button" hidden>Open account in PCMS</button>
+    </section>
+    <section class="route-section">
+      <label>Active route<select id="route" disabled></select></label>
+      <div id="directWarning" class="direct-warning hidden" role="group" aria-labelledby="directWarningTitle">
+        <strong id="directWarningTitle">Direct network bypasses protected routing.</strong>
+        <p>Traffic from this persona will use Firefox's normal network path without the configured VPN/proxy route.</p>
+        <div class="direct-warning-actions"><button id="confirmDirect" type="button" class="danger">Use Direct network</button><button id="cancelDirect" type="button">Cancel</button></div>
+      </div>
+      <div class="actions"><button id="options" class="primary">Open PCMS</button><button id="test" aria-describedby="actionHint" disabled>Verify route</button></div>
+      <p class="action-hint">PCMS is the primary control surface. <a href="../options/options.html" target="_blank" rel="noopener">PersonaMonkey settings</a></p>
+      <p id="actionHint" class="action-hint"></p>
+    </section>
+    <div id="result" class="result" role="status" aria-live="polite" aria-atomic="true"></div>
+  </main>
+  <script type="module" src="popup.js"></script>
+</body>
+</html>
