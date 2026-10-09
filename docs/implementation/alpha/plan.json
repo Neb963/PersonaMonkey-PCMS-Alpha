@@ -43,7 +43,7 @@
         "P105"
       ],
       "gateId": "GATE-R1",
-      "status": "IN_PROGRESS"
+      "status": "ACCEPTED"
     },
     {
       "round": 2,
@@ -57,7 +57,7 @@
         "P205"
       ],
       "gateId": "GATE-R2",
-      "status": "LOCKED"
+      "status": "READY"
     },
     {
       "round": 3,
@@ -122,7 +122,7 @@
       "round": 1,
       "agent": 1,
       "title": "Pinned Firefox and PersonaMonkey regression harness",
-      "status": "CLAIMED",
+      "status": "ACCEPTED",
       "dependsOn": [
         "G0"
       ],
@@ -156,7 +156,7 @@
       "round": 1,
       "agent": 2,
       "title": "Generator/domain persistence and durability",
-      "status": "CLAIMED",
+      "status": "ACCEPTED",
       "dependsOn": [
         "G0"
       ],
@@ -190,7 +190,7 @@
       "round": 1,
       "agent": 3,
       "title": "Perchance contract adapter and emulator",
-      "status": "CLAIMED",
+      "status": "ACCEPTED",
       "dependsOn": [
         "G0"
       ],
@@ -224,7 +224,7 @@
       "round": 1,
       "agent": 4,
       "title": "GitHub private-repo adapter and safe paths",
-      "status": "CLAIMED",
+      "status": "ACCEPTED",
       "dependsOn": [
         "G0"
       ],
@@ -258,7 +258,7 @@
       "round": 1,
       "agent": 5,
       "title": "Static Alpha UI shell and visual foundation",
-      "status": "CLAIMED",
+      "status": "ACCEPTED",
       "dependsOn": [
         "G0"
       ],
@@ -292,7 +292,7 @@
       "round": 2,
       "agent": 1,
       "title": "Background Core and durable alarms",
-      "status": "LOCKED",
+      "status": "READY",
       "dependsOn": [
         "P102",
         "P103",
@@ -330,7 +330,7 @@
       "round": 2,
       "agent": 2,
       "title": "Accounts and Persona enrollment",
-      "status": "LOCKED",
+      "status": "READY",
       "dependsOn": [
         "P102",
         "P103"
@@ -364,7 +364,7 @@
       "round": 2,
       "agent": 3,
       "title": "GitHub source catalog and READY interpreter",
-      "status": "LOCKED",
+      "status": "READY",
       "dependsOn": [
         "P102",
         "P104"
@@ -398,7 +398,7 @@
       "round": 2,
       "agent": 4,
       "title": "Generator inventory and drift facts",
-      "status": "LOCKED",
+      "status": "READY",
       "dependsOn": [
         "P102",
         "P103"
@@ -432,7 +432,7 @@
       "round": 2,
       "agent": 5,
       "title": "Unified backup schema and safe exporter",
-      "status": "LOCKED",
+      "status": "READY",
       "dependsOn": [
         "P102"
       ],

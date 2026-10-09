@@ -39,7 +39,7 @@
       "phaseId": "P101",
       "agentId": "slot-one",
       "claimEpoch": 1,
-      "state": "ACTIVE",
+      "state": "ACCEPTED",
       "baseMainSha": "5ea76924abba1ae04de774e548cd6ac2c9ee745b",
       "branch": "agent/slot-one/p101",
       "writePaths": [
@@ -66,7 +66,7 @@
       "phaseId": "P105",
       "agentId": "slot-five",
       "claimEpoch": 1,
-      "state": "ACTIVE",
+      "state": "ACCEPTED",
       "baseMainSha": "2d4ad4d6353d64b761547c8a9f3926cfa258d387",
       "branch": "agent/slot-five/p105",
       "writePaths": [
@@ -93,7 +93,7 @@
       "phaseId": "P102",
       "agentId": "codex-r1-a2",
       "claimEpoch": 1,
-      "state": "ACTIVE",
+      "state": "ACCEPTED",
       "baseMainSha": "45c00cf9673f5382fa5e7987211005e5d4557948",
       "branch": "agent/codex-r1-a2/p102",
       "writePaths": [
@@ -120,7 +120,7 @@
       "phaseId": "P104",
       "agentId": "slot-four",
       "claimEpoch": 1,
-      "state": "ACTIVE",
+      "state": "ACCEPTED",
       "baseMainSha": "e929a78ba8ffaea750d461d68f6a639f3b33a57e",
       "branch": "agent/slot-four/p104",
       "writePaths": [
@@ -147,7 +147,7 @@
       "phaseId": "P103",
       "agentId": "slot-three-p103",
       "claimEpoch": 1,
-      "state": "ACTIVE",
+      "state": "ACCEPTED",
       "baseMainSha": "0580a8145c5a55c7d3c1dfa80a41820bb10a3e3a",
       "branch": "agent/slot-three-p103/p103",
       "writePaths": [

@@ -6,23 +6,23 @@ G0: **ACCEPTED**.
 
 ## R1 — Independent foundations
 
-State: **IN_PROGRESS**. Gate: GATE-R1.
+State: **ACCEPTED**. Gate: GATE-R1.
 
-- P101: **CLAIMED** — Pinned Firefox and PersonaMonkey regression harness
-- P102: **CLAIMED** — Generator/domain persistence and durability
-- P103: **CLAIMED** — Perchance contract adapter and emulator
-- P104: **CLAIMED** — GitHub private-repo adapter and safe paths
-- P105: **CLAIMED** — Static Alpha UI shell and visual foundation
+- P101: **ACCEPTED** — Pinned Firefox and PersonaMonkey regression harness
+- P102: **ACCEPTED** — Generator/domain persistence and durability
+- P103: **ACCEPTED** — Perchance contract adapter and emulator
+- P104: **ACCEPTED** — GitHub private-repo adapter and safe paths
+- P105: **ACCEPTED** — Static Alpha UI shell and visual foundation
 
 ## R2 — Durable services and inventory
 
-State: **LOCKED**. Gate: GATE-R2.
+State: **READY**. Gate: GATE-R2.
 
-- P201: **LOCKED** — Background Core and durable alarms
-- P202: **LOCKED** — Accounts and Persona enrollment
-- P203: **LOCKED** — GitHub source catalog and READY interpreter
-- P204: **LOCKED** — Generator inventory and drift facts
-- P205: **LOCKED** — Unified backup schema and safe exporter
+- P201: **READY** — Background Core and durable alarms
+- P202: **READY** — Accounts and Persona enrollment
+- P203: **READY** — GitHub source catalog and READY interpreter
+- P204: **READY** — Generator inventory and drift facts
+- P205: **READY** — Unified backup schema and safe exporter
 
 ## R3 — Operational engines
 
