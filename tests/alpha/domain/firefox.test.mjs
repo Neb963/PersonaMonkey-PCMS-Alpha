@@ -61,7 +61,7 @@ test('AP102-01/02/03: actual pinned Firefox IndexedDB migrations, races, aborts,
         if (!body.startsWith('{')) return null;
         const result = JSON.parse(body); assert.equal(result.passed, true, result.error); return result;
       }, 'P102 real IndexedDB cases', 90000);
-      report.storage = await collect(); assert.equal(report.storage.count, 19);
+      report.storage = await collect(); assert.equal(report.storage.count, 20);
       await browser.restart(); await browser.openPage(id, 'tests/alpha/domain/probe.html?stage=restart');
       report.restart = await collect(); assert.equal(report.restart.count, 1);
       report.passed = true;

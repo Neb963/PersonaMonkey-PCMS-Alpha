@@ -224,6 +224,20 @@ export async function runStorageCases() {
     }
   });
 
+  await check('AP102-02: missing or replayed valid-checksum records cannot disagree with the atomic journal', async () => {
+    for (const action of ['missing', 'replayed']) {
+      const suffix = 'journal-record-' + action, s = storage(suffix);
+      await s.commit({ expectedRevision: 0, writes: [write('account', account())] });
+      const raw = await rawOpen(nameFor(suffix));
+      const earlier = await rawTransaction(raw, RECORDS, 'readonly', store => store.get('account\u0000account-one'));
+      await s.commit({ expectedRevision: 1, writes: [write('account', account({ revision: 1, name: 'Synthetic newer record' }))] });
+      s.close();
+      await rawTransaction(raw, RECORDS, 'readwrite', store => action === 'missing' ? store.delete(earlier.id) : store.put(earlier));
+      raw.close();
+      const reopened = storage(suffix); await rejects(() => reopened.open(), 'RECOVERY_HOLD');
+    }
+  });
+
   await check('AP102-03: rejected credentials, duplicate writes and revision overflow leave no journal entries', async () => {
     const s = storage('rejected-inputs');
     await rejects(() => s.commit({ expectedRevision: 0, writes: [write('operation', operation({ result: { authorization: 'not-a-credential' } }))] }), 'INVALID_REQUEST');

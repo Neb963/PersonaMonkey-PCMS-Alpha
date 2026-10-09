@@ -4,7 +4,7 @@
   "claimId": "CLM-P105-001",
   "agentId": "slot-five",
   "claimEpoch": 1,
-  "state": "COMMITTED",
+  "state": "MERGED",
   "providerLive": false,
   "commitSha": "03eec9dd743340c1ff4b3700c86785d5f7d408a8",
   "acceptanceIds": [
@@ -74,6 +74,40 @@
       "runId": 37913806436,
       "result": "PASS",
       "sourceSha": "7118cefb0e23af6685f7677f2a4283deea012772"
+    },
+    {
+      "scope": "GitHub Actions",
+      "command": "npm run verify && node tools/alpha/run-tests.mjs",
+      "workflow": "alpha-governance",
+      "runId": 37914301385,
+      "result": "PASS",
+      "p105Tests": 9,
+      "p105Passed": 9,
+      "p105Failed": 0,
+      "sourceSha": "01cef0c5ee828c41a1d721ffd0e2f6ccc3fd6b83"
+    },
+    {
+      "scope": "GitHub Actions",
+      "workflow": "firefox-developer-edition",
+      "runId": 37914301449,
+      "result": "PASS",
+      "sourceSha": "01cef0c5ee828c41a1d721ffd0e2f6ccc3fd6b83"
+    },
+    {
+      "scope": "GitHub Actions merged main",
+      "workflow": "alpha-governance",
+      "runId": 37914838792,
+      "result": "PASS",
+      "sourceSha": "3bf066ace6e1695819cac2d14da6e8ef00ee811c",
+      "event": "push"
+    },
+    {
+      "scope": "GitHub Actions merged main",
+      "workflow": "firefox-developer-edition",
+      "runId": 37914838802,
+      "result": "PASS",
+      "sourceSha": "3bf066ace6e1695819cac2d14da6e8ef00ee811c",
+      "event": "push"
     }
   ],
   "localTestsExecuted": [],
@@ -81,8 +115,25 @@
     "No operator/provider-live acceptance",
     "Static preview not wired into toolbar/manifest or Alpha Core; downstream UI phase owns integration",
     "No installed-Firefox visual keyboard walkthrough in P105",
-    "Latest-main candidate must still pass independent CI at exact merge SHA"
+    "Phase is MERGED only; GATE_VERIFIED and ACCEPTED await independent GATE-R1 integration."
   ],
-  "ciRuns": [],
-  "mergedMainSha": null
+  "ciRuns": [
+    {
+      "id": 37914838792,
+      "name": "alpha-governance",
+      "sha": "3bf066ace6e1695819cac2d14da6e8ef00ee811c",
+      "event": "push",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37914838792"
+    },
+    {
+      "id": 37914838802,
+      "name": "firefox-developer-edition",
+      "sha": "3bf066ace6e1695819cac2d14da6e8ef00ee811c",
+      "event": "push",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37914838802"
+    }
+  ],
+  "mergedMainSha": "3bf066ace6e1695819cac2d14da6e8ef00ee811c"
 }

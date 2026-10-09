@@ -100,6 +100,15 @@ async function readSelection(db, ids, kind, all = false) {
     const floor = Math.max(1, meta.revision - JOURNAL_LIMIT + 1);
     state.journal.forEach((j, i) => requireData(j.revision === floor + i, 'RECOVERY_HOLD'));
     requireData(meta.revision > 0 || state.records.length === 0, 'RECOVERY_HOLD');
+    // Self-consistent old bytes or a missing record still violate the atomic
+    // journal. Match each retained target's latest receipt to its current row.
+    const records = new Map(state.records.map(e => [e.id, e]));
+    const latest = new Map();
+    for (const j of state.journal) for (const c of j.changes) latest.set(address(c.kind, c.key), c);
+    for (const [key, c] of latest) {
+      const e = records.get(key);
+      requireData(e && e.revision === c.revision && e.checksum === c.checksum, 'RECOVERY_HOLD');
+    }
   } else if (meta.revision) requireData(state.journal.length === 1 && state.journal[0].revision === meta.revision, 'RECOVERY_HOLD');
   return state;
 }
