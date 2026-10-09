@@ -1,12 +1,14 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { readFileSync } from 'node:fs';
-import { load, validateTransition, validateSnapshot, MAINTENANCE } from '../../../tools/alpha/governance.mjs';
+import { load, acquire, validateTransition, validateSnapshot, MAINTENANCE } from '../../../tools/alpha/governance.mjs';
 import { approvalBody, verifyMaintenanceApproval } from '../../../tools/alpha/maintenance-approval.mjs';
 
-const main = load();
+// This suite proves the historical maintenance authorization, not today's
+// mutable claim registry. Never derive a past gate's inputs from checkout HEAD.
 const context = JSON.parse(readFileSync('docs/evidence/alpha/MAINT-ALPHA-GOV-001/context.json', 'utf8'));
 const sha = context.baseMainSha;
+const main = load('.', sha);
 const contextPath = `docs/evidence/alpha/${context.maintenanceId}/context.json`;
 const changed = [contextPath, 'tests/alpha/governance/contract-amendment.test.mjs',
   'tools/alpha/governance.mjs', 'tools/alpha/ci.mjs'];
@@ -93,4 +95,38 @@ test('GitHub owner approval is tied to exact PR head and main, never candidate-a
     request: fake() }), /Invalid maintenance approval/);
   await assert.rejects(verifyMaintenanceApproval(context, { ...args,
     request: async () => ({ ok: false, status: 403 }) }), /Cannot independently verify/);
+});
+
+test('historical maintenance stays valid through new claims and later owner-attested maintenance', () => {
+  // A normal fifth claim must not retroactively change a completed maintenance.
+  const acquired = acquire(main, {
+    phaseId: 'P103', agentId: 'slot-three-p103', expectedEpoch: 0,
+    baseMainSha: 'a'.repeat(40)
+  });
+  assert.equal(validateSnapshot(acquired).activeClaims, 5);
+  assert.equal(check().kind, 'MAINTENANCE');
+  assert.throws(() => check(acquired), /Maintenance cannot change plans, claims/);
+
+  // A new independently attested maintenance transaction is legal against
+  // the then-current (five-claim) registry; the old context is not reusable.
+  const maintenanceId = 'MAINT-FUTURE-CLAIMS-003';
+  const futureSha = 'b'.repeat(40);
+  const futureContext = {
+    ...context, phaseId: maintenanceId, maintenanceId,
+    branch: 'agent/alpha-maintenance/maint-future-claims-003',
+    baseMainSha: futureSha, contractHash: acquired.lock.contracts['alpha.contracts.v1'],
+    claimEpochs: structuredClone(acquired.registry.epochs), pullRequest: 12345
+  };
+  const futureFiles = [
+    `docs/evidence/alpha/${maintenanceId}/context.json`,
+    'tests/alpha/governance/maintenance.test.mjs'
+  ];
+  assert.equal(validateTransition(acquired, acquired, futureContext, {
+    mainSha: futureSha, headBranch: futureContext.branch, files: futureFiles
+  }).kind, 'MAINTENANCE');
+  assert.throws(() => validateTransition(acquired, acquired, {
+    ...futureContext, claimEpochs: context.claimEpochs
+  }, {
+    mainSha: futureSha, headBranch: futureContext.branch, files: futureFiles
+  }), /Stale maintenance contracts or claim epochs/);
 });
