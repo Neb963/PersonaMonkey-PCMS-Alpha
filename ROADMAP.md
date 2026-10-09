@@ -6,9 +6,9 @@ G0: **ACCEPTED**.
 
 ## R1 — Independent foundations
 
-State: **READY**. Gate: GATE-R1.
+State: **IN_PROGRESS**. Gate: GATE-R1.
 
-- P101: **READY** — Pinned Firefox and PersonaMonkey regression harness
+- P101: **CLAIMED** — Pinned Firefox and PersonaMonkey regression harness
 - P102: **READY** — Generator/domain persistence and durability
 - P103: **READY** — Perchance contract adapter and emulator
 - P104: **READY** — GitHub private-repo adapter and safe paths
