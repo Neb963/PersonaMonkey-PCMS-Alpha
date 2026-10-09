@@ -111,14 +111,6 @@
       "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37961575913"
     },
     {
-      "id": 37961575968,
-      "name": "alpha-firefox",
-      "sha": "462d17e1cb87af7e7e9ba81a5981da744e49d0ab",
-      "event": "push",
-      "conclusion": "success",
-      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37961575968"
-    },
-    {
       "id": 37961575895,
       "name": "firefox-developer-edition",
       "sha": "462d17e1cb87af7e7e9ba81a5981da744e49d0ab",
@@ -150,5 +142,15 @@
     "Perchance create may require multiple fork/rename/private/save steps; P103 does not falsely claim this is a live atomic provider operation.",
     "Private on Perchance means unlisted, not confidential. Revision restore was not observed.",
     "Claim remains ACTIVE and plan P103 remains CLAIMED pending independent GATE-R1 integration checker. R2 remains LOCKED."
+  ],
+  "browserCiRuns": [
+    {
+      "id": 37961575968,
+      "name": "alpha-firefox",
+      "sha": "462d17e1cb87af7e7e9ba81a5981da744e49d0ab",
+      "event": "push",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37961575968"
+    }
   ]
 }
