@@ -4,10 +4,10 @@
   "claimId": "CLM-P102-001",
   "agentId": "codex-r1-a2",
   "claimEpoch": 1,
-  "state": "COMMITTED",
+  "state": "MERGED",
   "providerLive": false,
-  "commitSha": "6898991a9d811149dfc2fbb39731a9fc27cdc85d",
-  "mergedMainSha": null,
+  "commitSha": "2aece95b31d407f421564e2f38a0ab9aa05ecf61",
+  "mergedMainSha": "826a8af69511f06cb6eff789c481865389546783",
   "contractHash": "9b379980e16fdd557e0ea8a7f8273421f4a581c1c1563fe7661308038e29ee12",
   "acceptanceIds": [
     "AP102-01",
@@ -22,27 +22,30 @@
         "extension/alpha/storage/migrations.js",
         "extension/alpha/storage/store.js",
         "tests/alpha/domain/records.test.mjs",
-        "tests/alpha/domain/storage-cases.js"
+        "tests/alpha/domain/storage-cases.js",
+        "docs/evidence/alpha/P102/hosted-tests.json"
       ],
-      "result": "PASS locally \u2014 frozen records, exact release bytes, separate Alpha schema and atomic strict-durability four-record journal commit"
+      "result": "PASS in local diagnostics and independent hosted CI — frozen records, exact release bytes, separate Alpha schema and atomic strict-durability four-record journal commit"
     },
     {
       "id": "AP102-02",
       "evidence": [
         "tests/alpha/domain/storage-cases.js",
         "tests/alpha/domain/firefox.test.mjs",
-        "docs/evidence/alpha/P102/local-firefox.json"
+        "docs/evidence/alpha/P102/local-firefox.json",
+        "docs/evidence/alpha/P102/hosted-tests.json"
       ],
-      "result": "PASS locally \u2014 schema/CAS/revision collisions, real two-connection race, transaction/migration abort rollback, reopen/corruption and missing/replayed-row holds, bounded journal and actual Firefox process restart"
+      "result": "PASS in local diagnostics and independent hosted CI — schema/CAS/revision collisions, real two-connection race, transaction/migration abort rollback, reopen/corruption and missing/replayed-row holds, bounded journal and actual Firefox process restart"
     },
     {
       "id": "AP102-03",
       "evidence": [
         "extension/alpha/domain/validation.js",
         "tests/alpha/domain/records.test.mjs",
-        "tests/alpha/domain/storage-cases.js"
+        "tests/alpha/domain/storage-cases.js",
+        "docs/evidence/alpha/P102/hosted-tests.json"
       ],
-      "result": "PASS locally \u2014 strict fields and nested credential rejection, no rejected data in typed errors, no record/journal written for rejected input; no live credentials used"
+      "result": "PASS in local diagnostics and independent hosted CI — strict fields and nested credential rejection, no rejected data in typed errors, no record/journal written for rejected input; no live credentials used"
     }
   ],
   "localTestsExecuted": [
@@ -62,13 +65,13 @@
     {
       "command": "npm run verify",
       "sourceSha": "f73063c293bab8e9eae929701fd2eb7a8d042982",
-      "result": "PASS \u2014 active repository and Alpha authority checks plus exact frozen donor verification/reproducible build; one inherited CI-only case skipped locally",
+      "result": "PASS — active repository and Alpha authority checks plus exact frozen donor verification/reproducible build; one inherited CI-only case skipped locally",
       "donorXpiSha256": "bbe084a0f3495a1a505f87f69c5a29cfdfd538bf15ec35afee35d34b9ae6b5f1"
     },
     {
       "command": "node scripts/build-extension.mjs",
       "sourceSha": "6898991a9d811149dfc2fbb39731a9fc27cdc85d",
-      "result": "PASS \u2014 actual derivative XPI, 273 source files",
+      "result": "PASS — actual derivative XPI, 273 source files",
       "xpiSha256": "c132081d8c64294e14b55a4fef9921429832dba8af300346b7e581689ca65449"
     }
   ],
@@ -78,14 +81,184 @@
     "providerMutations": false,
     "uiChanges": false
   },
-  "ciRuns": [],
-  "verification": [],
+  "ciRuns": [
+    {
+      "id": 37919750569,
+      "name": "alpha-governance",
+      "sha": "826a8af69511f06cb6eff789c481865389546783",
+      "status": "completed",
+      "conclusion": "success",
+      "event": "push",
+      "attempt": 1,
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37919750569"
+    },
+    {
+      "id": 37919750543,
+      "name": "firefox-developer-edition",
+      "sha": "826a8af69511f06cb6eff789c481865389546783",
+      "status": "completed",
+      "conclusion": "success",
+      "event": "push",
+      "attempt": 1,
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37919750543"
+    }
+  ],
+  "verification": [
+    {
+      "scope": "GitHub Actions pull_request",
+      "workflow": "alpha-firefox",
+      "runId": 37919053656,
+      "result": "PASS",
+      "sourceSha": "2aece95b31d407f421564e2f38a0ab9aa05ecf61",
+      "event": "pull_request"
+    },
+    {
+      "scope": "GitHub Actions pull_request",
+      "workflow": "alpha-governance",
+      "runId": 37919053563,
+      "result": "PASS",
+      "sourceSha": "2aece95b31d407f421564e2f38a0ab9aa05ecf61",
+      "event": "pull_request"
+    },
+    {
+      "scope": "GitHub Actions pull_request",
+      "workflow": "firefox-developer-edition",
+      "runId": 37919053597,
+      "result": "PASS",
+      "sourceSha": "2aece95b31d407f421564e2f38a0ab9aa05ecf61",
+      "event": "pull_request"
+    },
+    {
+      "scope": "GitHub Actions merged main",
+      "workflow": "alpha-governance",
+      "runId": 37919750569,
+      "result": "PASS",
+      "sourceSha": "826a8af69511f06cb6eff789c481865389546783",
+      "event": "push",
+      "attempt": 1
+    },
+    {
+      "scope": "GitHub Actions merged main",
+      "workflow": "firefox-developer-edition",
+      "runId": 37919750543,
+      "result": "PASS",
+      "sourceSha": "826a8af69511f06cb6eff789c481865389546783",
+      "event": "push",
+      "attempt": 1
+    },
+    {
+      "scope": "GitHub Actions merged main",
+      "workflow": "alpha-firefox",
+      "runId": 37919750535,
+      "result": "PASS",
+      "sourceSha": "826a8af69511f06cb6eff789c481865389546783",
+      "event": "push",
+      "attempt": 2
+    }
+  ],
   "limitations": [
-    "Local content sandbox cannot create its user namespace in this container. The local browser result is diagnostic only; independent hosted CI must pass with the normal sandbox.",
+    "Local content sandbox cannot create its user namespace in this container; local browser results are diagnostic only. Independent hosted CI passed the actual P102 fixture with the normal content sandbox.",
     "No provider-live acceptance. Browser fixtures use synthetic records and block external traffic.",
     "Strict write durability and transaction completion are verified; these tests do not simulate hardware power loss.",
     "Credential screening cannot discover arbitrary secrets hidden in prose; callers must use the approved secret backend.",
     "Future Core owns interruption reconciliation and recovery scope; P102 persists unresolved identities without dispatch or replay.",
-    "Combined R1 GATE_VERIFIED and ACCEPTED remain exclusively integration-checker controlled."
+    "Combined R1 GATE_VERIFIED and ACCEPTED remain exclusively integration-checker controlled.",
+    "The first merged-main Alpha Firefox baseline attempt detected a changed extracted browser artifact before product startup. One fresh-runner retry passed without changes; the artifact-change cause remains unestablished and is recorded."
+  ],
+  "implementationCheckpoint": "6898991a9d811149dfc2fbb39731a9fc27cdc85d",
+  "baseMainSha": "45c00cf9673f5382fa5e7987211005e5d4557948",
+  "implementationPr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/15",
+  "claimPr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/5",
+  "claimState": "ACTIVE",
+  "browserCiRuns": [
+    {
+      "id": 37919750535,
+      "name": "alpha-firefox",
+      "sha": "826a8af69511f06cb6eff789c481865389546783",
+      "status": "completed",
+      "conclusion": "success",
+      "event": "push",
+      "attempt": 2,
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37919750535"
+    }
+  ],
+  "prCiRuns": [
+    {
+      "id": 37919053656,
+      "name": "alpha-firefox",
+      "sha": "2aece95b31d407f421564e2f38a0ab9aa05ecf61",
+      "status": "completed",
+      "conclusion": "success",
+      "event": "pull_request",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37919053656"
+    },
+    {
+      "id": 37919053563,
+      "name": "alpha-governance",
+      "sha": "2aece95b31d407f421564e2f38a0ab9aa05ecf61",
+      "status": "completed",
+      "conclusion": "success",
+      "event": "pull_request",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37919053563"
+    },
+    {
+      "id": 37919053597,
+      "name": "firefox-developer-edition",
+      "sha": "2aece95b31d407f421564e2f38a0ab9aa05ecf61",
+      "status": "completed",
+      "conclusion": "success",
+      "event": "pull_request",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37919053597"
+    }
+  ],
+  "milestones": [
+    {
+      "state": "COMMITTED",
+      "sha": "6898991a9d811149dfc2fbb39731a9fc27cdc85d",
+      "description": "Clean implementation checkpoint; 45 combined Alpha entries and 20 real IndexedDB cases plus process restart passed locally."
+    },
+    {
+      "state": "CI_VERIFIED",
+      "sha": "2aece95b31d407f421564e2f38a0ab9aa05ecf61",
+      "validatedMainSha": "3975183b2975da1c4448635694c2a1ddc5104132",
+      "description": "All three independent PR workflows and the final exact-main claim/head/tree fence passed."
+    },
+    {
+      "state": "MERGED",
+      "sha": "826a8af69511f06cb6eff789c481865389546783",
+      "previousMainSha": "3975183b2975da1c4448635694c2a1ddc5104132",
+      "testedHeadSha": "2aece95b31d407f421564e2f38a0ab9aa05ecf61",
+      "treeSha": "4dcfdcaf15d1737a512b6733e72d420e47916bc6",
+      "description": "Serialized non-forced update with expected main SHA; both required and the additional Alpha Firefox push workflows passed on this exact merged main."
+    }
+  ],
+  "pending": [
+    "Separately assigned GATE-R1 verification and acceptance"
+  ],
+  "hostedBrowserEvidence": {
+    "sourceSha": "826a8af69511f06cb6eff789c481865389546783",
+    "report": "docs/evidence/alpha/P102/hosted-tests.json",
+    "workflowRunId": 37919750569,
+    "jobId": 113784555674,
+    "contentSandboxDisabled": false,
+    "p102NodeEntries": 15,
+    "indexedDbCases": 20,
+    "processRestartCases": 1,
+    "combinedNodeEntries": 45
+  },
+  "verificationIncidents": [
+    {
+      "workflow": "alpha-firefox",
+      "runId": 37919750535,
+      "failedAttempt": 1,
+      "sha": "826a8af69511f06cb6eff789c481865389546783",
+      "stage": "persistent-install",
+      "failure": "Extracted Firefox artifact changed after installation",
+      "evidence": "Failure occurred in verifyInstallation before the product was installed or started; P102 did not modify the P101 harness or artifact verifier.",
+      "action": "Rerun the single failed job on a fresh runner, with no source changes or weakened integrity checks.",
+      "rootCause": "Not established",
+      "rerunAttempt": 2,
+      "rerunResult": "success"
+    }
   ]
 }
