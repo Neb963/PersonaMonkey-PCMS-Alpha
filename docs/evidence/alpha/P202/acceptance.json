@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "phaseId": "P202",
+  "claimId": "CLM-P202-001",
+  "claimEpoch": 1,
+  "agentId": "slot-two-p202",
+  "contractReads": {
+    "alpha.contracts.v1": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e"
+  },
+  "state": "COMMITTED",
+  "acceptanceIds": [
+    "AP202-01",
+    "AP202-02",
+    "AP202-03"
+  ],
+  "evidence": {
+    "AP202-01": {
+      "status": "PASS_DETERMINISTIC_PREVIOUS_HEAD_PENDING_CURRENT_MAIN",
+      "case": "dedicated personaUid, rotation preservation, safe atomic epoch rebind"
+    },
+    "AP202-02": {
+      "status": "PASS_DETERMINISTIC_PREVIOUS_HEAD_PENDING_CURRENT_MAIN",
+      "case": "manual challenge, typed route retries, no Direct fallback"
+    },
+    "AP202-03": {
+      "status": "PASS_DETERMINISTIC_PREVIOUS_HEAD_PENDING_CURRENT_MAIN",
+      "case": "account-owned full discovery, EXCLUDED import and batch integrity"
+    }
+  },
+  "commandsPlanned": [
+    "node --test tests/alpha/accounts/service.test.mjs",
+    "node tools/alpha/run-tests.mjs"
+  ],
+  "commandsExecuted": [
+    {
+      "command": "npm run verify && node tools/alpha/run-tests.mjs",
+      "environment": "GitHub Actions ubuntu-24.04 Node 24",
+      "runId": 37982188041,
+      "commitSha": "c9859eab7287a86d1b943d169198cfc639d53221",
+      "result": "All 10 AP202 cases passed; overall workflow failed only because main changed during suite"
+    },
+    {
+      "command": "node scripts/build-extension.mjs",
+      "environment": "GitHub Actions ubuntu-24.04 Node 24",
+      "runId": 37980431571,
+      "commitSha": "bffff35cc5ef8ca19a9b681355dd2f807e0aecdc",
+      "result": "PASS (prior implementation; not current release validation)"
+    }
+  ],
+  "independentCi": [
+    {
+      "name": "alpha-governance",
+      "runId": 37982188041,
+      "commitSha": "c9859eab7287a86d1b943d169198cfc639d53221",
+      "conclusion": "failure",
+      "reason": "Exact main moved during final check; all P202 tests passed"
+    },
+    {
+      "name": "alpha-firefox",
+      "runId": 37982188031,
+      "commitSha": "c9859eab7287a86d1b943d169198cfc639d53221",
+      "conclusion": "failure",
+      "reason": "Exact main moved during final check"
+    },
+    {
+      "name": "alpha-governance",
+      "runId": 37980431571,
+      "commitSha": "bffff35cc5ef8ca19a9b681355dd2f807e0aecdc",
+      "conclusion": "success",
+      "note": "Superseded, before UUID and recovery hold corrections"
+    },
+    {
+      "name": "alpha-firefox",
+      "runId": 37980431667,
+      "commitSha": "bffff35cc5ef8ca19a9b681355dd2f807e0aecdc",
+      "conclusion": "success",
+      "note": "Superseded"
+    },
+    {
+      "name": "firefox-developer-edition",
+      "runId": 37980431445,
+      "commitSha": "bffff35cc5ef8ca19a9b681355dd2f807e0aecdc",
+      "conclusion": "success",
+      "note": "Superseded"
+    }
+  ],
+  "providerLiveAcceptance": false,
+  "externalMutationsReal": false,
+  "knownConstraints": [
+    "Broker-only login attempt; cannot close tab without owner authority",
+    "Rebind of >63 existing generators is held, never partial",
+    "P103 probe does not expose Perchance account subject/email; no subject-specific live acceptance",
+    "Persona UID creation uses the exact UUID lexical format required by PersonaMonkey, not a prefixed local identifier",
+    "Ambiguous account operations block a new tab dispatch and session import until reconciled"
+  ],
+  "currentHeadCiRequired": true,
+  "previousSuccessfulFullSuite": {
+    "commitSha": "ccf4e42fc41525abed1aa0e6e64b5d26b9344d99",
+    "verificationStatus": "CI_VERIFIED on superseded base; refreshed head requires fresh independent CI",
+    "runs": [
+      {
+        "workflow": "alpha-governance",
+        "id": 37982558624,
+        "conclusion": "success"
+      },
+      {
+        "workflow": "alpha-firefox",
+        "id": 37982558582,
+        "conclusion": "success"
+      },
+      {
+        "workflow": "firefox-developer-edition",
+        "id": 37982558633,
+        "conclusion": "success"
+      }
+    ]
+  }
+}
