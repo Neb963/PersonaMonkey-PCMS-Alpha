@@ -1,0 +1,51 @@
+name: alpha-maintenance-verification
+
+# Independent hosted execution of the *candidate* acceptance suite. This is
+# not the existing trusted-main governance approval. Prior to MAINT-ALPHA-GOV-001
+# bootstrap that validator MUST fail closed, even if these tests pass.
+on:
+  pull_request:
+    paths:
+      - 'tools/alpha/governance.mjs'
+      - 'tools/alpha/ci.mjs'
+      - 'tools/alpha/maintenance-approval.mjs'
+      - 'tests/alpha/governance/**'
+      - 'docs/implementation/alpha/GOVERNANCE.md'
+      - 'docs/evidence/alpha/MAINT-*/context.json'
+      - '.github/workflows/alpha-maintenance-verification.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  candidate-regressions:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Verify current candidate identity and upstream parentage
+        env:
+          MAINT_HEAD: ${{ github.event.pull_request.head.sha }}
+          MAINT_BASE: ${{ github.event.pull_request.base.sha }}
+        run: |
+          git fetch origin main
+          test "$(git rev-parse HEAD)" = "$(git rev-parse "$MAINT_HEAD")" || test "$(git rev-parse HEAD^{tree})" = "$(git rev-parse "$MAINT_HEAD^{tree}")"
+          test "$(git rev-parse origin/main)" = "$MAINT_BASE"
+          git merge-base --is-ancestor "$MAINT_BASE" "$MAINT_HEAD"
+      - name: Full Alpha governance, repository and frozen donor regression suite
+        run: npm run verify
+      - name: All Alpha feature regressions
+        run: node tools/alpha/run-tests.mjs
+      - name: Package actual derivative extension
+        run: node scripts/build-extension.mjs
+      - name: Final main fencing
+        env:
+          MAINT_BASE: ${{ github.event.pull_request.base.sha }}
+        run: |
+          git fetch origin main
+          test "$(git rev-parse origin/main)" = "$MAINT_BASE"
