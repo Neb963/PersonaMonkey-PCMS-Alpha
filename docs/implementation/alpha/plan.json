@@ -5,7 +5,7 @@
   "designOnly": false,
   "bootstrap": {
     "id": "G0",
-    "state": "IN_PROGRESS",
+    "state": "ACCEPTED",
     "source": "Neb963/persona-monkey-pcms",
     "rule": "No round agent until Alpha repo is bootstrapped, validated and merged",
     "agentId": "codex-g0",
@@ -17,7 +17,8 @@
     "evidencePath": "docs/evidence/alpha/G0/",
     "exclusiveResources": [
       "alpha-bootstrap-authority"
-    ]
+    ],
+    "evidence": "docs/evidence/alpha/G0/independent-ci.json"
   },
   "constraints": {
     "agentSlots": 5,
@@ -42,7 +43,7 @@
         "P105"
       ],
       "gateId": "GATE-R1",
-      "status": "LOCKED"
+      "status": "READY"
     },
     {
       "round": 2,
@@ -121,7 +122,7 @@
       "round": 1,
       "agent": 1,
       "title": "Pinned Firefox and PersonaMonkey regression harness",
-      "status": "LOCKED",
+      "status": "READY",
       "dependsOn": [
         "G0"
       ],
@@ -155,7 +156,7 @@
       "round": 1,
       "agent": 2,
       "title": "Generator/domain persistence and durability",
-      "status": "LOCKED",
+      "status": "READY",
       "dependsOn": [
         "G0"
       ],
@@ -189,7 +190,7 @@
       "round": 1,
       "agent": 3,
       "title": "Perchance contract adapter and emulator",
-      "status": "LOCKED",
+      "status": "READY",
       "dependsOn": [
         "G0"
       ],
@@ -223,7 +224,7 @@
       "round": 1,
       "agent": 4,
       "title": "GitHub private-repo adapter and safe paths",
-      "status": "LOCKED",
+      "status": "READY",
       "dependsOn": [
         "G0"
       ],
@@ -257,7 +258,7 @@
       "round": 1,
       "agent": 5,
       "title": "Static Alpha UI shell and visual foundation",
-      "status": "LOCKED",
+      "status": "READY",
       "dependsOn": [
         "G0"
       ],
