@@ -22,7 +22,7 @@ test('explicit unencrypted informed consent, honest absent inventory and read-on
   assert.equal(inventory.find(i => i.item === 'alpha.journal').availability, 'EXPORTED');
   assert.equal(bundle.manifest.absentItems.find(i => i.item === 'alpha.githubCredential').reason, 'NOT_AUTHORIZED');
   const decoded = await decodeBackupFile(file);
-  assert.deepEqual(decoded.alpha, bundle.alpha);
+  assert.equal(Buffer.compare(Buffer.from(decoded.alpha), Buffer.from(bundle.alpha)), 0);
   const preview = await x.stageRestore(file);
   assert.equal(preview.verified, true);
   assert.equal(preview.applied, false);
@@ -55,8 +55,8 @@ test('explicit successful PersonaMonkey and approved sensitive data; exact binar
   assert.equal(out.bundle.manifest.absentItems.some(x => x.item === 'personaMonkey.personas'), false);
   assert.equal(out.bundle.manifest.absentItems.some(x => x.item === 'personaMonkey.userscripts'), true);
   assert.equal(out.bundle.manifest.absentItems.some(x => x.item === 'personaMonkey.cookies'), false);
-  assert.deepEqual((await decodeBackupFile(out.file)).personaMonkey, new Uint8Array([1, 128, 255]));
-  assert.deepEqual(await encodeBackupFile(await decodeBackupFile(out.file)), out.file);
+  assert.equal(Buffer.compare(Buffer.from((await decodeBackupFile(out.file)).personaMonkey), Buffer.from([1, 128, 255])), 0);
+  assert.equal(Buffer.compare(Buffer.from(await encodeBackupFile(await decodeBackupFile(out.file))), Buffer.from(out.file)), 0);
 });
 
 test('checksum tampering, malformed schema and unauthorized entries fail closed', async () => {
