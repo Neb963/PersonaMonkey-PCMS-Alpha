@@ -5,7 +5,7 @@
     "P102": 0,
     "P103": 0,
     "P104": 0,
-    "P105": 0,
+    "P105": 1,
     "P201": 0,
     "P202": 0,
     "P203": 0,
@@ -32,5 +32,33 @@
     "P604": 0,
     "P605": 0
   },
-  "claims": []
+  "claims": [
+    {
+      "schemaVersion": 1,
+      "claimId": "CLM-P105-001",
+      "phaseId": "P105",
+      "agentId": "slot-five",
+      "claimEpoch": 1,
+      "state": "ACTIVE",
+      "baseMainSha": "5ea76924abba1ae04de774e548cd6ac2c9ee745b",
+      "branch": "agent/slot-five/p105",
+      "writePaths": [
+        "extension/alpha/ui/shell/**",
+        "extension/alpha/ui/styles/**",
+        "tests/alpha/ui-shell/**",
+        "docs/evidence/alpha/P105/**"
+      ],
+      "contractReads": {
+        "alpha.contracts.v1": "9b379980e16fdd557e0ea8a7f8273421f4a581c1c1563fe7661308038e29ee12"
+      },
+      "contractWrites": [],
+      "exclusiveResources": [],
+      "migrationSlots": [],
+      "acceptanceIds": [
+        "AP105-01",
+        "AP105-02",
+        "AP105-03"
+      ]
+    }
+  ]
 }
