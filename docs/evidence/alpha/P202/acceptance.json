@@ -7,7 +7,7 @@
   "contractReads": {
     "alpha.contracts.v1": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e"
   },
-  "state": "COMMITTED",
+  "state": "MERGED",
   "acceptanceIds": [
     "AP202-01",
     "AP202-02",
@@ -15,15 +15,15 @@
   ],
   "evidence": {
     "AP202-01": {
-      "status": "PASS_DETERMINISTIC_PREVIOUS_HEAD_PENDING_CURRENT_MAIN",
+      "status": "PASS_DETERMINISTIC",
       "case": "dedicated personaUid, rotation preservation, safe atomic epoch rebind"
     },
     "AP202-02": {
-      "status": "PASS_DETERMINISTIC_PREVIOUS_HEAD_PENDING_CURRENT_MAIN",
+      "status": "PASS_DETERMINISTIC",
       "case": "manual challenge, typed route retries, no Direct fallback"
     },
     "AP202-03": {
-      "status": "PASS_DETERMINISTIC_PREVIOUS_HEAD_PENDING_CURRENT_MAIN",
+      "status": "PASS_DETERMINISTIC",
       "case": "account-owned full discovery, EXCLUDED import and batch integrity"
     }
   },
@@ -34,17 +34,31 @@
   "commandsExecuted": [
     {
       "command": "npm run verify && node tools/alpha/run-tests.mjs",
-      "environment": "GitHub Actions ubuntu-24.04 Node 24",
-      "runId": 37982188041,
-      "commitSha": "c9859eab7287a86d1b943d169198cfc639d53221",
-      "result": "All 10 AP202 cases passed; overall workflow failed only because main changed during suite"
+      "where": "GitHub Actions alpha-governance ubuntu-24.04 Node 24",
+      "commitSha": "ee3553984fef67c6781f8c8fc10cd483acc15d21",
+      "runId": 37983591622,
+      "result": "PASS; all 10 P202 account tests and full Alpha+donor verification"
     },
     {
       "command": "node scripts/build-extension.mjs",
-      "environment": "GitHub Actions ubuntu-24.04 Node 24",
-      "runId": 37980431571,
-      "commitSha": "bffff35cc5ef8ca19a9b681355dd2f807e0aecdc",
-      "result": "PASS (prior implementation; not current release validation)"
+      "where": "GitHub Actions alpha-governance ubuntu-24.04 Node 24",
+      "commitSha": "ee3553984fef67c6781f8c8fc10cd483acc15d21",
+      "runId": 37983591622,
+      "result": "PASS packaged derivative"
+    },
+    {
+      "command": "node tools/alpha/firefox/smoke.mjs && node tests/alpha/browser-baseline/packaged.mjs",
+      "where": "GitHub Actions alpha-firefox exact pinned Firefox Developer Edition",
+      "commitSha": "ee3553984fef67c6781f8c8fc10cd483acc15d21",
+      "runId": 37983591547,
+      "result": "PASS"
+    },
+    {
+      "command": "GitHub firefox-developer-edition packaged browser suite",
+      "where": "Independent GitHub Actions",
+      "commitSha": "ee3553984fef67c6781f8c8fc10cd483acc15d21",
+      "runId": 37983591616,
+      "result": "PASS all jobs"
     }
   ],
   "independentCi": [
@@ -93,7 +107,7 @@
     "Persona UID creation uses the exact UUID lexical format required by PersonaMonkey, not a prefixed local identifier",
     "Ambiguous account operations block a new tab dispatch and session import until reconciled"
   ],
-  "currentHeadCiRequired": true,
+  "currentHeadCiRequired": false,
   "previousSuccessfulFullSuite": {
     "commitSha": "ccf4e42fc41525abed1aa0e6e64b5d26b9344d99",
     "verificationStatus": "CI_VERIFIED on superseded base; refreshed head requires fresh independent CI",
@@ -114,5 +128,76 @@
         "conclusion": "success"
       }
     ]
-  }
+  },
+  "claimState": "ACTIVE",
+  "implementation": {
+    "pr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/39",
+    "headSha": "ee3553984fef67c6781f8c8fc10cd483acc15d21",
+    "mergedMainSha": "955e2cd7506f129626df0f35d9ab3340dd9ae1e9",
+    "mergeKind": "two-parent-exact-main-nonforced",
+    "mergedAt": "2026-10-09T20:01:02Z"
+  },
+  "localTestsExecuted": [],
+  "localTestNote": "No complete local repository checkout was available in this runner. Above commands were executed by independent GitHub Actions, confirmed by run logs.",
+  "prCiRuns": [
+    {
+      "workflow": "alpha-governance",
+      "runId": 37983591622,
+      "sha": "ee3553984fef67c6781f8c8fc10cd483acc15d21",
+      "event": "pull_request",
+      "conclusion": "success"
+    },
+    {
+      "workflow": "alpha-firefox",
+      "runId": 37983591547,
+      "sha": "ee3553984fef67c6781f8c8fc10cd483acc15d21",
+      "event": "pull_request",
+      "conclusion": "success"
+    },
+    {
+      "workflow": "firefox-developer-edition",
+      "runId": 37983591616,
+      "sha": "ee3553984fef67c6781f8c8fc10cd483acc15d21",
+      "event": "pull_request",
+      "conclusion": "success"
+    }
+  ],
+  "mergedMainCiRuns": [
+    {
+      "workflow": "alpha-governance",
+      "runId": 37984134360,
+      "sha": "955e2cd7506f129626df0f35d9ab3340dd9ae1e9",
+      "event": "push",
+      "conclusion": "success"
+    },
+    {
+      "workflow": "alpha-firefox",
+      "runId": 37984134405,
+      "sha": "955e2cd7506f129626df0f35d9ab3340dd9ae1e9",
+      "event": "push",
+      "conclusion": "success"
+    },
+    {
+      "workflow": "firefox-developer-edition",
+      "runId": 37984134328,
+      "sha": "955e2cd7506f129626df0f35d9ab3340dd9ae1e9",
+      "event": "push",
+      "conclusion": "success"
+    }
+  ],
+  "diffReview": {
+    "authorizedPathsOnly": true,
+    "changedFiles": [
+      "docs/evidence/alpha/P202/acceptance.json",
+      "docs/evidence/alpha/P202/context.json",
+      "extension/alpha/features/accounts/README.md",
+      "extension/alpha/features/accounts/service.mjs",
+      "tests/alpha/accounts/service.test.mjs"
+    ],
+    "credentialsCommitted": false,
+    "sharedContractsChanged": false,
+    "otherPhasesChanged": false
+  },
+  "gateVerified": false,
+  "accepted": false
 }
