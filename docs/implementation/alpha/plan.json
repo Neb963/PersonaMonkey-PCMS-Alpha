@@ -330,7 +330,7 @@
       "round": 2,
       "agent": 2,
       "title": "Accounts and Persona enrollment",
-      "status": "READY",
+      "status": "CLAIMED",
       "dependsOn": [
         "P102",
         "P103"
