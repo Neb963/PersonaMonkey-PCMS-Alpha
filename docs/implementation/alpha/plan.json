@@ -190,7 +190,7 @@
       "round": 1,
       "agent": 3,
       "title": "Perchance contract adapter and emulator",
-      "status": "READY",
+      "status": "CLAIMED",
       "dependsOn": [
         "G0"
       ],
