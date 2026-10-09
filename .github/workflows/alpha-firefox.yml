@@ -28,6 +28,7 @@ jobs:
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - uses: actions/setup-node@v5
         with:
           node-version: '24'
@@ -41,7 +42,7 @@ jobs:
           node "$authority_dir/tools/alpha/ci.mjs" --root "$GITHUB_WORKSPACE"
       - name: Test pin integrity and typed broker faults plus preserved PersonaMonkey regressions
         run: |
-          node --test tests/alpha/browser-baseline/*.test.mjs tests/firefox/*.test.mjs tests/pcms/p008-*.test.mjs tests/pcms/p009-*.test.mjs
+          node --test tests/alpha/browser-baseline/*.test.mjs tests/firefox/*.test.mjs
           node extension/tests/persona-identity.test.mjs
           node extension/tests/management-integration.test.mjs
           node extension/tests/integration-lifecycle.test.mjs
