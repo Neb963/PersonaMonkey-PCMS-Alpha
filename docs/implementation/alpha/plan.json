@@ -122,7 +122,7 @@
       "round": 1,
       "agent": 1,
       "title": "Pinned Firefox and PersonaMonkey regression harness",
-      "status": "READY",
+      "status": "CLAIMED",
       "dependsOn": [
         "G0"
       ],
