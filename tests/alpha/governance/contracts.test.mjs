@@ -22,6 +22,9 @@ test('frozen declarations and surface hash match the actual broker and ten servi
     assert.deepEqual([...body.matchAll(/'([^']+)'/g)].map(m => m[1]), values);
   }
   assert.equal(contractHash(), load().lock.contracts['alpha.contracts.v1']);
+  assert.equal(load().lock.contractRevision, 2);
+  assert.equal(surface.contractRevision, 2);
+  assert.equal(surface.perchanceAdapter.listGenerators.itemType, 'AccountGeneratorEntry');
   validateSnapshot(load(), { root: '.' });
 });
 test('generated Alpha views never announce an unassigned next task or donor acceptance', () => {

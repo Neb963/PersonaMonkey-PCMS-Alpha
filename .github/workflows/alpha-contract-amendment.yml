@@ -1,0 +1,33 @@
+name: alpha-contract-amendment
+
+on:
+  pull_request:
+    paths:
+      - 'extension/alpha/contracts/**'
+      - 'docs/implementation/alpha/contracts.lock.json'
+      - 'docs/evidence/alpha/AMEND-P103-LIST-001/**'
+  push:
+    branches: [main]
+    paths:
+      - 'docs/evidence/alpha/AMEND-P103-LIST-001/**'
+
+permissions:
+  contents: read
+
+jobs:
+  keyed-contract-and-fencing:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Verify P103 amendment against exact main
+        run: node tools/alpha/verify-amendment.mjs
+      - name: Run full governance suite
+        run: npm run verify
+      - name: Recheck discovery, contract and claim regressions
+        run: node --test tests/alpha/governance/contract-amendment.test.mjs tests/alpha/governance/claims.test.mjs

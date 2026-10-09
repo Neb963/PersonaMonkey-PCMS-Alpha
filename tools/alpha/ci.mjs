@@ -1,6 +1,6 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
-import { git, json, load, hasAuthority, requireThat, validateSnapshot, validateTransition, owns, ACTIVE } from './governance.mjs';
+import { git, json, load, hasAuthority, requireThat, validateSnapshot, validateTransition, owns, ACTIVE, AMENDMENT } from './governance.mjs';
 import { verifyRepository, verifyG0Runtime } from './verify-repo.mjs';
 import { verifyRun } from './ci-evidence.mjs';
 
@@ -22,9 +22,9 @@ let branch = options['--branch'] || process.env.ALPHA_HEAD_BRANCH;
 let contexts;
 if (branch || event === 'local') {
   branch ||= git(root, ['branch', '--show-current']);
-  contexts = [json(root, `docs/evidence/alpha/${branch.split('/').at(-1).toUpperCase()}/context.json`)];
+  contexts = [json(root, branch === AMENDMENT.branch ? AMENDMENT.contextPath : `docs/evidence/alpha/${branch.split('/').at(-1).toUpperCase()}/context.json`)];
 } else {
-  const changed = files.filter(p => /^docs\/evidence\/alpha\/(G0|P[1-6]0[1-5]|GATE-R[1-6])\/context\.json$/.test(p));
+  const changed = files.filter(p => /^docs\/evidence\/alpha\/(G0|P[1-6]0[1-5]|GATE-R[1-6]|AMEND-P103-LIST-001)\/context\.json$/.test(p));
   if (changed.length) contexts = changed.map(p => json(root, p));
   else if (!main || main.plan.bootstrap.state !== 'ACCEPTED') contexts = [json(root, 'docs/evidence/alpha/G0/context.json')];
   else {
