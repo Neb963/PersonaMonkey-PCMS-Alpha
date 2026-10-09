@@ -63,7 +63,13 @@ export function owns(pattern, path) {
   return path === prefix || (pattern.endsWith('/**') && path.startsWith(`${prefix}/`));
 }
 export function ownership(phase) {
-  return { ...phase.ownership, writePaths: [...phase.ownership.writePaths, `docs/evidence/alpha/${phase.id}/**`] };
+  // Some approved phases already list their evidence directory explicitly.
+  // Normalize repeated ownership entries rather than rejecting valid claims.
+  const evidencePath = `docs/evidence/alpha/${phase.id}/**`;
+  return {
+    ...phase.ownership,
+    writePaths: [...new Set([...phase.ownership.writePaths, evidencePath])]
+  };
 }
 export function contractHash(root = '.') {
   const hash = createHash('sha256');
