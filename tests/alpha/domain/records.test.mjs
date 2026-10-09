@@ -129,6 +129,7 @@ test('AP102-02: immutable operation target and uncertainty prohibit blind replay
   assertRecordUpdate('operation', uncertain, normalizeOperation(operation({ phase: 'APPLIED', remoteEvidence: { revision: 'verified-revision' } })));
   assert.throws(() => assertRecordUpdate('operation', dispatching, normalizeOperation(operation({ phase: 'UNCERTAIN', targetKey: 'other-target' }))), { code: 'CONFLICT' });
   assert.throws(() => assertRecordUpdate('operation', dispatching, normalizeOperation(operation({ phase: 'FAILED' }))), { code: 'CONFLICT' });
+  assert.throws(() => assertRecordUpdate('operation', dispatching, normalizeOperation(operation({ phase: 'APPLIED' }))), { code: 'CONFLICT' });
   assert.throws(() => assertRecordUpdate('operation', null, dispatching), { code: 'CONFLICT' });
 });
 

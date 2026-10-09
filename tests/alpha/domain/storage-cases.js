@@ -170,6 +170,17 @@ export async function runStorageCases() {
     db.close(); await rejects(() => s.read('account', 'account-one'), 'RECOVERY_HOLD'); s.close();
   });
 
+  await check('AP102-02: malformed existing schema enters hold without creating missing indexes', async () => {
+    const db = await rawOpen(nameFor('malformed-schema'), 1, db => {
+      db.createObjectStore(RECORDS, { keyPath: 'id' });
+      db.createObjectStore(JOURNAL, { keyPath: 'revision' });
+      db.createObjectStore(META, { keyPath: 'id' });
+    }); db.close();
+    const s = storage('malformed-schema'); await rejects(() => s.open(), 'RECOVERY_HOLD');
+    const raw = await rawOpen(nameFor('malformed-schema'));
+    assert(raw.transaction(RECORDS).objectStore(RECORDS).indexNames.length === 0); raw.close();
+  });
+
   await check('AP102-02: close during pending open cannot resurrect a connection', async () => {
     let releaseOpen; const gate = new Promise(resolve => { releaseOpen = resolve; });
     const s = createAlphaStorage({ dbName: nameFor('pending-open'), openDatabase: async options => {
