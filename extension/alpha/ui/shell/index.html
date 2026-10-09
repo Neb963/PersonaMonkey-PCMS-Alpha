@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Overview — PersonaMonkey PCMS Alpha</title>
+  <link rel="stylesheet" href="../styles/tokens.css">
+  <link rel="stylesheet" href="../styles/shell.css">
+  <script type="module" src="./shell.js"></script>
+</head>
+<body>
+  <a class="alpha-skip" href="#content">Skip to main content</a>
+  <div class="alpha-app">
+    <header class="alpha-top">
+      <div class="alpha-identity">
+        <span class="alpha-eyebrow">PersonaMonkey</span>
+        <h1>PCMS Alpha</h1>
+        <p>Generator fleet management</p>
+      </div>
+      <div class="alpha-top-actions">
+        <span class="alpha-pill" aria-label="Interface status: static foundation">Static foundation</span>
+        <a class="alpha-text-link" href="../../../options/options.html">PersonaMonkey settings</a>
+      </div>
+    </header>
+    <div class="alpha-layout">
+      <aside class="alpha-sidebar">
+        <nav class="alpha-nav" aria-label="Alpha sections">
+          <a class="alpha-nav-link is-current" data-section="overview" href="#overview" aria-current="page">Overview</a>
+        <a class="alpha-nav-link" data-section="supply" href="#supply">Supply &amp; Deployments</a>
+        <a class="alpha-nav-link" data-section="refresher" href="#refresher">Refresher</a>
+        <a class="alpha-nav-link" data-section="accounts" href="#accounts">Accounts</a>
+        <a class="alpha-nav-link" data-section="generators" href="#generators">Generators</a>
+        <a class="alpha-nav-link" data-section="attention" href="#attention">Attention</a>
+        <a class="alpha-nav-link" data-section="settings" href="#settings">Settings</a>
+        </nav>
+      </aside>
+      <main id="content" class="alpha-content" tabindex="-1">
+        <section class="alpha-page" id="page-overview" data-panel="overview" aria-labelledby="alpha-heading-overview">
+          <header class="alpha-page-heading">
+            <p class="alpha-eyebrow">Summary and health</p>
+            <h2 id="alpha-heading-overview" tabindex="-1">Fleet overview</h2>
+            <p class="alpha-description">Fleet health, workload and action-required summaries will appear here.</p>
+          </header>
+          <div class="alpha-panel">
+            <div data-state-slot data-title="Fleet data is not connected" data-message="The Alpha Core projection is not wired to this static shell yet."></div>
+          </div>
+        </section>
+        <section class="alpha-page" id="page-supply" data-panel="supply" aria-labelledby="alpha-heading-supply" hidden>
+          <header class="alpha-page-heading">
+            <p class="alpha-eyebrow">Reserve and release</p>
+            <h2 id="alpha-heading-supply" tabindex="-1">Supply &amp; Deployments</h2>
+            <p class="alpha-description">Bulk reservation requests, source readiness and deployment queues will appear here.</p>
+          </header>
+          <div class="alpha-panel">
+            <div data-state-slot data-title="No supply projection" data-message="Supply operations are not available in this UI foundation."></div>
+          </div>
+        </section>
+        <section class="alpha-page" id="page-refresher" data-panel="refresher" aria-labelledby="alpha-heading-refresher" hidden>
+          <header class="alpha-page-heading">
+            <p class="alpha-eyebrow">Active and resting generators</p>
+            <h2 id="alpha-heading-refresher" tabindex="-1">Refresher</h2>
+            <p class="alpha-description">Scheduling and recent-list visibility will appear here.</p>
+          </header>
+          <div class="alpha-panel">
+            <div data-state-slot data-title="No refresher projection" data-message="Refresher state will be supplied by the background Core in a later phase."></div>
+          </div>
+        </section>
+        <section class="alpha-page" id="page-accounts" data-panel="accounts" aria-labelledby="alpha-heading-accounts" hidden>
+          <header class="alpha-page-heading">
+            <p class="alpha-eyebrow">Account and Persona bindings</p>
+            <h2 id="alpha-heading-accounts" tabindex="-1">Accounts</h2>
+            <p class="alpha-description">Enrollment and verified session information will appear here.</p>
+          </header>
+          <div class="alpha-panel">
+            <div data-state-slot data-title="No accounts loaded" data-message="Account enrollment is not connected in the static shell."></div>
+          </div>
+        </section>
+        <section class="alpha-page" id="page-generators" data-panel="generators" aria-labelledby="alpha-heading-generators" hidden>
+          <header class="alpha-page-heading">
+            <p class="alpha-eyebrow">Inventory</p>
+            <h2 id="alpha-heading-generators" tabindex="-1">Generators</h2>
+            <p class="alpha-description">Searchable, paginated generator records will appear here.</p>
+          </header>
+          <div class="alpha-panel">
+            <div data-state-slot data-title="No inventory projection" data-message="Inventory data will be provided by an authorized Core client."></div>
+          </div>
+        </section>
+        <section class="alpha-page" id="page-attention" data-panel="attention" aria-labelledby="alpha-heading-attention" hidden>
+          <header class="alpha-page-heading">
+            <p class="alpha-eyebrow">Items needing operator action</p>
+            <h2 id="alpha-heading-attention" tabindex="-1">Attention</h2>
+            <p class="alpha-description">Uncertain operations and session challenges will appear here.</p>
+          </header>
+          <div class="alpha-panel">
+            <div data-state-slot data-title="Attention data unavailable" data-message="An empty preview is not confirmation that no actions are required."></div>
+          </div>
+        </section>
+        <section class="alpha-page" id="page-settings" data-panel="settings" aria-labelledby="alpha-heading-settings" hidden>
+          <header class="alpha-page-heading">
+            <p class="alpha-eyebrow">Configuration</p>
+            <h2 id="alpha-heading-settings" tabindex="-1">Settings</h2>
+            <p class="alpha-description">Configuration, diagnostics and backup controls will appear here.</p>
+          </header>
+          <div class="alpha-panel">
+            <div data-state-slot data-title="Settings not connected" data-message="This static foundation does not read or change settings."></div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+</body>
+</html>
