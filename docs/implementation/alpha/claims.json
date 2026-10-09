@@ -10,7 +10,7 @@
     "P202": 0,
     "P203": 0,
     "P204": 0,
-    "P205": 0,
+    "P205": 1,
     "P301": 0,
     "P302": 0,
     "P303": 0,
@@ -166,6 +166,32 @@
         "AP103-01",
         "AP103-02",
         "AP103-03"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "claimId": "CLM-P205-001",
+      "phaseId": "P205",
+      "agentId": "slot-five-p205",
+      "claimEpoch": 1,
+      "state": "ACTIVE",
+      "baseMainSha": "39623c872e73aa9983e9f4fbdbc8f939281da57b",
+      "branch": "agent/slot-five-p205/p205",
+      "writePaths": [
+        "extension/alpha/backup/**",
+        "tests/alpha/backup/**",
+        "docs/evidence/alpha/P205/**"
+      ],
+      "contractReads": {
+        "alpha.contracts.v1": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e"
+      },
+      "contractWrites": [],
+      "exclusiveResources": [],
+      "migrationSlots": [],
+      "acceptanceIds": [
+        "AP205-01",
+        "AP205-02",
+        "AP205-03"
       ]
     }
   ]
