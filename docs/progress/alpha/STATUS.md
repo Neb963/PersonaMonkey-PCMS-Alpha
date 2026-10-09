@@ -2,8 +2,8 @@
 
 > Generated from docs/implementation/alpha/plan.json. Do not hand-edit.
 
-- G0: **IN_PROGRESS**
-- Ready: **none**
+- G0: **ACCEPTED**
+- Ready: **P101, P102, P103, P104, P105**
 - Claimed: **none**
 - Accepted phases: **none**
 - Provider-live acceptance: **not established**
