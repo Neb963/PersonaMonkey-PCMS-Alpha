@@ -1,0 +1,154 @@
+{
+  "schemaVersion": 1,
+  "phaseId": "P103",
+  "claimId": "CLM-P103-001",
+  "agentId": "slot-three-p103",
+  "claimEpoch": 1,
+  "state": "MERGED",
+  "claimState": "ACTIVE",
+  "providerLive": false,
+  "contractId": "alpha.contracts.v1",
+  "contractRevision": 2,
+  "contractHash": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e",
+  "baseMainSha": "0580a8145c5a55c7d3c1dfa80a41820bb10a3e3a",
+  "claimPr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/26",
+  "claimMergedMainSha": "87d48de511460c39c4d29ebecd1a10e61ce48d0d",
+  "implementationPr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/27",
+  "commitSha": "06a97e39eff75426736ebfd58008a9c291fd6143",
+  "mergedMainSha": "462d17e1cb87af7e7e9ba81a5981da744e49d0ab",
+  "discovery": {
+    "archive": "discovery-v3.zip",
+    "sha256": "65c52533702bc210556acadd2f39f9d848e302644f6c17652e5bc9066e7a9080",
+    "observedBrowser": "Brave/CDP",
+    "firefoxProviderLive": false
+  },
+  "acceptanceIds": [
+    "AP103-01",
+    "AP103-02",
+    "AP103-03"
+  ],
+  "cases": [
+    {
+      "id": "AP103-01",
+      "result": "PASS — deterministic adapter and discovery-v3 fixtures; account-bound keyed source inventory, exact underscore keys, locally content-hashed pagination, unknown capability and ownership failures blocked",
+      "evidence": [
+        "extension/alpha/providers/perchance/adapter.mjs",
+        "fixtures/alpha/perchance/discovery-v3.json",
+        "tests/alpha/providers/perchance/adapter.test.mjs"
+      ]
+    },
+    {
+      "id": "AP103-02",
+      "result": "PASS — deterministic emulator covers saved, stale, challenge, rate, uncertain post-apply, malformed and readback mismatches; source/listing/AI history observations remain separate",
+      "evidence": [
+        "extension/alpha/providers/perchance/emulator.mjs",
+        "extension/alpha/providers/perchance/observations.mjs",
+        "tests/alpha/providers/perchance/adapter.test.mjs"
+      ]
+    },
+    {
+      "id": "AP103-03",
+      "result": "PASS — no direct HTTP/native/browser executor; caller-supplied Persona-scoped executor and durable journal required; static no-second-authority tests and pinned Firefox baseline CI",
+      "evidence": [
+        "extension/alpha/providers/perchance/adapter.mjs",
+        "extension/alpha/providers/perchance/README.md",
+        "tests/alpha/providers/perchance/adapter.test.mjs"
+      ]
+    }
+  ],
+  "localTestsExecuted": [
+    {
+      "command": "node --test /mnt/data/p103work/tests/alpha/providers/perchance/adapter.test.mjs",
+      "nodeVersion": "v22.16.0",
+      "result": "PASS",
+      "tests": 28,
+      "passed": 28,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "command": "node --check /mnt/data/p103work/extension/alpha/providers/perchance/adapter.mjs && node --check /mnt/data/p103work/extension/alpha/providers/perchance/emulator.mjs && node --check /mnt/data/p103work/extension/alpha/providers/perchance/observations.mjs",
+      "result": "PASS"
+    },
+    {
+      "command": "git hash-object <seven P103 source files> versus published GitHub blobs",
+      "result": "PASS — exact source blob hashes matched locally executed files"
+    }
+  ],
+  "prCiRuns": [
+    {
+      "id": 37961029409,
+      "name": "alpha-governance",
+      "sha": "06a97e39eff75426736ebfd58008a9c291fd6143",
+      "event": "pull_request",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37961029409"
+    },
+    {
+      "id": 37961029352,
+      "name": "alpha-firefox",
+      "sha": "06a97e39eff75426736ebfd58008a9c291fd6143",
+      "event": "pull_request",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37961029352"
+    },
+    {
+      "id": 37961029439,
+      "name": "firefox-developer-edition",
+      "sha": "06a97e39eff75426736ebfd58008a9c291fd6143",
+      "event": "pull_request",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37961029439"
+    }
+  ],
+  "ciRuns": [
+    {
+      "id": 37961575913,
+      "name": "alpha-governance",
+      "sha": "462d17e1cb87af7e7e9ba81a5981da744e49d0ab",
+      "event": "push",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37961575913"
+    },
+    {
+      "id": 37961575968,
+      "name": "alpha-firefox",
+      "sha": "462d17e1cb87af7e7e9ba81a5981da744e49d0ab",
+      "event": "push",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37961575968"
+    },
+    {
+      "id": 37961575895,
+      "name": "firefox-developer-edition",
+      "sha": "462d17e1cb87af7e7e9ba81a5981da744e49d0ab",
+      "event": "push",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37961575895"
+    }
+  ],
+  "repairHistory": {
+    "legacyP036ScannerFailure": {
+      "failedRun": 37960557270,
+      "reason": "P036 test scanned any extension source containing provider-specific raw listing field; original allowlist predates Alpha's separate adapter",
+      "remediation": "Scoped Perchance transport-field decode within P103 modules only; preserved legacy test and shared Alpha contracts",
+      "fixedIn": "06a97e39eff75426736ebfd58008a9c291fd6143",
+      "retrospectiveResult": "P036 packaged suite and all Firefox jobs successful on corrected PR and merged-main commits"
+    }
+  },
+  "diffReview": {
+    "authorizedPathsOnly": true,
+    "credentialsCommitted": false,
+    "rawBrowserOrNativeCommands": false,
+    "sharedContractsModified": false,
+    "otherPhasesModified": false
+  },
+  "limitations": [
+    "Real Perchance/Firefox/Cloudflare/Mullvad acceptance was not performed. Discovery v3 was observed in Brave/CDP and must not be assumed Firefox-equivalent.",
+    "The production typed PersonaMonkey executor and durable journal are injected dependencies, not independently wired in P103. The in-memory emulator is deterministic evidence only.",
+    "Perchance lacks observed native account pagination; the adapter pages complete authenticated account lists locally and fails closed on drift, malformed keys and incomplete discovery.",
+    "Perchance create may require multiple fork/rename/private/save steps; P103 does not falsely claim this is a live atomic provider operation.",
+    "Private on Perchance means unlisted, not confidential. Revision restore was not observed.",
+    "Claim remains ACTIVE and plan P103 remains CLAIMED pending independent GATE-R1 integration checker. R2 remains LOCKED."
+  ]
+}
