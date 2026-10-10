@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "phaseId": "P304",
+  "claimId": "CLM-P304-001",
+  "agentId": "slot-four-r3",
+  "claimEpoch": 1,
+  "state": "COMMITTED",
+  "claimState": "ACTIVE",
+  "providerLive": false,
+  "baseMainSha": "0466c60d30c7ef7e62150cd048d741979b92edf7",
+  "contractId": "alpha.contracts.v1",
+  "contractRevision": 2,
+  "contractHash": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e",
+  "claimPr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/66",
+  "acceptanceIds": [
+    "AP304-01",
+    "AP304-02",
+    "AP304-03"
+  ],
+  "cases": [
+    {
+      "id": "AP304-01",
+      "summary": "Independent jittered per-generator A/S ledger, eligible population, 24/72 cap, empirical observed page capacity, safe manual override, 1k candidates and no provider writes",
+      "evidence": [
+        "extension/alpha/features/refresher/model.mjs",
+        "extension/alpha/features/refresher/service.mjs",
+        "tests/alpha/refresher/refresher.test.mjs"
+      ]
+    },
+    {
+      "id": "AP304-02",
+      "summary": "Persisted operational healthy clock pauses shutdown, confirmed outage and cold browser run; warm Firefox idle unload counts bounded healthy interval; no unbounded replay",
+      "evidence": [
+        "extension/alpha/features/refresher/store.mjs",
+        "tests/alpha/refresher/refresher.test.mjs"
+      ]
+    },
+    {
+      "id": "AP304-03",
+      "summary": "Manual pull-in/out, longest-sleeping fairness, minimum S, active cap preemption, stale inventory cursor and stale binding errors",
+      "evidence": [
+        "extension/alpha/features/refresher/service.mjs",
+        "tests/alpha/refresher/refresher.test.mjs"
+      ]
+    }
+  ],
+  "localTestsExecuted": [
+    {
+      "command": "node --test /mnt/data/P304-work/tests/alpha/refresher/refresher.test.mjs",
+      "environment": "detached Node v22.16.0 fixtures, no installed Firefox; exact source equivalent",
+      "tests": 7,
+      "passed": 7,
+      "failed": 0,
+      "result": "PASS"
+    },
+    {
+      "command": "node --check each of 3 Refresher modules and 1 test",
+      "filesChecked": 4,
+      "result": "PASS"
+    }
+  ],
+  "diffReview": {
+    "authorizedPathsOnly": true,
+    "providerMutations": false,
+    "sharedContractsModified": false,
+    "otherPhaseFilesModified": false,
+    "secretsCommitted": false
+  },
+  "limitations": [
+    "Not provider live.",
+    "No provider refresh mutation or tab automation; composed by P403.",
+    "P405 must include Refresher's separate IndexedDB ledger in full backup/restore."
+  ]
+}
