@@ -1,6 +1,6 @@
 {
   "phaseId": "P201",
-  "state": "COMMITTED",
+  "state": "CI_VERIFIED",
   "agentId": "slot-one-r2",
   "claimId": "CLM-P201-001",
   "claimEpoch": 1,
@@ -18,8 +18,42 @@
   "gateVerified": false,
   "accepted": false,
   "mergedMainSha": null,
-  "ciRuns": [],
-  "requiredCi": "PENDING_FRESH_CURRENT_MAIN_PR_CI",
+  "ciRuns": [
+    {
+      "name": "alpha-governance",
+      "id": 38049108774,
+      "sha": "ac42d9b2a59f655747126b653801c3ec7d45c3f1",
+      "headBranch": "agent/slot-one-r2/p201",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "attempt": 1,
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38049108774"
+    },
+    {
+      "name": "alpha-firefox",
+      "id": 38049108777,
+      "sha": "ac42d9b2a59f655747126b653801c3ec7d45c3f1",
+      "headBranch": "agent/slot-one-r2/p201",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "attempt": 1,
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38049108777"
+    },
+    {
+      "name": "firefox-developer-edition",
+      "id": 38049108745,
+      "sha": "ac42d9b2a59f655747126b653801c3ec7d45c3f1",
+      "headBranch": "agent/slot-one-r2/p201",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "attempt": 1,
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38049108745"
+    }
+  ],
+  "requiredCi": "PASS_AT_REPRODUCIBLE_PRODUCT_CHECKPOINT",
   "commands": [
     {
       "command": "node --test tests/alpha/core/core.test.mjs",
@@ -68,7 +102,9 @@
       "tests": 49,
       "passed": 46,
       "failed": 3,
-      "blocker": "PR #44 governance fixtures copy current Alpha product while asserting a pre-P201 legacy baseline; see ci-blocker.md"
+      "blocker": "PR #44 governance fixtures copy current Alpha product while asserting a pre-P201 legacy baseline; see ci-blocker.md",
+      "historical": true,
+      "supersededBy": "MAINT-P201-FIXTURE-006 and fresh successful alpha-governance run 38049108774"
     },
     {
       "command": "git diff --check",
@@ -101,6 +137,32 @@
     {
       "command": "node extension/tests/background-routing-init.test.mjs",
       "exitCode": 0
+    },
+    {
+      "command": "npm run verify",
+      "executedBy": "independent GitHub Actions alpha-governance",
+      "runId": 38049108774,
+      "exitCode": 0,
+      "governanceTestsPassed": 50,
+      "donorVerified": true
+    },
+    {
+      "command": "node tools/alpha/run-tests.mjs",
+      "executedBy": "independent GitHub Actions alpha-governance",
+      "runId": 38049108774,
+      "exitCode": 0,
+      "tests": 158,
+      "passed": 158,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "command": "node tools/alpha/ci-migration/core.mjs --root . --main-ref origin/main",
+      "executedBy": "independent GitHub Actions Firefox Developer Edition",
+      "runId": 38049108745,
+      "exitCode": 0,
+      "p201": "EXECUTED",
+      "packagedCases": 6
     }
   ],
   "sourceSha256": {
@@ -166,5 +228,15 @@
     "mergedMainSha": "d0ff52f9e3657a192ee408759006e19b08779cb1",
     "verifiedOnMain": true,
     "description": "Frozen donor pre-P201 governance fixtures restored; independent merged-main alpha-governance, alpha-firefox and firefox-developer-edition success. The P201 product PR requires fresh CI at its updated head."
+  },
+  "checkpoint": {
+    "headSha": "ac42d9b2a59f655747126b653801c3ec7d45c3f1",
+    "baseMainSha": "d0ff52f9e3657a192ee408759006e19b08779cb1",
+    "firefoxMatrixJobsPassed": 12,
+    "packagedP201Cases": 6,
+    "governanceRegressionsPassed": 50,
+    "alphaTestsPassed": 158,
+    "providerLive": false,
+    "explanation": "All three mandatory PR workflows completed successfully at this product checkpoint; final evidence-only head requires independent CI revalidation."
   }
 }
