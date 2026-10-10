@@ -1,0 +1,164 @@
+{
+  "schemaVersion": 1,
+  "phaseId": "P305",
+  "claimId": "CLM-P305-001",
+  "agentId": "slot-five-r3",
+  "claimEpoch": 1,
+  "state": "MERGED",
+  "claimState": "ACTIVE",
+  "providerLive": false,
+  "baseMainSha": "e6a59075db9c8d8343224ebfd5c51d0c1030c05a",
+  "contractId": "alpha.contracts.v1",
+  "contractRevision": 2,
+  "contractHash": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e",
+  "claimPr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/67",
+  "implementationPr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/69",
+  "commitSha": "279f3ce252120a2241c8ab01a2bafc10bef57506",
+  "mergedMainSha": "780fc19d05d1c3a4f3d4aaa0a64c8220c26843f2",
+  "acceptanceIds": [
+    "AP305-01",
+    "AP305-02",
+    "AP305-03"
+  ],
+  "cases": [
+    {
+      "id": "AP305-01",
+      "summary": "Global ten-minute read-only recent feed; raw position distinct from rendered page rank; bounded retry/suspend guidance without source edit",
+      "evidence": [
+        "extension/alpha/features/visibility/service.mjs",
+        "extension/alpha/features/visibility/ledger.mjs",
+        "tests/alpha/visibility/service.test.mjs"
+      ]
+    },
+    {
+      "id": "AP305-02",
+      "summary": "Pinned, filtered and missing observations; one shared feed request per interval and daily 1,000-request upper bound for a 1k generator fleet",
+      "evidence": [
+        "extension/alpha/features/visibility/service.mjs",
+        "tests/alpha/visibility/service.test.mjs"
+      ]
+    },
+    {
+      "id": "AP305-03",
+      "summary": "Adaptive sampled counters, verified daily/weekly baselines, bounded history, staleness, provider uncertainty and counter reset handling",
+      "evidence": [
+        "extension/alpha/features/visibility/service.mjs",
+        "extension/alpha/features/visibility/ledger.mjs",
+        "tests/alpha/visibility/service.test.mjs"
+      ]
+    }
+  ],
+  "localTestsExecuted": [
+    {
+      "command": "node --check /mnt/data/p305/extension/alpha/features/visibility/{service,ledger}.mjs and /mnt/data/p305/tests/alpha/visibility/service.test.mjs (individually)",
+      "environment": "detached local source equivalent to uploaded files; no GitHub checkout",
+      "filesChecked": 3,
+      "result": "PASS"
+    },
+    {
+      "command": "node --test /mnt/data/p305/tests/alpha/visibility/*.test.mjs",
+      "environment": "detached Node deterministic fixture workspace",
+      "tests": 6,
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "result": "PASS"
+    }
+  ],
+  "prCiRuns": [
+    {
+      "id": 38072976956,
+      "name": "alpha-governance",
+      "sha": "279f3ce252120a2241c8ab01a2bafc10bef57506",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38072976956"
+    },
+    {
+      "id": 38072976992,
+      "name": "alpha-firefox",
+      "sha": "279f3ce252120a2241c8ab01a2bafc10bef57506",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38072976992"
+    },
+    {
+      "id": 38072976934,
+      "name": "firefox-developer-edition",
+      "sha": "279f3ce252120a2241c8ab01a2bafc10bef57506",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38072976934"
+    }
+  ],
+  "ciRuns": [
+    {
+      "id": 38073313695,
+      "name": "alpha-governance",
+      "sha": "780fc19d05d1c3a4f3d4aaa0a64c8220c26843f2",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38073313695"
+    },
+    {
+      "id": 38073313692,
+      "name": "firefox-developer-edition",
+      "sha": "780fc19d05d1c3a4f3d4aaa0a64c8220c26843f2",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38073313692"
+    }
+  ],
+  "additionalCiRuns": [
+    {
+      "id": 38073313682,
+      "name": "alpha-firefox",
+      "sha": "780fc19d05d1c3a4f3d4aaa0a64c8220c26843f2",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38073313682"
+    }
+  ],
+  "proofCollection": {
+    "mode": "authenticated GitHub API equivalence (no local current-main checkout)",
+    "productAncestorVerified": true,
+    "currentMainAtCollection": "780fc19d05d1c3a4f3d4aaa0a64c8220c26843f2",
+    "runIdAndRepositoryIndependentlyVerified": true
+  },
+  "milestones": [
+    {
+      "state": "COMMITTED",
+      "sha": "279f3ce252120a2241c8ab01a2bafc10bef57506"
+    },
+    {
+      "state": "CI_VERIFIED",
+      "sha": "279f3ce252120a2241c8ab01a2bafc10bef57506",
+      "validatedMainSha": "c815159b7ad5c6f24b850425c7c38c5d084c7d20"
+    },
+    {
+      "state": "MERGED",
+      "sha": "780fc19d05d1c3a4f3d4aaa0a64c8220c26843f2",
+      "previousMainSha": "c815159b7ad5c6f24b850425c7c38c5d084c7d20"
+    }
+  ],
+  "diffReview": {
+    "authorizedPathsOnly": true,
+    "credentialsCommitted": false,
+    "sharedContractsModified": false,
+    "otherPhaseFilesModified": false,
+    "providerMutations": false,
+    "sourceEdits": false
+  },
+  "limitations": [
+    "Injected Perchance recent-view and per-generator counter observations require later approved production integration; no live provider capability is asserted.",
+    "The 1,000-request budget is a local conservative limiter, not a provider quota guarantee.",
+    "P403 alone owns actual refresh save/reload/comment edits and adaptive retry dispatch.",
+    "No live Perchance/Persona/Mullvad acceptance. GATE-R3 alone can promote GATE_VERIFIED/ACCEPTED."
+  ]
+}
