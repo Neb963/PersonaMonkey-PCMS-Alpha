@@ -412,3 +412,14 @@ test('AP402-03 uncertain listing reconciles by public readback without replay',a
   assert.equal(f.actions.filter(x=>x==='PUBLIC').length,1);
   assert.equal((await f.generator()).releaseId,f.desired.releaseId);
 });
+
+test('AP402-02 invalid AI source is rejected before any GitHub mutation',async()=>{
+  const f=await fixture();
+  assert.equal((await f.stage()).ok,true);
+  const t=await f.review({...f.desired.files,pjs:'\uD800',html:'changed'});
+  const result=await f.flow.markReady(f.approval(t));
+  assert.equal(result.error.code,'SOURCE_DRIFT');
+  assert.equal(f.gitWrites.length,0);
+  assert.equal(f.listing,'UNLISTED');
+  assert.equal(await f.operation('ready-1'),null);
+});
