@@ -231,3 +231,19 @@ test('AP401-02: invalid input never dispatches remote mutations',async()=>{
   assert.equal(h.createCalls.length,0);
   assert.equal(h.importCalls.length,0);
 });
+
+
+test('AP401-02: an APPLIED P301 reservation may adopt its subsequently READY GitHub folder',async()=>{
+  const h=await harness({folder:'ready_slug'});
+  const created=ok(await h.flow.processBatch({text:'ready_slug',batchId:'previous'}));
+  assert.equal(created.items[0].ok,true);
+  h.remote.get('account-1').set('ready_slug',{
+    ownership:'CONFIRMED',listing:'UNLISTED',sourceRevision:'owned-after-ready',asOf:NOW
+  });
+  const result=ok(await h.flow.importReady({key:'ready_slug',folder:'ready_slug',
+    opId:'adopt-after-ready'}));
+  assert.equal(result.source.status,'READY');
+  assert.equal(result.source.folder,'ready_slug');
+  assert.equal(h.createCalls.length,1,'P301 reserved only once');
+  assert.equal(h.importCalls.length,0,'no second provider create');
+});

@@ -176,10 +176,17 @@ export function createSupplyFlow({storage,reservation,sources,perchance,importPe
     check(!old || old.kind==='create' && old.targetKey===key &&
       intention(old)?.reservation===IMPORT && intention(old)?.folder===binding.folder,
     'CONFLICT');
-    check(!operationsRow.items.some(({record:op})=>op.opId!==opId &&
+    const competing=operationsRow.items.map(x=>x.record).filter(op=>op.opId!==opId &&
       op.kind==='create' && op.targetKey===key &&
-      !['NOT_APPLIED','FAILED'].includes(op.phase)),'RECOVERY_HOLD');
+      !['NOT_APPLIED','FAILED'].includes(op.phase));
     const owner=await findOwner(key,accounts);
+    // An APPLIED P301 reservation may legitimately become READY in GitHub;
+    // unsettled creates and different ownership/folder identity still block adoption.
+    check(competing.every(op=>owner && op.phase==='APPLIED' &&
+      intention(op)?.reservation==='P301' &&
+      intention(op).accountId===owner.account.accountId &&
+      intention(op).folder===binding.folder &&
+      op.accountBindingEpoch===owner.account.epoch),'RECOVERY_HOLD');
     if (old) {
       const expected=intention(old);
       const account=accounts.find(x=>x.accountId===expected.accountId);
