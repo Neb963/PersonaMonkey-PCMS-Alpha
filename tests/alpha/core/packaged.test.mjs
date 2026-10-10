@@ -81,14 +81,17 @@ before(async () => {
     // The ordinary governance job also discovers this mandatory file. Use the
     // same attested installer there, never skip the packaged scenarios.
     if (process.env.GITHUB_ACTIONS === 'true') {
-      // The full Alpha governance suite runs this file concurrently with P102's
-      // Firefox storage test. That test provisions shared host libraries. A
-      // second apt transaction here races its apt lock and fails unrelated
-      // acceptance, so require the libraries to be ready without mutating apt.
-      // The dedicated mandatory P201 packaged job supplies FIREFOX_BIN already.
-      await execFileText('bash', ['-c',
-        'packages="libgtk-3-0 libdbus-glib-1-2 libasound2t64 libx11-xcb1 libxt6"; for i in $(seq 1 150); do if dpkg -s $packages >/dev/null 2>&1; then exit 0; fi; sleep 1; done; echo "Pinned Firefox host libraries are unavailable" >&2; exit 1'],
-        { timeout: 155000 });
+      // The full governance suite runs P102 and P201 in parallel. P102 is the
+      // sole host-package provisioner there; a second apt transaction races
+      // its lock. Wait for P102's successful real-browser report rather than
+      // checking dpkg aliases (Ubuntu t64 virtual names can differ). The
+      // dedicated P201 packaged workflow already supplies the pinned runtime.
+      await waitFor(async () => {
+        try {
+          const proof = JSON.parse(await readFile(resolve('.agent-runs/alpha-p102-firefox.json'), 'utf8'));
+          return proof.passed === true && proof.providerLive === false && proof.workflowRun === process.env.GITHUB_RUN_ID;
+        } catch (error) { if (error?.code === 'ENOENT') return false; throw error; }
+      }, 'P102 real Firefox prerequisites completed without duplicate apt', 150000);
     }
     const installed = await execFileText(process.execPath, ['tools/alpha/firefox/install-pinned.mjs'],
       { cwd: REPO_ROOT, env: { ...process.env, FIREFOX_INSTALL_ROOT: join(root, 'runtime') }, timeout: 240000 });
