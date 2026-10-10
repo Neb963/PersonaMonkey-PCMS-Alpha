@@ -120,6 +120,36 @@ async function fixture({existing=false,active=false,publicListing=false,repoConf
       return okay({opId:p.opId,phase:'APPLIED'});
     }
   };
+  let fact={key,accountId:context.accountId,personaUid:context.personaUid,
+    accountBindingEpoch:1,providerSourceRevision:'r1',
+    acceptedSourceRevision:'r1',listing:'UNLISTED',
+    observedAt:when,lastSeenAt:when,ownershipObserved:true,
+    discoveryRevision:1,observationRevision:1,ignoredVersion:null,drift:null};
+  const facts={
+    get:async()=>copy(fact),
+    async compareAndPut(next,expected) {
+      assert.equal(fact.observationRevision,expected);
+      assert.equal(next.observationRevision,expected+1);
+      fact=copy(next);
+    }
+  };
+  const inventory={
+    async observe({expectedRevision,accountBindingEpoch}) {
+      const g=(await storage.read('generator',key)).item.record;
+      assert.equal(g.revision,expectedRevision);
+      assert.equal(accountBindingEpoch,1);
+      const drift=fact.acceptedSourceRevision===providerRevision?null:{
+        id:'inventory.drift.demo.'+(fact.observationRevision+1),
+        expected:fact.acceptedSourceRevision,
+        observed:providerRevision,firstSeenAt:when};
+      fact={...fact,listing:generatorListing,providerSourceRevision:providerRevision,
+        observedAt:when,lastSeenAt:when,drift,observationRevision:fact.observationRevision+1};
+      await change('generator',key,row=>({...row,
+        listingObserved:generatorListing,asOf:when,
+        attentionRefs:drift?[...row.attentionRefs,drift.id]:row.attentionRefs}));
+      return okay((await storage.read('generator',key)).item.record);
+    }
+  };
   const aiStore={read:async()=>({revision:tasks.length,tasks:copy(tasks)})};
   const ai={
     async start(p) {
@@ -162,7 +192,7 @@ async function fixture({existing=false,active=false,publicListing=false,repoConf
         await settle(x.opId,'UNCERTAIN',{disposition:'UNCERTAIN',listing:'UNKNOWN'});
         return {ok:false,error:{code:'UNCERTAIN'}};
       }
-      await settle(x.opId,'APPLIED',{disposition:'APPLIED',listing:'PUBLIC'});
+      await settle(x.opId,'APPLIED',{disposition:'APPLIED',listing:'PUBLIC',sourceRevision:'r4'});
       return okay({listing:'PUBLIC'});
     }
   };
@@ -208,7 +238,7 @@ async function fixture({existing=false,active=false,publicListing=false,repoConf
   };
   const core={assertCurrent:async()=>{},assertMutationAllowed:async()=>{}};
   const flow=createReleaseFlow({storage,sourceCatalog,deployer,ai,aiStore,provider,
-    github,journal,core,secretRef:'github-ref',clock:()=>when});
+    github,journal,core,inventory,facts,secretRef:'github-ref',clock:()=>when});
   const base=(opId='stage-1',extras={})=>({key,accountId:context.accountId,
     accountBindingEpoch:1,context:copy(context),opId,aiOpId:'ai-1',...extras});
   const stage=async()=>flow.stage(base());
@@ -226,6 +256,7 @@ async function fixture({existing=false,active=false,publicListing=false,repoConf
     taskId:t.id,expectedTaskRevision:t.revision,
     editorUrl:'https://perchance.org/demo#edit',...extras});
   return {flow,storage,actions,tasks,gitWrites,base,stage,review,approval,desired,prior,
+    async fact(){return facts.get(key);},
     get listing(){return generatorListing;},get remoteFiles(){return copy(providerFiles);},
     setHead(x){githubHead=x;},get head(){return githubHead;},
     async generator(){return (await storage.read('generator',key)).item.record;},
@@ -272,6 +303,9 @@ test('AP402-03 deployed update is unlisted before save, then republished only af
   assert.equal(g.refreshState,'SLEEPING');
   assert.equal(g.fleetIntent,'MANAGED');
   assert.equal(f.gitWrites.length,0);
+  assert.equal((await f.fact()).acceptedSourceRevision,'r4');
+  assert.equal((await f.fact()).drift,null);
+  assert.deepEqual((await f.generator()).attentionRefs,[]);
 });
 
 test('AP402-01 new release approval enrols managed but does not start an active slot',async()=>{
