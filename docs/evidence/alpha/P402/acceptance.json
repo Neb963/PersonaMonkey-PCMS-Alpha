@@ -13,7 +13,7 @@
   "claimPr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/94",
   "implementationPr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/95",
   "commitSha": "1c3dbe911c45fcd6391d77a52b606f2a2b56582c",
-  "mergedMainSha": "a53efbbd57b019eb9e094af134d9fd6461f8cf1b",
+  "mergedMainSha": "78d313d3ff4082111efbcec86b1fc5cec3dc9ba6",
   "providerLive": false,
   "gateVerified": false,
   "accepted": false,
@@ -105,33 +105,33 @@
   ],
   "ciRuns": [
     {
-      "id": 38091995353,
+      "id": 38092738196,
       "name": "alpha-governance",
-      "sha": "a53efbbd57b019eb9e094af134d9fd6461f8cf1b",
+      "sha": "78d313d3ff4082111efbcec86b1fc5cec3dc9ba6",
       "event": "push",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38091995353"
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38092738196"
     },
     {
-      "id": 38091995274,
+      "id": 38092738259,
       "name": "firefox-developer-edition",
-      "sha": "a53efbbd57b019eb9e094af134d9fd6461f8cf1b",
+      "sha": "78d313d3ff4082111efbcec86b1fc5cec3dc9ba6",
       "event": "push",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38091995274"
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38092738259"
     }
   ],
   "additionalCiRuns": [
     {
-      "id": 38091995413,
+      "id": 38092738351,
       "name": "alpha-firefox",
-      "sha": "a53efbbd57b019eb9e094af134d9fd6461f8cf1b",
+      "sha": "78d313d3ff4082111efbcec86b1fc5cec3dc9ba6",
       "event": "push",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38091995413"
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38092738351"
     }
   ],
   "proofCollection": {
@@ -142,7 +142,7 @@
     "verifiedClaimEpoch": 1,
     "verifiedCommitAncestry": true,
     "ancestryCompareStatus": "ahead",
-    "verifiedExactMainSha": "a53efbbd57b019eb9e094af134d9fd6461f8cf1b",
+    "verifiedExactMainSha": "78d313d3ff4082111efbcec86b1fc5cec3dc9ba6",
     "verifiedRunRepository": "Neb963/PersonaMonkey-PCMS-Alpha",
     "independentRequiredPushRunCount": 2
   },
@@ -163,5 +163,34 @@
     "P402 composes injected existing services; product Core/UI integration and R4 combined acceptance remain separately gated.",
     "No local network-capable checkout: focused tests and full checks executed by independently authenticated GitHub CI.",
     "Only GATE-R4 may promote P402 to GATE_VERIFIED or ACCEPTED."
+  ],
+  "productMergeCiRuns": [
+    {
+      "id": 38091995353,
+      "name": "alpha-governance",
+      "sha": "a53efbbd57b019eb9e094af134d9fd6461f8cf1b",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38091995353"
+    },
+    {
+      "id": 38091995274,
+      "name": "firefox-developer-edition",
+      "sha": "a53efbbd57b019eb9e094af134d9fd6461f8cf1b",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38091995274"
+    },
+    {
+      "id": 38091995413,
+      "name": "alpha-firefox",
+      "sha": "a53efbbd57b019eb9e094af134d9fd6461f8cf1b",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38091995413"
+    }
   ]
 }
