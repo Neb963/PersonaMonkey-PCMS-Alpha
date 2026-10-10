@@ -19,8 +19,8 @@ export function createVisibilityLedger({indexedDB=globalThis.indexedDB,
     const db=await open();return new Promise((resolve,reject)=>{
       let tx;try{tx=db.transaction('ledger',mode,mode==='readwrite'?{durability:'strict'}:undefined);}
       catch{reject(new Error('RECOVERY_HOLD'));return;}
-      let value,aborted=false;
-      tx.onabort=()=>reject(new Error('RECOVERY_HOLD'));
+      let value,aborted=false,cause=null;
+      tx.onabort=()=>reject(cause?.code && ['INVALID_REQUEST','STALE_REVISION','RATE_LIMIT','RECOVERY_HOLD'].includes(cause.code) ? cause : new Error('RECOVERY_HOLD'));
       tx.onerror=()=>{aborted=true;};
       tx.oncomplete=()=>aborted?reject(new Error('RECOVERY_HOLD')):resolve(value);
       const store=tx.objectStore('ledger'),request=store.get('state');
@@ -30,7 +30,7 @@ export function createVisibilityLedger({indexedDB=globalThis.indexedDB,
           const input=request.result===undefined?null:request.result;
           value=mode==='readwrite'?mutator(structuredClone(input)):input;
           if(mode==='readwrite') store.put(structuredClone(value),'state');
-        }catch{try{tx.abort();}catch{}}
+        }catch(error){cause=error;try{tx.abort();}catch{}}
       };
     });
   }
