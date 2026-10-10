@@ -3,6 +3,7 @@
 import { canonicalReleaseId } from '../../features/sources/catalog.mjs';
 import { createGitHubPathTemplates } from '../../providers/github/paths.mjs';
 import { validateAiTask } from '../../features/ai/store.mjs';
+import { normalizeRelease } from '../../domain/records.js';
 import { adoptConfirmedSourceVersion } from '../../features/inventory/service.mjs';
 
 const CODES = new Set(['INVALID_REQUEST','STALE_REVISION','STALE_BINDING',
@@ -205,6 +206,12 @@ export function createReleaseFlow({storage,sourceCatalog,deployer,ai,aiStore,
   async function writeback(p,parent,stage,release,approved,paths) {
     if(sameFiles(approved,release.files))return release;
     check(exactBytes(approved.thumbnail,release.files.thumbnail),'SOURCE_DRIFT');
+    // Reject malformed source and recognizable credentials before any GitHub
+    // mutation. Do not rely on a post-commit P102 validation to catch this.
+    const anticipatedHash=await hashFiles(approved);
+    try {normalizeRelease({releaseId:anticipatedHash,source:{...release.source,
+      releaseId:anticipatedHash},files:approved,createdAt:now()});}
+    catch {check(false,'SOURCE_DRIFT');}
     const files={},expectedBlobs={};
     for(const [field,path] of [['pjs',paths.pjs],['html',paths.html]]) {
       if(approved[field]!==release.files[field]) {
@@ -365,6 +372,11 @@ export function createReleaseFlow({storage,sourceCatalog,deployer,ai,aiStore,
     check(t.savedSourceRevision===approved.sourceRevision &&
       await hashFiles(approved.files)===t.savedSourceHash,'SOURCE_DRIFT');
     const path=await headProof(release);
+    // P102's secret and UTF-8 guards must run before AI-approved bytes can
+    // reach the configured private repository.
+    try {normalizeRelease({releaseId:t.savedSourceHash,source:{...release.source,
+      releaseId:t.savedSourceHash},files:approved.files,createdAt:now()});}
+    catch {check(false,'SOURCE_DRIFT');}
     const existing=await op(p.opId);
     const intent={stageOpId:p.stageOpId,taskId:t.id,
       stageReleaseId:release.releaseId,approvedHash:t.savedSourceHash,
