@@ -745,7 +745,7 @@
       "round": 4,
       "agent": 4,
       "title": "Notifications, attention, and tab ownership",
-      "status": "READY",
+      "status": "CLAIMED",
       "dependsOn": [
         "P201",
         "P202",
