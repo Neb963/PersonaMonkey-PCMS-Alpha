@@ -4,7 +4,7 @@ import { normalizeRecord, recordKey, assertRecordUpdate } from '../../../extensi
 import { createReservationJournal, createReservationService, parsePastedSlugs,
   selectReservationAccount } from '../../../extension/alpha/features/reservation/service.mjs';
 
-const NOW = '2026-10-10T12:00:00.000Z', hex = n => n.toString(16).padStart(1,'0').repeat(40);
+const NOW = '2026-10-10T12:00:00.000Z', hex = n => (n % 15 + 1).toString(16).repeat(40);
 const clone = v => structuredClone(v);
 function storageFixture() {
   const data = new Map(['account','generator','operation','release'].map(kind => [kind,new Map()]));
