@@ -13,7 +13,7 @@
     "P205": 1,
     "P301": 1,
     "P302": 1,
-    "P303": 0,
+    "P303": 1,
     "P304": 0,
     "P305": 1,
     "P401": 0,
@@ -410,12 +410,39 @@
     },
     {
       "schemaVersion": 1,
+      "claimId": "CLM-P303-001",
+      "phaseId": "P303",
+      "agentId": "slot-three-r3",
+      "claimEpoch": 1,
+      "state": "ACTIVE",
+      "baseMainSha": "66e5526d701decd0caee2b9400372a386f631cea",
+      "branch": "agent/slot-three-r3/p303",
+      "writePaths": [
+        "extension/alpha/features/ai/**",
+        "extension/alpha/overlay/**",
+        "tests/alpha/ai/**",
+        "docs/evidence/alpha/P303/**"
+      ],
+      "contractReads": {
+        "alpha.contracts.v1": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e"
+      },
+      "contractWrites": [],
+      "exclusiveResources": [],
+      "migrationSlots": [],
+      "acceptanceIds": [
+        "AP303-01",
+        "AP303-02",
+        "AP303-03"
+      ]
+    },
+    {
+      "schemaVersion": 1,
       "claimId": "CLM-P302-001",
       "phaseId": "P302",
       "agentId": "slot-two-r3",
       "claimEpoch": 1,
       "state": "ACTIVE",
-      "baseMainSha": "66e5526d701decd0caee2b9400372a386f631cea",
+      "baseMainSha": "f1186a65c840d28124385a610bd35434a0ab0d88",
       "branch": "agent/slot-two-r3/p302",
       "writePaths": [
         "extension/alpha/features/deployer/**",
