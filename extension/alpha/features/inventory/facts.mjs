@@ -30,6 +30,25 @@ export function normalizeInventoryFact(input) {
   };
 }
 
+/** Monotone CAS across a P202-confirmed account rebind. Never reset evidence. */
+export function validInventoryFactTransition(previous, next) {
+  if (!previous) return next.observationRevision === 1;
+  if (previous.key !== next.key || previous.accountId !== next.accountId ||
+      previous.observationRevision + 1 !== next.observationRevision) return false;
+  if (previous.accountBindingEpoch === next.accountBindingEpoch)
+    return previous.personaUid === next.personaUid;
+  // The caller must separately verify the P102 account and GeneratorRecord
+  // at the new epoch and confirm the P103 account-scoped observation.
+  if (next.accountBindingEpoch <= previous.accountBindingEpoch ||
+      next.personaUid === previous.personaUid ||
+      next.acceptedSourceRevision !== previous.acceptedSourceRevision) return false;
+  // A Persona rebind is not a source-acceptance or ignore/reset action.
+  if (next.providerSourceRevision === previous.providerSourceRevision &&
+      (next.ignoredVersion !== previous.ignoredVersion ||
+       JSON.stringify(next.drift) !== JSON.stringify(previous.drift))) return false;
+  return true;
+}
+
 /** All operations settle on tx completion, never on request success. */
 export function createInventoryFactsStore({ indexedDB = globalThis.indexedDB, databaseName = DB } = {}) {
   if (!indexedDB || typeof indexedDB.open !== 'function' || typeof databaseName !== 'string' || !databaseName)
@@ -95,10 +114,7 @@ export function createInventoryFactsStore({ indexedDB = globalThis.indexedDB, da
           get.onerror = fail;
           get.onsuccess = () => {
             const old = get.result;
-            if (old && (old.observationRevision !== row.observationRevision - 1 ||
-                old.accountId !== row.accountId || old.personaUid !== row.personaUid ||
-                old.accountBindingEpoch !== row.accountBindingEpoch)) { fail(); return; }
-            if (!old && row.observationRevision !== 1) { fail(); return; }
+            if (!validInventoryFactTransition(old, row)) { fail(); return; }
             const put = s.put(row); put.onerror = fail;
           };
         }

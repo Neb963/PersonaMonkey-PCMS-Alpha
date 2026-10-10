@@ -59,8 +59,14 @@ export function createInventoryService({ storage, provider, facts, clock = () =>
   }
   function factFor(entry, account, previous, prior, asOf, discoveryRevision) {
     const version = entry.readback.sourceRevision;
-    const old = prior && sameBinding({ accountId: prior.accountId, personaUid: prior.personaUid,
-      epoch: prior.accountBindingEpoch }, { ...account, epoch: account.epoch }) ? prior : null;
+    // P202 atomically rebinds the Account and its GeneratorRecords. The
+    // auxiliary fact ledger may still carry an earlier epoch after a crash.
+    // Preserve it as the CAS predecessor; never manufacture revision 1.
+    if (prior) check(prior.accountId === account.accountId &&
+      prior.accountBindingEpoch <= account.epoch &&
+      (prior.accountBindingEpoch !== account.epoch || prior.personaUid === account.personaUid),
+    'RECOVERY_HOLD');
+    const old = prior;
     const expected = old ? old.acceptedSourceRevision : version;
     const ignored = old?.ignoredVersion === version ? version : null;
     const differs = expected !== null && version !== null && expected !== version;
@@ -113,8 +119,19 @@ export function createInventoryService({ storage, provider, facts, clock = () =>
     // A complete account discovery may mark missing observations, but NEVER
     // deletes/reassigns the durable GeneratorRecord or infers public visibility.
     if (complete) for (const prior of storedFacts) {
-      if (prior.accountId !== account.accountId || !prior.ownershipObserved || seen.has(prior.key)) continue;
-      nextFacts.push(normalizeInventoryFact({ ...prior, ownershipObserved: false, observedAt: time,
+      if (prior.accountId !== account.accountId || seen.has(prior.key)) continue;
+      check(prior.accountBindingEpoch <= account.epoch &&
+        (prior.accountBindingEpoch !== account.epoch || prior.personaUid === account.personaUid),
+      'RECOVERY_HOLD');
+      // A missing observation after rebind is NOT confirmed ownership. Retain
+      // last known source/drift/ignore evidence, but fence it at the new epoch
+      // only if P202's canonical generator already carries that binding.
+      const generator = byKey.get(prior.key)?.record;
+      check(generator && generator.accountId === account.accountId &&
+        generator.personaUid === account.personaUid &&
+        generator.accountBindingEpoch === account.epoch, 'RECOVERY_HOLD');
+      nextFacts.push(normalizeInventoryFact({ ...prior, personaUid: account.personaUid,
+        accountBindingEpoch: account.epoch, ownershipObserved: false, observedAt: time,
         discoveryRevision: persisted.revision + 1, observationRevision: prior.observationRevision + 1 }));
     }
     // P102 limits each atomic commit to 64 writes. A partial import is recoverable:
@@ -124,10 +141,16 @@ export function createInventoryService({ storage, provider, facts, clock = () =>
       const result = await storage.commit({ expectedRevision: currentRevision, writes: updates.slice(i, i + 64) });
       currentRevision = result.revision;
     }
+    // Re-read the P202 authoritative binding after all P102 batches. A stale
+    // scan must not publish facts if rebinding raced its provider readback.
+    await accountFor(context);
     // Commit facts after identity writes. A failed ledger write is a recovery hold,
     // not proof of a complete successful discovery. A later scan reconciles.
     for (let i = 0; i < nextFacts.length; i += 64) {
-      try { await facts.putMany(nextFacts.slice(i, i + 64)); }
+      try {
+        await accountFor(context);
+        await facts.putMany(nextFacts.slice(i, i + 64));
+      }
       catch { throw new Rejected('RECOVERY_HOLD'); }
     }
     cached = null;
