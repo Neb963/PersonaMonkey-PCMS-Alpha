@@ -42,7 +42,7 @@ State: **IN_PROGRESS**. Gate: GATE-R4.
 - P402: **CLAIMED** — Release, approval, publication and GitHub writeback
 - P403: **CLAIMED** — Refresh execution and visibility feedback
 - P404: **CLAIMED** — Notifications, attention, and tab ownership
-- P405: **READY** — Full backup restore and downloads retention
+- P405: **CLAIMED** — Full backup restore and downloads retention
 
 ## R5 — Operator interface
 
