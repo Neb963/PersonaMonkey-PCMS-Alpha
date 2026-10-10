@@ -29,3 +29,15 @@ No fixture bytes, decoded archive, secret content or exceptions are printed by P
 Product PR #36 was merged with a non-forced, serialized expected-main update at `7cace06a658729e0a68b744598c83ded9b8d1258` from independently tested head `573531ca791c68b3d7b6905ccc264a4d84ee3aba`. All three PR workflows and all three exact merged-main workflows passed. The hosted governance log was inspected for serialized backup archive content and the synthetic sensitive fixture; neither was present.
 
 The claim remains ACTIVE and the phase plan remains CLAIMED. `acceptance.json` records MERGED only; GATE_VERIFIED and ACCEPTED require independently invoked GATE-R2.
+
+## Issue #46 — P204 observation facts integration repair (2026-10-10)
+
+Follow-up repair [PR #51](https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/51) was merged at `0c6b68e307ff2c555b82d85c870ad72f6c0d6208` from exact product commit `1d3d0edd33dfd7cbe890347a75546f24a0c96699`, under the **same P205 claim** `CLM-P205-001` (epoch 1, `slot-five-p205`). No new claim or shared-contract change.
+
+The version-1 backup format now distinguishes original v1 archives from `coverageRevision: 2`. New exports include a separately SHA-256-checked P204 facts section only through an authorized, read-only `list()` source; otherwise `alpha.inventoryFacts` is explicitly `UNAVAILABLE` in the manifest and preview. Original v1 archives are accepted for integrity validation but shown as missing P204 facts. Inconsistent or forged hashes, inclusion metadata, coverage versions and fact revisions fail closed. Nonempty source drift and exact ignored revisions are tested.
+
+An integrity-valid archive **is not** a complete recovery: preview explicitly reports `recoveryCompleteness: PARTIAL`, `crossStoreAtomic: false`, counts, unavailable items and proposed `RECOVERY_HOLD`. P102 and P204 have distinct transactional snapshots. No actual restore, downloader, provider mutation, P204 implementation edit or GATE-R2 acceptance occurred.
+
+Hosted independent PR CI: [governance #38052537248](https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38052537248), [alpha-firefox #38052537276](https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38052537276), [pinned Firefox #38052537288](https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38052537288) — all passed. On exact merged main: [governance #38052820411](https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38052820411), [alpha-firefox #38052820389](https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38052820389), [pinned Firefox #38052820398](https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38052820398) — all passed. Hosted full suite **162/162**; P205 regressions **8/8**. The merged governance log was independently inspected (job `114215247229`): neither the sensitive synthetic marker nor a serialized backup archive appeared. No local exact-checkout test was run in this repair session.
+
+R2 independent gate verification and any actual provider-live acceptance remain **unclaimed**. See `acceptance.json.repair46`.

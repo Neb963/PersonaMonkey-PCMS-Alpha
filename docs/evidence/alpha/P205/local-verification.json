@@ -42,5 +42,27 @@
   "unresolved": [
     "PersonaMonkey bulk export is not available through the frozen typed broker; requires approved read-only exporter injection.",
     "P405 retains responsibility for restore application, download retention, and post-restore reconciliation."
-  ]
+  ],
+  "repair46": {
+    "environment": "GitHub Actions on exact repair PR head and merged main; local checkout unavailable",
+    "localCommand": "NOT_RUN",
+    "hostedCommand": "node tools/alpha/run-tests.mjs",
+    "hostedTests": 162,
+    "passed": 162,
+    "failed": 0,
+    "p205Tests": 8,
+    "headSha": "1d3d0edd33dfd7cbe890347a75546f24a0c96699",
+    "mergedMainSha": "0c6b68e307ff2c555b82d85c870ad72f6c0d6208",
+    "prRunIds": [
+      38052537248,
+      38052537276,
+      38052537288
+    ],
+    "mainRunIds": [
+      38052820411,
+      38052820389,
+      38052820398
+    ],
+    "backupContentInLogs": false
+  }
 }
