@@ -1,6 +1,6 @@
 {
   "phaseId": "P201",
-  "state": "CI_VERIFIED",
+  "state": "MERGED",
   "agentId": "slot-one-r2",
   "claimId": "CLM-P201-001",
   "claimEpoch": 1,
@@ -17,43 +17,40 @@
   "providerLive": false,
   "gateVerified": false,
   "accepted": false,
-  "mergedMainSha": null,
+  "mergedMainSha": "008f042022b88af77739948e35c50a0d66aad05d",
   "ciRuns": [
     {
       "name": "alpha-governance",
-      "id": 38049108774,
-      "sha": "ac42d9b2a59f655747126b653801c3ec7d45c3f1",
-      "headBranch": "agent/slot-one-r2/p201",
-      "event": "pull_request",
+      "id": 38049693674,
+      "sha": "008f042022b88af77739948e35c50a0d66aad05d",
+      "event": "push",
       "status": "completed",
       "conclusion": "success",
       "attempt": 1,
-      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38049108774"
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38049693674"
     },
     {
       "name": "alpha-firefox",
-      "id": 38049108777,
-      "sha": "ac42d9b2a59f655747126b653801c3ec7d45c3f1",
-      "headBranch": "agent/slot-one-r2/p201",
-      "event": "pull_request",
+      "id": 38049693713,
+      "sha": "008f042022b88af77739948e35c50a0d66aad05d",
+      "event": "push",
       "status": "completed",
       "conclusion": "success",
       "attempt": 1,
-      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38049108777"
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38049693713"
     },
     {
       "name": "firefox-developer-edition",
-      "id": 38049108745,
-      "sha": "ac42d9b2a59f655747126b653801c3ec7d45c3f1",
-      "headBranch": "agent/slot-one-r2/p201",
-      "event": "pull_request",
+      "id": 38049693696,
+      "sha": "008f042022b88af77739948e35c50a0d66aad05d",
+      "event": "push",
       "status": "completed",
       "conclusion": "success",
       "attempt": 1,
-      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38049108745"
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38049693696"
     }
   ],
-  "requiredCi": "PASS_AT_REPRODUCIBLE_PRODUCT_CHECKPOINT",
+  "requiredCi": "PASS_ON_EXACT_MERGED_PRODUCT_MAIN",
   "commands": [
     {
       "command": "node --test tests/alpha/core/core.test.mjs",
@@ -163,6 +160,28 @@
       "exitCode": 0,
       "p201": "EXECUTED",
       "packagedCases": 6
+    },
+    {
+      "command": "npm run verify",
+      "executedBy": "independent push-triggered alpha-governance",
+      "runId": 38049693674,
+      "exitCode": 0
+    },
+    {
+      "command": "node tools/alpha/run-tests.mjs",
+      "executedBy": "independent push-triggered alpha-governance",
+      "runId": 38049693674,
+      "exitCode": 0,
+      "tests": 158,
+      "passed": 158,
+      "failed": 0
+    },
+    {
+      "command": "node tools/alpha/ci-migration/core.mjs --root . --main-ref origin/main",
+      "executedBy": "independent push-triggered firefox-developer-edition",
+      "runId": 38049693696,
+      "exitCode": 0,
+      "requiredPackagedCases": 6
     }
   ],
   "sourceSha256": {
@@ -238,5 +257,50 @@
     "alphaTestsPassed": 158,
     "providerLive": false,
     "explanation": "All three mandatory PR workflows completed successfully at this product checkpoint; final evidence-only head requires independent CI revalidation."
+  },
+  "prCheckpointCiRuns": [
+    {
+      "name": "alpha-governance",
+      "id": 38049108774,
+      "sha": "ac42d9b2a59f655747126b653801c3ec7d45c3f1",
+      "headBranch": "agent/slot-one-r2/p201",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "attempt": 1,
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38049108774"
+    },
+    {
+      "name": "alpha-firefox",
+      "id": 38049108777,
+      "sha": "ac42d9b2a59f655747126b653801c3ec7d45c3f1",
+      "headBranch": "agent/slot-one-r2/p201",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "attempt": 1,
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38049108777"
+    },
+    {
+      "name": "firefox-developer-edition",
+      "id": 38049108745,
+      "sha": "ac42d9b2a59f655747126b653801c3ec7d45c3f1",
+      "headBranch": "agent/slot-one-r2/p201",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "attempt": 1,
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38049108745"
+    }
+  ],
+  "productMerge": {
+    "pr": 48,
+    "commitSha": "008f042022b88af77739948e35c50a0d66aad05d",
+    "parentBaseSha": "d0ff52f9e3657a192ee408759006e19b08779cb1",
+    "approvedProductHeadSha": "b35add1ff9718fb32f5f4c7ad63efa989b46ca2d",
+    "treeSha": "89af2bab96bb6688395bedf8e5f2c5796bf43963",
+    "serialized": true,
+    "nonForced": true,
+    "postMergeCiVerified": true
   }
 }
