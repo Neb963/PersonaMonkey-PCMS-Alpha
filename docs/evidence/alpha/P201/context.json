@@ -1,9 +1,11 @@
 {
   "schemaVersion": 1,
-  "kind": "PHASE",
+  "kind": "CLAIM",
+  "action": "reassign",
   "phaseId": "P201",
-  "agentId": "slot-one-r2",
-  "branch": "agent/slot-one-r2/p201",
-  "claimEpoch": 1,
-  "baseMainSha": "cd20011b15b2eed8ab02c79df1f3c20e40287034"
+  "agentId": "chatgpt-r2",
+  "branch": "agent/chatgpt-r2/p201",
+  "claimEpoch": 2,
+  "expectedEpoch": 1,
+  "baseMainSha": "9baa2f60b4eb1cec6cf9441cc382403b38603a1b"
 }
