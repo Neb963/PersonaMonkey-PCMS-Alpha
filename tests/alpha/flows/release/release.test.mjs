@@ -207,7 +207,7 @@ async function fixture({existing=false,active=false,publicListing=false,repoConf
   const github={
     async snapshot({paths}) {
       return okay({commitSha:githubHead,blobs:Object.fromEntries(paths.map(x=>[x,
-        gitWrites.some(w=>w.changed.has(x))?EDIT_BLOB:BLOB]))});
+        githubHead===UPDATED && gitWrites.some(w=>w.changed.has(x))?EDIT_BLOB:BLOB]))});
     },
     async commit(p) {
       actions.push('GIT_COMMIT');gitWrites.push({input:p,changed:new Set(Object.keys(p.files))});
