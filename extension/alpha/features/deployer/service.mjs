@@ -401,7 +401,9 @@ export function createDeployerService({
         check(original.phase === 'APPLIED' && original.kind === 'deployer.apply' &&
           original.targetKey === params.key && original.accountBindingEpoch === params.accountBindingEpoch,
         'CONFLICT');
-        const { row } = await record(params, context);
+        const { generator, row } = await record(params, context);
+        check(!generator.attentionRefs.includes('deployer.failed.' +
+          original.remoteEvidence.intent.releaseId), 'CONFLICT');
         check(!(await storage.read('operation', params.opId)).item, 'CONFLICT');
         const created = { opId: params.opId, kind: 'deployer.rollback',
           targetKey: params.key, sourceRevision: params.expectedRevision,
