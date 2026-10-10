@@ -57,7 +57,7 @@
         "P205"
       ],
       "gateId": "GATE-R2",
-      "status": "IN_PROGRESS"
+      "status": "ACCEPTED"
     },
     {
       "round": 3,
@@ -71,7 +71,7 @@
         "P305"
       ],
       "gateId": "GATE-R3",
-      "status": "LOCKED"
+      "status": "READY"
     },
     {
       "round": 4,
@@ -292,7 +292,7 @@
       "round": 2,
       "agent": 1,
       "title": "Background Core and durable alarms",
-      "status": "CLAIMED",
+      "status": "ACCEPTED",
       "dependsOn": [
         "P102",
         "P103",
@@ -330,7 +330,7 @@
       "round": 2,
       "agent": 2,
       "title": "Accounts and Persona enrollment",
-      "status": "CLAIMED",
+      "status": "ACCEPTED",
       "dependsOn": [
         "P102",
         "P103"
@@ -364,7 +364,7 @@
       "round": 2,
       "agent": 3,
       "title": "GitHub source catalog and READY interpreter",
-      "status": "CLAIMED",
+      "status": "ACCEPTED",
       "dependsOn": [
         "P102",
         "P104"
@@ -398,7 +398,7 @@
       "round": 2,
       "agent": 4,
       "title": "Generator inventory and drift facts",
-      "status": "CLAIMED",
+      "status": "ACCEPTED",
       "dependsOn": [
         "P102",
         "P103"
@@ -432,7 +432,7 @@
       "round": 2,
       "agent": 5,
       "title": "Unified backup schema and safe exporter",
-      "status": "CLAIMED",
+      "status": "ACCEPTED",
       "dependsOn": [
         "P102"
       ],
@@ -465,7 +465,7 @@
       "round": 3,
       "agent": 1,
       "title": "Bulk reservations and account balancing",
-      "status": "LOCKED",
+      "status": "READY",
       "dependsOn": [
         "P202",
         "P203",
@@ -501,7 +501,7 @@
       "round": 3,
       "agent": 2,
       "title": "Sleep-only Deployer and rollback",
-      "status": "LOCKED",
+      "status": "READY",
       "dependsOn": [
         "P203",
         "P204",
@@ -536,7 +536,7 @@
       "round": 3,
       "agent": 3,
       "title": "Native Perchance AI session and editor overlay",
-      "status": "LOCKED",
+      "status": "READY",
       "dependsOn": [
         "P103",
         "P201",
@@ -572,7 +572,7 @@
       "round": 3,
       "agent": 4,
       "title": "Individual Refresher scheduler and healthy clock",
-      "status": "LOCKED",
+      "status": "READY",
       "dependsOn": [
         "P204",
         "P201"
@@ -606,7 +606,7 @@
       "round": 3,
       "agent": 5,
       "title": "Recent visibility and adaptive metrics",
-      "status": "LOCKED",
+      "status": "READY",
       "dependsOn": [
         "P204",
         "P103"
