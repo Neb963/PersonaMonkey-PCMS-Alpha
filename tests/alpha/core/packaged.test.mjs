@@ -80,8 +80,16 @@ before(async () => {
   if (!process.env.FIREFOX_BIN || !process.env.FIREFOX_INSTALL_MANIFEST) {
     // The ordinary governance job also discovers this mandatory file. Use the
     // same attested installer there, never skip the packaged scenarios.
-    if (process.env.GITHUB_ACTIONS === 'true') await execFileText('bash', ['-c',
-      'packages="libgtk-3-0 libdbus-glib-1-2 libasound2t64 libx11-xcb1 libxt6"; if ! dpkg -s $packages >/dev/null 2>&1; then sudo timeout 150 apt-get -o Acquire::Retries=3 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 update && sudo timeout 150 apt-get -o Acquire::Retries=3 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 install -y $packages; fi'], { timeout: 180000 });
+    if (process.env.GITHUB_ACTIONS === 'true') {
+      // The full Alpha governance suite runs this file concurrently with P102's
+      // Firefox storage test. That test provisions shared host libraries. A
+      // second apt transaction here races its apt lock and fails unrelated
+      // acceptance, so require the libraries to be ready without mutating apt.
+      // The dedicated mandatory P201 packaged job supplies FIREFOX_BIN already.
+      await execFileText('bash', ['-c',
+        'packages="libgtk-3-0 libdbus-glib-1-2 libasound2t64 libx11-xcb1 libxt6"; for i in $(seq 1 150); do if dpkg -s $packages >/dev/null 2>&1; then exit 0; fi; sleep 1; done; echo "Pinned Firefox host libraries are unavailable" >&2; exit 1'],
+        { timeout: 155000 });
+    }
     const installed = await execFileText(process.execPath, ['tools/alpha/firefox/install-pinned.mjs'],
       { cwd: REPO_ROOT, env: { ...process.env, FIREFOX_INSTALL_ROOT: join(root, 'runtime') }, timeout: 240000 });
     const info = JSON.parse(installed.stdout.trim().split('\n').at(-1));
@@ -214,6 +222,7 @@ test('AP201-03 bounded alarms and operation/tab budgets', async () => {
   assert.equal(bounded.alarms.length, 2);
   await page(`for(const timer of await core.timers.list()) if(timer.id.startsWith('p201.bounded.')) await core.timers.cancel(clone({id:timer.id,owner:'core',generation:1}));return true;`);
   await seedPersona(2); await seedPersona(3);
+  const capacityOperations = [op(next('pending'), meta(1)), op(next('pending'), meta(2)), op(next('excess'), meta(3))];
   const capacity = await page(`
     const spawn=async(index)=>{
       const binding=clone(data.bindings[index]), operation=clone(data.operations[index]);
@@ -225,9 +234,18 @@ test('AP201-03 bounded alarms and operation/tab budgets', async () => {
     };
     await spawn(0);await spawn(1);const before=await core.readStatus();let failure;
     try {await core.operations.execute(compiled({operation:clone(data.operations[2]),binding:clone(data.bindings[2]),expectedRevision:before.revision,dispatch:callable(async()=>{}),readback:callable(async()=>{})}));} catch(error){failure=(error.wrappedJSObject||error).code;}
-    return {before,failure};`, { bindings: [meta(1), meta(2), meta(3)], operations: [op(next('pending'), meta(1)), op(next('pending'), meta(2)), op(next('excess'), meta(3))] });
+    return {before,failure};`, { bindings: [meta(1), meta(2), meta(3)], operations: capacityOperations });
   assert.equal(capacity.before.budgets.operations, 2); assert.equal(capacity.failure, 'RATE_LIMIT');
   await waitFor(async () => (await status()).state === 'RECOVERY_HOLD', 'operation timeout enters recovery hold');
+  // Recovery hold can begin on the first timeout; the second dispatch may still
+  // be active. Wait for both exact identities to become durably UNCERTAIN
+  // before doing read-only reconciliation, or a late timeout re-enters hold.
+  await waitFor(async () => {
+    const phases = await page(`return (await core.storage.list('operation')).items
+      .filter(row => data.ids.includes(row.record.opId)).map(row => row.record.phase);`,
+      { ids: capacityOperations.slice(0, 2).map(item => item.opId) });
+    return phases.length === 2 && phases.every(phase => phase === 'UNCERTAIN');
+  }, 'both timed-out operations reach durable uncertainty');
   await page(`
     for(const row of (await core.storage.list('operation')).items) if(row.record.phase==='UNCERTAIN'){
       const binding=clone(row.record.remoteEvidence.intent);
@@ -237,6 +255,7 @@ test('AP201-03 bounded alarms and operation/tab budgets', async () => {
       await core.operations.reconcile(compiled({opId:row.record.opId,binding,
         readback:callable(async()=>clone({phase:'NOT_APPLIED',evidence:{personaUid:observed.result.personaUid,noDispatch:true}}))}));
     }return true;`);
+  assert.equal((await status()).state, 'RUNNING', 'Read-only reconciliation must clear both durable holds');
   const tabs = await page(`
     const before=(await api.tabs.query(clone({}))).map(t=>t.id), permits=[];
     for(let i=0;i<4;i++){const permit=await core.tabs.reserve(clone({binding:data.binding,opId:'p201.tab.'+i,targetKey:data.binding.accountId}));permits.push(permit.wrappedJSObject||permit);}
