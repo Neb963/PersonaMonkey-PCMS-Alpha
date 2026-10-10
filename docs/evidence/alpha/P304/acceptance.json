@@ -4,7 +4,7 @@
   "claimId": "CLM-P304-001",
   "agentId": "slot-four-r3",
   "claimEpoch": 1,
-  "state": "COMMITTED",
+  "state": "MERGED",
   "claimState": "ACTIVE",
   "providerLive": false,
   "baseMainSha": "0466c60d30c7ef7e62150cd048d741979b92edf7",
@@ -67,8 +67,79 @@
     "secretsCommitted": false
   },
   "limitations": [
-    "Not provider live.",
-    "No provider refresh mutation or tab automation; composed by P403.",
-    "P405 must include Refresher's separate IndexedDB ledger in full backup/restore."
+    "Not provider-live or operator gate-accepted.",
+    "P403 composes trusted provider refresh execution, Perchance browser authority, and Core wakeups; P304 contains no remote writes.",
+    "P405 must include the Refresher IndexedDB ledger in full backup and restore."
+  ],
+  "implementationPr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/77",
+  "commitSha": "16641ef0edeaaf9819959c6f672f9c3376e623e7",
+  "mergedMainSha": "359eba343e0a3c315d8da90ecbcd4e29fd30e18c",
+  "ciRuns": [
+    {
+      "id": 38082309633,
+      "name": "alpha-governance",
+      "sha": "359eba343e0a3c315d8da90ecbcd4e29fd30e18c",
+      "event": "push",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38082309633"
+    },
+    {
+      "id": 38082309630,
+      "name": "firefox-developer-edition",
+      "sha": "359eba343e0a3c315d8da90ecbcd4e29fd30e18c",
+      "event": "push",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38082309630"
+    }
+  ],
+  "additionalMergedMainCi": [
+    {
+      "name": "alpha-firefox",
+      "id": 38082309651,
+      "sha": "359eba343e0a3c315d8da90ecbcd4e29fd30e18c",
+      "event": "push",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38082309651"
+    }
+  ],
+  "prCiRuns": [
+    {
+      "name": "alpha-governance",
+      "id": 38081992214,
+      "sha": "16641ef0edeaaf9819959c6f672f9c3376e623e7",
+      "event": "pull_request",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38081992214"
+    },
+    {
+      "name": "firefox-developer-edition",
+      "id": 38081992229,
+      "sha": "16641ef0edeaaf9819959c6f672f9c3376e623e7",
+      "event": "pull_request",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38081992229"
+    },
+    {
+      "name": "alpha-firefox",
+      "id": 38081992139,
+      "sha": "16641ef0edeaaf9819959c6f672f9c3376e623e7",
+      "event": "pull_request",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38081992139"
+    }
+  ],
+  "milestones": [
+    {
+      "state": "COMMITTED",
+      "sha": "16641ef0edeaaf9819959c6f672f9c3376e623e7"
+    },
+    {
+      "state": "CI_VERIFIED",
+      "sha": "16641ef0edeaaf9819959c6f672f9c3376e623e7"
+    },
+    {
+      "state": "MERGED",
+      "sha": "359eba343e0a3c315d8da90ecbcd4e29fd30e18c"
+    }
   ]
 }
