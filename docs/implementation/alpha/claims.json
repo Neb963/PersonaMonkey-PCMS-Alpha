@@ -7,7 +7,7 @@
     "P104": 1,
     "P105": 1,
     "P201": 2,
-    "P202": 1,
+    "P202": 2,
     "P203": 1,
     "P204": 1,
     "P205": 1,
@@ -252,7 +252,7 @@
       "phaseId": "P202",
       "agentId": "slot-two-p202",
       "claimEpoch": 1,
-      "state": "ACTIVE",
+      "state": "REASSIGNED",
       "baseMainSha": "830c0242a4cdaa2f1c9a388cba4aea2b688f1e76",
       "branch": "agent/slot-two-p202/p202",
       "writePaths": [
@@ -328,6 +328,32 @@
         "AP201-01",
         "AP201-02",
         "AP201-03"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "claimId": "CLM-P202-002",
+      "phaseId": "P202",
+      "agentId": "chatgpt-p202",
+      "claimEpoch": 2,
+      "state": "ACTIVE",
+      "baseMainSha": "deff495e2c4b124f9bcf7ad718678ab760b32e7e",
+      "branch": "agent/chatgpt-p202/p202",
+      "writePaths": [
+        "extension/alpha/features/accounts/**",
+        "tests/alpha/accounts/**",
+        "docs/evidence/alpha/P202/**"
+      ],
+      "contractReads": {
+        "alpha.contracts.v1": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e"
+      },
+      "contractWrites": [],
+      "exclusiveResources": [],
+      "migrationSlots": [],
+      "acceptanceIds": [
+        "AP202-01",
+        "AP202-02",
+        "AP202-03"
       ]
     }
   ]
