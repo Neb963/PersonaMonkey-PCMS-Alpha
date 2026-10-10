@@ -1,0 +1,358 @@
+{
+  "schemaVersion": 1,
+  "phaseId": "GATE-R3",
+  "state": "ACCEPTED",
+  "providerLive": false,
+  "mergedMainSha": "0b6de21bebcaf3269a93f7133de92343eae6065a",
+  "contractId": "alpha.contracts.v1",
+  "contractRevision": 2,
+  "contractHash": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e",
+  "prerequisite": {
+    "id": "GATE-R2",
+    "state": "ACCEPTED"
+  },
+  "phases": [
+    {
+      "phaseId": "P301",
+      "commitSha": "600c3438333e8d57772c2996e857b8d7985fadf4",
+      "mergedMainSha": "b8da8f978d8fd2c918e74dbb9f8516986aef194e",
+      "acceptanceIds": [
+        "AP301-01",
+        "AP301-02",
+        "AP301-03"
+      ],
+      "claimId": "CLM-P301-001",
+      "claimEpoch": 1,
+      "agentId": "slot-one-r3",
+      "agentSlot": 1,
+      "baseMainSha": "820a9d3b99e1c95249a28b137286148b3e66fe8b",
+      "writePaths": [
+        "extension/alpha/features/reservation/**",
+        "tests/alpha/reservation/**",
+        "docs/evidence/alpha/P301/**"
+      ],
+      "contractReads": {
+        "alpha.contracts.v1": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e"
+      },
+      "contractWrites": [],
+      "exclusiveResources": [],
+      "migrationSlots": [],
+      "implementationPr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/68",
+      "claimPr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/63",
+      "evidencePath": "docs/evidence/alpha/P301/acceptance.json",
+      "ciRuns": [
+        {
+          "id": 38075186966,
+          "name": "alpha-governance",
+          "sha": "b8da8f978d8fd2c918e74dbb9f8516986aef194e",
+          "event": "push",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38075186966"
+        },
+        {
+          "id": 38075186954,
+          "name": "firefox-developer-edition",
+          "sha": "b8da8f978d8fd2c918e74dbb9f8516986aef194e",
+          "event": "push",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38075186954"
+        }
+      ]
+    },
+    {
+      "phaseId": "P302",
+      "commitSha": "66e888ad55833927b565f7c55ddcd27c3f82a1c8",
+      "mergedMainSha": "faf3c34e84683539bcce2520bcba43540b97a228",
+      "acceptanceIds": [
+        "AP302-01",
+        "AP302-02",
+        "AP302-03"
+      ],
+      "claimId": "CLM-P302-001",
+      "claimEpoch": 1,
+      "agentId": "slot-two-r3",
+      "agentSlot": 2,
+      "baseMainSha": "f1186a65c840d28124385a610bd35434a0ab0d88",
+      "writePaths": [
+        "extension/alpha/features/deployer/**",
+        "tests/alpha/deployer/**",
+        "docs/evidence/alpha/P302/**"
+      ],
+      "contractReads": {
+        "alpha.contracts.v1": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e"
+      },
+      "contractWrites": [],
+      "exclusiveResources": [],
+      "migrationSlots": [],
+      "implementationPr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/71",
+      "claimPr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/64",
+      "evidencePath": "docs/evidence/alpha/P302/acceptance.json",
+      "ciRuns": [
+        {
+          "id": 38075875680,
+          "name": "alpha-governance",
+          "sha": "faf3c34e84683539bcce2520bcba43540b97a228",
+          "event": "push",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38075875680"
+        },
+        {
+          "id": 38075875722,
+          "name": "firefox-developer-edition",
+          "sha": "faf3c34e84683539bcce2520bcba43540b97a228",
+          "event": "push",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38075875722"
+        }
+      ]
+    },
+    {
+      "phaseId": "P303",
+      "commitSha": "a13567bc9253d7d61d0cccc83ae21d8352109f03",
+      "mergedMainSha": "faf3c34e84683539bcce2520bcba43540b97a228",
+      "acceptanceIds": [
+        "AP303-01",
+        "AP303-02",
+        "AP303-03"
+      ],
+      "claimId": "CLM-P303-001",
+      "claimEpoch": 1,
+      "agentId": "slot-three-r3",
+      "agentSlot": 3,
+      "baseMainSha": "66e5526d701decd0caee2b9400372a386f631cea",
+      "writePaths": [
+        "extension/alpha/features/ai/**",
+        "extension/alpha/overlay/**",
+        "tests/alpha/ai/**",
+        "docs/evidence/alpha/P303/**"
+      ],
+      "contractReads": {
+        "alpha.contracts.v1": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e"
+      },
+      "contractWrites": [],
+      "exclusiveResources": [],
+      "migrationSlots": [],
+      "implementationPr": 73,
+      "claimPr": 65,
+      "evidencePath": "docs/evidence/alpha/P303/acceptance.json",
+      "ciRuns": [
+        {
+          "id": 38075875680,
+          "name": "alpha-governance",
+          "sha": "faf3c34e84683539bcce2520bcba43540b97a228",
+          "event": "push",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38075875680"
+        },
+        {
+          "id": 38075875722,
+          "name": "firefox-developer-edition",
+          "sha": "faf3c34e84683539bcce2520bcba43540b97a228",
+          "event": "push",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38075875722"
+        }
+      ]
+    },
+    {
+      "phaseId": "P304",
+      "commitSha": "16641ef0edeaaf9819959c6f672f9c3376e623e7",
+      "mergedMainSha": "359eba343e0a3c315d8da90ecbcd4e29fd30e18c",
+      "acceptanceIds": [
+        "AP304-01",
+        "AP304-02",
+        "AP304-03"
+      ],
+      "claimId": "CLM-P304-001",
+      "claimEpoch": 1,
+      "agentId": "slot-four-r3",
+      "agentSlot": 4,
+      "baseMainSha": "0466c60d30c7ef7e62150cd048d741979b92edf7",
+      "writePaths": [
+        "extension/alpha/features/refresher/**",
+        "tests/alpha/refresher/**",
+        "docs/evidence/alpha/P304/**"
+      ],
+      "contractReads": {
+        "alpha.contracts.v1": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e"
+      },
+      "contractWrites": [],
+      "exclusiveResources": [],
+      "migrationSlots": [],
+      "implementationPr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/77",
+      "claimPr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/66",
+      "evidencePath": "docs/evidence/alpha/P304/acceptance.json",
+      "ciRuns": [
+        {
+          "id": 38082309633,
+          "name": "alpha-governance",
+          "sha": "359eba343e0a3c315d8da90ecbcd4e29fd30e18c",
+          "event": "push",
+          "conclusion": "success",
+          "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38082309633"
+        },
+        {
+          "id": 38082309630,
+          "name": "firefox-developer-edition",
+          "sha": "359eba343e0a3c315d8da90ecbcd4e29fd30e18c",
+          "event": "push",
+          "conclusion": "success",
+          "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38082309630"
+        }
+      ]
+    },
+    {
+      "phaseId": "P305",
+      "commitSha": "279f3ce252120a2241c8ab01a2bafc10bef57506",
+      "mergedMainSha": "780fc19d05d1c3a4f3d4aaa0a64c8220c26843f2",
+      "acceptanceIds": [
+        "AP305-01",
+        "AP305-02",
+        "AP305-03"
+      ],
+      "claimId": "CLM-P305-001",
+      "claimEpoch": 1,
+      "agentId": "slot-five-r3",
+      "agentSlot": 5,
+      "baseMainSha": "e6a59075db9c8d8343224ebfd5c51d0c1030c05a",
+      "writePaths": [
+        "extension/alpha/features/visibility/**",
+        "tests/alpha/visibility/**",
+        "docs/evidence/alpha/P305/**"
+      ],
+      "contractReads": {
+        "alpha.contracts.v1": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e"
+      },
+      "contractWrites": [],
+      "exclusiveResources": [],
+      "migrationSlots": [],
+      "implementationPr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/69",
+      "claimPr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/67",
+      "evidencePath": "docs/evidence/alpha/P305/acceptance.json",
+      "ciRuns": [
+        {
+          "id": 38073313695,
+          "name": "alpha-governance",
+          "sha": "780fc19d05d1c3a4f3d4aaa0a64c8220c26843f2",
+          "event": "push",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38073313695"
+        },
+        {
+          "id": 38073313692,
+          "name": "firefox-developer-edition",
+          "sha": "780fc19d05d1c3a4f3d4aaa0a64c8220c26843f2",
+          "event": "push",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38073313692"
+        }
+      ]
+    }
+  ],
+  "ciRuns": [
+    {
+      "id": 38082952554,
+      "name": "alpha-governance",
+      "sha": "0b6de21bebcaf3269a93f7133de92343eae6065a",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38082952554"
+    },
+    {
+      "id": 38082952578,
+      "name": "firefox-developer-edition",
+      "sha": "0b6de21bebcaf3269a93f7133de92343eae6065a",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38082952578"
+    }
+  ],
+  "additionalCiRuns": [
+    {
+      "id": 38082952576,
+      "name": "alpha-firefox",
+      "sha": "0b6de21bebcaf3269a93f7133de92343eae6065a",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38082952576"
+    }
+  ],
+  "verification": {
+    "source": "GitHub connector: independently checked exact phase PR merge payloads and actual commit changed files, five published phase proofs and ancestry, each exact-SHA Actions run via API, final merged-main workflow jobs and alpha-governance run logs. No local network-capable git checkout.",
+    "localGateCommands": "NOT_RUN — no network-capable local checkout; independently executed GitHub Actions were inspected",
+    "combinedRuns": [
+      {
+        "runId": 38082952554,
+        "workflow": "alpha-governance",
+        "result": "PASS",
+        "observed": "216/216 Alpha Node tests, 0 failed/skipped, all P301-P305 acceptance fixtures; npm verify, frozen donor regression, schema/contracts and derivative validation"
+      },
+      {
+        "runId": 38082952576,
+        "workflow": "alpha-firefox",
+        "result": "PASS",
+        "observed": "Packaged derivative PersonaMonkey baseline, typed broker safety, isolated Firefox routing and lifecycle"
+      },
+      {
+        "runId": 38082952578,
+        "workflow": "firefox-developer-edition",
+        "result": "PASS",
+        "observed": "All packaged pinned Firefox Developer Edition jobs successful, exact 154.0b10, derivative Alpha Core and historical donor regression partition"
+      }
+    ],
+    "checks": {
+      "G0, GATE-R1 and GATE-R2 prerequisites": "PASS",
+      "all five published exact-epoch phase proofs and all fifteen acceptance IDs": "PASS",
+      "all implementation product commits and proof main SHAs are ancestors of integrated main": "PASS",
+      "all ten exact phase evidence push CI runs verified against GitHub": "PASS",
+      "each R3 implementation merge diff is confined to its owning feature/test/evidence files": "PASS",
+      "no shared Alpha contract or migration changes; no conflicting exclusive resources": "PASS",
+      "P301 dual remote reservation and lost GitHub receipt fixture": "PASS",
+      "P302 sleep-only, saved-source readback, rollback and quarantine fixture": "PASS",
+      "P303 per-account native AI session ledger, pending review and stale editor fixture": "PASS",
+      "P304 persisted healthy operational time, shutdown/outage and fair selection fixture": "PASS",
+      "P305 pinned/filtered/rendered position, adaptive views and 1k budget fixture": "PASS",
+      "bounded provider retries and UNCERTAIN reconciliation; no raw alternate execution authority": "PASS",
+      "combined main governance, pin, fault/security and browser suites": "PASS",
+      "operator live Perchance/Persona/Mullvad/Cloudflare": "NOT_RUN"
+    },
+    "residualCaveats": [
+      "No live Perchance, Mullvad, Cloudflare or operator browser acceptance is claimed.",
+      "R4 composes independent R3 services into provider workflows, UI and durable recovery; integration not inferred from unit acceptance.",
+      "P303 native helper production bridge and editor overlay activation remain unwired pending authorized integration; P402/P403 own orchestration.",
+      "P304 and P305 separate ledgers need integrated backup/restore by P405.",
+      "Network-isolated local environment: no standalone gate commands were executed outside verified GitHub Actions."
+    ]
+  },
+  "governance": {
+    "gate": "GATE-R3",
+    "acceptedClaimEpochs": {
+      "P301": 1,
+      "P302": 1,
+      "P303": 1,
+      "P304": 1,
+      "P305": 1
+    },
+    "acceptedRound": "R3",
+    "readyRound": "R4",
+    "readyPhaseIds": [
+      "P401",
+      "P402",
+      "P403",
+      "P404",
+      "P405"
+    ],
+    "operatorLiveAccepted": false
+  }
+}
