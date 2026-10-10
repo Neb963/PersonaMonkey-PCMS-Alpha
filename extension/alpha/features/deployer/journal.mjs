@@ -1,6 +1,6 @@
-/** Durable P102-backed ledger used by the existing P103 Perchance adapter.
- * Pass this exact object as the adapter's journal and the Deployer's journal.
- * No browser execution, transport, or independent retry authority exists here.
+/** Durable P102-backed ledger used by P103. An explicit P103 FAILED:
+ * NOT_APPLIED receipt is P102 NOT_APPLIED; other FAILED receipts remain HELD.
+ * P201/PersonaMonkey retain all control and execution ownership.
  */
 import { id, instant, requireData } from '../../domain/validation.js';
 
@@ -54,7 +54,15 @@ export function createDeployerJournal({ storage, clock = () => new Date().toISOS
         ...(outcome.remoteEvidence &&
           ['UNLISTED', 'PUBLIC', 'UNKNOWN'].includes(outcome.remoteEvidence.listing) ?
           { listing: outcome.remoteEvidence.listing } : {}) };
-      return transition(opId, ['DISPATCHING'], outcome.phase, evidence);
+      // P103 reports FAILED for explicit provider refusals. P102 deliberately
+      // has no DISPATCHING -> FAILED edge: verified non-application settles as
+      // NOT_APPLIED; every other failure stays HELD for reconciliation.
+      // Report the adapter's transport disposition without forging durable state.
+      const persistedPhase = outcome.phase === 'FAILED'
+        ? outcome.code === 'NOT_APPLIED' ? 'NOT_APPLIED' : 'HELD'
+        : outcome.phase;
+      const persisted = await transition(opId, ['DISPATCHING'], persistedPhase, evidence);
+      return { ...persisted, phase: outcome.phase };
     }
   });
 }
