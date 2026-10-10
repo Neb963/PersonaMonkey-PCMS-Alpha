@@ -53,7 +53,7 @@ if (branch || event === 'local') {
     `docs/evidence/alpha/${branch.split('/').at(-1).toUpperCase()}/context.json`;
   contexts = [json(root, contextPath)];
 } else {
-  const changed = files.filter(p => /^docs\/evidence\/alpha\/(G0|P[1-6]0[1-5]|GATE-R[1-6]|AMEND-P103-LIST-001|MAINT-[A-Z0-9-]+)\/context\.json$/.test(p));
+  const changed = files.filter(p => /^docs\/evidence\/alpha\/(G0|P[1-6]0[1-5]|GATE-R[1-6]|AMEND-P103-LIST-001|MAINT-[A-Z0-9-]+|P303-ISSUE85)\/context\.json$/.test(p));
   if (changed.length) contexts = changed.map(p => json(root, p));
   else if (!main || main.plan.bootstrap.state !== 'ACCEPTED') contexts = [json(root, 'docs/evidence/alpha/G0/context.json')];
   else {
@@ -72,6 +72,12 @@ const results = contexts.map(c => {
   return validateTransition(main, head, c, { mainSha, headBranch: branch || c.branch, files: owned });
 });
 const context = contexts[0], report = { ...results[0], contexts: results };
+if (context.kind === 'REPAIR') {
+  const path = 'docs/evidence/alpha/P303-ISSUE85/context.json';
+  let existsOnMain = false;
+  try { git(root, ['cat-file', '-e', `${mainRef}:${path}`]); existsOnMain = true; } catch {}
+  requireThat(!existsOnMain, 'P303 issue-85 repair authority already consumed');
+}
 if (context.kind === 'MAINTENANCE') {
   if (context.maintenanceId === P201_CI_MIGRATION.maintenanceId) {
     // This must exist in the predecessor authority, not merely in the candidate.
