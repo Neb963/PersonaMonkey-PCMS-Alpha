@@ -47,7 +47,7 @@
     "96": "icons/icon96.png"
   },
   "options_ui": {
-    "page": "pcms/app/index.html",
+    "page": "alpha/ui/shell/index.html",
     "open_in_tab": true
   },
   "sandbox": {

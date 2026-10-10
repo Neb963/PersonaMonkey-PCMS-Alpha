@@ -1,11 +1,9 @@
 {
   "schemaVersion": 1,
-  "kind": "CLAIM",
-  "action": "acquire",
+  "kind": "PHASE",
   "phaseId": "P201",
   "agentId": "slot-one-r2",
   "branch": "agent/slot-one-r2/p201",
   "claimEpoch": 1,
-  "expectedEpoch": 0,
   "baseMainSha": "cd20011b15b2eed8ab02c79df1f3c20e40287034"
 }

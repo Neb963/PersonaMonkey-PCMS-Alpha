@@ -1,0 +1,15 @@
+# P201 Background Core
+
+`recovery-bootstrap.js` statically installs the Alpha entry after PersonaMonkey's fail-closed routing gate. It waits for the existing PersonaMonkey bootstrap and uses only the typed in-process Persona Broker. The old PCMS background entry is no longer imported. The manifest opens the existing Alpha shell; unused legacy product files remain for P601.
+
+The entry owns one host promise per background realm. All UI clients send the frozen v1 envelope through the already delegated `PCMS_UI_REQUEST` transport. The dispatcher checks extension identity, document, frame, exact data fields, fixed service/method names, size limits and optimistic revisions. Existing Accounts and Inventory projections and local inventory intent are composed now. Uncomposed provider services fail with `UNSUPPORTED_CAPABILITY`.
+
+P102 remains the domain and operation authority. A separate checksum-protected, strict-durability IndexedDB control journal stores the Core generation, fixed-owner timers and resource permits. Initialization advances the generation, fences suspended workers, marks interrupted operations `UNCERTAIN`/`HELD`, and retains unresolved tab allocations. Session storage distinguishes warm event-page wake from a cold browser run. Missing or corrupt journal data fails closed.
+
+Only two alarm names are used: `alpha.core.next` and a five-minute heartbeat. A pass runs at most 16 timers for two seconds; compiled handlers are bounded to one second. Missed periodic intervals coalesce into one execution. An interrupted mutating timer requires readback before reuse and stores its reconciliation receipt. Recovery holds exclude mutating timers from the next alarm instead of creating a retry loop.
+
+Operations reserve capacity, durably write PREPARED and DISPATCHING, then grant one fenced broker mutation. The broker request includes a stable operation ID and the current PersonaMonkey boot/revision precondition. Completion requires bounded authoritative readback. Lost responses, stale bindings, timeouts and interrupted dispatch enter recovery hold; reconciliation reads only and never replays the mutation. Limits are two operations, four owned tab permits, 64 timers/pending reservations and 1,024 journal operations. Exhaustion is explicit `RATE_LIMIT`.
+
+A Persona open requires a matching permit before broker dispatch. Attach requires an APPLIED receipt plus current Persona/container observation and tags the actual tab through Firefox session values. Warm recovery adopts only positively tagged, account-bound tabs. Numeric tab IDs are never durable identity; an unknown or occupied allocation cannot be recycled. The Core never creates or closes browser tabs directly.
+
+`bootstrap/client.mjs` is a UI-only transport. Future compiled features can use the Core's operation, timer and budget primitives, but cannot introduce arbitrary modules or user-supplied callbacks through the UI. Neither these tests nor this phase establish live Perchance, Mullvad or Cloudflare acceptance.

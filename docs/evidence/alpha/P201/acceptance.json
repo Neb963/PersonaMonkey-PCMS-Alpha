@@ -1,0 +1,242 @@
+{
+  "phaseId": "P201",
+  "state": "CI_VERIFIED",
+  "agentId": "slot-one-r2",
+  "claimId": "CLM-P201-001",
+  "claimEpoch": 1,
+  "claimBaseMainSha": "cd20011b15b2eed8ab02c79df1f3c20e40287034",
+  "implementationBaseMainSha": "d0ff52f9e3657a192ee408759006e19b08779cb1",
+  "claimPr": 47,
+  "claimCommitSha": "329976269d96a7e15ca59dda4f97b65ca4effaa2",
+  "contractHash": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e",
+  "acceptanceIds": [
+    "AP201-01",
+    "AP201-02",
+    "AP201-03"
+  ],
+  "providerLive": false,
+  "gateVerified": false,
+  "accepted": false,
+  "mergedMainSha": null,
+  "ciRuns": [
+    {
+      "name": "alpha-governance",
+      "id": 38049108774,
+      "sha": "ac42d9b2a59f655747126b653801c3ec7d45c3f1",
+      "headBranch": "agent/slot-one-r2/p201",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "attempt": 1,
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38049108774"
+    },
+    {
+      "name": "alpha-firefox",
+      "id": 38049108777,
+      "sha": "ac42d9b2a59f655747126b653801c3ec7d45c3f1",
+      "headBranch": "agent/slot-one-r2/p201",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "attempt": 1,
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38049108777"
+    },
+    {
+      "name": "firefox-developer-edition",
+      "id": 38049108745,
+      "sha": "ac42d9b2a59f655747126b653801c3ec7d45c3f1",
+      "headBranch": "agent/slot-one-r2/p201",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "attempt": 1,
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38049108745"
+    }
+  ],
+  "requiredCi": "PASS_AT_REPRODUCIBLE_PRODUCT_CHECKPOINT",
+  "commands": [
+    {
+      "command": "node --test tests/alpha/core/core.test.mjs",
+      "exitCode": 0,
+      "tests": 20,
+      "passed": 20,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "command": "MOZ_DISABLE_CONTENT_SANDBOX=1 FIREFOX_BIN=/tmp/alpha-p101-firefox/versions/154.0b10/firefox/firefox FIREFOX_INSTALL_MANIFEST=/tmp/alpha-p101-firefox/alpha-install-manifest.json node tools/alpha/run-tests.mjs",
+      "exitCode": 0,
+      "tests": 158,
+      "passed": 158,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "command": "MOZ_DISABLE_CONTENT_SANDBOX=1 FIREFOX_BIN=/tmp/alpha-p101-firefox/versions/154.0b10/firefox/firefox FIREFOX_INSTALL_MANIFEST=/tmp/alpha-p101-firefox/alpha-install-manifest.json node tools/alpha/ci-migration/core.mjs --root . --main-ref origin/main",
+      "exitCode": 0,
+      "p201": "EXECUTED",
+      "packagedCases": 6
+    },
+    {
+      "command": "node scripts/build-extension.mjs",
+      "exitCode": 0,
+      "executedBy": "packaged before hook; XPI source-byte comparison passed"
+    },
+    {
+      "command": "node tools/alpha/verify-repo.mjs",
+      "exitCode": 0
+    },
+    {
+      "command": "npm run verify:claims",
+      "exitCode": 0,
+      "activeClaims": 5
+    },
+    {
+      "command": "npm run verify:donor",
+      "exitCode": 0,
+      "donorXpiSha256": "bbe084a0f3495a1a505f87f69c5a29cfdfd538bf15ec35afee35d34b9ae6b5f1"
+    },
+    {
+      "command": "npm run verify",
+      "exitCode": 1,
+      "tests": 49,
+      "passed": 46,
+      "failed": 3,
+      "blocker": "PR #44 governance fixtures copy current Alpha product while asserting a pre-P201 legacy baseline; see ci-blocker.md",
+      "historical": true,
+      "supersededBy": "MAINT-P201-FIXTURE-006 and fresh successful alpha-governance run 38049108774"
+    },
+    {
+      "command": "git diff --check",
+      "exitCode": 0
+    },
+    {
+      "command": "node --test tests/alpha/browser-baseline/*.test.mjs tests/firefox/*.test.mjs",
+      "exitCode": 0,
+      "tests": 42,
+      "passed": 42,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "command": "node extension/tests/persona-identity.test.mjs",
+      "exitCode": 0
+    },
+    {
+      "command": "node extension/tests/management-integration.test.mjs",
+      "exitCode": 0
+    },
+    {
+      "command": "node extension/tests/integration-lifecycle.test.mjs",
+      "exitCode": 0
+    },
+    {
+      "command": "node extension/tests/integration-contract-parity.test.mjs",
+      "exitCode": 0
+    },
+    {
+      "command": "node extension/tests/background-routing-init.test.mjs",
+      "exitCode": 0
+    },
+    {
+      "command": "npm run verify",
+      "executedBy": "independent GitHub Actions alpha-governance",
+      "runId": 38049108774,
+      "exitCode": 0,
+      "governanceTestsPassed": 50,
+      "donorVerified": true
+    },
+    {
+      "command": "node tools/alpha/run-tests.mjs",
+      "executedBy": "independent GitHub Actions alpha-governance",
+      "runId": 38049108774,
+      "exitCode": 0,
+      "tests": 158,
+      "passed": 158,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "command": "node tools/alpha/ci-migration/core.mjs --root . --main-ref origin/main",
+      "executedBy": "independent GitHub Actions Firefox Developer Edition",
+      "runId": 38049108745,
+      "exitCode": 0,
+      "p201": "EXECUTED",
+      "packagedCases": 6
+    }
+  ],
+  "sourceSha256": {
+    "extension/alpha/bootstrap/client.mjs": "603bdab75b674d4dee8a33b3d5e298f539c02baaeb6beed0f370444fc8a8058c",
+    "extension/alpha/bootstrap/entry.mjs": "397b476f9096f3eab2ea5c6b6525f5dd3e9de316136b886398604104a3f38712",
+    "extension/alpha/bootstrap/host.mjs": "83c59d19b528f6531512ec2ce29ddcd397a4622e0adf26d85818c9babd0522a3",
+    "extension/alpha/core/README.md": "7c735820aa5bc063ae14a78038e7cbc80211c7c5e0fc499177f969883778bae9",
+    "extension/alpha/core/control-store.mjs": "8d02be5bf81a6259f5860c2a82283da8899580038bfd1230b921ae6c31a357c1",
+    "extension/alpha/core/core.mjs": "9de87e8fbd7560f9d45ba7c95a59a8c38615e9d878e167ac672023de10517658",
+    "extension/alpha/core/ui.mjs": "764fe9f78fbc36d728e6f4877d8b37146a4737e34e2f0266ca689dd12dc14f57",
+    "extension/lib/recovery-bootstrap.js": "50259774662e0b48c91263d7c8a6bfb6801afcfb9f9aea31ecd5a5daf3d1e7ba",
+    "extension/manifest.json": "d4f9046cb61cf14732af6cee364e4532a5ac0db349861f444c35e642ea746e67",
+    "tests/alpha/core/core.test.mjs": "65ea738ef095ba25d7436de86e50645e5d3b9350bff58d113ddd473f2662250d",
+    "tests/alpha/core/helpers.mjs": "888dc4ff4ad9b3e1d0b1a9cccfaec218327dfbba3fdab40256e2607750dabc71",
+    "tests/alpha/core/packaged.test.mjs": "a69b955c0afb387dcc4890fa3a4eb63a249b145be5e69c91739d42e291480103"
+  },
+  "packagedLocal": {
+    "phaseId": "P201",
+    "providerLive": false,
+    "checks": {
+      "startupAuthorizationAndPersonaMonkeyAuthority": true,
+      "twoClientsOneProductionCore": true,
+      "zeroClientTabsWarmAlarmWake": true,
+      "packagedProfileColdRestart": true,
+      "realBrokerMutationLostReadbackRestartAndReconciliation": true,
+      "boundedTimersOperationsAndTabPermitsNoOperatorTabClosure": true
+    },
+    "passed": true,
+    "contentSandboxDisabled": true,
+    "browser": {
+      "version": "154.0b10",
+      "artifactSha256": "681913108bba655d7ec6fadfac2731141b23e48dca88d1988a4d95a6bdaff164",
+      "archiveUrl": "https://archive.mozilla.org/pub/devedition/releases/154.0b10/linux-x86_64/en-US/firefox-154.0b10.tar.xz",
+      "extractedTreeSha256": "56fd1ac4a9c8b099fefe82ef43fd58ca1b9fe97e75a3bd5b84170f847dd0615c",
+      "buildId": "20260812080401",
+      "sourceStamp": "1d78fecadb05f7a244f966728e5228681708c72c",
+      "versionOutput": "Mozilla Firefox 154.0b10",
+      "artifactIntegrity": {
+        "baselineTreeSha256": "56fd1ac4a9c8b099fefe82ef43fd58ca1b9fe97e75a3bd5b84170f847dd0615c",
+        "observedTreeSha256": "56fd1ac4a9c8b099fefe82ef43fd58ca1b9fe97e75a3bd5b84170f847dd0615c",
+        "immutableTreeSha256": "56fd1ac4a9c8b099fefe82ef43fd58ca1b9fe97e75a3bd5b84170f847dd0615c",
+        "changeCount": 0,
+        "truncated": false,
+        "changes": [],
+        "runtimeMetadata": []
+      }
+    },
+    "commitSha": "f7c8258a59bd6b41ddd156cf937a362d4943ae27",
+    "workflowRun": null,
+    "productXpiSha256": "cfed4d9b8c933387afab581d792523e2fffc2a7778d2446365f93a8f876d0a89",
+    "unload": {
+      "state": "stopped",
+      "mode": "firefox-test-hook"
+    }
+  },
+  "localBrowserLimitation": "The managed container rejects Firefox content sandbox namespace setup (/proc/self/uid_map EPERM). Local packaged runs use MOZ_DISABLE_CONTENT_SANDBOX=1 and are diagnostic; hosted CI must execute with the full sandbox. No CI sandbox guard was changed.",
+  "localProvenance": "The packaged report records published checkpoint f7c8258 plus the owned startup fix. Source hashes/XPI identify the tested slice; final independent CI must verify the revised PR head.",
+  "blockers": [],
+  "initialIndependentCi": "initial-independent-ci.json",
+  "maintenanceResolution": {
+    "maintenanceId": "MAINT-P201-FIXTURE-006",
+    "pr": 49,
+    "mergedMainSha": "d0ff52f9e3657a192ee408759006e19b08779cb1",
+    "verifiedOnMain": true,
+    "description": "Frozen donor pre-P201 governance fixtures restored; independent merged-main alpha-governance, alpha-firefox and firefox-developer-edition success. The P201 product PR requires fresh CI at its updated head."
+  },
+  "checkpoint": {
+    "headSha": "ac42d9b2a59f655747126b653801c3ec7d45c3f1",
+    "baseMainSha": "d0ff52f9e3657a192ee408759006e19b08779cb1",
+    "firefoxMatrixJobsPassed": 12,
+    "packagedP201Cases": 6,
+    "governanceRegressionsPassed": 50,
+    "alphaTestsPassed": 158,
+    "providerLive": false,
+    "explanation": "All three mandatory PR workflows completed successfully at this product checkpoint; final evidence-only head requires independent CI revalidation."
+  }
+}

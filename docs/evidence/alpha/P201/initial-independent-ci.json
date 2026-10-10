@@ -1,0 +1,151 @@
+{
+  "phaseId": "P201",
+  "state": "COMMITTED",
+  "claimEpoch": 1,
+  "mainSha": "c2a86420488e9cab7a8c162b75f6698e47dd71fc",
+  "headSha": "f7c8258a59bd6b41ddd156cf937a362d4943ae27",
+  "candidateTree": "4c14400817ae685cac11c8fe357280ecd5a1ed9e",
+  "pr": 48,
+  "providerLive": false,
+  "ciVerified": false,
+  "runs": [
+    {
+      "name": "alpha-firefox",
+      "id": 37998027144,
+      "sha": "f7c8258a59bd6b41ddd156cf937a362d4943ae27",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37998027144",
+      "jobs": [
+        {
+          "name": "persona-monkey-baseline",
+          "id": 114048930593,
+          "status": "completed",
+          "conclusion": "failure"
+        }
+      ]
+    },
+    {
+      "name": "alpha-governance",
+      "id": 37998027253,
+      "sha": "f7c8258a59bd6b41ddd156cf937a362d4943ae27",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37998027253",
+      "jobs": [
+        {
+          "name": "authority",
+          "id": 114048930658,
+          "status": "completed",
+          "conclusion": "failure"
+        }
+      ]
+    },
+    {
+      "name": "firefox-developer-edition",
+      "id": 37998027208,
+      "sha": "f7c8258a59bd6b41ddd156cf937a362d4943ae27",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/37998027208",
+      "jobs": [
+        {
+          "name": "p034-packaged",
+          "id": 114048930862,
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "p032-packaged",
+          "id": 114048930991,
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "pinned-firefox",
+          "id": 114048931019,
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "p033-packaged",
+          "id": 114048931026,
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "p031-packaged",
+          "id": 114048931111,
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "p038-packaged",
+          "id": 114048931147,
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "alpha-core",
+          "id": 114048931161,
+          "status": "completed",
+          "conclusion": "failure"
+        },
+        {
+          "name": "p040-packaged",
+          "id": 114048931173,
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "p041-packaged",
+          "id": 114048931178,
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "p036-packaged",
+          "id": 114048931262,
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "p042-packaged",
+          "id": 114048931361,
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "p039-packaged",
+          "id": 114048931568,
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "area": "alpha-governance",
+      "job": 114048930658,
+      "result": "46/49 regressions pass; three pre-P201 fixture failures independently reproduced",
+      "repair": "Separate ordinary maintenance; outside P201 ownership"
+    },
+    {
+      "area": "alpha-firefox and alpha-core",
+      "jobs": [
+        114048930593,
+        114048931161
+      ],
+      "result": "Preserved routing initialization fixture exposes missing onStartup in its partial API; mandatory Core step never executes on this first checkpoint",
+      "repair": "P201-owned entry now registers each available event synchronously without throwing for an absent lifecycle event; original PersonaMonkey safety assertions retained"
+    },
+    {
+      "area": "Historical donor",
+      "result": "All eleven donor jobs pass, preserving exact snapshot/product semantics"
+    }
+  ]
+}
