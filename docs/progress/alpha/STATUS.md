@@ -3,9 +3,9 @@
 > Generated from docs/implementation/alpha/plan.json. Do not hand-edit.
 
 - G0: **ACCEPTED**
-- Ready: **none**
-- Claimed: **P201, P202, P203, P204, P205**
-- Accepted phases: **P101, P102, P103, P104, P105**
+- Ready: **P301, P302, P303, P304, P305**
+- Claimed: **none**
+- Accepted phases: **P101, P102, P103, P104, P105, P201, P202, P203, P204, P205**
 - Provider-live acceptance: **not established**
 
 Work starts only with an explicit operator assignment and a valid claim on current main.

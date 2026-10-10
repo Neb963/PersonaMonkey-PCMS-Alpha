@@ -16,23 +16,23 @@ State: **ACCEPTED**. Gate: GATE-R1.
 
 ## R2 — Durable services and inventory
 
-State: **IN_PROGRESS**. Gate: GATE-R2.
+State: **ACCEPTED**. Gate: GATE-R2.
 
-- P201: **CLAIMED** — Background Core and durable alarms
-- P202: **CLAIMED** — Accounts and Persona enrollment
-- P203: **CLAIMED** — GitHub source catalog and READY interpreter
-- P204: **CLAIMED** — Generator inventory and drift facts
-- P205: **CLAIMED** — Unified backup schema and safe exporter
+- P201: **ACCEPTED** — Background Core and durable alarms
+- P202: **ACCEPTED** — Accounts and Persona enrollment
+- P203: **ACCEPTED** — GitHub source catalog and READY interpreter
+- P204: **ACCEPTED** — Generator inventory and drift facts
+- P205: **ACCEPTED** — Unified backup schema and safe exporter
 
 ## R3 — Operational engines
 
-State: **LOCKED**. Gate: GATE-R3.
+State: **READY**. Gate: GATE-R3.
 
-- P301: **LOCKED** — Bulk reservations and account balancing
-- P302: **LOCKED** — Sleep-only Deployer and rollback
-- P303: **LOCKED** — Native Perchance AI session and editor overlay
-- P304: **LOCKED** — Individual Refresher scheduler and healthy clock
-- P305: **LOCKED** — Recent visibility and adaptive metrics
+- P301: **READY** — Bulk reservations and account balancing
+- P302: **READY** — Sleep-only Deployer and rollback
+- P303: **READY** — Native Perchance AI session and editor overlay
+- P304: **READY** — Individual Refresher scheduler and healthy clock
+- P305: **READY** — Recent visibility and adaptive metrics
 
 ## R4 — Integrated workflows and recovery
 

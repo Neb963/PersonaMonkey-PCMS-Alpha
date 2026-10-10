@@ -1,0 +1,246 @@
+{
+  "schemaVersion": 1,
+  "phaseId": "GATE-R2",
+  "state": "ACCEPTED",
+  "providerLive": false,
+  "mergedMainSha": "1d5cd361d0c5ea4d981d66d7560281596a296eae",
+  "contractId": "alpha.contracts.v1",
+  "contractRevision": 2,
+  "contractHash": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e",
+  "prerequisite": {
+    "id": "GATE-R1",
+    "state": "ACCEPTED"
+  },
+  "phases": [
+    {
+      "phaseId": "P201",
+      "commitSha": "b35add1ff9718fb32f5f4c7ad63efa989b46ca2d",
+      "acceptanceIds": [
+        "AP201-01",
+        "AP201-02",
+        "AP201-03"
+      ],
+      "claimId": "CLM-P201-002",
+      "claimEpoch": 2,
+      "agentId": "chatgpt-r2",
+      "baseMainSha": "9baa2f60b4eb1cec6cf9441cc382403b38603a1b",
+      "writePaths": [
+        "extension/alpha/core/**",
+        "extension/alpha/bootstrap/**",
+        "extension/manifest.json",
+        "extension/lib/recovery-bootstrap.js",
+        "tests/alpha/core/**",
+        "docs/evidence/alpha/P201/**"
+      ],
+      "contractReads": {
+        "alpha.contracts.v1": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e"
+      },
+      "contractWrites": [],
+      "exclusiveResources": [],
+      "migrationSlots": [],
+      "implementationPr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/48",
+      "evidencePath": "docs/evidence/alpha/P201/acceptance.json"
+    },
+    {
+      "phaseId": "P202",
+      "commitSha": "ee3553984fef67c6781f8c8fc10cd483acc15d21",
+      "acceptanceIds": [
+        "AP202-01",
+        "AP202-02",
+        "AP202-03"
+      ],
+      "claimId": "CLM-P202-002",
+      "claimEpoch": 2,
+      "agentId": "chatgpt-p202",
+      "baseMainSha": "deff495e2c4b124f9bcf7ad718678ab760b32e7e",
+      "writePaths": [
+        "extension/alpha/features/accounts/**",
+        "tests/alpha/accounts/**",
+        "docs/evidence/alpha/P202/**"
+      ],
+      "contractReads": {
+        "alpha.contracts.v1": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e"
+      },
+      "contractWrites": [],
+      "exclusiveResources": [],
+      "migrationSlots": [],
+      "implementationPr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/39",
+      "evidencePath": "docs/evidence/alpha/P202/acceptance.json"
+    },
+    {
+      "phaseId": "P203",
+      "commitSha": "0dcf2d9d6208566ae5a4bdba83f36e84b171e5d1",
+      "acceptanceIds": [
+        "AP203-01",
+        "AP203-02",
+        "AP203-03"
+      ],
+      "claimId": "CLM-P203-001",
+      "claimEpoch": 1,
+      "agentId": "slot-three-r2",
+      "baseMainSha": "39623c872e73aa9983e9f4fbdbc8f939281da57b",
+      "writePaths": [
+        "extension/alpha/features/sources/**",
+        "tests/alpha/sources/**",
+        "docs/evidence/alpha/P203/**"
+      ],
+      "contractReads": {
+        "alpha.contracts.v1": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e"
+      },
+      "contractWrites": [],
+      "exclusiveResources": [],
+      "migrationSlots": [],
+      "implementationPr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/35",
+      "evidencePath": "docs/evidence/alpha/P203/acceptance.json"
+    },
+    {
+      "phaseId": "P204",
+      "commitSha": "ebb99f374edbbb73cd495b7a24cfaec0230bf53c",
+      "acceptanceIds": [
+        "AP204-01",
+        "AP204-02",
+        "AP204-03"
+      ],
+      "claimId": "CLM-P204-001",
+      "claimEpoch": 1,
+      "agentId": "slot-four-p204",
+      "baseMainSha": "660a0756b186080c9571ba97d89289617c85eaef",
+      "writePaths": [
+        "extension/alpha/features/inventory/**",
+        "tests/alpha/inventory/**",
+        "docs/evidence/alpha/P204/**"
+      ],
+      "contractReads": {
+        "alpha.contracts.v1": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e"
+      },
+      "contractWrites": [],
+      "exclusiveResources": [],
+      "migrationSlots": [],
+      "implementationPr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/37",
+      "evidencePath": "docs/evidence/alpha/P204/acceptance.json"
+    },
+    {
+      "phaseId": "P205",
+      "commitSha": "573531ca791c68b3d7b6905ccc264a4d84ee3aba",
+      "acceptanceIds": [
+        "AP205-01",
+        "AP205-02",
+        "AP205-03"
+      ],
+      "claimId": "CLM-P205-001",
+      "claimEpoch": 1,
+      "agentId": "slot-five-p205",
+      "baseMainSha": "09dbe12a7f80d5e67316604ea500efa482c19777",
+      "writePaths": [
+        "extension/alpha/backup/**",
+        "tests/alpha/backup/**",
+        "docs/evidence/alpha/P205/**"
+      ],
+      "contractReads": {
+        "alpha.contracts.v1": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e"
+      },
+      "contractWrites": [],
+      "exclusiveResources": [],
+      "migrationSlots": [],
+      "implementationPr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/36",
+      "evidencePath": "docs/evidence/alpha/P205/acceptance.json"
+    }
+  ],
+  "ciRuns": [
+    {
+      "id": 38060407246,
+      "name": "alpha-governance",
+      "sha": "1d5cd361d0c5ea4d981d66d7560281596a296eae",
+      "event": "push",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38060407246"
+    },
+    {
+      "id": 38060407205,
+      "name": "firefox-developer-edition",
+      "sha": "1d5cd361d0c5ea4d981d66d7560281596a296eae",
+      "event": "push",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38060407205"
+    }
+  ],
+  "additionalCiRuns": [
+    {
+      "id": 38060407181,
+      "name": "alpha-firefox",
+      "sha": "1d5cd361d0c5ea4d981d66d7560281596a296eae",
+      "event": "push",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38060407181"
+    }
+  ],
+  "verification": {
+    "source": "Independently inspected exact GitHub Actions push run records, 12 packaged Firefox jobs, governance logs, five published phase acceptance records, current frozen contracts/claims and implementation ancestry.",
+    "localGateCommands": "NOT_RUN — no local repository checkout; actual independent hosted GitHub Actions execution verified",
+    "combinedRuns": [
+      {
+        "runId": 38060407246,
+        "workflow": "alpha-governance",
+        "result": "PASS",
+        "observed": "169/169 Alpha Node tests; 0 fail, combined cross-feature P202/P204 and P205 coverage regressions; governance and donor checks"
+      },
+      {
+        "runId": 38060407181,
+        "workflow": "alpha-firefox",
+        "result": "PASS",
+        "observed": "Packaged PersonaMonkey baseline, typed broker, isolated Firefox routing and lifecycle"
+      },
+      {
+        "runId": 38060407205,
+        "workflow": "firefox-developer-edition",
+        "result": "PASS",
+        "observed": "12/12 packaged Firefox Developer Edition jobs on exact integrated source, 154.0b10; six mandatory packaged AP201 cases including zero-client wake, cold restart, uncertain reconciliation and bounded budgets; normal content sandbox"
+      }
+    ],
+    "checks": {
+      "R1 prerequisite": "PASS",
+      "phase epochs, ownership and frozen contract reads": "PASS",
+      "all fifteen R2 acceptance IDs": "PASS",
+      "five phase implementation SHAs and merged-main SHAs are ancestors of integrated main": "PASS",
+      "all ten exact phase merged-main CI proofs": "PASS",
+      "independent combined-main GitHub Actions": "PASS",
+      "normal pinned Firefox Developer Edition 154.0b10 and packaged source": "PASS",
+      "one Alpha Core, idempotent entry and no reachable legacy Core authority": "PASS",
+      "two clients one Core; authorization and browser cold/warm recovery": "PASS",
+      "durable timers, UNCERTAIN and RECOVERY_HOLD": "PASS",
+      "Persona binding epoch and 100-item account import": "PASS",
+      "P202 to P204 rebind migration and binding fence regression #45": "PASS",
+      "commit-pinned READY status parsing and release identity": "PASS",
+      "1001 generator indexed inventory, failures and drift facts": "PASS",
+      "P205 backup integrity, facts ledger coverage and truthful partial restoration #46": "PASS",
+      "donor PersonaMonkey regression and contract boundaries": "PASS",
+      "live Perchance/Mullvad or operator-browser acceptance": "NOT_RUN"
+    },
+    "residualCaveats": [
+      "Deterministic and packaged-Firefox CI only; real provider-live Perchance, Mullvad, Cloudflare and operator browser acceptance NOT_RUN.",
+      "P205 reports recoveryCompleteness PARTIAL when cross-store transactional completeness is unavailable; actual restore application is reserved for P405.",
+      "Combined Core wiring and feature adapters for reservation/deploy/refresher remain deferred to their specified later rounds.",
+      "Governance evidence duplication imposed manual P201/P202 repairs; process simplification is separate authorized work after R2, not part of this gate."
+    ]
+  },
+  "governance": {
+    "gate": "GATE-R2",
+    "acceptedClaimEpochs": {
+      "P201": 2,
+      "P202": 2,
+      "P203": 1,
+      "P204": 1,
+      "P205": 1
+    },
+    "acceptedRound": "R2",
+    "readyRound": "R3",
+    "readyPhaseIds": [
+      "P301",
+      "P302",
+      "P303",
+      "P304",
+      "P305"
+    ],
+    "operatorLiveAccepted": false
+  }
+}
