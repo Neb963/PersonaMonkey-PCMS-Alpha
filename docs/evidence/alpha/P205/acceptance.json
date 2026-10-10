@@ -159,5 +159,111 @@
     "P405 owns actual restore application, durable hold, downloads retention, provider and Persona binding reconciliation.",
     "SHA-256 detects accidental corruption, not malicious repackaging/authenticity.",
     "No provider-live acceptance; GATE-R2 checker alone may promote phase state beyond MERGED."
-  ]
+  ],
+  "repair46": {
+    "issue": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/issues/46",
+    "state": "MERGED",
+    "claimEpoch": 1,
+    "claimState": "ACTIVE",
+    "implementationPr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/51",
+    "commitSha": "1d3d0edd33dfd7cbe890347a75546f24a0c96699",
+    "mergedMainSha": "0c6b68e307ff2c555b82d85c870ad72f6c0d6208",
+    "contractRevision": 2,
+    "contractHash": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e",
+    "acceptanceIds": [
+      "AP205-01",
+      "AP205-02",
+      "AP205-03"
+    ],
+    "summary": "BackupBundle v1 coverageRevision 2 accounts for P204 authoritative observation facts: SHA-256-verified read-only source or explicit unavailable ledger; legacy v1 previews missing; structural integrity never implies complete recovery.",
+    "regressions": {
+      "file": "tests/alpha/backup/bundle.test.mjs",
+      "tests": 8,
+      "passed": 8,
+      "additionalTests": 4,
+      "hostedSuiteTotal": 162,
+      "hostedSuitePassed": 162,
+      "hostedSuiteFailed": 0,
+      "localRepairRun": "NOT_RUN"
+    },
+    "prCiRuns": [
+      {
+        "id": 38052537248,
+        "name": "alpha-governance",
+        "sha": "1d3d0edd33dfd7cbe890347a75546f24a0c96699",
+        "event": "pull_request",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38052537248"
+      },
+      {
+        "id": 38052537276,
+        "name": "alpha-firefox",
+        "sha": "1d3d0edd33dfd7cbe890347a75546f24a0c96699",
+        "event": "pull_request",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38052537276"
+      },
+      {
+        "id": 38052537288,
+        "name": "firefox-developer-edition",
+        "sha": "1d3d0edd33dfd7cbe890347a75546f24a0c96699",
+        "event": "pull_request",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38052537288"
+      }
+    ],
+    "mergedMainCiRuns": [
+      {
+        "id": 38052820411,
+        "name": "alpha-governance",
+        "sha": "0c6b68e307ff2c555b82d85c870ad72f6c0d6208",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38052820411"
+      },
+      {
+        "id": 38052820389,
+        "name": "alpha-firefox",
+        "sha": "0c6b68e307ff2c555b82d85c870ad72f6c0d6208",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38052820389"
+      },
+      {
+        "id": 38052820398,
+        "name": "firefox-developer-edition",
+        "sha": "0c6b68e307ff2c555b82d85c870ad72f6c0d6208",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38052820398"
+      }
+    ],
+    "hostedGovernanceJobId": 114215247229,
+    "logAudit": {
+      "testCasesExecuted": true,
+      "syntheticFixtureInLogs": false,
+      "rawArchiveInLogs": false
+    },
+    "validatedDiffPaths": [
+      "extension/alpha/backup/bundle.js",
+      "extension/alpha/backup/README.md",
+      "tests/alpha/backup/bundle.test.mjs"
+    ],
+    "providerLive": false,
+    "providerMutation": false,
+    "restoreApply": false,
+    "sharedContractModified": false,
+    "limitations": [
+      "P102 and P204 snapshots are not atomic across independent IndexedDB stores; stage preview explicitly requires reconciliation.",
+      "Without a supplied P204 read-only list source, inventory facts are explicitly unavailable even when live P204 facts exist.",
+      "Original v1 archives omit P204 facts; they remain readable but must be previewed as incomplete.",
+      "P405 alone owns actual restore application, downloads retention and provider/persona reconciliation."
+    ]
+  }
 }
