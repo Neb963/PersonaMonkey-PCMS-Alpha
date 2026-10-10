@@ -465,7 +465,7 @@
       "round": 3,
       "agent": 1,
       "title": "Bulk reservations and account balancing",
-      "status": "READY",
+      "status": "CLAIMED",
       "dependsOn": [
         "P202",
         "P203",
