@@ -85,7 +85,7 @@
         "P405"
       ],
       "gateId": "GATE-R4",
-      "status": "READY"
+      "status": "IN_PROGRESS"
     },
     {
       "round": 5,
@@ -640,7 +640,7 @@
       "round": 4,
       "agent": 1,
       "title": "Supply flow and two-sided reconciliation",
-      "status": "READY",
+      "status": "CLAIMED",
       "dependsOn": [
         "P301",
         "P203"
