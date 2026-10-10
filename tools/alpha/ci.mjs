@@ -1,10 +1,35 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
-import { git, json, load, hasAuthority, requireThat, validateSnapshot, validateTransition, owns, ACTIVE, AMENDMENT, MAINTENANCE, P201_CI_MIGRATION } from './governance.mjs';
+import { git, json, load, hasAuthority, requireThat, validateSnapshot, validateTransition, owns, ACTIVE, AMENDMENT, MAINTENANCE, P201_CI_MIGRATION, validatePublishedPhaseEvidence, collectPhaseEvidence } from './governance.mjs';
 import { verifyRepository, verifyG0Runtime } from './verify-repo.mjs';
 import { verifyRun } from './ci-evidence.mjs';
 import { verifyMaintenanceApproval } from './maintenance-approval.mjs';
 import { verifyDerivative } from './ci-migration/policy.mjs';
+
+// Print verified, gate-compatible CI fields after a product merge. This does
+// not mutate acceptance records or mark a phase accepted.
+if (process.argv[2] === '--phase-proof') {
+  requireThat(process.argv.length === 6 && process.argv[4] === '--commit',
+    'Usage: node tools/alpha/ci.mjs --phase-proof P301 --commit <merged-product-head>');
+  const phaseId = process.argv[3], implementationSha = process.argv[5];
+  const mergedMainSha = git('.', ['rev-parse', 'HEAD']);
+  const remoteMainSha = git('.', ['ls-remote', 'origin', 'refs/heads/main']).split(/\s+/)[0];
+  requireThat(remoteMainSha === mergedMainSha,
+    'Phase proof generation requires an exact current-main checkout');
+  const snapshot = load('.');
+  const phase = snapshot.plan.phases.find(p => p.id === phaseId);
+  const claim = snapshot.registry.claims.find(c => c.phaseId === phaseId && ACTIVE.has(c.state));
+  requireThat(phase && claim && claim.claimEpoch === snapshot.registry.epochs[phaseId],
+    'Phase proof generation requires a published current claim');
+  git('.', ['merge-base', '--is-ancestor', implementationSha, mergedMainSha]);
+  const proof = await collectPhaseEvidence({
+    phaseId, commitSha: implementationSha, mergedMainSha,
+    requiredWorkflows: snapshot.policies.verification.requiredWorkflows,
+    verify: evidence => verifyRun(evidence, { repository: 'Neb963/PersonaMonkey-PCMS-Alpha' })
+  });
+  console.log(JSON.stringify(proof, null, 2));
+  process.exit(0);
+}
 
 const options = {};
 for (let i = 2; i < process.argv.length; i += 2) {
@@ -90,6 +115,19 @@ if (context.kind === 'BOOTSTRAP' && head.plan.bootstrap.state === 'ACCEPTED') {
   requireThat(evidence.ciRuns.length === expected.length && expected.every(name => evidence.ciRuns.some(p => p.name === name && p.sha === evidence.mergedMainSha)), 'G0 lacks both exact merged-main CI proofs');
   if (process.env.GITHUB_ACTIONS === 'true') for (const proof of evidence.ciRuns) await verifyRun(proof, { repository: process.env.GITHUB_REPOSITORY });
 }
+if (context.kind === 'PHASE' &&
+    files.includes('docs/evidence/alpha/' + context.phaseId + '/acceptance.json')) {
+  const record = json(root, 'docs/evidence/alpha/' + context.phaseId + '/acceptance.json');
+  if (record.state === 'MERGED') {
+    const phase = main.plan.phases.find(p => p.id === context.phaseId);
+    const claim = main.registry.claims.find(c => c.phaseId === context.phaseId && ACTIVE.has(c.state));
+    validatePublishedPhaseEvidence(record, phase, claim,
+      main.policies.verification.requiredWorkflows,
+      sha => { git(root, ['merge-base', '--is-ancestor', sha, mainSha]); return true; });
+    if (process.env.GITHUB_ACTIONS === 'true')
+      for (const proof of record.ciRuns) await verifyRun(proof, { repository: process.env.GITHUB_REPOSITORY });
+  }
+}
 if (context.kind === 'GATE') {
   const evidence = json(root, `docs/evidence/alpha/${context.phaseId}/independent-ci.json`);
   const round = main.plan.rounds.find(r => r.gateId === context.phaseId);
@@ -100,10 +138,10 @@ if (context.kind === 'GATE') {
     git(root, ['merge-base', '--is-ancestor', proof.commitSha, mainSha]);
     const published = json(root, `docs/evidence/alpha/${id}/acceptance.json`);
     const claim = main.registry.claims.find(c => c.phaseId === id && ACTIVE.has(c.state));
-    requireThat(published.phaseId === id && published.state === 'MERGED' && published.claimEpoch === claim.claimEpoch && published.commitSha === proof.commitSha && published.providerLive === false, `Gate lacks published merged phase evidence: ${id}`);
-    requireThat(JSON.stringify([...published.acceptanceIds].sort()) === JSON.stringify([...phase.acceptanceIds].sort()), `Published phase acceptance mapping differs: ${id}`);
-    git(root, ['merge-base', '--is-ancestor', published.mergedMainSha, mainSha]);
-    requireThat(published.ciRuns.length === main.policies.verification.requiredWorkflows.length && main.policies.verification.requiredWorkflows.every(name => published.ciRuns.some(p => p.name === name && p.sha === published.mergedMainSha)), `Phase lacks independent merged-main CI: ${id}`);
+    validatePublishedPhaseEvidence(published, phase, claim,
+      main.policies.verification.requiredWorkflows,
+      sha => { git(root, ['merge-base', '--is-ancestor', sha, mainSha]); return true; });
+    requireThat(published.commitSha === proof.commitSha, 'Gate phase implementation SHA mismatch: ' + id);
     if (process.env.GITHUB_ACTIONS === 'true') for (const run of published.ciRuns) await verifyRun(run, { repository: process.env.GITHUB_REPOSITORY });
   }
   requireThat(evidence.ciRuns.length === main.policies.verification.requiredWorkflows.length && main.policies.verification.requiredWorkflows.every(name => evidence.ciRuns.some(p => p.name === name && p.sha === mainSha)), 'Gate lacks combined-main independent CI');

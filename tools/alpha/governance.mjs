@@ -201,6 +201,71 @@ export function acquire(s, { phaseId, agentId, baseMainSha, expectedEpoch, actio
   validateSnapshot(next, { verifyHash: false });
   return next;
 }
+// One schema for phase PRs and round gates. Interim checkpoints are allowed,
+// but acceptance cannot be published as MERGED until its proof is complete.
+export function validatePublishedPhaseEvidence(record, phase, claim, requiredWorkflows, isAncestor) {
+  requireThat(record && phase && claim && typeof isAncestor === 'function',
+    'Missing phase acceptance inputs');
+  requireThat(record.phaseId === phase.id && record.state === 'MERGED' &&
+    record.claimId === claim.claimId && record.agentId === claim.agentId &&
+    record.claimEpoch === claim.claimEpoch && record.providerLive === false,
+    'Phase acceptance identity, epoch, state or live classification is invalid');
+  requireThat(sameSet(record.acceptanceIds, phase.acceptanceIds),
+    'Phase acceptance IDs differ from the authorized plan');
+  requireThat(SHA.test(record.commitSha) && SHA.test(record.mergedMainSha) &&
+    isAncestor(record.commitSha) && isAncestor(record.mergedMainSha),
+    'Phase acceptance commits are not ancestors of integrated main');
+  requireThat(Array.isArray(record.ciRuns) && Array.isArray(requiredWorkflows) &&
+    sameSet(record.ciRuns.map(p => p?.name), requiredWorkflows),
+    'Phase acceptance must contain exactly the required workflow proofs');
+  for (const proof of record.ciRuns) {
+    requireThat(Number.isSafeInteger(proof.id) && proof.id > 0 &&
+      proof.sha === record.mergedMainSha &&
+      (proof.event === undefined || proof.event === 'push') &&
+      (proof.conclusion === undefined || proof.conclusion === 'success') &&
+      (proof.status === undefined || proof.status === 'completed'),
+      'Phase acceptance contains a malformed or stale CI proof');
+  }
+  return true;
+}
+
+// Derive exact push-run records. Caller independently verifies each run by ID.
+export async function collectPhaseEvidence({
+  phaseId, commitSha, mergedMainSha, requiredWorkflows,
+  repository = 'Neb963/PersonaMonkey-PCMS-Alpha',
+  fetchImpl = fetch, verify, token = process.env.GITHUB_TOKEN
+}) {
+  requireThat(/^P[1-6]0[1-5]$/.test(phaseId) && SHA.test(commitSha) &&
+    SHA.test(mergedMainSha) && repository === 'Neb963/PersonaMonkey-PCMS-Alpha' &&
+    Array.isArray(requiredWorkflows) && requiredWorkflows.length > 0 &&
+    new Set(requiredWorkflows).size === requiredWorkflows.length &&
+    typeof verify === 'function', 'Invalid phase proof request');
+  const query = new URLSearchParams({ head_sha: mergedMainSha, event: 'push', per_page: '100' });
+  const response = await fetchImpl('https://api.github.com/repos/' + repository +
+    '/actions/runs?' + query.toString(), {
+    headers: { Accept: 'application/vnd.github+json',
+      ...(token ? { Authorization: 'Bearer ' + token } : {}) }
+  });
+  requireThat(response.ok, 'Cannot list independent merged-main CI runs');
+  const payload = await response.json();
+  requireThat(Array.isArray(payload.workflow_runs), 'Invalid GitHub workflow response');
+  const ciRuns = [];
+  for (const name of requiredWorkflows) {
+    // GitHub returns newest first: never silently use an older success.
+    const run = payload.workflow_runs.find(r => r.name === name &&
+      r.head_sha === mergedMainSha && r.event === 'push');
+    requireThat(run && run.repository?.full_name === repository &&
+      run.status === 'completed' && run.conclusion === 'success' &&
+      Number.isSafeInteger(run.id) && run.id > 0,
+      'Missing latest successful merged-main CI: ' + name);
+    const proof = { id: run.id, name, sha: mergedMainSha, event: 'push',
+      conclusion: 'success', url: run.html_url };
+    await verify(proof);
+    ciRuns.push(proof);
+  }
+  return { phaseId, commitSha, mergedMainSha, providerLive: false, ciRuns };
+}
+
 function assertFiles(files, paths) {
   for (const file of files) requireThat(paths.some(p => owns(p, file)), `Change outside ownership: ${file}`);
 }

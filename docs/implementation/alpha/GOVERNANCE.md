@@ -225,3 +225,47 @@ accept the merged push as MAINTENANCE; all ordinary `alpha-governance`,
 the exact merged `main`. Until then no governance gate is accepted. The
 bootstrap does not acquire P103, merge obsolete PR #18, accept R1, unlock R2,
 or authorize provider-live claims.
+
+## R3+ phase evidence: generated proofs and early gate-schema validation
+
+The R2 gate was delayed by phase acceptance JSON whose field names/shape passed
+phase CI but failed only at GATE-R2. Starting after independently approved
+`MAINT-R3-EVIDENCE-007`, **phase CI and the round gate use the same published
+acceptance-proof validator**. This removes the late schema surprise, without
+relaxing any trust or lifecycle transition.
+
+A phase agent still owns its own implementation and acceptance evidence. After
+the product PR is merged and its required independent `push` workflows succeed
+on the exact merged `main`, the agent checks out that current `main` and runs:
+
+```sh
+node tools/alpha/ci.mjs --phase-proof P301 --commit <actual-merged-product-PR-head-SHA>
+```
+
+The command is **read-only** and prints verified JSON fields `phaseId`,
+`commitSha`, `mergedMainSha`, `providerLive:false`, and precisely the
+required `ciRuns` (`alpha-governance` and
+`firefox-developer-edition`). It requires current-main checkout and an
+ACTIVE phase claim, checks the implementation commit's ancestry, fetches the
+latest matching GitHub push runs for that exact main, and independently
+verifies each chosen run by ID, SHA, repository, workflow, successful result
+and event. Missing, failed, stale or unverifiable runs block the command.
+Supply `GITHUB_TOKEN` where needed; never commit or print the token.
+
+Copy the generated JSON fields into the phase-owned
+`docs/evidence/alpha/Pxxx/acceptance.json`, keeping existing test/case
+evidence, claim identity and exact acceptance IDs. Set `state: "MERGED"`
+**only after** the product and required merged-main workflows are verified.
+Any additional successful workflows go in a supplementary field rather than
+the gate-required pair. A phase PR that changes `acceptance.json` while
+`state` is `MERGED` now runs the identical gate-compatible schema, ancestry,
+claim identity and GitHub proof checks **before** that evidence PR can merge.
+Incomplete interim phase records may remain `COMMITTED` or `CI_VERIFIED`;
+they never count as gate acceptance.
+
+The dedicated phase acceptance PR and serialized gate remain necessary under
+current `AGENTS.md` and policy. Do **not** bypass the exact-main non-forced
+merge check, phase/contract ownership, mandatory pinned Firefox matrix,
+provider-live distinction, or the separate GATE-Rn acceptance. This is an
+incremental reduction in manual work; eliminating evidence PRs or changing
+CI selection requires a separately authorized policy/architecture change.
