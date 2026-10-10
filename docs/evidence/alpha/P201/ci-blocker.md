@@ -1,4 +1,8 @@
-# Separate CI maintenance required
+# Resolved historical P201 governance fixture blocker
+
+This record describes the prior failing CI and its resolution. The repair has been separately merged via maintenance PR #49 (`MAINT-P201-FIXTURE-006`) at main `d0ff52f9e3657a192ee408759006e19b08779cb1`; independent alpha-governance, alpha-firefox and all 12 Firefox Developer Edition jobs succeeded on that merged main. These fixes do not alter the P201-owned implementation or relax any negative assertions. Fresh exact-head P201 CI is still required, so this document is not a claim of product acceptance.
+
+## Original blocker (historical)
 
 Main: `c2a86420488e9cab7a8c162b75f6698e47dd71fc`. The published P201 claim is CLM-P201-001, slot-one-r2, epoch 1. No governance or workflow file is changed by P201.
 

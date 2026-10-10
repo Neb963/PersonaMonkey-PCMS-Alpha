@@ -5,7 +5,7 @@
   "claimId": "CLM-P201-001",
   "claimEpoch": 1,
   "claimBaseMainSha": "cd20011b15b2eed8ab02c79df1f3c20e40287034",
-  "implementationBaseMainSha": "c2a86420488e9cab7a8c162b75f6698e47dd71fc",
+  "implementationBaseMainSha": "d0ff52f9e3657a192ee408759006e19b08779cb1",
   "claimPr": 47,
   "claimCommitSha": "329976269d96a7e15ca59dda4f97b65ca4effaa2",
   "contractHash": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e",
@@ -19,7 +19,7 @@
   "accepted": false,
   "mergedMainSha": null,
   "ciRuns": [],
-  "requiredCi": "BLOCKED",
+  "requiredCi": "PENDING_FRESH_CURRENT_MAIN_PR_CI",
   "commands": [
     {
       "command": "node --test tests/alpha/core/core.test.mjs",
@@ -158,8 +158,13 @@
   },
   "localBrowserLimitation": "The managed container rejects Firefox content sandbox namespace setup (/proc/self/uid_map EPERM). Local packaged runs use MOZ_DISABLE_CONTENT_SANDBOX=1 and are diagnostic; hosted CI must execute with the full sandbox. No CI sandbox guard was changed.",
   "localProvenance": "The packaged report records published checkpoint f7c8258 plus the owned startup fix. Source hashes/XPI identify the tested slice; final independent CI must verify the revised PR head.",
-  "blockers": [
-    "Required governance regressions outside P201 ownership fail when Alpha Core is introduced. A fresh separately authorized ordinary MAINTENANCE transaction is required; no scope expansion or workflow edits are needed."
-  ],
-  "initialIndependentCi": "initial-independent-ci.json"
+  "blockers": [],
+  "initialIndependentCi": "initial-independent-ci.json",
+  "maintenanceResolution": {
+    "maintenanceId": "MAINT-P201-FIXTURE-006",
+    "pr": 49,
+    "mergedMainSha": "d0ff52f9e3657a192ee408759006e19b08779cb1",
+    "verifiedOnMain": true,
+    "description": "Frozen donor pre-P201 governance fixtures restored; independent merged-main alpha-governance, alpha-firefox and firefox-developer-edition success. The P201 product PR requires fresh CI at its updated head."
+  }
 }
