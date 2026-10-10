@@ -272,6 +272,8 @@ export function createReservationService({
     const rows = (await list('operation')).items.filter(row =>
       row.record.kind === 'reservation.github' && row.record.targetKey === create.targetKey &&
       intent(row.record)?.createOpId === create.opId);
+    rows.sort((a, b) => Number(a.record.opId.slice(create.opId.length + 4)) -
+      Number(b.record.opId.slice(create.opId.length + 4)));
     let latest = rows.at(-1)?.record;
     const snapshot = await githubObservation(loc);
     if (!snapshot.absent && snapshot.text !== marker(create.opId)) {
@@ -331,7 +333,7 @@ export function createReservationService({
     return finalizeGitHub(create, latest, loc, readback);
   }
   function guard(params) {
-    check(isPlain(params) && ID.test(params.opId) &&
+    check(isPlain(params) && typeof params.opId === 'string' && ID.test(params.opId) &&
       Number.isSafeInteger(params.expectedRevision) && params.expectedRevision >= 0 &&
       Number.isSafeInteger(params.accountBindingEpoch) && params.accountBindingEpoch >= 1 &&
       (params.options === undefined || isPlain(params.options) &&
@@ -398,7 +400,9 @@ export function createReservationService({
     },
     reconcile(params = {}) {
       return run(async () => {
-        const key = guard(params), op = (await read('operation', params.opId)).item?.record;
+        const key = guard(params), row = await read('operation', params.opId);
+        check(row.revision === params.expectedRevision, 'STALE_REVISION');
+        const op = row.item?.record;
         check(op && op.kind === 'create' && op.targetKey === key &&
           intent(op)?.reservation === 'P301' && op.accountBindingEpoch === params.accountBindingEpoch,
         'INVALID_REQUEST');
