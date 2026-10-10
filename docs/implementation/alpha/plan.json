@@ -71,7 +71,7 @@
         "P305"
       ],
       "gateId": "GATE-R3",
-      "status": "READY"
+      "status": "IN_PROGRESS"
     },
     {
       "round": 4,
@@ -536,7 +536,7 @@
       "round": 3,
       "agent": 3,
       "title": "Native Perchance AI session and editor overlay",
-      "status": "READY",
+      "status": "CLAIMED",
       "dependsOn": [
         "P103",
         "P201",
