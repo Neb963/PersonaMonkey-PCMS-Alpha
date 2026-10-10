@@ -572,7 +572,7 @@
       "round": 3,
       "agent": 4,
       "title": "Individual Refresher scheduler and healthy clock",
-      "status": "READY",
+      "status": "CLAIMED",
       "dependsOn": [
         "P204",
         "P201"
