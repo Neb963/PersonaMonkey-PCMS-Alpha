@@ -3,8 +3,8 @@
 > Generated from docs/implementation/alpha/plan.json. Do not hand-edit.
 
 - G0: **ACCEPTED**
-- Ready: **P302, P303, P304**
-- Claimed: **P301, P305**
+- Ready: **P302, P304**
+- Claimed: **P301, P303, P305**
 - Accepted phases: **P101, P102, P103, P104, P105, P201, P202, P203, P204, P205**
 - Provider-live acceptance: **not established**
 
