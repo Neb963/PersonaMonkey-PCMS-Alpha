@@ -29,7 +29,7 @@ State: **ACCEPTED**. Gate: GATE-R2.
 State: **IN_PROGRESS**. Gate: GATE-R3.
 
 - P301: **CLAIMED** — Bulk reservations and account balancing
-- P302: **READY** — Sleep-only Deployer and rollback
+- P302: **CLAIMED** — Sleep-only Deployer and rollback
 - P303: **CLAIMED** — Native Perchance AI session and editor overlay
 - P304: **CLAIMED** — Individual Refresher scheduler and healthy clock
 - P305: **CLAIMED** — Recent visibility and adaptive metrics

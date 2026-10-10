@@ -1,0 +1,160 @@
+{
+  "schemaVersion": 1,
+  "phaseId": "P301",
+  "claimId": "CLM-P301-001",
+  "agentId": "slot-one-r3",
+  "claimEpoch": 1,
+  "state": "MERGED",
+  "claimState": "ACTIVE",
+  "providerLive": false,
+  "baseMainSha": "820a9d3b99e1c95249a28b137286148b3e66fe8b",
+  "contractId": "alpha.contracts.v1",
+  "contractRevision": 2,
+  "contractHash": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e",
+  "claimPr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/63",
+  "implementationPr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/68",
+  "commitSha": "600c3438333e8d57772c2996e857b8d7985fadf4",
+  "mergedMainSha": "b8da8f978d8fd2c918e74dbb9f8516986aef194e",
+  "acceptanceIds": [
+    "AP301-01",
+    "AP301-02",
+    "AP301-03"
+  ],
+  "cases": [
+    {
+      "id": "AP301-01",
+      "summary": "Validated canonical pasted generator slugs, selected verified accounts by outstanding newly created reservation counts, and committed separate durable Perchance/GitHub operation stages",
+      "evidence": [
+        "extension/alpha/features/reservation/service.mjs",
+        "extension/alpha/features/reservation/README.md",
+        "tests/alpha/reservation/reservation.test.mjs"
+      ]
+    },
+    {
+      "id": "AP301-02",
+      "summary": "Even placement across eligible accounts independently of imported inventory; rejected local, authenticated Perchance and GitHub-folder slug collisions before dispatch",
+      "evidence": [
+        "extension/alpha/features/reservation/service.mjs",
+        "tests/alpha/reservation/reservation.test.mjs"
+      ]
+    },
+    {
+      "id": "AP301-03",
+      "summary": "Confirmed unlisted Perchance creation before conditional GitHub BLOCKED status-folder commit; reconciled failed or lost GitHub receipt through authoritative readback without duplicate Perchance create; rejected stale account epochs",
+      "evidence": [
+        "extension/alpha/features/reservation/service.mjs",
+        "tests/alpha/reservation/reservation.test.mjs"
+      ]
+    }
+  ],
+  "localTestsExecuted": [],
+  "hostedTestsExecuted": [
+    {
+      "command": "npm run verify && node tools/alpha/run-tests.mjs",
+      "executedBy": "independent alpha-governance GitHub Actions push workflow",
+      "runId": 38075186966,
+      "jobId": 114280573164,
+      "phaseTests": 7,
+      "phasePassed": 7,
+      "tests": 197,
+      "passed": 197,
+      "failed": 0,
+      "result": "PASS"
+    }
+  ],
+  "prCiRuns": [
+    {
+      "id": 38074870046,
+      "name": "alpha-governance",
+      "sha": "600c3438333e8d57772c2996e857b8d7985fadf4",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38074870046"
+    },
+    {
+      "id": 38074870034,
+      "name": "alpha-firefox",
+      "sha": "600c3438333e8d57772c2996e857b8d7985fadf4",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38074870034"
+    },
+    {
+      "id": 38074870022,
+      "name": "firefox-developer-edition",
+      "sha": "600c3438333e8d57772c2996e857b8d7985fadf4",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38074870022"
+    }
+  ],
+  "ciRuns": [
+    {
+      "id": 38075186966,
+      "name": "alpha-governance",
+      "sha": "b8da8f978d8fd2c918e74dbb9f8516986aef194e",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38075186966"
+    },
+    {
+      "id": 38075186954,
+      "name": "firefox-developer-edition",
+      "sha": "b8da8f978d8fd2c918e74dbb9f8516986aef194e",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38075186954"
+    }
+  ],
+  "additionalCiRuns": [
+    {
+      "id": 38075186998,
+      "name": "alpha-firefox",
+      "sha": "b8da8f978d8fd2c918e74dbb9f8516986aef194e",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38075186998"
+    }
+  ],
+  "proofCollection": {
+    "method": "authenticated GitHub API equivalent to node tools/alpha/ci.mjs --phase-proof P301 --commit 600c3438333e8d57772c2996e857b8d7985fadf4",
+    "collectedAgainstExactMain": "b8da8f978d8fd2c918e74dbb9f8516986aef194e",
+    "independentPushEventsVerified": true,
+    "implementationAncestorOfMergedMain": true,
+    "mergedMainAncestorOfCurrentMain": true
+  },
+  "milestones": [
+    {
+      "state": "COMMITTED",
+      "sha": "600c3438333e8d57772c2996e857b8d7985fadf4"
+    },
+    {
+      "state": "CI_VERIFIED",
+      "sha": "600c3438333e8d57772c2996e857b8d7985fadf4",
+      "validatedMainSha": "7a4ddfc465c6f66973681f8be4fa162878c30c63"
+    },
+    {
+      "state": "MERGED",
+      "sha": "b8da8f978d8fd2c918e74dbb9f8516986aef194e",
+      "previousMainSha": "7a4ddfc465c6f66973681f8be4fa162878c30c63"
+    }
+  ],
+  "diffReview": {
+    "authorizedPathsOnly": true,
+    "credentialsCommitted": false,
+    "sharedContractsModified": false,
+    "otherPhaseFilesModified": false,
+    "providerLiveTested": false
+  },
+  "limitations": [
+    "Provider-live Perchance and Mullvad acceptance is operator-controlled and not established.",
+    "No local checkout was available: test commands and pass counts are independently attributed to GitHub Actions, not claimed as locally executed.",
+    "Only the independently assigned GATE-R3 checker may set GATE_VERIFIED or ACCEPTED."
+  ]
+}

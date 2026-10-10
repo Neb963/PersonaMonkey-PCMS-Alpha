@@ -1,0 +1,163 @@
+{
+  "schemaVersion": 1,
+  "phaseId": "P303",
+  "state": "MERGED",
+  "claimState": "ACTIVE",
+  "claimId": "CLM-P303-001",
+  "agentId": "slot-three-r3",
+  "claimEpoch": 1,
+  "claimBaseMainSha": "66e5526d701decd0caee2b9400372a386f631cea",
+  "contractId": "alpha.contracts.v1",
+  "contractRevision": 2,
+  "contractHash": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e",
+  "claimPr": 65,
+  "initialProductPr": 70,
+  "implementationPr": 73,
+  "initialImplementationHeadSha": "b871fb2ebd8e5f933bf3ce822243250615adcbe0",
+  "commitSha": "a13567bc9253d7d61d0cccc83ae21d8352109f03",
+  "mergedMainSha": "faf3c34e84683539bcce2520bcba43540b97a228",
+  "providerLive": false,
+  "gateVerified": false,
+  "accepted": false,
+  "acceptanceIds": [
+    "AP303-01",
+    "AP303-02",
+    "AP303-03"
+  ],
+  "cases": [
+    {
+      "id": "AP303-01",
+      "summary": "Durable task state, P102/P103 account identity, PersonaMonkey-only native capability boundary, strict editor overlay approval intent, and no new provider or separate browser authority.",
+      "evidence": [
+        "extension/alpha/features/ai/controller.mjs",
+        "extension/alpha/features/ai/store.mjs",
+        "extension/alpha/overlay/editor.mjs",
+        "tests/alpha/ai/controller.test.mjs",
+        "tests/alpha/ai/store.test.mjs"
+      ],
+      "status": "PASS_LOCAL"
+    },
+    {
+      "id": "AP303-02",
+      "summary": "One occupied AI session per account by default; concurrent starts fenced by durable CAS; source-verified completed review releases slot before approval.",
+      "evidence": [
+        "tests/alpha/ai/controller.test.mjs",
+        "extension/alpha/features/ai/store.mjs"
+      ],
+      "status": "PASS_LOCAL"
+    },
+    {
+      "id": "AP303-03",
+      "summary": "Cold reopen/corruption hold, uncertain dispatch with observation-only reconnect, stale Persona/editor/approval fences and in-flight editor navigation race.",
+      "evidence": [
+        "tests/alpha/ai/controller.test.mjs",
+        "tests/alpha/ai/store.test.mjs"
+      ],
+      "status": "PASS_LOCAL"
+    }
+  ],
+  "localTestsExecuted": [
+    {
+      "command": "cd /mnt/data/p303-work && node --test tests/alpha/ai/*.test.mjs",
+      "runtime": "Node v22.16.0",
+      "tests": 18,
+      "passed": 18,
+      "failed": 0,
+      "skipped": 0,
+      "exitCode": 0
+    },
+    {
+      "command": "for f in extension/alpha/features/ai/*.mjs extension/alpha/overlay/*.mjs tests/alpha/ai/*.mjs; do node --check \"$f\"; done",
+      "exitCode": 0
+    },
+    {
+      "command": "grep -RinE 'AIza|ghp_[A-Za-z0-9]{20}|Bearer [A-Za-z0-9]{20}|-----BEGIN .* PRIVATE KEY-----' extension tests",
+      "exitCode": 1,
+      "explanation": "Expected grep no-match exit status; no matching secret patterns found."
+    }
+  ],
+  "prCiRuns": [
+    {
+      "id": 38075557787,
+      "name": "alpha-governance",
+      "sha": "a13567bc9253d7d61d0cccc83ae21d8352109f03",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 38075557784,
+      "name": "firefox-developer-edition",
+      "sha": "a13567bc9253d7d61d0cccc83ae21d8352109f03",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 38075557843,
+      "name": "alpha-firefox",
+      "sha": "a13567bc9253d7d61d0cccc83ae21d8352109f03",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "ciRuns": [
+    {
+      "id": 38075875680,
+      "name": "alpha-governance",
+      "sha": "faf3c34e84683539bcce2520bcba43540b97a228",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38075875680"
+    },
+    {
+      "id": 38075875722,
+      "name": "firefox-developer-edition",
+      "sha": "faf3c34e84683539bcce2520bcba43540b97a228",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38075875722"
+    }
+  ],
+  "additionalCiRuns": [
+    {
+      "id": 38075875670,
+      "name": "alpha-firefox",
+      "sha": "faf3c34e84683539bcce2520bcba43540b97a228",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38075875670"
+    }
+  ],
+  "proofCollection": {
+    "method": "AUTHENTICATED_GITHUB_API_EQUIVALENT",
+    "localPhaseProofCommand": "node tools/alpha/ci.mjs --phase-proof P303 --commit a13567bc9253d7d61d0cccc83ae21d8352109f03",
+    "localCommandExecuted": false,
+    "reason": "No network-capable local Git checkout; equivalent GitHub API checks used.",
+    "verifiedClaimEpoch": 1,
+    "verifiedCommitAncestry": true,
+    "ancestryCompareStatus": "ahead",
+    "verifiedExactMainSha": "faf3c34e84683539bcce2520bcba43540b97a228",
+    "verifiedRunRepository": "Neb963/PersonaMonkey-PCMS-Alpha",
+    "independentRequiredPushRunCount": 2
+  },
+  "diffReview": {
+    "initialProductPr": 70,
+    "followupPr": 73,
+    "followupFiles": [
+      "extension/alpha/features/ai/controller.mjs",
+      "extension/alpha/overlay/editor.mjs",
+      "tests/alpha/ai/controller.test.mjs"
+    ],
+    "noUnownedPaths": true
+  },
+  "limitations": [
+    "Live Perchance native AI-start and overlay injection remain unverified/unwired: no invented provider capability or operator-live acceptance.",
+    "AI task ledger is separate from P205 backup; full restore coverage remains for P405/operator review.",
+    "P402 owns verified final publication and GitHub writeback; this phase only records review intent."
+  ]
+}

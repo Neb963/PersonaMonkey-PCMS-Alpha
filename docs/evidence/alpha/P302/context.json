@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "kind": "PHASE",
+  "phaseId": "P302",
+  "agentId": "slot-two-r3",
+  "branch": "agent/slot-two-r3/p302",
+  "claimEpoch": 1,
+  "baseMainSha": "f1186a65c840d28124385a610bd35434a0ab0d88"
+}
