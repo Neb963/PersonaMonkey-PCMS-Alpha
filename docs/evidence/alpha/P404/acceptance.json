@@ -1,0 +1,163 @@
+{
+  "schemaVersion": 1,
+  "phaseId": "P404",
+  "state": "MERGED",
+  "claimState": "ACTIVE",
+  "claimId": "CLM-P404-001",
+  "agentId": "slot-four-r4",
+  "claimEpoch": 1,
+  "claimBaseMainSha": "8a94ebb9224cd4f3d5529b091b1e9866f60643dc",
+  "contractId": "alpha.contracts.v1",
+  "contractRevision": 2,
+  "contractHash": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e",
+  "claimPr": 83,
+  "implementationPr": 88,
+  "commitSha": "2f64289f2b20f6ec95099195e9f64b3a2d58cd6f",
+  "mergedMainSha": "20e4c4d94d2d370a045b5565d84b94d3416c03e3",
+  "providerLive": false,
+  "gateVerified": false,
+  "accepted": false,
+  "acceptanceIds": [
+    "AP404-01",
+    "AP404-02",
+    "AP404-03"
+  ],
+  "cases": [
+    {
+      "id": "AP404-01",
+      "summary": "Concurrent jobs respect the shared four-tab P201 Core ceiling. Every editor tab requires Persona Broker persona.open with a durable Core permit; ambiguous outcomes retain permits for reconciliation, and foreign/operator tabs are never closed.",
+      "evidence": [
+        "extension/alpha/features/tabs/allocator.mjs",
+        "tests/alpha/attention/tabs.test.mjs"
+      ],
+      "status": "PASS_LOCAL"
+    },
+    {
+      "id": "AP404-02",
+      "summary": "The durable action-required inbox deduplicates repeated occurrences and desktop notifications, remains readable when Firefox notifications fail, persists DISPATCHING across restart, rejects corrupt/secret-bearing state, and projects frozen AttentionRecord fields.",
+      "evidence": [
+        "extension/alpha/features/attention/service.mjs",
+        "extension/alpha/features/attention/store.mjs",
+        "tests/alpha/attention/attention.test.mjs",
+        "tests/alpha/attention/store.test.mjs"
+      ],
+      "status": "PASS_LOCAL"
+    },
+    {
+      "id": "AP404-03",
+      "summary": "Pending AI review opens the correct Perchance editor only on explicit operator action; approval state and account/Persona/source revision are rechecked and opening does not itself approve or deploy.",
+      "evidence": [
+        "extension/alpha/features/attention/service.mjs",
+        "extension/alpha/features/tabs/allocator.mjs",
+        "tests/alpha/attention/attention.test.mjs",
+        "tests/alpha/attention/tabs.test.mjs"
+      ],
+      "status": "PASS_LOCAL"
+    }
+  ],
+  "localTestsExecuted": [
+    {
+      "command": "node --test /mnt/data/p404/tests/alpha/attention/*.test.mjs",
+      "runtime": "Node v22.16.0",
+      "tests": 11,
+      "passed": 11,
+      "failed": 0,
+      "skipped": 0,
+      "exitCode": 0
+    },
+    {
+      "command": "for f in $(find /mnt/data/p404 -type f -name '*.mjs'); do node --check \"$f\" || exit; done",
+      "runtime": "Node v22.16.0",
+      "exitCode": 0
+    },
+    {
+      "command": "git hash-object on all seven locally tested P404 files",
+      "result": "Seven locally tested Git blob SHA-1 hashes matched the published implementation blobs."
+    }
+  ],
+  "prCiRuns": [
+    {
+      "id": 38088497348,
+      "name": "alpha-governance",
+      "sha": "2f64289f2b20f6ec95099195e9f64b3a2d58cd6f",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38088497348"
+    },
+    {
+      "id": 38088497385,
+      "name": "firefox-developer-edition",
+      "sha": "2f64289f2b20f6ec95099195e9f64b3a2d58cd6f",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38088497385"
+    },
+    {
+      "id": 38088497386,
+      "name": "alpha-firefox",
+      "sha": "2f64289f2b20f6ec95099195e9f64b3a2d58cd6f",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38088497386"
+    }
+  ],
+  "ciRuns": [
+    {
+      "id": 38088814106,
+      "name": "alpha-governance",
+      "sha": "20e4c4d94d2d370a045b5565d84b94d3416c03e3",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38088814106"
+    },
+    {
+      "id": 38088814184,
+      "name": "firefox-developer-edition",
+      "sha": "20e4c4d94d2d370a045b5565d84b94d3416c03e3",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38088814184"
+    }
+  ],
+  "additionalCiRuns": [
+    {
+      "id": 38088814185,
+      "name": "alpha-firefox",
+      "sha": "20e4c4d94d2d370a045b5565d84b94d3416c03e3",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38088814185"
+    }
+  ],
+  "proofCollection": {
+    "method": "AUTHENTICATED_GITHUB_API_EQUIVALENT",
+    "localPhaseProofCommand": "node tools/alpha/ci.mjs --phase-proof P404 --commit 2f64289f2b20f6ec95099195e9f64b3a2d58cd6f",
+    "localCommandExecuted": false,
+    "reason": "Full authenticated local Git checkout unavailable; verified equivalent exact-main commit ancestry, active claim, and GitHub Actions run IDs through the authenticated GitHub API.",
+    "verifiedClaimEpoch": 1,
+    "verifiedCommitAncestry": true,
+    "ancestryCompareStatus": "ahead",
+    "verifiedExactMainSha": "20e4c4d94d2d370a045b5565d84b94d3416c03e3",
+    "verifiedRunRepository": "Neb963/PersonaMonkey-PCMS-Alpha",
+    "independentRequiredPushRunCount": 2
+  },
+  "diffReview": {
+    "authorizedPathsOnly": true,
+    "sharedContractsModified": false,
+    "otherPhaseFilesModified": false,
+    "credentialsCommitted": false,
+    "providerLiveActions": false
+  },
+  "limitations": [
+    "P404 feature composition is not wired into the fixed P201 production service map; it must be injected by a separately authorized composition phase.",
+    "P303 native Perchance AI-start and editor overlay integration are not live-proven; AP404-03 is deterministic.",
+    "The P404 IndexedDB inbox is not included in the frozen P205 snapshot. P405 must explicitly reconcile any backup coverage gap.",
+    "Only an independent GATE-R4 checker can mark GATE_VERIFIED or ACCEPTED."
+  ]
+}
