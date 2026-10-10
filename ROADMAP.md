@@ -32,7 +32,7 @@ State: **IN_PROGRESS**. Gate: GATE-R3.
 - P302: **CLAIMED** — Sleep-only Deployer and rollback
 - P303: **READY** — Native Perchance AI session and editor overlay
 - P304: **READY** — Individual Refresher scheduler and healthy clock
-- P305: **READY** — Recent visibility and adaptive metrics
+- P305: **CLAIMED** — Recent visibility and adaptive metrics
 
 ## R4 — Integrated workflows and recovery
 
