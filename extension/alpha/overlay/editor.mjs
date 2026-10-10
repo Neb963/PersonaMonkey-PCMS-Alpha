@@ -102,10 +102,12 @@ export function mountAiReviewOverlay({document:doc,view,host,loadContext,request
     try {
       // Always refresh before sending a one-shot intent. A stale or reloaded
       // editor is never allowed to approve an unrelated Generator or Persona.
-      const updated=await loadContext({url:String(view.location.href)});
+      const editorUrl=String(view.location.href);
+      const updated=await loadContext({url:editorUrl});
       if(disposed)return;
+      if(String(view.location.href)!==editorUrl)throw Object.assign(new Error('STALE_EDITOR'),{code:'SOURCE_DRIFT'});
       const opId=createOpId();
-      const envelope=createApprovalIntent({url:String(view.location.href),task:updated?.task,binding:updated?.binding,
+      const envelope=createApprovalIntent({url:editorUrl,task:updated?.task,binding:updated?.binding,
         sourceRevision:updated?.sourceRevision,opId,expectedRevision:updated?.expectedRevision});
       const response=await requestApproval(envelope);
       if(disposed)return;
