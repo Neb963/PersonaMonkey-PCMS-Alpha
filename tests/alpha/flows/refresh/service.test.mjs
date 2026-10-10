@@ -141,6 +141,8 @@ test('AP403-01: suffix is exact, byte-offset tracked; hashing original is unchan
   await assert.rejects(canonicalPjs({ ...second.files, pjs: second.files.pjs + 'extra' },
     f.release, second.comment), /SOURCE_DRIFT/);
   await assert.rejects(canonicalPjs(staged.files, f.release, null), /SOURCE_DRIFT/);
+  await assert.rejects(canonicalPjs(staged.files, f.release,
+    { ...staged.comment, targetKey: 'different-generator' }), /SOURCE_DRIFT/);
   await assert.rejects(canonicalPjs({ ...staged.files, html: 'changed' },
     f.release, staged.comment), /SOURCE_DRIFT/);
 });

@@ -23,6 +23,7 @@ export async function canonicalPjs(readbackFiles, release, previous = null) {
     bytesEqual(readbackFiles.thumbnail, release.files.thumbnail));
   let base = readbackFiles.pjs;
   if (previous !== null) {
+    check(previous.targetKey === release.source?.slug);
     check(previous && typeof previous.insertionBytes === 'string' &&
       typeof previous.insertionOffset === 'number' &&
       Number.isSafeInteger(previous.insertionOffset) && previous.insertionOffset >= 0 &&
