@@ -26,23 +26,23 @@ State: **ACCEPTED**. Gate: GATE-R2.
 
 ## R3 — Operational engines
 
-State: **IN_PROGRESS**. Gate: GATE-R3.
+State: **ACCEPTED**. Gate: GATE-R3.
 
-- P301: **CLAIMED** — Bulk reservations and account balancing
-- P302: **CLAIMED** — Sleep-only Deployer and rollback
-- P303: **CLAIMED** — Native Perchance AI session and editor overlay
-- P304: **CLAIMED** — Individual Refresher scheduler and healthy clock
-- P305: **CLAIMED** — Recent visibility and adaptive metrics
+- P301: **ACCEPTED** — Bulk reservations and account balancing
+- P302: **ACCEPTED** — Sleep-only Deployer and rollback
+- P303: **ACCEPTED** — Native Perchance AI session and editor overlay
+- P304: **ACCEPTED** — Individual Refresher scheduler and healthy clock
+- P305: **ACCEPTED** — Recent visibility and adaptive metrics
 
 ## R4 — Integrated workflows and recovery
 
-State: **LOCKED**. Gate: GATE-R4.
+State: **READY**. Gate: GATE-R4.
 
-- P401: **LOCKED** — Supply flow and two-sided reconciliation
-- P402: **LOCKED** — Release, approval, publication and GitHub writeback
-- P403: **LOCKED** — Refresh execution and visibility feedback
-- P404: **LOCKED** — Notifications, attention, and tab ownership
-- P405: **LOCKED** — Full backup restore and downloads retention
+- P401: **READY** — Supply flow and two-sided reconciliation
+- P402: **READY** — Release, approval, publication and GitHub writeback
+- P403: **READY** — Refresh execution and visibility feedback
+- P404: **READY** — Notifications, attention, and tab ownership
+- P405: **READY** — Full backup restore and downloads retention
 
 ## R5 — Operator interface
 
