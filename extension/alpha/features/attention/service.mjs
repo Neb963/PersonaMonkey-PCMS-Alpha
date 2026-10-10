@@ -27,8 +27,16 @@ const error=(code,revision)=>({ok:false,error:{code,message:({INVALID_REQUEST:'I
   retryable:code==='UNAVAILABLE'||code==='RATE_LIMIT'},revision});
 const supported=new Set(['INVALID_REQUEST','STALE_REVISION','STALE_BINDING','WAITING_HUMAN',
   'RATE_LIMIT','RECOVERY_HOLD','NOT_APPLIED','UNAVAILABLE','CONFLICT','UNCERTAIN']);
-const project=t=>({id:t.id,kind:t.kind,accountId:t.accountId,key:t.key,state:t.state,
-  notice:t.notice,revision:t.revision,createdAt:t.createdAt,updatedAt:t.updatedAt,
+// The frozen AttentionRecord fields are mandatory; supplemental presentation
+// fields expose revision and explicit operator action without storing UI copy.
+const CODES=Object.freeze({AI_REVIEW:'WAITING_HUMAN',AUTH_REQUIRED:'WAITING_HUMAN',
+  UPDATE_FAILED:'UNCERTAIN',SOURCE_DRIFT:'SOURCE_DRIFT',REFRESH_SUSPENDED:'RECOVERY_HOLD',
+  RECOVERY_HOLD:'RECOVERY_HOLD',SYSTEM_WARNING:'UNAVAILABLE'});
+const project=t=>({id:t.id,targetKey:t.key??t.accountId,code:CODES[t.kind],
+  message:LABELS[t.kind][1],createdAt:t.createdAt,
+  acknowledgedAt:t.state==='ACKNOWLEDGED'?t.updatedAt:null,
+  kind:t.kind,accountId:t.accountId,key:t.key,state:t.state,
+  notice:t.notice,revision:t.revision,updatedAt:t.updatedAt,
   action:t.kind==='AI_REVIEW'?'OPEN_EDITOR':null});
 const same=(t,kind,accountId,key,occurrence)=>t.kind===kind&&t.accountId===accountId&&
   t.key===key&&t.occurrence===occurrence;
@@ -84,8 +92,10 @@ export function createAttentionService({store,aiTasks,tabs,notifier,
     });}catch{ /* never repeat a possibly shown desktop notice */ }
   }
   async function raise(p={}){return run(async()=>{
-    ensure(object(p)&&valid(p.accountId)&&isInt(p.accountBindingEpoch)&&p.accountBindingEpoch>0&&
+    ensure(object(p)&&valid(p.accountId)&&valid(p.opId)&&isInt(p.expectedRevision)&&
+      isInt(p.accountBindingEpoch)&&p.accountBindingEpoch>0&&
       (p.key===undefined||SLUG.test(p.key))&&object(p.options));
+    ensure(p.expectedRevision===await revision(),'STALE_REVISION');
     const {kind,occurrence,taskId}=p.options;
     ensure(ATTENTION_KINDS.includes(kind)&&valid(occurrence??p.opId)&&
       Object.keys(p.options).every(k=>['kind','occurrence','taskId'].includes(k)));
@@ -126,10 +136,12 @@ export function createAttentionService({store,aiTasks,tabs,notifier,
     ensure(item,'NOT_APPLIED');return respond(project(item),await revision());
   });}
   async function acknowledge(p={}){return run(async()=>{
-    ensure(object(p)&&valid(p.accountId)&&isInt(p.accountBindingEpoch)&&p.accountBindingEpoch>0&&
+    ensure(object(p)&&valid(p.accountId)&&isInt(p.expectedRevision)&&
+      isInt(p.accountBindingEpoch)&&p.accountBindingEpoch>0&&
       valid(p.opId)&&object(p.options)&&valid(p.options.attentionId)&&
       isInt(p.options.expectedItemRevision)&&
       Object.keys(p.options).every(k=>['attentionId','expectedItemRevision','action'].includes(k)));
+    ensure(p.expectedRevision===await revision(),'STALE_REVISION');
     const {attentionId,expectedItemRevision,action='ACK'}=p.options;
     ensure(['ACK','OPEN_EDITOR'].includes(action));
     const current=(await store.read()).items.find(t=>t.id===attentionId);
