@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {createAiSessionController,createAiIdentity,AI_TEST_PROMPT} from '../../../extension/alpha/features/ai/controller.mjs';
 import {validateAiLedger,countAiSlots} from '../../../extension/alpha/features/ai/store.mjs';
 import {reviewEditorState,createApprovalIntent} from '../../../extension/alpha/overlay/editor.mjs';
+import {canonicalReleaseId} from '../../../extension/alpha/features/sources/catalog.mjs';
 
 const HASH_A='a'.repeat(64),HASH_B='b'.repeat(64);
 const clock=()=> '2026-10-10T12:00:00.000Z';
@@ -23,10 +24,10 @@ function memoryStore() {
   };
 }
 function fixture({store=memoryStore(),state='ACTIVE',startThrows=false,saveConfirmed=true}={}) {
-  let launches=0,inspects=0,sourceRevision='r1',savedHash=HASH_B,savedRevision='r2',epoch=1;
+  let launches=0,inspects=0,sourceRevision='r1',savedHash=HASH_B,savedRevision='r2',epoch=1,identityHash=HASH_A;
   const identity={async verify({accountId,key,accountBindingEpoch}){
     if(accountBindingEpoch!==epoch)throw Object.assign(new Error('STALE_BINDING'),{code:'STALE_BINDING'});
-    return {accountId,key,personaUid:'uid-001',epoch,sourceHash:HASH_A,sourceRevision,listing:'UNLISTED',revision:7};
+    return {accountId,key,personaUid:'uid-001',epoch,sourceHash:identityHash,sourceRevision,listing:'UNLISTED',revision:7};
   }};
   const native={async probe(){return {authority:'PERSONA_MONKEY',capability:'PERCHANCE_NATIVE_AI',available:true,origin:'https://perchance.org'};},
     async start({binding,task,prompt}){
@@ -44,7 +45,7 @@ function fixture({store=memoryStore(),state='ACTIVE',startThrows=false,saveConfi
   const params=(key,opId,options={})=>({accountId:'acct-1',key,accountBindingEpoch:epoch,
     expectedRevision:7,opId,options});
   return {store,controller,params,native,get launches(){return launches;},get inspects(){return inspects;},
-    setState(v){state=v;},setSourceRevision(v){sourceRevision=v;},setSaveConfirmed(v){saveConfirmed=v;},
+    setState(v){state=v;},setSourceRevision(v){sourceRevision=v;},setSourceHash(v){identityHash=v;},setSaveConfirmed(v){saveConfirmed=v;},
     setEpoch(v){epoch=v;}};
 }
 
@@ -269,4 +270,124 @@ test('AP303-03 no injected trusted review bridge disables overlay without runtim
   const panel=host.shadow.children[1];assert.equal(panel.children[3].disabled,true);
   assert.match(panel.children[4].textContent,/authorized PersonaMonkey/);
   overlay.dispose();
+});
+
+test('P303 repair #85: approved prior release does not block distinct later READY revision',async()=>{
+  const f=fixture(),c=f.controller();
+  const first=(await c.start(f.params('alpha','stage-a'))).result;
+  f.setState('COMPLETED');f.setSourceRevision('r2');
+  let t=(await f.store.read()).tasks[0];
+  assert.equal((await c.recordReview(f.params('alpha','record-a',{
+    taskId:first.id,expectedTaskRevision:t.revision}))).ok,true);
+  // Merely completing the AI review is not permission to start a second
+  // review of the same generator while human approval is pending.
+  assert.equal((await c.start(f.params('alpha','stage-b'))).error.code,'CONFLICT');
+  t=(await f.store.read()).tasks[0];
+  assert.equal((await c.approveIntent(f.params('alpha','approval-a',{
+    taskId:first.id,expectedTaskRevision:t.revision,sourceHash:HASH_B,
+    sourceRevision:'r2',editorUrl:'https://perchance.org/alpha#edit'}))).ok,true);
+  assert.equal((await c.start(f.params('alpha','stage-a'))).error.code,'CONFLICT');
+  assert.equal((await c.start(f.params('alpha','same-again'))).error.code,'CONFLICT');
+  f.setSourceHash(HASH_B);f.setSourceRevision('r3');f.setState('ACTIVE');
+  const next=await c.start(f.params('alpha','stage-b'));
+  assert.equal(next.ok,true);
+  assert.notEqual(next.result.id,first.id);
+  assert.equal(f.launches,2);
+  const tasks=(await f.store.read()).tasks;
+  assert.equal(tasks.length,2);
+  assert.equal(tasks[0].approvalOpId,'approval-a');
+  assert.equal(tasks[0].state,'COMPLETED');
+  assert.equal(tasks[1].sourceHash,HASH_B);
+  assert.equal((await c.start(f.params('alpha','stage-c'))).error.code,'CONFLICT');
+});
+
+async function stagingHarness({previousReleaseId=null,providerDrift=false,phase='APPLIED'}={}) {
+  const files={pjs:'hello',html:'<main>hello</main>',thumbnail:new Uint8Array([1,2,3])};
+  const releaseId=await canonicalReleaseId({
+    pjs:new TextEncoder().encode(files.pjs),html:new TextEncoder().encode(files.html),
+    thumbnail:files.thumbnail});
+  const account={accountId:'acct-1',personaUid:'uid-001',epoch:1,sessionState:'VERIFIED'};
+  const generator={key:'alpha',accountId:'acct-1',personaUid:'uid-001',
+    accountBindingEpoch:1,releaseId:previousReleaseId,deployState:'STAGED'};
+  const operation={kind:'deployer.apply',phase,targetKey:'alpha',accountBindingEpoch:1,
+    remoteEvidence:{intent:{releaseId,previousReleaseId,commitSha:'c'.repeat(40)},
+      observation:{releaseId,sourceRevision:'remote-staged',listing:'UNLISTED'}}};
+  const release={releaseId,source:{releaseId,slug:'alpha',status:'READY',ref:'main',
+    commitSha:'c'.repeat(40)},files};
+  let reads=0;
+  const storage={
+    async read(kind){reads++;const records={account,generator,release};return {revision:7,
+      item:records[kind]?{record:records[kind]}:null};},
+    async list(kind){assert.equal(kind,'operation');return {revision:7,
+      items:[{record:operation}]};}
+  };
+  let currentRevision='remote-staged',currentFiles=providerDrift?{...files,pjs:'tampered'}:files;
+  const perchance={async read(){return {ok:true,result:{
+    ownership:'CONFIRMED',listing:'UNLISTED',sourceRevision:currentRevision,
+    files:currentFiles}};}};
+  const identity=createAiIdentity({storage,perchance,
+    contextForAccount:async()=>({accountId:'acct-1',personaUid:'uid-001',epoch:1})});
+  return {identity,releaseId,generator,operation,release,files,storage,
+    changeRemote({sourceRevision,files:replacement}) {
+      if(sourceRevision!==undefined)currentRevision=sourceRevision;
+      if(replacement!==undefined)currentFiles=replacement;
+    },get reads(){return reads;}};
+}
+
+test('P303 repair #85: new generator AI binds to unapproved verified stage, not adopted releaseId',async()=>{
+  const h=await stagingHarness();
+  const binding=await h.identity.verify({accountId:'acct-1',key:'alpha',accountBindingEpoch:1});
+  assert.equal(binding.sourceHash,h.releaseId);
+  assert.equal(h.generator.releaseId,null);
+  const f=fixture(),store=memoryStore();
+  const c=createAiSessionController({store,identity:h.identity,native:f.native,
+    verifySaved:async()=>({confirmed:false}),now:clock});
+  const started=await c.start({accountId:'acct-1',key:'alpha',accountBindingEpoch:1,
+    opId:'native-start-1',expectedRevision:7,options:{expectedSourceHash:h.releaseId}});
+  assert.equal(started.ok,true);
+  assert.equal((await store.read()).tasks[0].sourceHash,h.releaseId);
+  assert.equal(h.generator.releaseId,null);
+});
+
+test('P303 repair #85: updated staged release overrides previous adopted hash for AI review',async()=>{
+  const h=await stagingHarness({previousReleaseId:HASH_A});
+  const bound=await h.identity.verify({accountId:'acct-1',key:'alpha',accountBindingEpoch:1});
+  assert.equal(bound.sourceHash,h.releaseId);
+  assert.notEqual(bound.sourceHash,HASH_A);
+});
+
+test('P303 repair #85: staged identity rejects unsaved, drifted or missing stage authority',async()=>{
+  const mismatched=await stagingHarness({providerDrift:true});
+  await assert.rejects(mismatched.identity.verify({
+    accountId:'acct-1',key:'alpha',accountBindingEpoch:1}),e=>e.code==='SOURCE_DRIFT');
+  const unconfirmed=await stagingHarness({phase:'DISPATCHING'});
+  await assert.rejects(unconfirmed.identity.verify({
+    accountId:'acct-1',key:'alpha',accountBindingEpoch:1}),e=>e.code==='SOURCE_DRIFT');
+  const correct=await stagingHarness();
+  correct.operation.remoteEvidence.intent.commitSha='d'.repeat(40);
+  await assert.rejects(correct.identity.verify({
+    accountId:'acct-1',key:'alpha',accountBindingEpoch:1}),e=>e.code==='SOURCE_DRIFT');
+});
+
+test('P303 repair #85: saved native edits keep original stage identity but use current readback',async()=>{
+  const h=await stagingHarness(),f=fixture(),store=memoryStore();
+  const c=createAiSessionController({store,identity:h.identity,native:f.native,
+    verifySaved:async()=>({confirmed:true,sourceHash:HASH_B,
+      sourceRevision:'remote-edited',provenanceRefs:['verified-edit']}),now:clock});
+  const p={accountId:'acct-1',key:'alpha',accountBindingEpoch:1,
+    opId:'native-one',expectedRevision:7,options:{}};
+  assert.equal((await c.start(p)).ok,true);
+  // Perchance AI completed a source edit. The original APPLIED stage stays
+  // unchanged; review requires native completion and current saved-source proof.
+  h.changeRemote({sourceRevision:'remote-edited',
+    files:{...h.files,pjs:'AI-reviewed source'}});
+  f.setState('COMPLETED');
+  const task=(await store.read()).tasks[0];
+  const reply=await c.recordReview({...p,opId:'record-one',options:{
+    taskId:task.id,expectedTaskRevision:task.revision}});
+  assert.equal(reply.ok,true);
+  assert.equal(reply.result.state,'COMPLETED');
+  assert.equal((await store.read()).tasks[0].sourceHash,h.releaseId);
+  assert.equal((await store.read()).tasks[0].savedSourceRevision,'remote-edited');
+  assert.equal((await c.start({...p,opId:'repeat',options:{}})).error.code,'SOURCE_DRIFT');
 });

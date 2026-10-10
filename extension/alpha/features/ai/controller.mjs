@@ -1,6 +1,7 @@
 /** P303. Background-only native Perchance AI coordinator. All browser execution
  * is delegated to a verified PersonaMonkey-owned native-session boundary. */
 import { countAiSlots, validateAiTask } from './store.mjs';
+import { canonicalReleaseId } from '../sources/catalog.mjs';
 
 const CODES = Object.freeze({
   INVALID_REQUEST:'Invalid AI review request.', STALE_REVISION:'AI review state changed.',
@@ -23,6 +24,8 @@ const result = (data, revision) => ({ok:true,result:data,revision});
 const failure = (code, revision) => ({ok:false,error:{code,message:CODES[code],retryable:code==='UNAVAILABLE'||code==='RATE_LIMIT'},revision});
 const validId = x => typeof x === 'string' && ID.test(x);
 const validHash = x => typeof x === 'string' && HASH.test(x);
+const allowsNewReview = (task, hash) => task.state === 'FAILED' ||
+  (task.state === 'COMPLETED' && task.approvalRevision !== null && task.sourceHash !== hash);
 const nonnegative = x => Number.isSafeInteger(x) && x >= 0;
 const project = t => ({id:t.id,key:t.key,accountId:t.accountId,state:t.state,sourceHash:t.savedSourceHash,
   provenanceRefs:[...t.provenanceRefs],approvalRevision:t.approvalRevision});
@@ -46,6 +49,7 @@ function editorAddress(key, url) {
 function assertTaskBinding(task, observed) {
   check(observed.personaUid === task.personaUid && observed.epoch === task.bindingEpoch &&
     observed.accountId === task.accountId && observed.key === task.key, 'STALE_BINDING');
+  check(observed.sourceHash === task.sourceHash, 'SOURCE_DRIFT');
 }
 function reviewId(params) {
   const id = params?.options?.taskId;
@@ -71,8 +75,9 @@ export function createAiSessionController({store,identity,native,verifySaved,
     maxRunningPerAccount >= 1 && maxRunningPerAccount <= 4);
   let lastRevision = 0;
   async function run(fn) { try{return await fn();}catch(e){return failure(codeOf(e),lastRevision);} }
-  async function bound(p) {
-    const binding = await identity.verify({accountId:p.accountId,key:p.key,accountBindingEpoch:p.accountBindingEpoch});
+  async function bound(p, purpose = 'FOLLOWUP', sourceHash = null) {
+    const binding = await identity.verify({accountId:p.accountId,key:p.key,
+      accountBindingEpoch:p.accountBindingEpoch,purpose,sourceHash});
     validateBinding(binding,p); lastRevision=binding.revision; return binding;
   }
   async function authorizeNative(binding) {
@@ -90,14 +95,14 @@ export function createAiSessionController({store,identity,native,verifySaved,
   async function change(expected,mutate){return store.change(expected,mutate);}
   async function start(p) {return run(async()=>{
     const opts=safeInput(p); check(Object.keys(opts).every(k=>k==='taskId'||k==='expectedSourceHash'));
-    const binding=await bound(p); check(p.expectedRevision===binding.revision,'STALE_REVISION');
+    const binding=await bound(p,'START'); check(p.expectedRevision===binding.revision,'STALE_REVISION');
     if(opts.expectedSourceHash!==undefined)check(opts.expectedSourceHash===binding.sourceHash,'SOURCE_DRIFT');
     await authorizeNative(binding);
     const taskId=opts.taskId??('ai:'+p.opId);check(validId(taskId));
     const snapshot=await store.read();
     // No duplicate provider start on replay, including after a dispatch crash.
     check(!snapshot.tasks.some(t=>t.id===taskId || t.opId===p.opId ||
-      (t.accountId===p.accountId && t.key===p.key && t.state!=='FAILED')), 'CONFLICT');
+      (t.accountId===p.accountId && t.key===p.key && !allowsNewReview(t,binding.sourceHash))), 'CONFLICT');
     check(countAiSlots(snapshot.tasks,p.accountId)<maxRunningPerAccount,'RATE_LIMIT');
     const task=validateAiTask({id:taskId,key:p.key,accountId:p.accountId,personaUid:binding.personaUid,
       bindingEpoch:binding.epoch,revision:1,state:'RECOVERING',createdAt:now(),updatedAt:now(),
@@ -106,12 +111,12 @@ export function createAiSessionController({store,identity,native,verifySaved,
       provenanceRefs:[],approvalRevision:null,approvalOpId:null,reviewPending:false,failureCode:null});
     await change(snapshot.revision,draft=>{
       check(!draft.tasks.some(t=>t.id===taskId||t.opId===p.opId||
-        (t.accountId===p.accountId&&t.key===p.key&&t.state!=='FAILED')),'CONFLICT');
+        (t.accountId===p.accountId&&t.key===p.key&&!allowsNewReview(t,binding.sourceHash))),'CONFLICT');
       check(countAiSlots(draft.tasks,p.accountId)<maxRunningPerAccount,'RATE_LIMIT');
       draft.tasks.push(task);
     });
     // DISPATCHING is persisted before native execution, even if no reply arrives.
-    const beforeDispatch=await bound(p);
+    const beforeDispatch=await bound(p,'START');
     check(beforeDispatch.sourceRevision===binding.sourceRevision &&
       beforeDispatch.sourceHash===binding.sourceHash && beforeDispatch.personaUid===binding.personaUid, 'SOURCE_DRIFT');
     let row=await lookup(taskId);
@@ -150,7 +155,8 @@ export function createAiSessionController({store,identity,native,verifySaved,
   });}
   async function reconnect({taskId}={}) {return run(async()=>{
     let {task,ledger}=await lookup(taskId);
-    const binding=await bound({accountId:task.accountId,key:task.key,accountBindingEpoch:task.bindingEpoch});
+    const binding=await bound({accountId:task.accountId,key:task.key,accountBindingEpoch:task.bindingEpoch},
+      'FOLLOWUP',task.sourceHash);
     assertTaskBinding(task,binding);
     if(['COMPLETED','FAILED','READY'].includes(task.state)) return result(project(task),binding.revision);
     await authorizeNative(binding);
@@ -180,7 +186,7 @@ export function createAiSessionController({store,identity,native,verifySaved,
     check(task.accountId===p.accountId && task.key===p.key && task.bindingEpoch===p.accountBindingEpoch,'STALE_BINDING');
     check(nonnegative(opts.expectedTaskRevision)&&opts.expectedTaskRevision===task.revision,'STALE_REVISION');
     check(['ACTIVE','WAITING_HUMAN','RECOVERING'].includes(task.state),'CONFLICT');
-    const binding=await bound(p);assertTaskBinding(task,binding);check(p.expectedRevision===binding.revision,'STALE_REVISION');
+    const binding=await bound(p,'FOLLOWUP',task.sourceHash);assertTaskBinding(task,binding);check(p.expectedRevision===binding.revision,'STALE_REVISION');
     await authorizeNative(binding);
     check(typeof verifySaved==='function','UNSUPPORTED_CAPABILITY');
     const observed=await native.inspect({task:structuredClone(task),binding});
@@ -215,7 +221,7 @@ export function createAiSessionController({store,identity,native,verifySaved,
     check(opts.expectedTaskRevision===task.revision,'STALE_REVISION');
     check(opts.sourceHash===task.savedSourceHash && opts.sourceRevision===task.savedSourceRevision &&
       editorAddress(task.key,opts.editorUrl),'SOURCE_DRIFT');
-    const binding=await bound(p);assertTaskBinding(task,binding);
+    const binding=await bound(p,'FOLLOWUP',task.sourceHash);assertTaskBinding(task,binding);
     check(binding.revision===p.expectedRevision,'STALE_REVISION');
     // A newer source observation invalidates an old #edit overlay, even if a
     // pending review still exists. Approval is only a durable INTENT for P402.
@@ -256,12 +262,21 @@ export function createAiSessionController({store,identity,native,verifySaved,
   return Object.freeze({start,reconnect,recordReview,approveIntent,get,queue});
 }
 
-/** Trusted provider identity composition, no raw Perchance HTTP or browser APIs. */
+/** Trusted identity uses P302's APPLIED stage receipt plus immutable P102
+ * ReleaseRecord; GeneratorRecord.releaseId is adopted only after approval.
+ */
 export function createAiIdentity({storage,perchance,contextForAccount}={}) {
   check(storage && typeof storage.read==='function' && perchance && typeof perchance.read==='function' &&
     typeof contextForAccount==='function');
-  return Object.freeze({ async verify({accountId,key,accountBindingEpoch}) {
-    check(validId(accountId)&&SLUG.test(key)&&nonnegative(accountBindingEpoch)&&accountBindingEpoch>0);
+  const sameFiles = (a,b) => plain(a) && plain(b) && typeof a.pjs==='string' &&
+    a.pjs===b?.pjs && a.html===b?.html &&
+    a.thumbnail instanceof Uint8Array && b.thumbnail instanceof Uint8Array &&
+    a.thumbnail.length===b.thumbnail.length &&
+    a.thumbnail.every((byte,i)=>byte===b.thumbnail[i]);
+  return Object.freeze({ async verify({accountId,key,accountBindingEpoch,purpose='START',sourceHash=null}) {
+    check(validId(accountId)&&SLUG.test(key)&&nonnegative(accountBindingEpoch)&&accountBindingEpoch>0 &&
+      ['START','FOLLOWUP'].includes(purpose) &&
+      (sourceHash===null||validHash(sourceHash)));
     const a=await storage.read('account',accountId),g=await storage.read('generator',key);
     check(a.revision===g.revision,'STALE_REVISION');
     const account=a.item?.record,generator=g.item?.record;
@@ -277,13 +292,50 @@ export function createAiIdentity({storage,perchance,contextForAccount}={}) {
     check(provider.result?.ownership==='CONFIRMED','OWNERSHIP_UNKNOWN');
     check(provider.result?.listing==='UNLISTED'&&typeof provider.result?.sourceRevision==='string'&&
       provider.result.sourceRevision.length>0,'SOURCE_DRIFT');
-    check(validHash(generator.releaseId),'SOURCE_DRIFT');
-    // A provider read can span concurrent P102 commits; never return a
-    // self-inconsistent binding assembled across distinct storage revisions.
+
+    let verifiedHash=generator.releaseId;
+    if (generator.deployState==='STAGED') {
+      check(typeof storage.list==='function','RECOVERY_HOLD');
+      const ledger=await storage.list('operation');
+      check(ledger.revision===g.revision&&Array.isArray(ledger.items),'STALE_REVISION');
+      const candidates=ledger.items.map(row=>row.record).filter(op=>
+        op?.kind==='deployer.apply' && op.phase==='APPLIED' &&
+        op.targetKey===key && op.accountBindingEpoch===accountBindingEpoch &&
+        validHash(op.remoteEvidence?.intent?.releaseId) &&
+        op.remoteEvidence.intent.previousReleaseId===generator.releaseId &&
+        op.remoteEvidence?.observation?.releaseId===op.remoteEvidence.intent.releaseId &&
+        op.remoteEvidence.observation.listing==='UNLISTED');
+      // At START the provider must still have the exact staged source.
+      // After native AI edits, follow-up must bind to the task's stage hash.
+      const matches=candidates.filter(op=>purpose==='START'
+        ? op.remoteEvidence.observation.sourceRevision===provider.result.sourceRevision
+        : op.remoteEvidence.intent.releaseId===sourceHash);
+      check(matches.length===1,'SOURCE_DRIFT');
+      const stage=matches[0],stagedHash=stage.remoteEvidence.intent.releaseId;
+      const release=await storage.read('release',stagedHash);
+      check(release.revision===g.revision,'STALE_REVISION');
+      const record=release.item?.record;
+      check(record?.releaseId===stagedHash &&
+        record.source?.releaseId===stagedHash && record.source?.slug===key &&
+        record.source?.status==='READY' && record.source?.ref==='main' &&
+        record.source?.commitSha===stage.remoteEvidence.intent.commitSha,'SOURCE_DRIFT');
+      let computed;
+      try { computed=await canonicalReleaseId({
+        pjs:new TextEncoder().encode(record.files.pjs),
+        html:new TextEncoder().encode(record.files.html),
+        thumbnail:record.files.thumbnail
+      }); } catch {check(false,'SOURCE_DRIFT');}
+      check(computed===stagedHash,'SOURCE_DRIFT');
+      if(purpose==='START')check(sameFiles(provider.result.files,record.files),'SOURCE_DRIFT');
+      verifiedHash=stagedHash;
+    }
+    check(validHash(verifiedHash),'SOURCE_DRIFT');
+    if(sourceHash!==null)check(sourceHash===verifiedHash,'SOURCE_DRIFT');
+    // Fence a concurrent P102 write across storage/provider observations.
     const after=await storage.read('account',accountId);
     check(after.revision===g.revision,'STALE_REVISION');
     return Object.freeze({accountId,key,personaUid:account.personaUid,epoch:accountBindingEpoch,
-      sourceHash:generator.releaseId,sourceRevision:provider.result.sourceRevision,
+      sourceHash:verifiedHash,sourceRevision:provider.result.sourceRevision,
       listing:provider.result.listing,revision:g.revision});
   } });
 }
