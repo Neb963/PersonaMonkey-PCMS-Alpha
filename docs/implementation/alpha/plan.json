@@ -501,7 +501,7 @@
       "round": 3,
       "agent": 2,
       "title": "Sleep-only Deployer and rollback",
-      "status": "READY",
+      "status": "CLAIMED",
       "dependsOn": [
         "P203",
         "P204",
