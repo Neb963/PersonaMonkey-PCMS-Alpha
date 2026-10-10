@@ -27,7 +27,7 @@ function memoryLedger() {
 async function fixture() {
   let now = BASE, saves = 0, reloads = 0, permitted = true, cause = null;
   let source = files(original), revision = 1, position = 'NOT_VISIBLE', rendered = null;
-  let asOf = now, journal = new Map(), notices = [], sourceDrift = false;
+  let asOf = now, journal = new Map(), notices = [];
   const releaseId = await canonicalReleaseId({
     pjs: new TextEncoder().encode(original),
     html: new TextEncoder().encode(source.html), thumbnail: source.thumbnail
@@ -52,12 +52,24 @@ async function fixture() {
     key, status: position, renderedPosition: rendered,
     feedPosition: null, asOf: new Date(asOf).toISOString(), evidenceRefs: ['test.feed']
   } }; } };
-  const storage = { async read(kind, id) {
-    const record = kind === 'release' && id === releaseId ? release :
-      kind === 'generator' && id === key ? generator :
-      kind === 'account' && id === account.accountId ? account : null;
-    return { revision: 1, item: record ? { record: structuredClone(record), revision: 1 } : null };
-  } };
+  const storage = {
+    async read(kind, id) {
+      const record = kind === 'release' && id === releaseId ? release :
+        kind === 'generator' && id === key ? generator :
+        kind === 'account' && id === account.accountId ? account :
+        kind === 'operation' ? journal.get(id) : null;
+      return { revision: 1, item: record ? { record: structuredClone(record), revision: 1 } : null };
+    },
+    async commit({ writes }) {
+      for (const w of writes) {
+        assert.equal(w.kind, 'operation');
+        const prior = journal.get(w.record.opId);
+        assert.ok(prior && ['UNCERTAIN', 'HELD', 'DISPATCHING'].includes(prior.phase));
+        journal.set(w.record.opId, structuredClone(w.record));
+      }
+      return { revision: 2 };
+    }
+  };
   const provider = {
     async probe() { return { ok: true, result: ['generator.save'], revision: 7 }; },
     async read() { return { ok: true, result: {
@@ -71,7 +83,7 @@ async function fixture() {
       saves++;
       source = copyFiles(input.files);
       revision++;
-      journal.get(input.opId).phase = 'APPLIED';
+      journal.get(input.opId).phase = cause === 'AFTER_WRITE' ? 'UNCERTAIN' : 'APPLIED';
       if (cause === 'AFTER_WRITE') throw new Error('lost response');
       return this.read();
     }
@@ -158,8 +170,7 @@ test('AP403-02: delayed reload/retry and third failed observation suspend with a
   f.advance(61 * MIN);
   assert.equal((await f.service.pass()).result.items[0].action, 'RELOADED');
   assert.equal(f.reloads, 1);
-  assert.equal((await f.service.pass()).result.items[0].action, 'WAIT_FOR_FRESH_OBSERVATION' ===
-    'BACKOFF' ? 'WAIT_FOR_FRESH_OBSERVATION' : 'BACKOFF');
+  assert.equal((await f.service.pass()).result.items[0].action, 'BACKOFF');
   f.advance(11 * MIN);
   assert.equal((await f.service.pass()).result.items[0].action, 'SAVED_WAIT_FOR_OBSERVATION');
   f.advance(121 * MIN);
@@ -184,8 +195,11 @@ test('AP403-02: lost provider response becomes hold, not a blind retry', async (
   f.advance(5 * 60 * MIN);
   assert.equal((await f.service.pass()).result.items[0].action, 'RECONCILE');
   assert.equal(f.saves, 1);
+  assert.equal(f.notices.length, 1, 'a held pass must not repeat an attention alert');
   const record = (await f.service.inspect()).jobs[key];
-  assert.equal((await f.service.reconcile({ key })).ok, true);
+  const reconciled = await f.service.reconcile({ key });
+  assert.equal(reconciled.ok, true, JSON.stringify(reconciled));
+  assert.equal(f.journal.get(record.pending.opId).phase, 'APPLIED');
   assert.equal((await f.service.inspect()).jobs[key].comment.saveReceipt, String(f.rev));
   assert.equal(record.pending?.kind, 'save');
 });

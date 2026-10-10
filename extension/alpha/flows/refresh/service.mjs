@@ -34,7 +34,7 @@ export function createRefreshExecution({
   check(scheduler && typeof scheduler.planPass === 'function' &&
     typeof scheduler.inspect === 'function' && visibility &&
     typeof visibility.getPosition === 'function' && storage &&
-    typeof storage.read === 'function' && provider &&
+    typeof storage.read === 'function' && typeof storage.commit === 'function' && provider &&
     typeof provider.read === 'function' && typeof provider.probe === 'function' &&
     typeof provider.save === 'function' && journal &&
     typeof journal.prepare === 'function' && typeof journal.read === 'function' &&
@@ -70,12 +70,13 @@ export function createRefreshExecution({
     await alert(key, code);
     return { key, action: 'RECONCILE', reason: code };
   }
-  async function binding(key, schedule) {
+  async function binding(key, schedule, { mutation = true } = {}) {
     await core.assertCurrent();
-    await core.assertMutationAllowed();
+    if (mutation) await core.assertMutationAllowed();
     const row = await storage.read('generator', key);
     const generator = row.item?.record;
-    check(generator && eligible(generator) && schedule.phase === 'ACTIVE' &&
+    check(generator && schedule && (!mutation ||
+      (eligible(generator) && schedule.phase === 'ACTIVE')) &&
       generator.key === key && generator.personaUid === schedule.personaUid &&
       generator.accountId === schedule.accountId &&
       generator.accountBindingEpoch === schedule.accountBindingEpoch, 'STALE_BINDING');
@@ -182,7 +183,9 @@ export function createRefreshExecution({
   async function step(key, schedule, activeCount, margin, t) {
     const state = await snapshot(), job = state.jobs[key] ?? baseJob();
     if (job.state === 'SUSPENDED') return { key, action: 'SUSPENDED', reason: job.attentionReason };
-    if (['PREPARED', 'DISPATCHING', 'RELOADING', 'RECONCILE'].includes(job.state))
+    if (job.state === 'RECONCILE')
+      return { key, action: 'RECONCILE', reason: job.attentionReason };
+    if (['PREPARED', 'DISPATCHING', 'RELOADING'].includes(job.state))
       return hold(key, 'RECOVERY_HOLD');
     const position = visibility.getPosition({ key });
     const observation = unwrap(await position);
@@ -246,20 +249,43 @@ export function createRefreshExecution({
         check(job && job.state === 'RECONCILE' && job.pending?.kind === 'save',
           'RECOVERY_HOLD');
         const row = (await scheduler.inspect()).schedules[key];
-        const { generator, context } = await binding(key, row);
+        const { generator, context } = await binding(key, row, { mutation: false });
         const release = (await storage.read('release', generator.releaseId)).item?.record;
         const observed = unwrap(await provider.read({ context, targetKey: key }));
         const operation = await journal.read(job.pending.opId);
-        check(operation && operation.phase === 'APPLIED' && observed.ownership === 'CONFIRMED' &&
-          observed.listing === 'PUBLIC' && typeof observed.sourceRevision === 'string',
+        check(operation && operation.kind === 'save' && operation.targetKey === key &&
+          operation.accountBindingEpoch === generator.accountBindingEpoch &&
+          operation.sourceRevision === job.pending.beforeRevision &&
+          ['APPLIED', 'UNCERTAIN', 'HELD', 'DISPATCHING'].includes(operation.phase) &&
+          observed.ownership === 'CONFIRMED' && observed.listing === 'PUBLIC' &&
+          typeof observed.sourceRevision === 'string' && observed.sourceRevision.length > 0 &&
+          observed.sourceRevision !== job.pending.beforeRevision,
         'RECOVERY_HOLD');
+        // Exact source + new provider revision is independent positive evidence.
+        // Reconciliation never redispatches the provider mutation.
         await canonicalPjs(observed.files, release, job.pending.comment);
+        await binding(key, row, { mutation: false });
+        if (operation.phase !== 'APPLIED') {
+          const persisted = await storage.read('operation', job.pending.opId);
+          check(persisted.item && persisted.item.record.phase === operation.phase &&
+            persisted.item.record.opId === operation.opId &&
+            persisted.item.record.accountBindingEpoch === generator.accountBindingEpoch,
+          'RECOVERY_HOLD');
+          await storage.commit({ expectedRevision: persisted.revision, writes: [{
+            kind: 'operation', expectedRevision: persisted.item.revision,
+            record: { ...persisted.item.record, phase: 'APPLIED', remoteEvidence: {
+              disposition: 'READBACK_CONFIRMED', sourceRevision: observed.sourceRevision,
+              ownership: 'CONFIRMED', listing: 'PUBLIC'
+            } }
+          }] });
+        }
+        const t = now();
         await update(key, { state: 'OBSERVE', comment: {
           ...job.pending.comment, sourceRevision: observed.sourceRevision,
           saveReceipt: observed.sourceRevision
         }, pending: null, attempts: Math.min(MAX_ATTEMPTS, job.attempts + 1),
-          lastAttemptAtMs: now(), lastSavedAtMs: now(),
-          nextAllowedAtMs: now() + MIN_OBSERVATION_MS, attentionReason: null });
+          lastAttemptAtMs: t, lastSavedAtMs: t,
+          nextAllowedAtMs: t + MIN_OBSERVATION_MS, attentionReason: null });
         return good({ key, state: 'OBSERVE' });
       } catch (error) { return failed(codes.has(error?.code) ? error.code : 'RECOVERY_HOLD'); }
     },
