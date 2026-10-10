@@ -710,7 +710,7 @@
       "round": 4,
       "agent": 3,
       "title": "Refresh execution and visibility feedback",
-      "status": "READY",
+      "status": "CLAIMED",
       "dependsOn": [
         "P304",
         "P305",

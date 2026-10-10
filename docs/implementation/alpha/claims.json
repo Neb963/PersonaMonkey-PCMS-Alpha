@@ -18,7 +18,7 @@
     "P305": 1,
     "P401": 1,
     "P402": 0,
-    "P403": 0,
+    "P403": 1,
     "P404": 1,
     "P405": 0,
     "P501": 0,
@@ -515,12 +515,38 @@
     },
     {
       "schemaVersion": 1,
+      "claimId": "CLM-P403-001",
+      "phaseId": "P403",
+      "agentId": "slot-three-r4",
+      "claimEpoch": 1,
+      "state": "ACTIVE",
+      "baseMainSha": "a90dbc029ef0bc3792f8618c0af1728e43c37213",
+      "branch": "agent/slot-three-r4/p403",
+      "writePaths": [
+        "extension/alpha/flows/refresh/**",
+        "tests/alpha/flows/refresh/**",
+        "docs/evidence/alpha/P403/**"
+      ],
+      "contractReads": {
+        "alpha.contracts.v1": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e"
+      },
+      "contractWrites": [],
+      "exclusiveResources": [],
+      "migrationSlots": [],
+      "acceptanceIds": [
+        "AP403-01",
+        "AP403-02",
+        "AP403-03"
+      ]
+    },
+    {
+      "schemaVersion": 1,
       "claimId": "CLM-P404-001",
       "phaseId": "P404",
       "agentId": "slot-four-r4",
       "claimEpoch": 1,
       "state": "ACTIVE",
-      "baseMainSha": "a90dbc029ef0bc3792f8618c0af1728e43c37213",
+      "baseMainSha": "8a94ebb9224cd4f3d5529b091b1e9866f60643dc",
       "branch": "agent/slot-four-r4/p404",
       "writePaths": [
         "extension/alpha/features/attention/**",
