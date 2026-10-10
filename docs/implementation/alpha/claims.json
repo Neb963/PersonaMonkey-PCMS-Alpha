@@ -6,7 +6,7 @@
     "P103": 1,
     "P104": 1,
     "P105": 1,
-    "P201": 1,
+    "P201": 2,
     "P202": 1,
     "P203": 1,
     "P204": 1,
@@ -278,9 +278,38 @@
       "phaseId": "P201",
       "agentId": "slot-one-r2",
       "claimEpoch": 1,
-      "state": "ACTIVE",
+      "state": "REASSIGNED",
       "baseMainSha": "cd20011b15b2eed8ab02c79df1f3c20e40287034",
       "branch": "agent/slot-one-r2/p201",
+      "writePaths": [
+        "extension/alpha/core/**",
+        "extension/alpha/bootstrap/**",
+        "extension/manifest.json",
+        "extension/lib/recovery-bootstrap.js",
+        "tests/alpha/core/**",
+        "docs/evidence/alpha/P201/**"
+      ],
+      "contractReads": {
+        "alpha.contracts.v1": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e"
+      },
+      "contractWrites": [],
+      "exclusiveResources": [],
+      "migrationSlots": [],
+      "acceptanceIds": [
+        "AP201-01",
+        "AP201-02",
+        "AP201-03"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "claimId": "CLM-P201-002",
+      "phaseId": "P201",
+      "agentId": "chatgpt-r2",
+      "claimEpoch": 2,
+      "state": "ACTIVE",
+      "baseMainSha": "9baa2f60b4eb1cec6cf9441cc382403b38603a1b",
+      "branch": "agent/chatgpt-r2/p201",
       "writePaths": [
         "extension/alpha/core/**",
         "extension/alpha/bootstrap/**",
