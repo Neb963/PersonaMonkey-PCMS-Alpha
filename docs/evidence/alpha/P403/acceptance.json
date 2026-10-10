@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "phaseId": "P403",
+  "claimId": "CLM-P403-001",
+  "agentId": "slot-three-r4",
+  "claimEpoch": 1,
+  "state": "MERGED",
+  "claimState": "ACTIVE",
+  "providerLive": false,
+  "baseMainSha": "a90dbc029ef0bc3792f8618c0af1728e43c37213",
+  "contractId": "alpha.contracts.v1",
+  "contractRevision": 2,
+  "contractHash": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e",
+  "claimPr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/81",
+  "implementationPr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/87",
+  "commitSha": "f585af7be99f14f0b6ea1f608f20f36ea3c753e1",
+  "mergedMainSha": "d65ee074c4a17f95c244a7b152f0f2497bf4089b",
+  "acceptanceIds": [
+    "AP403-01",
+    "AP403-02",
+    "AP403-03"
+  ],
+  "cases": [
+    {
+      "id": "AP403-01",
+      "summary": "Exact transient PJS trailing comment; preserved canonical source hash; wrong-target, untracked or changed bytes rejected",
+      "evidence": [
+        "extension/alpha/flows/refresh/comment.mjs",
+        "extension/alpha/flows/refresh/service.mjs",
+        "tests/alpha/flows/refresh/service.test.mjs"
+      ]
+    },
+    {
+      "id": "AP403-02",
+      "summary": "Durable pre-dispatch operations, staggered bounded retries and Persona reload, uncertain read-only reconciliation and suspension with attention",
+      "evidence": [
+        "extension/alpha/flows/refresh/ledger.mjs",
+        "extension/alpha/flows/refresh/service.mjs",
+        "tests/alpha/flows/refresh/service.test.mjs"
+      ]
+    },
+    {
+      "id": "AP403-03",
+      "summary": "Observed rendered target rank is not guaranteed by a provider save or feed position",
+      "evidence": [
+        "extension/alpha/flows/refresh/service.mjs",
+        "tests/alpha/flows/refresh/service.test.mjs"
+      ]
+    }
+  ],
+  "localTestsExecuted": [],
+  "ciTestsExecuted": [
+    {
+      "command": "node tools/alpha/run-tests.mjs",
+      "workflow": "alpha-governance",
+      "runId": 38087786197,
+      "headSha": "f585af7be99f14f0b6ea1f608f20f36ea3c753e1",
+      "passed": 7,
+      "failed": 0,
+      "result": "PASS"
+    }
+  ],
+  "prCiRuns": [
+    {
+      "id": 38087786197,
+      "name": "alpha-governance",
+      "sha": "f585af7be99f14f0b6ea1f608f20f36ea3c753e1",
+      "event": "pull_request",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38087786197"
+    },
+    {
+      "id": 38087786200,
+      "name": "alpha-firefox",
+      "sha": "f585af7be99f14f0b6ea1f608f20f36ea3c753e1",
+      "event": "pull_request",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38087786200"
+    },
+    {
+      "id": 38087786204,
+      "name": "firefox-developer-edition",
+      "sha": "f585af7be99f14f0b6ea1f608f20f36ea3c753e1",
+      "event": "pull_request",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38087786204"
+    }
+  ],
+  "ciRuns": [
+    {
+      "id": 38088089471,
+      "name": "alpha-governance",
+      "sha": "d65ee074c4a17f95c244a7b152f0f2497bf4089b",
+      "event": "push",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38088089471"
+    },
+    {
+      "id": 38088089466,
+      "name": "firefox-developer-edition",
+      "sha": "d65ee074c4a17f95c244a7b152f0f2497bf4089b",
+      "event": "push",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38088089466"
+    }
+  ],
+  "limitations": [
+    "Only a trusted PersonaMonkey executor may supply the optional reload facade; Core integration is outside P403 ownership.",
+    "No operator-live Perchance or Mullvad acceptance has been established."
+  ]
+}
