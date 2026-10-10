@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "phaseId": "P204",
+  "issue": 45,
+  "repair": "P202-to-P204 inventory-fact epoch reconciliation",
+  "claim": {
+    "id": "CLM-P204-001",
+    "agentId": "slot-four-p204",
+    "epoch": 1,
+    "state": "ACTIVE",
+    "reassigned": false
+  },
+  "contract": {
+    "id": "alpha.contracts.v1",
+    "revision": 2,
+    "hash": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e"
+  },
+  "finding": {
+    "reproduced": true,
+    "preFix": "5 of 6 local inventory tests passed; new rebind regression failed with RECOVERY_HOLD",
+    "environment": "isolated local P102/P103 fixture shims; not a full repository checkout",
+    "postFix": "11 of 11 inventory tests passed locally; four source/test files passed node --check"
+  },
+  "changes": {
+    "sourcePaths": [
+      "extension/alpha/features/inventory/facts.mjs",
+      "extension/alpha/features/inventory/service.mjs"
+    ],
+    "regressionPaths": [
+      "tests/alpha/inventory/inventory.test.mjs",
+      "tests/alpha/inventory/p202-rebind.test.mjs"
+    ],
+    "otherPhasePathsChanged": false,
+    "providerMutations": false
+  },
+  "product": {
+    "pr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/52",
+    "headSha": "190597cb790b9b7eb8aa963394d43caf71a14d06",
+    "merged": true,
+    "mergedMainSha": "e062e58a9b3decce83e4ab1195083b3cd176fa69",
+    "previousMainSha": "0c6b68e307ff2c555b82d85c870ad72f6c0d6208",
+    "method": "serialized non-forced two-parent merge with expected main SHA"
+  },
+  "prCi": [
+    {
+      "name": "alpha-governance",
+      "id": 38053100051,
+      "conclusion": "success",
+      "sha": "190597cb790b9b7eb8aa963394d43caf71a14d06"
+    },
+    {
+      "name": "alpha-firefox",
+      "id": 38053100060,
+      "conclusion": "success",
+      "sha": "190597cb790b9b7eb8aa963394d43caf71a14d06"
+    },
+    {
+      "name": "firefox-developer-edition",
+      "id": 38053100036,
+      "conclusion": "success",
+      "sha": "190597cb790b9b7eb8aa963394d43caf71a14d06"
+    }
+  ],
+  "mergedMainCi": [
+    {
+      "name": "alpha-governance",
+      "id": 38053415599,
+      "conclusion": "success",
+      "sha": "e062e58a9b3decce83e4ab1195083b3cd176fa69"
+    },
+    {
+      "name": "alpha-firefox",
+      "id": 38053415633,
+      "conclusion": "success",
+      "sha": "e062e58a9b3decce83e4ab1195083b3cd176fa69"
+    },
+    {
+      "name": "firefox-developer-edition",
+      "id": 38053415614,
+      "conclusion": "success",
+      "sha": "e062e58a9b3decce83e4ab1195083b3cd176fa69"
+    }
+  ],
+  "integratedAlphaTests": {
+    "command": "node tools/alpha/run-tests.mjs",
+    "tests": 169,
+    "passed": 169,
+    "failed": 0,
+    "runId": 38053415599,
+    "includesActualP202RebindAndVerifySession": true,
+    "newIssue45Regressions": 7
+  },
+  "notAccepted": [
+    "GATE-R2 not promoted",
+    "No operator-live Perchance or Mullvad verification",
+    "P102 and auxiliary IDB remain separate transactions; verified next scan reconciles partial handoff"
+  ]
+}
