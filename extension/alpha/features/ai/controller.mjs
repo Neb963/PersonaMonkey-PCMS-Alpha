@@ -122,7 +122,9 @@ export function createAiSessionController({store,identity,native,verifySaved,
     });
     let started;
     try {
-      started=await native.start({binding,task:structuredClone(task),prompt:AI_TEST_PROMPT,operationId:p.opId});
+      const dispatched=(await lookup(taskId)).task;
+      check(dispatched.dispatchPhase==='DISPATCHING' && dispatched.state==='RECOVERING','RECOVERY_HOLD');
+      started=await native.start({binding,task:structuredClone(dispatched),prompt:AI_TEST_PROMPT,operationId:p.opId});
       check(plain(started) && validId(started.sessionId) && started.operationId===task.opId && started.key===task.key &&
         started.accountId===task.accountId && started.personaUid===task.personaUid &&
         started.bindingEpoch===task.bindingEpoch && ['ACTIVE','WAITING_HUMAN'].includes(started.state), 'UNCERTAIN');
@@ -231,9 +233,12 @@ export function createAiSessionController({store,identity,native,verifySaved,
     return result(project((await lookup(taskId)).task),binding.revision);
   });}
   async function get(p={}) {return run(async()=>{
-    check(plain(p)&&validId(p.key));const {task}=await lookup(p.key);
-    if(p.accountId!==undefined)check(p.accountId===task.accountId,'OWNERSHIP_UNKNOWN');
-    return result(project(task),lastRevision);
+    check(plain(p)&&SLUG.test(p.key)&&(p.accountId===undefined||validId(p.accountId)));
+    const ledger=await store.read();
+    const matching=ledger.tasks.filter(t=>t.key===p.key&&(p.accountId===undefined||t.accountId===p.accountId))
+      .sort((a,b)=>b.createdAt.localeCompare(a.createdAt)||b.revision-a.revision||b.id.localeCompare(a.id));
+    check(matching.length>0,'NOT_APPLIED');
+    return result(project(matching[0]),ledger.revision);
   });}
   async function queue(p={}) {return run(async()=>{
     check(plain(p) && (p.accountId===undefined||validId(p.accountId)) &&
@@ -246,7 +251,7 @@ export function createAiSessionController({store,identity,native,verifySaved,
       check(nonnegative(offset)&&offset>0&&offset<all.length,'INVALID_REQUEST');}
     const next=offset+(p.limit??100);
     return result({items:all.slice(offset,next).map(project),cursor:next<all.length?`v1.${ledger.revision}.${next}`:null,
-      asOf:now()},lastRevision);
+      asOf:now()},ledger.revision);
   });}
   return Object.freeze({start,reconnect,recordReview,approveIntent,get,queue});
 }
@@ -258,6 +263,7 @@ export function createAiIdentity({storage,perchance,contextForAccount}={}) {
   return Object.freeze({ async verify({accountId,key,accountBindingEpoch}) {
     check(validId(accountId)&&SLUG.test(key)&&nonnegative(accountBindingEpoch)&&accountBindingEpoch>0);
     const a=await storage.read('account',accountId),g=await storage.read('generator',key);
+    check(a.revision===g.revision,'STALE_REVISION');
     const account=a.item?.record,generator=g.item?.record;
     check(account&&generator&&generator.accountId===accountId,'OWNERSHIP_UNKNOWN');
     check(account.epoch===accountBindingEpoch&&generator.accountBindingEpoch===accountBindingEpoch&&
@@ -272,6 +278,10 @@ export function createAiIdentity({storage,perchance,contextForAccount}={}) {
     check(provider.result?.listing==='UNLISTED'&&typeof provider.result?.sourceRevision==='string'&&
       provider.result.sourceRevision.length>0,'SOURCE_DRIFT');
     check(validHash(generator.releaseId),'SOURCE_DRIFT');
+    // A provider read can span concurrent P102 commits; never return a
+    // self-inconsistent binding assembled across distinct storage revisions.
+    const after=await storage.read('account',accountId);
+    check(after.revision===g.revision,'STALE_REVISION');
     return Object.freeze({accountId,key,personaUid:account.personaUid,epoch:accountBindingEpoch,
       sourceHash:generator.releaseId,sourceRevision:provider.result.sourceRevision,
       listing:provider.result.listing,revision:g.revision});
