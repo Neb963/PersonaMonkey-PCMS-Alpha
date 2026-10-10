@@ -606,7 +606,7 @@
       "round": 3,
       "agent": 5,
       "title": "Recent visibility and adaptive metrics",
-      "status": "READY",
+      "status": "CLAIMED",
       "dependsOn": [
         "P204",
         "P103"
