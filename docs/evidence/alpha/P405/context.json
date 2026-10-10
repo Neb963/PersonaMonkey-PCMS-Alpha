@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "kind": "CLAIM",
+  "action": "acquire",
+  "phaseId": "P405",
+  "agentId": "slot-five-r4",
+  "branch": "agent/slot-five-r4/p405",
+  "claimEpoch": 1,
+  "expectedEpoch": 0,
+  "baseMainSha": "9ce23733060dbe8322f9ffb68c29d8007cff5609"
+}
