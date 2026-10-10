@@ -38,7 +38,7 @@ State: **ACCEPTED**. Gate: GATE-R3.
 
 State: **IN_PROGRESS**. Gate: GATE-R4.
 
-- P401: **READY** — Supply flow and two-sided reconciliation
+- P401: **CLAIMED** — Supply flow and two-sided reconciliation
 - P402: **READY** — Release, approval, publication and GitHub writeback
 - P403: **READY** — Refresh execution and visibility feedback
 - P404: **CLAIMED** — Notifications, attention, and tab ownership
