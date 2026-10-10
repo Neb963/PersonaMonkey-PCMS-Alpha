@@ -120,6 +120,7 @@ async function harness(accountCount = 2) {
       assert.ok(!githubFiles.has(path));
       const prepared = (await storage.read('operation',input.opId)).item?.record;
       assert.equal(prepared?.phase,'DISPATCHING','GitHub mutation dispatched only after P102 op');
+      assert.equal(prepared?.sourceRevision,input.expectedHeadSha,'GitHub HEAD precondition is immutable in journal');
       if (failNext) {
         failNext = false;
         return {ok:false,error:{code:'UNAVAILABLE',message:'synthetic'},revision:0};
