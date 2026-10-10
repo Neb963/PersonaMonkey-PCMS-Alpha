@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { cp, mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
+import { cp, mkdir, mkdtemp, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import { tmpdir } from 'node:os';
 import { spawnSync } from 'node:child_process';
@@ -16,14 +16,29 @@ async function temporary(fn) {
   const dir = await mkdtemp(join(tmpdir(), 'alpha-ci-migration-'));
   try { return await fn(dir); } finally { await rm(dir, { recursive: true, force: true }); }
 }
-async function derivative(dir) {
-  await cp(join(root, 'extension'), join(dir, 'extension'), { recursive: true });
+async function derivative(dir, extensionSource = join(root, 'extension')) {
+  await cp(extensionSource, join(dir, 'extension'), { recursive: true });
+  // These tests exercise a historical pre-P201 derivative, not whichever
+  // Core/bootstrap implementation happens to be present in the live product.
+  for (const path of ['alpha/core', 'alpha/bootstrap']) {
+    await rm(join(dir, 'extension', path), { recursive: true, force: true });
+    await assert.rejects(readdir(join(dir, 'extension', path)), { code: 'ENOENT' });
+  }
+  for (const path of ['lib/recovery-bootstrap.js', 'manifest.json']) {
+    const donor = join(root, 'docs/legacy/donor/extension', path);
+    const fixture = join(dir, 'extension', path);
+    await cp(donor, fixture);
+    assert.deepEqual(await readFile(fixture), await readFile(donor),
+      `Fixture ${path} must exactly match the frozen donor`);
+  }
   const bootstrap = 'extension/lib/recovery-bootstrap.js';
   await mkdir(join(dir, 'docs/legacy/donor/extension/lib'), { recursive: true });
   await cp(join(root, 'docs/legacy/donor', bootstrap), join(dir, 'docs/legacy/donor', bootstrap));
   for (const args of [['init', '-q'], ['add', '--all'], ['-c', 'user.name=CI fixture', '-c', 'user.email=fixture@example.invalid',
     'commit', '-qm', 'Immutable pre-P201 fixture'], ['update-ref', 'refs/remotes/origin/main', 'HEAD']])
     assert.equal(command(dir, 'git', args).status, 0);
+  assert.equal((await verifyDerivative(dir, 'origin/main')).p201, 'NOT_IMPLEMENTED',
+    'Disposable derivative must start from a pre-P201 baseline');
 }
 async function alpha(dir, keepLegacy = false) {
   await mkdir(join(dir, 'extension/alpha/bootstrap'), { recursive: true });
@@ -35,6 +50,25 @@ async function alpha(dir, keepLegacy = false) {
   await writeFile(file, source.replace('from "./routing-gate.js";\n',
     'from "./routing-gate.js";\nimport "../alpha/bootstrap/entry.js";\n'));
 }
+
+test('disposable pre-P201 fixture stays historical even when copied production already contains Alpha Core', async () => {
+  await temporary(async dir => {
+    const source = join(dir, 'simulated-production');
+    await cp(join(root, 'extension'), source, { recursive: true });
+    await mkdir(join(source, 'alpha/core'), { recursive: true });
+    await mkdir(join(source, 'alpha/bootstrap'), { recursive: true });
+    await writeFile(join(source, 'alpha/core/index.js'), 'export const liveCore = true;\n');
+    await writeFile(join(source, 'alpha/bootstrap/entry.js'), 'import "../core/index.js";\n');
+    await writeFile(join(source, 'lib/recovery-bootstrap.js'), 'import "../alpha/bootstrap/entry.js";\n');
+    await writeFile(join(source, 'manifest.json'),
+      '{"background":{"scripts":["alpha/bootstrap/entry.js"],"type":"module"}}');
+    const fixture = join(dir, 'pre-P201');
+    await derivative(fixture, source);
+    for (const path of ['lib/recovery-bootstrap.js', 'manifest.json'])
+      assert.deepEqual(await readFile(join(fixture, 'extension', path)),
+        await readFile(join(root, 'docs/legacy/donor/extension', path)));
+  });
+});
 
 test('frozen donor tree and XPI are exact; unchanged historical tests detect donor Core regression', async () => {
   await temporary(async dir => {
@@ -102,7 +136,7 @@ test('Core introduction requires packaged P201 acceptance; deleting implementati
       'commit', '-qm', 'Fixture Core introduction']).status, 0);
     assert.equal(command(dir, 'git', ['update-ref', 'refs/remotes/origin/main', 'HEAD']).status, 0);
     await rm(join(dir, 'extension/alpha/bootstrap'), { recursive: true });
-    await cp(join(root, 'extension/lib/recovery-bootstrap.js'), join(dir, 'extension/lib/recovery-bootstrap.js'));
+    await cp(join(root, 'docs/legacy/donor/extension/lib/recovery-bootstrap.js'), join(dir, 'extension/lib/recovery-bootstrap.js'));
     await assert.rejects(verifyDerivative(dir, 'origin/main'), /cannot coexist/);
   });
 });
