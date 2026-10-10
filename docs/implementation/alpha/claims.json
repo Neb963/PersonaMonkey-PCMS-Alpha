@@ -13,7 +13,7 @@
     "P205": 1,
     "P301": 1,
     "P302": 0,
-    "P303": 0,
+    "P303": 1,
     "P304": 0,
     "P305": 0,
     "P401": 0,
@@ -380,6 +380,33 @@
         "AP301-01",
         "AP301-02",
         "AP301-03"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "claimId": "CLM-P303-001",
+      "phaseId": "P303",
+      "agentId": "slot-three-r3",
+      "claimEpoch": 1,
+      "state": "ACTIVE",
+      "baseMainSha": "e6a59075db9c8d8343224ebfd5c51d0c1030c05a",
+      "branch": "agent/slot-three-r3/p303",
+      "writePaths": [
+        "extension/alpha/features/ai/**",
+        "extension/alpha/overlay/**",
+        "tests/alpha/ai/**",
+        "docs/evidence/alpha/P303/**"
+      ],
+      "contractReads": {
+        "alpha.contracts.v1": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e"
+      },
+      "contractWrites": [],
+      "exclusiveResources": [],
+      "migrationSlots": [],
+      "acceptanceIds": [
+        "AP303-01",
+        "AP303-02",
+        "AP303-03"
       ]
     }
   ]
