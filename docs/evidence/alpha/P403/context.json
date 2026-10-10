@@ -1,11 +1,9 @@
 {
   "schemaVersion": 1,
-  "kind": "CLAIM",
-  "action": "acquire",
+  "kind": "PHASE",
   "phaseId": "P403",
   "agentId": "slot-three-r4",
   "branch": "agent/slot-three-r4/p403",
   "claimEpoch": 1,
-  "expectedEpoch": 0,
   "baseMainSha": "a90dbc029ef0bc3792f8618c0af1728e43c37213"
 }
