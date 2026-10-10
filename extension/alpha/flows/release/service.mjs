@@ -3,6 +3,7 @@
 import { canonicalReleaseId } from '../../features/sources/catalog.mjs';
 import { createGitHubPathTemplates } from '../../providers/github/paths.mjs';
 import { validateAiTask } from '../../features/ai/store.mjs';
+import { adoptConfirmedSourceVersion } from '../../features/inventory/service.mjs';
 
 const CODES = new Set(['INVALID_REQUEST','STALE_REVISION','STALE_BINDING',
   'UNSUPPORTED_CAPABILITY','OWNERSHIP_UNKNOWN','SOURCE_DRIFT','CONFLICT','RATE_LIMIT',
@@ -54,7 +55,7 @@ async function hashFiles(files) {
  * writeback lacking verified commit evidence is never automatically replayed.
  */
 export function createReleaseFlow({storage,sourceCatalog,deployer,ai,aiStore,
-  provider,github,journal,core,repository='Neb963/per-gens',secretRef,
+  provider,github,journal,core,inventory,facts,repository='Neb963/per-gens',secretRef,
   pathTemplates={},clock=()=>new Date().toISOString()}={}) {
   check(storage && ['read','list','commit'].every(k=>typeof storage[k]==='function') &&
     sourceCatalog && ['scan','resolveRelease'].every(k=>typeof sourceCatalog[k]==='function') &&
@@ -64,6 +65,8 @@ export function createReleaseFlow({storage,sourceCatalog,deployer,ai,aiStore,
     provider && ['probe','read','setListing'].every(k=>typeof provider[k]==='function') &&
     github && ['snapshot','commit','readBlob'].every(k=>typeof github[k]==='function') &&
     journal && ['prepare','read'].every(k=>typeof journal[k]==='function') &&
+    inventory && typeof inventory.observe==='function' &&
+    facts && ['get','compareAndPut'].every(k=>typeof facts[k]==='function') &&
     core && ['assertCurrent','assertMutationAllowed'].every(k=>typeof core[k]==='function') &&
     /^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/.test(repository) &&
     /^[A-Za-z0-9_-]{1,80}$/.test(secretRef||'') && typeof clock==='function');
@@ -275,6 +278,22 @@ export function createReleaseFlow({storage,sourceCatalog,deployer,ai,aiStore,
     const {gen}=await confirmed(p,true);
     check(gen.deployState==='STAGED' && gen.releaseId===parent.remoteEvidence.intent.previousReleaseId,
       'CONFLICT');
+    // P204 maintains an independent durable observed-source baseline. Refresh
+    // it from the authoritative provider, then adopt ONLY the P103 APPLIED
+    // publication receipt. Do this before enabling Refresher eligibility.
+    unwrap(await inventory.observe({key:p.key,accountId:p.accountId,
+      accountBindingEpoch:p.accountBindingEpoch,expectedRevision:gen.revision,
+      opId:p.opId+'.inventory',options:{context:p.context}}));
+    const publication=await op(p.opId+'.public'),fact=await facts.get(p.key);
+    check(publication?.phase==='APPLIED' && publication.kind==='setListing' &&
+      publication.accountBindingEpoch===p.accountBindingEpoch &&
+      publication.remoteEvidence?.sourceRevision===observed.sourceRevision &&
+      fact?.providerSourceRevision===observed.sourceRevision &&
+      fact?.accountId===p.accountId && fact?.accountBindingEpoch===p.accountBindingEpoch,
+      'RECOVERY_HOLD');
+    await adoptConfirmedSourceVersion(facts,{key:p.key,accountId:p.accountId,
+      accountBindingEpoch:p.accountBindingEpoch,expectedObservationRevision:fact.observationRevision,
+      operation:publication,at:now()});
     const opRow=await read('operation',p.opId);
     check(opRow.item?.record.phase==='DISPATCHING','RECOVERY_HOLD');
     const genRow=await read('generator',p.key);
@@ -283,14 +302,15 @@ export function createReleaseFlow({storage,sourceCatalog,deployer,ai,aiStore,
       sourceBinding:release.source,deployState:'DEPLOYED',fleetIntent:'MANAGED',
       listingObserved:'PUBLIC',refreshState:'SLEEPING',
       attentionRefs:genRow.item.record.attentionRefs.filter(ref=>
-        !ref.startsWith('deployer.failed.')),
+        !ref.startsWith('deployer.failed.') &&
+        !ref.startsWith('inventory.drift.'+p.key+'.')),
       asOf:now()};
     await storage.commit({expectedRevision:opRow.revision,writes:[
       {kind:'operation',expectedRevision:opRow.item.revision,
         record:{...opRow.item.record,phase:'APPLIED',remoteEvidence:{
           ...opRow.item.record.remoteEvidence,commitSha:release.source.commitSha,
           releaseId:release.releaseId,listing:'PUBLIC',
-          providerRevision:observed.sourceRevision}}},
+          sourceRevision:observed.sourceRevision}}},
       {kind:'generator',expectedRevision:genRow.item.revision,record:patch}]});
     // Do not call Refresher.planPass: approval must not allocate an active slot.
     return {state:'DEPLOYED',releaseId:release.releaseId,
