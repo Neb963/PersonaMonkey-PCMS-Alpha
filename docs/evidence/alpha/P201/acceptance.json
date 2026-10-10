@@ -1,9 +1,9 @@
 {
   "phaseId": "P201",
   "state": "MERGED",
-  "agentId": "slot-one-r2",
-  "claimId": "CLM-P201-001",
-  "claimEpoch": 1,
+  "agentId": "chatgpt-r2",
+  "claimId": "CLM-P201-002",
+  "claimEpoch": 2,
   "claimBaseMainSha": "cd20011b15b2eed8ab02c79df1f3c20e40287034",
   "implementationBaseMainSha": "d0ff52f9e3657a192ee408759006e19b08779cb1",
   "claimPr": 47,
@@ -28,16 +28,6 @@
       "conclusion": "success",
       "attempt": 1,
       "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38049693674"
-    },
-    {
-      "name": "alpha-firefox",
-      "id": 38049693713,
-      "sha": "008f042022b88af77739948e35c50a0d66aad05d",
-      "event": "push",
-      "status": "completed",
-      "conclusion": "success",
-      "attempt": 1,
-      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38049693713"
     },
     {
       "name": "firefox-developer-edition",
@@ -302,5 +292,26 @@
     "serialized": true,
     "nonForced": true,
     "postMergeCiVerified": true
+  },
+  "commitSha": "b35add1ff9718fb32f5f4c7ad63efa989b46ca2d",
+  "additionalCiRuns": [
+    {
+      "name": "alpha-firefox",
+      "id": 38049693713,
+      "sha": "008f042022b88af77739948e35c50a0d66aad05d",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "attempt": 1,
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38049693713"
+    }
+  ],
+  "evidenceReconciliation": {
+    "issue": 55,
+    "previousClaimId": "CLM-P201-001",
+    "previousClaimEpoch": 1,
+    "reconciledUnderClaimId": "CLM-P201-002",
+    "sourceImplementationCommit": "b35add1ff9718fb32f5f4c7ad63efa989b46ca2d",
+    "reason": "Match trusted GATE evidence schema; no product or acceptance changes"
   }
 }
