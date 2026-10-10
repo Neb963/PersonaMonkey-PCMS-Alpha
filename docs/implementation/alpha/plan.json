@@ -640,7 +640,7 @@
       "round": 4,
       "agent": 1,
       "title": "Supply flow and two-sided reconciliation",
-      "status": "READY",
+      "status": "CLAIMED",
       "dependsOn": [
         "P301",
         "P203"
