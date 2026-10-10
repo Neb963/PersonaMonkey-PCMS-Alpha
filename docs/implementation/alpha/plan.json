@@ -674,7 +674,7 @@
       "round": 4,
       "agent": 2,
       "title": "Release, approval, publication and GitHub writeback",
-      "status": "READY",
+      "status": "CLAIMED",
       "dependsOn": [
         "P302",
         "P303",
