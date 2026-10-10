@@ -52,12 +52,13 @@ function storageFactory(initial) {
   });
 }
 async function fixture({existing=false,active=false,publicListing=false,repoConflict=false,
-  githubUncertain=false}={}) {
+  githubUncertain=false,providerProbeOnceFail=false,publicationUncertain=false}={}) {
   const prior=existing?await release('known-good','a'.repeat(40)):null;
   const desired=await release('ready-source');
   let githubHead=SHA,generatorListing=publicListing?'PUBLIC':'UNLISTED',
     providerRevision='r1',providerFiles=copy(prior?.files||{pjs:'',html:'',thumbnail:new Uint8Array()});
   const actions=[],tasks=[],gitWrites=[];
+  let failNextProbe=providerProbeOnceFail;
   const storage=storageFactory({
     account:[{accountId:context.accountId,personaUid:context.personaUid,
       epoch:1,name:'Account',sessionState:'VERIFIED',revision:1,asOf:when}],
@@ -147,13 +148,20 @@ async function fixture({existing=false,active=false,publicListing=false,repoConf
   const provider={
     async read() {return okay({ownership:'CONFIRMED',listing:generatorListing,
       sourceRevision:providerRevision,files:copy(providerFiles)});},
-    async probe() {return {ok:true,result:['generator.setPrivacy'],revision:1};},
+    async probe() {
+      if(failNextProbe){failNextProbe=false;throw Object.assign(new Error('UNAVAILABLE'),{code:'UNAVAILABLE'});}
+      return {ok:true,result:['generator.setPrivacy'],revision:1};
+    },
     async setListing(x) {
       actions.push('PUBLIC');
       const child=(await storage.read('operation',x.opId)).item.record;
       assert.equal(child.phase,'PREPARED');
       await settle(x.opId,'DISPATCHING');
       generatorListing='PUBLIC';providerRevision='r4';
+      if(publicationUncertain) {
+        await settle(x.opId,'UNCERTAIN',{disposition:'UNCERTAIN',listing:'UNKNOWN'});
+        return {ok:false,error:{code:'UNCERTAIN'}};
+      }
       await settle(x.opId,'APPLIED',{disposition:'APPLIED',listing:'PUBLIC'});
       return okay({listing:'PUBLIC'});
     }
@@ -337,4 +345,36 @@ test('AP402-03 non-current Persona binding is rejected before staging mutations'
   const r=await f.flow.stage(f.base('bad',{accountBindingEpoch:2}));
   assert.equal(r.error.code,'INVALID_REQUEST');
   assert.deepEqual(f.actions,[]);
+});
+
+test('AP402-03 restarts after verified GitHub commit without a second commit',async()=>{
+  const f=await fixture({providerProbeOnceFail:true});
+  assert.equal((await f.stage()).ok,true);
+  const t=await f.review({...f.desired.files,pjs:'edited',html:'changed'});
+  const p=f.approval(t);
+  assert.equal((await f.flow.markReady(p)).error.code,'UNAVAILABLE');
+  assert.equal((await f.operation('ready-1.git')).phase,'APPLIED');
+  assert.equal(f.gitWrites.length,1);
+  assert.equal(f.listing,'UNLISTED');
+  const resumed=await f.flow.resume(p);
+  assert.equal(resumed.ok,true,JSON.stringify(resumed.error));
+  assert.equal(f.gitWrites.length,1);
+  assert.equal(f.listing,'PUBLIC');
+  assert.equal((await f.generator()).releaseId,t.savedSourceHash);
+});
+
+test('AP402-03 uncertain listing reconciles by public readback without replay',async()=>{
+  const f=await fixture({publicationUncertain:true});
+  assert.equal((await f.stage()).ok,true);
+  const t=await f.review();
+  const p=f.approval(t);
+  assert.equal((await f.flow.markReady(p)).error.code,'UNCERTAIN');
+  assert.equal((await f.operation('ready-1.public')).phase,'UNCERTAIN');
+  assert.equal(f.actions.filter(x=>x==='PUBLIC').length,1);
+  const settled=await f.flow.reconcile(p);
+  assert.equal(settled.ok,true,JSON.stringify(settled.error));
+  assert.equal((await f.operation('ready-1.public')).phase,'APPLIED');
+  assert.equal((await f.operation('ready-1')).phase,'APPLIED');
+  assert.equal(f.actions.filter(x=>x==='PUBLIC').length,1);
+  assert.equal((await f.generator()).releaseId,f.desired.releaseId);
 });
