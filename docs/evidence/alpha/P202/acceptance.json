@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "phaseId": "P202",
-  "claimId": "CLM-P202-001",
-  "claimEpoch": 1,
-  "agentId": "slot-two-p202",
+  "claimId": "CLM-P202-002",
+  "claimEpoch": 2,
+  "agentId": "chatgpt-p202",
   "contractReads": {
     "alpha.contracts.v1": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e"
   },
@@ -199,5 +199,32 @@
     "otherPhasesChanged": false
   },
   "gateVerified": false,
-  "accepted": false
+  "accepted": false,
+  "commitSha": "ee3553984fef67c6781f8c8fc10cd483acc15d21",
+  "providerLive": false,
+  "mergedMainSha": "955e2cd7506f129626df0f35d9ab3340dd9ae1e9",
+  "ciRuns": [
+    {
+      "name": "alpha-governance",
+      "id": 37984134360,
+      "sha": "955e2cd7506f129626df0f35d9ab3340dd9ae1e9"
+    },
+    {
+      "name": "firefox-developer-edition",
+      "id": 37984134328,
+      "sha": "955e2cd7506f129626df0f35d9ab3340dd9ae1e9"
+    }
+  ],
+  "additionalCiRuns": [
+    {
+      "name": "alpha-firefox",
+      "id": 37984134405,
+      "sha": "955e2cd7506f129626df0f35d9ab3340dd9ae1e9"
+    }
+  ],
+  "evidenceReconciliation": {
+    "issue": 56,
+    "previousClaimId": "CLM-P202-001",
+    "sourceImplementationCommit": "ee3553984fef67c6781f8c8fc10cd483acc15d21"
+  }
 }
