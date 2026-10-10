@@ -207,7 +207,7 @@ test('AP301-02: existing remote slug, GitHub folder and locally claimed slug col
   bad(await h.reserve('unique_slug','second-op'),'CONFLICT');
   bad(await h.reserve('another_slug','different-op',{folder:'unique_slug'}),'CONFLICT');
   assert.equal(h.creates,1);
-  assert.equal(h.githubFiles.size,1);
+  assert.equal(h.githubFiles.size,2,'one pre-existing fixture file and one newly reserved status file');
 });
 
 test('AP301-03: GitHub failure after Perchance create repairs without duplicate create',async()=>{
