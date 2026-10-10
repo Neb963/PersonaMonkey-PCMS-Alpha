@@ -71,7 +71,7 @@
         "P305"
       ],
       "gateId": "GATE-R3",
-      "status": "READY"
+      "status": "IN_PROGRESS"
     },
     {
       "round": 4,
@@ -572,7 +572,7 @@
       "round": 3,
       "agent": 4,
       "title": "Individual Refresher scheduler and healthy clock",
-      "status": "READY",
+      "status": "CLAIMED",
       "dependsOn": [
         "P204",
         "P201"

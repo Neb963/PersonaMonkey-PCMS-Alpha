@@ -14,7 +14,7 @@
     "P301": 0,
     "P302": 0,
     "P303": 0,
-    "P304": 0,
+    "P304": 1,
     "P305": 0,
     "P401": 0,
     "P402": 0,
@@ -354,6 +354,32 @@
         "AP202-01",
         "AP202-02",
         "AP202-03"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "claimId": "CLM-P304-001",
+      "phaseId": "P304",
+      "agentId": "slot-four-r3",
+      "claimEpoch": 1,
+      "state": "ACTIVE",
+      "baseMainSha": "820a9d3b99e1c95249a28b137286148b3e66fe8b",
+      "branch": "agent/slot-four-r3/p304",
+      "writePaths": [
+        "extension/alpha/features/refresher/**",
+        "tests/alpha/refresher/**",
+        "docs/evidence/alpha/P304/**"
+      ],
+      "contractReads": {
+        "alpha.contracts.v1": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e"
+      },
+      "contractWrites": [],
+      "exclusiveResources": [],
+      "migrationSlots": [],
+      "acceptanceIds": [
+        "AP304-01",
+        "AP304-02",
+        "AP304-03"
       ]
     }
   ]
