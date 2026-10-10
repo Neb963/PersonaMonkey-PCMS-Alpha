@@ -1,12 +1,14 @@
 /** P205: read-only, explicitly UNENCRYPTED backup framing, never provider authority. */
+import { normalizeInventoryFact } from '../features/inventory/facts.mjs';
 export const BACKUP_FORMAT = 'personamonkey-pcms-alpha-backup';
 export const BACKUP_VERSION = 1;
 export const UNENCRYPTED_CONSENT = 'EXPORT UNENCRYPTED BACKUP';
 export const MAX_BACKUP_BYTES = 128 * 1024 * 1024;
 const te = new TextEncoder(), td = new TextDecoder('utf-8', { fatal: true });
+const FACTS_COVERAGE_REVISION = 2;
 const SHA = /^[0-9a-f]{64}$/;
 const SENSITIVE = Object.freeze(['personaMonkey.cookies', 'personaMonkey.gmValues', 'personaMonkey.routeCredentials', 'alpha.githubCredential']);
-const COMPONENTS = Object.freeze(['alpha.records', 'alpha.journal', 'personaMonkey.personas', 'personaMonkey.routes', 'personaMonkey.userscripts', 'personaMonkey.workflows', ...SENSITIVE, 'personaMonkey.activeSessions', 'personaMonkey.nativeCredentials', 'perchance.passwords']);
+const COMPONENTS = Object.freeze(['alpha.records', 'alpha.journal', 'alpha.inventoryFacts', 'personaMonkey.personas', 'personaMonkey.routes', 'personaMonkey.userscripts', 'personaMonkey.workflows', ...SENSITIVE, 'personaMonkey.activeSessions', 'personaMonkey.nativeCredentials', 'perchance.passwords']);
 const CODES = new Set(['INVALID_BACKUP', 'INTEGRITY_MISMATCH', 'UNENCRYPTED_CONSENT_REQUIRED', 'EXPORT_UNAVAILABLE', 'BACKUP_TOO_LARGE', 'RECOVERY_HOLD']);
 export class BackupError extends Error {
   constructor(code) { super('Backup operation failed (' + (CODES.has(code) ? code : 'INVALID_BACKUP') + ').'); this.name = 'BackupError'; this.code = CODES.has(code) ? code : 'INVALID_BACKUP'; }
@@ -92,6 +94,27 @@ function decodeAlpha(input) {
   if (result.records.length > 1_000_000 || result.journal.length > 1024) fail();
   return result;
 }
+/** The P204 list() read transaction is internally consistent, not atomic with P102 snapshot(). */
+function validatedFacts(rows, errorCode = 'INVALID_BACKUP') {
+  if (!Array.isArray(rows) || rows.length > 1_000_000) fail(errorCode);
+  let values;
+  try { values = rows.map(normalizeInventoryFact); } catch { fail(errorCode); }
+  const keys = values.map(row => row.key);
+  if (new Set(keys).size !== keys.length) fail(errorCode);
+  values.sort((a, b) => a.key < b.key ? -1 : a.key > b.key ? 1 : 0);
+  return values;
+}
+function encodeFacts(rows) {
+  return te.encode(JSON.stringify(safeJsonClone(validatedFacts(rows, 'EXPORT_UNAVAILABLE'))));
+}
+function decodeFacts(data) {
+  let rows;
+  try { rows = JSON.parse(td.decode(data)); } catch { fail(); }
+  const normalized = validatedFacts(rows);
+  // Accept only exact current P204 fact fields and a unique, canonical key ordering.
+  if (JSON.stringify(safeJsonClone(rows)) !== JSON.stringify(safeJsonClone(normalized))) fail();
+  return normalized;
+}
 function normalizeAbsent(items) {
   if (!Array.isArray(items) || items.length > COMPONENTS.length) fail();
   const seen = new Set();
@@ -103,17 +126,45 @@ function normalizeAbsent(items) {
   });
 }
 function verifyManifest(m) {
-  fields(m, ['version', 'encrypted', 'createdAt', 'hashes', 'absentItems']);
-  if (m.version !== 1 || m.encrypted !== false) fail();
+  const extended = Object.hasOwn(m ?? {}, 'coverageRevision');
+  fields(m, extended ? ['version', 'encrypted', 'createdAt', 'hashes', 'absentItems', 'coverageRevision'] : ['version', 'encrypted', 'createdAt', 'hashes', 'absentItems']);
+  if (m.version !== 1 || m.encrypted !== false || (extended && m.coverageRevision !== FACTS_COVERAGE_REVISION)) fail();
   timestamp(m.createdAt);
   if (!plain(m.hashes) || !SHA.test(m.hashes.alpha) || !SHA.test(m.hashes.personaMonkey)) fail();
   const keys = Object.keys(m.hashes);
-  if (keys.some(k => !['alpha', 'personaMonkey', ...SENSITIVE].includes(k) || !SHA.test(m.hashes[k])) || keys.length > SENSITIVE.length + 2) fail();
+  if (keys.some(k => !['alpha', 'personaMonkey', 'inventoryFacts', ...SENSITIVE].includes(k) || !SHA.test(m.hashes[k])) || keys.length > SENSITIVE.length + 3) fail();
   const absent = normalizeAbsent(m.absentItems);
-  if (absent.some(x => x.item === 'alpha.records' || x.item === 'alpha.journal')) fail();
-  if (absent.some(x => SENSITIVE.includes(x.item) && Object.hasOwn(m.hashes, x.item))) fail();
+  const missing = new Set(absent.map(x => x.item));
+  if (missing.has('alpha.records') || missing.has('alpha.journal')) fail();
+  const factsHashed = Object.hasOwn(m.hashes, 'inventoryFacts');
+  if (extended) {
+    if (missing.has('alpha.inventoryFacts') === factsHashed) fail();
+  } else if (factsHashed || missing.has('alpha.inventoryFacts')) fail();
+  for (const item of SENSITIVE) if (missing.has(item) === Object.hasOwn(m.hashes, item)) fail();
+  for (const item of ['personaMonkey.activeSessions', 'personaMonkey.nativeCredentials', 'perchance.passwords']) if (!missing.has(item)) fail();
+  // Every non-legacy component must be explicitly accounted for as exported or absent.
+  // PersonaMonkey nonsensitive bytes are separately checked against the absent ledger.
   return m;
 }
+function checkCoverage(m, personaMonkey, facts) {
+  const missing = new Set(m.absentItems.map(row => row.item));
+  const extended = Object.hasOwn(m, 'coverageRevision');
+  const factsHashed = Object.hasOwn(m.hashes, 'inventoryFacts');
+  if (extended && (factsHashed !== (facts.length > 0))) fail();
+  if (!extended && facts !== null) fail();
+  if (personaMonkey.length === 0) {
+    for (const item of ['personaMonkey.personas', 'personaMonkey.routes', 'personaMonkey.userscripts', 'personaMonkey.workflows']) if (!missing.has(item)) fail();
+  } else if (missing.has('personaMonkey.personas')) fail();
+  for (const item of COMPONENTS) {
+    if (item === 'alpha.inventoryFacts' && !extended) continue; // Legacy v1: staged preview adds its missing facts.
+    if (item.startsWith('personaMonkey.') && !SENSITIVE.includes(item) && !['personaMonkey.activeSessions', 'personaMonkey.nativeCredentials'].includes(item)) continue;
+    if (item === 'alpha.records' || item === 'alpha.journal') continue;
+    if (item === 'alpha.inventoryFacts' && factsHashed) continue;
+    if (SENSITIVE.includes(item) && Object.hasOwn(m.hashes, item)) continue;
+    if (!missing.has(item)) fail();
+  }
+}
+
 function inventory(absent, sensitiveKeys) {
   const no = new Map(absent.map(x => [x.item, x.reason]));
   return COMPONENTS.map(item => Object.freeze({
@@ -133,16 +184,22 @@ function fieldsSafeMap(input) {
   return o;
 }
 export async function encodeBackupFile(bundle) {
-  fields(bundle, ['manifest', 'personaMonkey', 'alpha', 'authorizedSensitiveEntries']);
+  const extended = Object.hasOwn(bundle ?? {}, 'inventoryFacts');
+  fields(bundle, extended ? ['manifest', 'personaMonkey', 'alpha', 'authorizedSensitiveEntries', 'inventoryFacts'] : ['manifest', 'personaMonkey', 'alpha', 'authorizedSensitiveEntries']);
   const m = verifyManifest(bundle.manifest);
   const a = bytes(bundle.alpha), p = bytes(bundle.personaMonkey);
   decodeAlpha(a);
+  const facts = extended ? bytes(bundle.inventoryFacts) : null;
+  if (extended !== Object.hasOwn(m, 'coverageRevision')) fail();
+  if (facts?.length) decodeFacts(facts);
+  checkCoverage(m, p, facts);
   const sensitive = fieldsSafeMap(bundle.authorizedSensitiveEntries);
-  const expected = ['alpha', 'personaMonkey', ...Object.keys(sensitive)].sort();
+  const expected = ['alpha', 'personaMonkey', ...(facts?.length ? ['inventoryFacts'] : []), ...Object.keys(sensitive)].sort();
   if (JSON.stringify(Object.keys(m.hashes).sort()) !== JSON.stringify(expected)) fail();
   if (await digest(a) !== m.hashes.alpha || await digest(p) !== m.hashes.personaMonkey) fail('INTEGRITY_MISMATCH');
+  if (facts?.length && await digest(facts) !== m.hashes.inventoryFacts) fail('INTEGRITY_MISMATCH');
   for (const [key, value] of Object.entries(sensitive)) if (await digest(value) !== m.hashes[key]) fail('INTEGRITY_MISMATCH');
-  const envelope = { format: BACKUP_FORMAT, version: BACKUP_VERSION, manifest: m, manifestSha256: await hash(te.encode(JSON.stringify(m))), alpha: b64(a), personaMonkey: b64(p), authorizedSensitiveEntries: Object.fromEntries(Object.entries(sensitive).map(([k, v]) => [k, b64(v)])) };
+  const envelope = { format: BACKUP_FORMAT, version: BACKUP_VERSION, manifest: m, manifestSha256: await hash(te.encode(JSON.stringify(m))), alpha: b64(a), personaMonkey: b64(p), authorizedSensitiveEntries: Object.fromEntries(Object.entries(sensitive).map(([k, v]) => [k, b64(v)])), ...(extended ? { inventoryFacts: b64(facts) } : {}) };
   const output = te.encode(JSON.stringify(envelope));
   if (output.length > MAX_BACKUP_BYTES) fail('BACKUP_TOO_LARGE');
   return output;
@@ -150,23 +207,22 @@ export async function encodeBackupFile(bundle) {
 export async function decodeBackupFile(file) {
   const data = bytes(file); let x;
   try { x = JSON.parse(td.decode(data)); } catch { fail(); }
-  fields(x, ['format', 'version', 'manifest', 'manifestSha256', 'alpha', 'personaMonkey', 'authorizedSensitiveEntries']);
+  const extended = Object.hasOwn(x ?? {}, 'inventoryFacts');
+  fields(x, extended ? ['format', 'version', 'manifest', 'manifestSha256', 'alpha', 'personaMonkey', 'authorizedSensitiveEntries', 'inventoryFacts'] : ['format', 'version', 'manifest', 'manifestSha256', 'alpha', 'personaMonkey', 'authorizedSensitiveEntries']);
   if (x.format !== BACKUP_FORMAT || x.version !== BACKUP_VERSION || !SHA.test(x.manifestSha256)) fail();
   const m = verifyManifest(x.manifest);
   if (await hash(te.encode(JSON.stringify(m))) !== x.manifestSha256) fail('INTEGRITY_MISMATCH');
   if (!plain(x.authorizedSensitiveEntries)) fail();
   const sensitive = Object.create(null);
   for (const [k, v] of Object.entries(x.authorizedSensitiveEntries)) { if (!SENSITIVE.includes(k)) fail(); sensitive[k] = unb64(v); }
-  const bundle = { manifest: m, alpha: unb64(x.alpha), personaMonkey: unb64(x.personaMonkey), authorizedSensitiveEntries: sensitive };
+  const bundle = { manifest: m, alpha: unb64(x.alpha), personaMonkey: unb64(x.personaMonkey), authorizedSensitiveEntries: sensitive, ...(extended ? { inventoryFacts: unb64(x.inventoryFacts) } : {}) };
+  if (extended !== Object.hasOwn(m, 'coverageRevision')) fail();
   await encodeBackupFile(bundle);
-  const absent = new Map(m.absentItems.map(x => [x.item, x.reason]));
-  if ((bundle.personaMonkey.length === 0) !== absent.has('personaMonkey.personas')) fail();
-  for (const name of SENSITIVE) if (Boolean(sensitive[name]) === absent.has(name)) fail();
   return bundle;
 }
 /** Only exact, separately authorized read-only export callbacks are injectable. */
-export function createBackupExporter({ alphaStorage, personaMonkeyExport = null, sensitiveExports = {}, clock = () => new Date().toISOString() } = {}) {
-  if (typeof alphaStorage?.snapshot !== 'function' || (personaMonkeyExport !== null && typeof personaMonkeyExport !== 'function') || !plain(sensitiveExports) || typeof clock !== 'function') throw new TypeError('Unsupported backup source');
+export function createBackupExporter({ alphaStorage, inventoryFactsStore = null, personaMonkeyExport = null, sensitiveExports = {}, clock = () => new Date().toISOString() } = {}) {
+  if ((typeof alphaStorage?.snapshot !== 'function' || (inventoryFactsStore !== null && typeof inventoryFactsStore?.list !== 'function')) || (personaMonkeyExport !== null && typeof personaMonkeyExport !== 'function') || !plain(sensitiveExports) || typeof clock !== 'function') throw new TypeError('Unsupported backup source');
   if (Object.keys(sensitiveExports).some(k => !SENSITIVE.includes(k) || typeof sensitiveExports[k] !== 'function')) throw new TypeError('Unsupported sensitive export source');
   const unavailable = () => COMPONENTS.filter(x => x !== 'alpha.records' && x !== 'alpha.journal').map(item => ({ item, reason: 'UNAVAILABLE' }));
   async function build({ consent, includeSensitive = [] } = {}) {
@@ -175,6 +231,12 @@ export function createBackupExporter({ alphaStorage, personaMonkeyExport = null,
     let snapshot;
     try { snapshot = await alphaStorage.snapshot(); } catch { fail('RECOVERY_HOLD'); }
     const alpha = encodeAlpha(snapshot);
+    let inventoryFacts = new Uint8Array();
+    if (inventoryFactsStore) {
+      let facts;
+      try { facts = await inventoryFactsStore.list(); } catch { fail('RECOVERY_HOLD'); }
+      inventoryFacts = encodeFacts(facts);
+    }
     let personaMonkey = new Uint8Array(), includedItems = [];
     if (personaMonkeyExport) {
       let payload;
@@ -190,17 +252,18 @@ export function createBackupExporter({ alphaStorage, personaMonkeyExport = null,
       try { entries[key] = bytes(await sensitiveExports[key]()); } catch { fail('EXPORT_UNAVAILABLE'); }
       if (!entries[key].length) fail('EXPORT_UNAVAILABLE');
     }
-    const absent = unavailable().filter(x => !includedItems.includes(x.item) && !Object.hasOwn(entries, x.item)).map(x => ({ item: x.item, reason: includeSensitive.includes(x.item) ? 'UNAVAILABLE' : SENSITIVE.includes(x.item) ? 'NOT_AUTHORIZED' : 'UNAVAILABLE' }));
-    const m = { version: 1, encrypted: false, createdAt: timestamp(clock()), hashes: { alpha: await digest(alpha), personaMonkey: await digest(personaMonkey) }, absentItems: absent };
+    const absent = unavailable().filter(x => !(x.item === 'alpha.inventoryFacts' && inventoryFactsStore) && !includedItems.includes(x.item) && !Object.hasOwn(entries, x.item)).map(x => ({ item: x.item, reason: includeSensitive.includes(x.item) ? 'UNAVAILABLE' : SENSITIVE.includes(x.item) ? 'NOT_AUTHORIZED' : 'UNAVAILABLE' }));
+    const m = { version: 1, encrypted: false, createdAt: timestamp(clock()), hashes: { alpha: await digest(alpha), personaMonkey: await digest(personaMonkey) }, absentItems: absent, coverageRevision: FACTS_COVERAGE_REVISION };
+    if (inventoryFactsStore) m.hashes.inventoryFacts = await digest(inventoryFacts);
     for (const [key, value] of Object.entries(entries)) m.hashes[key] = await digest(value);
-    const bundle = { manifest: m, alpha, personaMonkey, authorizedSensitiveEntries: entries };
+    const bundle = { manifest: m, alpha, personaMonkey, authorizedSensitiveEntries: entries, inventoryFacts };
     const file = await encodeBackupFile(bundle);
     return { bundle, file, inventory: inventory(absent, Object.keys(entries)), snapshotRevision: snapshot.revision };
   }
   return Object.freeze({
     previewExport() {
       const absent = unavailable().map(x => ({ item: x.item, reason: SENSITIVE.includes(x.item) ? 'NOT_AUTHORIZED' : x.reason }));
-      return { encrypted: false, requiresExplicitConsent: true, availableFrom: ['alpha.records', 'alpha.journal'], potentiallyExportable: [ ...(personaMonkeyExport ? ['PersonaMonkey validated export only'] : []), ...Object.keys(sensitiveExports) ], unavailable: absent };
+      return { encrypted: false, requiresExplicitConsent: true, availableFrom: ['alpha.records', 'alpha.journal'], potentiallyExportable: [ ...(inventoryFactsStore ? ['alpha.inventoryFacts'] : []), ...(personaMonkeyExport ? ['PersonaMonkey validated export only'] : []), ...Object.keys(sensitiveExports) ], unavailable: absent.filter(x => !inventoryFactsStore || x.item !== 'alpha.inventoryFacts') };
     },
     exportBackup: build,
     async stageRestore(file) {
@@ -208,8 +271,17 @@ export function createBackupExporter({ alphaStorage, personaMonkeyExport = null,
       const backupAlpha = decodeAlpha(bundle.alpha);
       let current;
       try { current = await alphaStorage.snapshot(); } catch { fail('RECOVERY_HOLD'); }
+      const legacy = !Object.hasOwn(bundle.manifest, 'coverageRevision');
+      const missing = [...bundle.manifest.absentItems.map(x => ({ ...x })), ...(legacy ? [{ item: 'alpha.inventoryFacts', reason: 'UNAVAILABLE' }] : [])];
+      const facts = bundle.inventoryFacts?.length ? decodeFacts(bundle.inventoryFacts) : [];
       return Object.freeze({
         verified: true,
+        integrityVerified: true,
+        recoveryCompleteness: 'PARTIAL',
+        crossStoreAtomic: false,
+        inventoryFactsCount: facts.length,
+        inventoryDriftCount: facts.filter(x => x.drift !== null).length,
+        inventoryIgnoredRevisionCount: facts.filter(x => x.ignoredVersion !== null).length,
         encrypted: false,
         createdAt: bundle.manifest.createdAt,
         schemaVersion: 1,
@@ -217,8 +289,8 @@ export function createBackupExporter({ alphaStorage, personaMonkeyExport = null,
         currentRevision: current.revision,
         recordCount: backupAlpha.records.length,
         operationCount: backupAlpha.records.filter(x => x?.kind === 'operation').length,
-        missing: bundle.manifest.absentItems.map(x => ({ ...x })),
-        available: inventory(bundle.manifest.absentItems, Object.keys(bundle.authorizedSensitiveEntries)),
+        missing,
+        available: inventory(missing, Object.keys(bundle.authorizedSensitiveEntries)),
         proposedRecoveryState: 'RECOVERY_HOLD',
         requiresPersonaAndProviderReconciliation: true,
         applied: false
