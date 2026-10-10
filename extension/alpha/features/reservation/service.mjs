@@ -178,8 +178,8 @@ export function createReservationService({
     await commit(row.revision, [{ kind: 'operation', expectedRevision: row.item.revision, record }]);
     return record;
   }
-  function newOp(opId, kind, key, epoch, data) {
-    return { opId, kind, targetKey: key, sourceRevision: 'none',
+  function newOp(opId, kind, key, epoch, data, sourceRevision = 'none') {
+    return { opId, kind, targetKey: key, sourceRevision,
       accountBindingEpoch: epoch, phase: 'PREPARED', startedAt: timestamp(now),
       remoteEvidence: { intent: data } };
   }
@@ -281,13 +281,16 @@ export function createReservationService({
     }
     if (!latest || latest.phase === 'NOT_APPLIED') {
       check(snapshot.absent, 'RECOVERY_HOLD');
+      // Clearing an earlier uncertain write is insufficient if another target
+      // still holds the Core. Admission happens before preparing the next op.
+      await assertMutationAllowed();
       const index = rows.length + 1;
       const opId = create.opId + '.gh.' + index;
       check(ID.test(opId), 'INVALID_REQUEST');
       const before = await read('operation', opId);
       check(!before.item, 'CONFLICT');
       const prepared = newOp(opId, 'reservation.github', create.targetKey,
-        create.accountBindingEpoch, { createOpId: create.opId, accountId: i.accountId, folder: i.folder });
+        create.accountBindingEpoch, { createOpId: create.opId, accountId: i.accountId, folder: i.folder }, snapshot.commitSha);
       await commit(before.revision, [{ kind: 'operation', expectedRevision: 0, record: prepared }]);
       latest = prepared;
     }
