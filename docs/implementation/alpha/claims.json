@@ -11,7 +11,7 @@
     "P203": 1,
     "P204": 1,
     "P205": 1,
-    "P301": 0,
+    "P301": 1,
     "P302": 0,
     "P303": 0,
     "P304": 0,
@@ -354,6 +354,32 @@
         "AP202-01",
         "AP202-02",
         "AP202-03"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "claimId": "CLM-P301-001",
+      "phaseId": "P301",
+      "agentId": "slot-one-r3",
+      "claimEpoch": 1,
+      "state": "ACTIVE",
+      "baseMainSha": "820a9d3b99e1c95249a28b137286148b3e66fe8b",
+      "branch": "agent/slot-one-r3/p301",
+      "writePaths": [
+        "extension/alpha/features/reservation/**",
+        "tests/alpha/reservation/**",
+        "docs/evidence/alpha/P301/**"
+      ],
+      "contractReads": {
+        "alpha.contracts.v1": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e"
+      },
+      "contractWrites": [],
+      "exclusiveResources": [],
+      "migrationSlots": [],
+      "acceptanceIds": [
+        "AP301-01",
+        "AP301-02",
+        "AP301-03"
       ]
     }
   ]
