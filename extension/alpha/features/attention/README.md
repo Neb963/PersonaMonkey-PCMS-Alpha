@@ -1,0 +1,11 @@
+# P404 — durable attention and owned editor tabs
+
+`createAttentionService` exposes the frozen background `attention.list/get/raise/acknowledge` methods. The only editor action is `attention.acknowledge` with `options.action: 'OPEN_EDITOR'`, which does **not** acknowledge the event. The other action, `ACK`, is an optimistic in-app acknowledgement. The service validates the P303 AI task's pending-review state for `AI_REVIEW`, and persists one bounded, sanitized action-required row per `(kind, account, generator, occurrence)`. It never saves source, approves AI, or changes provider state.
+
+`createAttentionStore` uses a private strict IndexedDB transaction with revision CAS. Desktop notifications are best-effort output through an injected `notifications` capability. `UNSENT -> DISPATCHING` is durable **before** the desktop API call; `DISPATCHING` or `UNCERTAIN` must never be blindly reissued after a crash or denied permission. In-app state remains readable. Fixed notification copy excludes user-provided message text, code, tokens and credentials. This database is **not** in P205's backup snapshot; P405 must reconcile that gap instead of claiming a complete export.
+
+`createAlphaTabAllocator` uses P201 `core.tabs.reserve/attach/reconcile/release` and `core.operations.execute` for typed PersonaMonkey `persona.open` on the verified Account Persona and `https://perchance.org/<slug>#edit`. It does not use `browser.tabs.create`, own a second execution lease, or close any tab. The Core global budget defaults to four and is shared across jobs; an uncertain open retains its permit for reconciliation. The operator closes editor tabs, and Core only releases a verified gone tab. Reopen is always an explicit operator action, not an automatic AI approval consequence.
+
+**Composition:** P201 currently exposes a fixed service map but does not instantiate P404. A trusted future composition must inject P303 `aiTasks`, verified account binding, P201 Core, and optional Firefox notifications. This phase does not modify P201, UI routes, packaging, or the native helper bridge outside its ownership. Tests are deterministic and do not establish Perchance/Mullvad live acceptance.
+
+Regression command: `node --test tests/alpha/attention/*.test.mjs`.
