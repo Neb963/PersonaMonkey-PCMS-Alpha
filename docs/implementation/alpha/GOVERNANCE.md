@@ -269,3 +269,35 @@ merge check, phase/contract ownership, mandatory pinned Firefox matrix,
 provider-live distinction, or the separate GATE-Rn acceptance. This is an
 incremental reduction in manual work; eliminating evidence PRs or changing
 CI selection requires a separately authorized policy/architecture change.
+
+
+## Narrow P303 issue-85 repair exception (MAINT-P303-REPAIR-008)
+
+The accepted R3 P303 controller prevents the R4 P402 release lifecycle: a staged
+unapproved release cannot start native AI and an earlier approved review blocks
+later distinct revisions. The operator assigned a bounded repair of #85 and
+requested integration of draft PR #90; ordinary PHASE transitions cannot edit
+accepted P303 code.
+
+A separately owner-attested `MAINT-P303-REPAIR-008` maintenance PR introduces
+one single-use `REPAIR` context, strictly for draft PR #90 on
+`repair/p303-issue85`. The repair must use
+`docs/evidence/alpha/P303-ISSUE85/context.json` and may change only
+`extension/alpha/features/ai/controller.mjs` and
+`tests/alpha/ai/controller.test.mjs`, plus the dedicated context. It pins the
+original accepted P303 claim `CLM-P303-001`, epoch 1, frozen Alpha contract,
+exact main SHA at final verification, and existing R3 acceptance. The trusted
+CI enforces that the repair context did not already exist in predecessor main;
+no second use is possible.
+
+This does **not** reactivate or reassign P303, relax existing R4 claims, change
+Alpha interfaces, revise previously accepted R3 evidence, or declare the repair
+tested. Only after the maintenance merge passes current-main CI may the repair
+PR be updated to current main and independently validated. Repair product tests,
+pinned Firefox CI, final diff and exact-main serialized merge must pass before
+merging. Record distinct repair evidence rather than rewriting historical
+P303 acceptance; issue #85 closes only after merge and CI confirmation.
+
+The maintenance PR itself still requires the repository-owner's exact-head
+`ALPHA_GOVERNANCE_MAINTENANCE_APPROVAL_V1` comment and non-forced serialized
+merge. A draft, pending check or stale owner comment is not authorization.
