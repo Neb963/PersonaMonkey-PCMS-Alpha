@@ -20,7 +20,7 @@
     "P402": 1,
     "P403": 1,
     "P404": 1,
-    "P405": 0,
+    "P405": 1,
     "P501": 0,
     "P502": 0,
     "P503": 0,
@@ -590,6 +590,32 @@
         "AP402-01",
         "AP402-02",
         "AP402-03"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "claimId": "CLM-P405-001",
+      "phaseId": "P405",
+      "agentId": "slot-five-r4-retry",
+      "claimEpoch": 1,
+      "state": "ACTIVE",
+      "baseMainSha": "a53efbbd57b019eb9e094af134d9fd6461f8cf1b",
+      "branch": "agent/slot-five-r4-retry/p405",
+      "writePaths": [
+        "extension/alpha/backup/integration/**",
+        "tests/alpha/backup/integration/**",
+        "docs/evidence/alpha/P405/**"
+      ],
+      "contractReads": {
+        "alpha.contracts.v1": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e"
+      },
+      "contractWrites": [],
+      "exclusiveResources": [],
+      "migrationSlots": [],
+      "acceptanceIds": [
+        "AP405-01",
+        "AP405-02",
+        "AP405-03"
       ]
     }
   ]
