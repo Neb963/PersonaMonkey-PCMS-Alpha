@@ -90,7 +90,6 @@ export function createReleaseFlow({storage,sourceCatalog,deployer,ai,aiStore,
       gen.accountBindingEpoch===p.accountBindingEpoch,'STALE_BINDING');
     check(sleeping(gen) || staged && gen.deployState==='STAGED' &&
       (gen.refreshState==='SLEEPING'||gen.refreshState==='INELIGIBLE'),'CONFLICT');
-    check(!gen.attentionRefs?.some(ref=>ref.startsWith('deployer.failed.')),'CONFLICT');
     return {gen,row:g};
   }
   async function remote(p,listing) {
@@ -283,6 +282,8 @@ export function createReleaseFlow({storage,sourceCatalog,deployer,ai,aiStore,
     const patch={...genRow.item.record,releaseId:release.releaseId,
       sourceBinding:release.source,deployState:'DEPLOYED',fleetIntent:'MANAGED',
       listingObserved:'PUBLIC',refreshState:'SLEEPING',
+      attentionRefs:genRow.item.record.attentionRefs.filter(ref=>
+        !ref.startsWith('deployer.failed.')),
       asOf:now()};
     await storage.commit({expectedRevision:opRow.revision,writes:[
       {kind:'operation',expectedRevision:opRow.item.revision,
@@ -375,6 +376,32 @@ export function createReleaseFlow({storage,sourceCatalog,deployer,ai,aiStore,
     const adopted=await writeback(p,parent,stage,release,approved.files,path);
     return okay(await publish(p,parent,adopted),lastRevision);
   }
+  /** Explicit post-crash continuation. Only a P102-confirmed GitHub writeback
+   * (or unchanged stage) and a saved P303 approval may reach publication.
+   * A possibly dispatched public-listing child cannot be repeated.
+   */
+  async function resume(p) {
+    input(p);await core.assertMutationAllowed();
+    const parent=await op(p.opId);
+    check(parent && parent.kind==='release.approval' &&
+      ['PREPARED','DISPATCHING'].includes(parent.phase) &&
+      parent.targetKey===p.key && parent.accountBindingEpoch===p.accountBindingEpoch,
+      'RECOVERY_HOLD');
+    const intent=parent.remoteEvidence.intent;
+    const stage=await stageOp(p,intent.stageOpId);
+    const t=await taskFor(p,intent.taskId,stage);
+    check(t.approvalOpId===p.opId && t.approvalRevision!==null &&
+      t.savedSourceHash===intent.approvedHash,'RECOVERY_HOLD');
+    const baseline=await stagedRelease(p,stage),child=await op(p.opId+'.git');
+    check(!child || child.kind==='release.writeback' &&
+      child.targetKey===p.key && child.accountBindingEpoch===p.accountBindingEpoch &&
+      child.phase==='APPLIED','RECOVERY_HOLD');
+    const adopted=child ? (await read('release',child.remoteEvidence.releaseId)).item?.record : baseline;
+    check(adopted && adopted.releaseId===intent.approvedHash,'RECOVERY_HOLD');
+    const current=await remote(p,'UNLISTED');
+    check(sameFiles(current.files,adopted.files),'RECOVERY_HOLD');
+    return okay(await publish(p,parent,adopted),lastRevision);
+  }
   async function reconcile(p) {
     input(p);await core.assertMutationAllowed();
     const parent=await op(p.opId);
@@ -395,6 +422,14 @@ export function createReleaseFlow({storage,sourceCatalog,deployer,ai,aiStore,
     const current=await remote(p);
     check(current.listing==='PUBLIC' && sameFiles(current.files,adopted.files),
       'RECOVERY_HOLD');
+    const listing=await op(p.opId+'.public');
+    check(listing && listing.kind==='setListing' && listing.targetKey===p.key &&
+      listing.accountBindingEpoch===p.accountBindingEpoch,'RECOVERY_HOLD');
+    if(['DISPATCHING','UNCERTAIN','HELD'].includes(listing.phase))
+      await state(p.opId+'.public',[listing.phase],'APPLIED',{
+        disposition:'READBACK_CONFIRMED',listing:'PUBLIC',
+        sourceRevision:current.sourceRevision});
+    else check(listing.phase==='APPLIED','RECOVERY_HOLD');
     return okay(await finalize(p,parent,adopted),lastRevision);
   }
   return Object.freeze({
@@ -415,6 +450,7 @@ export function createReleaseFlow({storage,sourceCatalog,deployer,ai,aiStore,
       return okay(await launchAi(p,p.stageOpId,p.aiOpId),lastRevision);
     });},
     markReady(p={}) {return run(()=>markReady(p));},
+    resume(p={}) {return run(()=>resume(p));},
     reconcile(p={}) {return run(()=>reconcile(p));},
     failUpdate(p={}) {return run(async()=>{
       input(p);check(IDENT.test(p.stageOpId||''));
