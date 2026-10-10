@@ -321,12 +321,17 @@ async function stagingHarness({previousReleaseId=null,providerDrift=false,phase=
     async list(kind){assert.equal(kind,'operation');return {revision:7,
       items:[{record:operation}]};}
   };
+  let currentRevision='remote-staged',currentFiles=providerDrift?{...files,pjs:'tampered'}:files;
   const perchance={async read(){return {ok:true,result:{
-    ownership:'CONFIRMED',listing:'UNLISTED',sourceRevision:'remote-staged',
-    files:providerDrift?{...files,pjs:'tampered'}:files}};}};
+    ownership:'CONFIRMED',listing:'UNLISTED',sourceRevision:currentRevision,
+    files:currentFiles}};}};
   const identity=createAiIdentity({storage,perchance,
     contextForAccount:async()=>({accountId:'acct-1',personaUid:'uid-001',epoch:1})});
-  return {identity,releaseId,generator,operation,release,files,storage,get reads(){return reads;}};
+  return {identity,releaseId,generator,operation,release,files,storage,
+    changeRemote({sourceRevision,files:replacement}) {
+      if(sourceRevision!==undefined)currentRevision=sourceRevision;
+      if(replacement!==undefined)currentFiles=replacement;
+    },get reads(){return reads;}};
 }
 
 test('P303 repair #85: new generator AI binds to unapproved verified stage, not adopted releaseId',async()=>{
@@ -364,34 +369,25 @@ test('P303 repair #85: staged identity rejects unsaved, drifted or missing stage
     accountId:'acct-1',key:'alpha',accountBindingEpoch:1}),e=>e.code==='SOURCE_DRIFT');
 });
 
-test('P303 repair #85: saved native edits may be reviewed against the immutable original stage',async()=>{
-  const h=await stagingHarness();
-  const f=fixture(),store=memoryStore(),c=createAiSessionController({
-    store,identity:h.identity,native:f.native,
+test('P303 repair #85: saved native edits keep original stage identity but use current readback',async()=>{
+  const h=await stagingHarness(),f=fixture(),store=memoryStore();
+  const c=createAiSessionController({store,identity:h.identity,native:f.native,
     verifySaved:async()=>({confirmed:true,sourceHash:HASH_B,
       sourceRevision:'remote-edited',provenanceRefs:['verified-edit']}),now:clock});
   const p={accountId:'acct-1',key:'alpha',accountBindingEpoch:1,
     opId:'native-one',expectedRevision:7,options:{}};
   assert.equal((await c.start(p)).ok,true);
-  // Native helper made a source change; the original APPLIED stage receipt
-  // remains the authority for the review, while readback must be current.
-  h.operation.remoteEvidence.observation.sourceRevision='remote-staged';
+  // Perchance AI completed a source edit. The original APPLIED stage stays
+  // unchanged; review requires native completion and current saved-source proof.
+  h.changeRemote({sourceRevision:'remote-edited',
+    files:{...h.files,pjs:'AI-reviewed source'}});
   f.setState('COMPLETED');
-  const orig=h.identity.verify;
-  // The provider now reports an edited revision, without altering stage history.
-  // The identity keeps the stage hash for FOLLOWUP while saved-source readback
-  // checks the exact edited revision.
-  let editedRevision='remote-edited';
-  const derivedIdentity={verify:async params=>{
-    const v=await orig({...params,purpose:params.purpose==='FOLLOWUP'?'FOLLOWUP':'START'});
-    return {...v,sourceRevision:editedRevision};
-  }};
-  const follow=createAiSessionController({store,identity:derivedIdentity,
-    native:f.native,verifySaved:async()=>({confirmed:true,sourceHash:HASH_B,
-      sourceRevision:editedRevision,provenanceRefs:['verified-edit']}),now:clock});
   const task=(await store.read()).tasks[0];
-  const reply=await follow.recordReview({...p,opId:'record-one',options:{
+  const reply=await c.recordReview({...p,opId:'record-one',options:{
     taskId:task.id,expectedTaskRevision:task.revision}});
   assert.equal(reply.ok,true);
   assert.equal(reply.result.state,'COMPLETED');
+  assert.equal((await store.read()).tasks[0].sourceHash,h.releaseId);
+  assert.equal((await store.read()).tasks[0].savedSourceRevision,'remote-edited');
+  assert.equal((await c.start({...p,opId:'repeat',options:{}})).error.code,'SOURCE_DRIFT');
 });
