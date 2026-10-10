@@ -157,12 +157,13 @@ export function createReservationService({
   }
   async function githubObservation(loc) {
     const state = trusted(await github.snapshot({
-      repository, ref: 'main', paths: [loc.files.status]
+      repository, ref: 'main', paths: Object.values(loc.files)
     }));
     check(isPlain(state) && SHA.test(state.commitSha) && isPlain(state.blobs),
       'UNSUPPORTED_CAPABILITY');
     const sha = state.blobs[loc.files.status];
-    if (sha === undefined) return { absent: true, commitSha: state.commitSha };
+    if (sha === undefined) return { absent: true, occupied: Object.keys(state.blobs).length > 0,
+      commitSha: state.commitSha };
     check(SHA.test(sha), 'UNSUPPORTED_CAPABILITY');
     const bytes = trusted(await github.readBlob({ repository, blobSha: sha }));
     check(bytes instanceof Uint8Array, 'UNSUPPORTED_CAPABILITY');
@@ -276,6 +277,7 @@ export function createReservationService({
       Number(b.record.opId.slice(create.opId.length + 4)));
     let latest = rows.at(-1)?.record;
     const snapshot = await githubObservation(loc);
+    if (snapshot.absent && snapshot.occupied) throw new Fault('CONFLICT');
     if (!snapshot.absent && snapshot.text !== marker(create.opId)) {
       if (latest && LIVE.has(latest.phase))
         await transition(latest.opId, [latest.phase], 'HELD');
@@ -371,7 +373,8 @@ export function createReservationService({
           const context = await accountContext(account);
           check(!(await inventory(context)).some(row => row.key === key), 'CONFLICT');
         }
-        check((await githubObservation(loc)).absent, 'CONFLICT');
+        const candidate = await githubObservation(loc);
+        check(candidate.absent && !candidate.occupied, 'CONFLICT');
         const context = await accountContext(chosen);
         const probe = await perchance.probe(context);
         const capabilities = trusted(probe);
