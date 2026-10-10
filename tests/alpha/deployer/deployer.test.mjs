@@ -199,7 +199,13 @@ test('AP302-03 failed update stays sleeping/unlisted, restores last good, quaran
   h.emulator.failNext('save', { status: 'not-applied' });
   const failed = await h.service.apply(h.params());
   assert.equal(failed.ok, false);
-  assert.equal(failed.error.code, 'NOT_APPLIED');
+  assert.equal(failed.error.code, 'NOT_APPLIED', JSON.stringify({
+    failure: failed,
+    calls: h.emulator.calls,
+    parent: await h.operation('attempt1'),
+    unlist: await h.operation('attempt1.unlist'),
+    save: await h.operation('attempt1.save')
+  }));
   const remote = h.emulator.listRemote()[0];
   assert.equal(remote.isPrivate, true);
   assert.deepEqual(actualFiles(remote), snapshotFiles(h.old.files));
