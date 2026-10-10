@@ -19,7 +19,7 @@
     "P401": 0,
     "P402": 0,
     "P403": 0,
-    "P404": 0,
+    "P404": 1,
     "P405": 0,
     "P501": 0,
     "P502": 0,
@@ -485,6 +485,33 @@
         "AP304-01",
         "AP304-02",
         "AP304-03"
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "claimId": "CLM-P404-001",
+      "phaseId": "P404",
+      "agentId": "slot-four-r4",
+      "claimEpoch": 1,
+      "state": "ACTIVE",
+      "baseMainSha": "9ce23733060dbe8322f9ffb68c29d8007cff5609",
+      "branch": "agent/slot-four-r4/p404",
+      "writePaths": [
+        "extension/alpha/features/attention/**",
+        "extension/alpha/features/tabs/**",
+        "tests/alpha/attention/**",
+        "docs/evidence/alpha/P404/**"
+      ],
+      "contractReads": {
+        "alpha.contracts.v1": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e"
+      },
+      "contractWrites": [],
+      "exclusiveResources": [],
+      "migrationSlots": [],
+      "acceptanceIds": [
+        "AP404-01",
+        "AP404-02",
+        "AP404-03"
       ]
     }
   ]

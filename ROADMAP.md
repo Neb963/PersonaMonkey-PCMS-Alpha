@@ -36,12 +36,12 @@ State: **ACCEPTED**. Gate: GATE-R3.
 
 ## R4 — Integrated workflows and recovery
 
-State: **READY**. Gate: GATE-R4.
+State: **IN_PROGRESS**. Gate: GATE-R4.
 
 - P401: **READY** — Supply flow and two-sided reconciliation
 - P402: **READY** — Release, approval, publication and GitHub writeback
 - P403: **READY** — Refresh execution and visibility feedback
-- P404: **READY** — Notifications, attention, and tab ownership
+- P404: **CLAIMED** — Notifications, attention, and tab ownership
 - P405: **READY** — Full backup restore and downloads retention
 
 ## R5 — Operator interface

@@ -85,7 +85,7 @@
         "P405"
       ],
       "gateId": "GATE-R4",
-      "status": "READY"
+      "status": "IN_PROGRESS"
     },
     {
       "round": 5,
@@ -745,7 +745,7 @@
       "round": 4,
       "agent": 4,
       "title": "Notifications, attention, and tab ownership",
-      "status": "READY",
+      "status": "CLAIMED",
       "dependsOn": [
         "P201",
         "P202",
