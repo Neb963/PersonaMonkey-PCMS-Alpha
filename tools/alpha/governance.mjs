@@ -46,6 +46,18 @@ export const P201_CI_MIGRATION = Object.freeze({
     'docs/evidence/alpha/MAINT-P201-CI-MIGRATION-005/verification.json'
   ])
 });
+// Single-use, owner-attested repair authority for issue #85. It does not
+// reopen R3, reassign a claim, change frozen contracts or authorize other fixes.
+export const P303_REPAIR = Object.freeze({
+  id: 'P303-ISSUE85', phaseId: 'P303', issue: 85, claimId: 'CLM-P303-001',
+  epoch: 1, branch: 'repair/p303-issue85',
+  maintenanceId: 'MAINT-P303-REPAIR-008',
+  contextPath: 'docs/evidence/alpha/P303-ISSUE85/context.json',
+  codePaths: Object.freeze([
+    'extension/alpha/features/ai/controller.mjs',
+    'tests/alpha/ai/controller.test.mjs'
+  ])
+});
 export const ACTIVE = new Set(['ACTIVE', 'PR_OPEN']);
 export const SHA = /^[a-f0-9]{40}$/;
 const PHASE_STATES = new Set(['LOCKED', 'READY', 'CLAIMED', 'IN_PROGRESS', 'PR_OPEN', 'MERGED', 'ACCEPTED']);
@@ -306,6 +318,31 @@ export function validateTransition(main, head, context, { mainSha, headBranch, f
       'Ordinary maintenance cannot claim P201 CI migration scope');
     assertFiles(files, [...MAINTENANCE.writePaths, contextPath,
       ...(migration ? P201_CI_MIGRATION.writePaths : [])]);
+  } else if (context.kind === 'REPAIR') {
+    requireThat(main?.plan.bootstrap.state === 'ACCEPTED' &&
+      main.plan.rounds.find(r => r.id === 'R3')?.status === 'ACCEPTED' &&
+      main.plan.phases.find(p => p.id === P303_REPAIR.phaseId)?.status === 'ACCEPTED' &&
+      context.baseMainSha === mainSha, 'Repair requires accepted P303 and exact current main');
+    const owner = main.registry.claims.find(c => c.claimId === P303_REPAIR.claimId &&
+      c.phaseId === P303_REPAIR.phaseId);
+    requireThat(owner?.state === 'ACCEPTED' && owner.claimEpoch === P303_REPAIR.epoch &&
+      main.registry.epochs.P303 === P303_REPAIR.epoch &&
+      owner.contractReads['alpha.contracts.v1'] === main.lock.contracts['alpha.contracts.v1'],
+      'Repair original claim/epoch/contract is invalid');
+    requireThat(context.repairId === P303_REPAIR.id &&
+      context.phaseId === P303_REPAIR.phaseId &&
+      context.issueNumber === P303_REPAIR.issue &&
+      context.agentId === 'p303-repair' &&
+      context.claimEpoch === P303_REPAIR.epoch &&
+      context.branch === P303_REPAIR.branch &&
+      context.authorization === P303_REPAIR.maintenanceId &&
+      context.contractHash === main.lock.contracts['alpha.contracts.v1'],
+      'Unapproved P303 issue-85 repair context');
+    requireThat(equal(main.plan, head.plan) && equal(main.registry, head.registry) &&
+      equal(main.lock, head.lock) && equal(main.policies, head.policies),
+      'Repair cannot change accepted state, claims or frozen authority');
+    requireThat(files.includes(P303_REPAIR.contextPath), 'One-time P303 repair needs its own context');
+    assertFiles(files, [...P303_REPAIR.codePaths, P303_REPAIR.contextPath]);
   } else if (context.kind === 'CONTRACT_AMENDMENT') {
     requireThat(main?.plan.bootstrap.state === 'ACCEPTED' && context.baseMainSha === mainSha, 'Contract amendment requires accepted G0 and exact current main');
     requireThat(context.amendmentId === AMENDMENT.id && context.phaseId === AMENDMENT.id &&
