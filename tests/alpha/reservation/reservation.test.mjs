@@ -152,6 +152,7 @@ async function harness(accountCount = 2) {
   }
   return { storage, service, remote, log, githubFiles, blobs, reserve, reconcile,
     failGithub:()=>{failNext=true;},loseGithubReceipt:()=>{lostNext=true;},
+    seedGithubFile:(path,content)=>{const id=hex(4+blobs.size);blobs.set(id,new TextEncoder().encode(content));githubFiles.set(path,id);},
     get creates(){return creates;},get githubCommits(){return githubCommits;}
   };
 }
@@ -199,6 +200,8 @@ test('AP301-02: existing remote slug, GitHub folder and locally claimed slug col
   h.remote.get('account-2').set('used_slug',{ownership:'CONFIRMED',listing:'UNLISTED',
     sourceRevision:'existing',asOf:NOW});
   bad(await h.reserve('used_slug'),'CONFLICT');
+  h.seedGithubFile('generators/preexisting-folder/main.pjs','unexpected source file');
+  bad(await h.reserve('clean_slug','fresh-op',{folder:'preexisting-folder'}),'CONFLICT');
   assert.equal(h.creates,0);
   good(await h.reserve('unique_slug'));
   bad(await h.reserve('unique_slug','second-op'),'CONFLICT');
