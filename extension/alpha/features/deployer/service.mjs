@@ -190,7 +190,8 @@ export function createDeployerService({
     await stillSleeping(params, context);
     const childId = parentId + '.' + action;
     check(!(await journal.read(childId)), 'RECOVERY_HOLD');
-    const capabilities = unwrap(await provider.probe(context));
+    const capabilityProof = await provider.probe(context);
+    const capabilities = unwrap(capabilityProof);
     check(Array.isArray(capabilities) && capabilities.includes(
       action === 'save' || action === 'restore' ? 'generator.save' : 'generator.setPrivacy'
     ), 'UNSUPPORTED_CAPABILITY');
@@ -199,7 +200,7 @@ export function createDeployerService({
       targetKey: params.key, sourceRevision: observed.sourceRevision,
       accountBindingEpoch: params.accountBindingEpoch });
     const common = { context, targetKey: params.key, opId: childId,
-      expectedRevision: (await provider.probe(context)).revision,
+      expectedRevision: capabilityProof.revision,
       accountBindingEpoch: params.accountBindingEpoch,
       expectedSourceRevision: observed.sourceRevision };
     check(Number.isSafeInteger(common.expectedRevision) && common.expectedRevision >= 0,
@@ -329,7 +330,7 @@ export function createDeployerService({
       } catch (error) {
         const code = codeOf(error);
         const ambiguous = ['UNCERTAIN', 'SOURCE_DRIFT', 'RECOVERY_HOLD', 'STALE_BINDING',
-          'OWNERSHIP_UNKNOWN', 'UNAVAILABLE'].includes(code);
+          'OWNERSHIP_UNKNOWN', 'UNAVAILABLE', 'STALE_REVISION'].includes(code);
         try {
           await update(parent.opId, ['DISPATCHING'], ambiguous ? 'UNCERTAIN' : 'HELD',
             { disposition: code });
@@ -359,6 +360,19 @@ export function createDeployerService({
       // Reconcile with no external dispatch, never replay a possibly saved
       // remote operation or overwrite a third revision.
       if (observed.listing === 'UNLISTED' && sameFiles(observed.files, target.files)) {
+        check(parent.phase !== 'PREPARED', 'RECOVERY_HOLD');
+        const child = await storage.read('operation', parent.opId + '.save');
+        if (child.item && ['UNCERTAIN', 'HELD'].includes(child.item.record.phase)) {
+          check(child.item.record.kind === 'save' &&
+            child.item.record.accountBindingEpoch === params.accountBindingEpoch,
+            'RECOVERY_HOLD');
+          await storage.commit({ expectedRevision: child.revision, writes: [{
+            kind: 'operation', expectedRevision: child.item.revision,
+            record: { ...child.item.record, phase: 'APPLIED', remoteEvidence: {
+              disposition: 'READBACK_CONFIRMED', sourceRevision: observed.sourceRevision,
+              listing: 'UNLISTED' } }
+          }] });
+        }
         const { generator } = await record(params, context);
         return success(await update(parent.opId, [parent.phase], 'APPLIED', {
           disposition: 'READBACK_CONFIRMED', sourceRevision: observed.sourceRevision,
@@ -380,7 +394,7 @@ export function createDeployerService({
     }); },
     rollback(params = {}) { return run(async () => {
       const context = guard(params);
-      let parent = await op(params.opId);
+      let parent;
       if (params.options.originalOpId !== undefined) {
         opIdOf(params.options.originalOpId);
         const original = await op(params.options.originalOpId);
@@ -402,6 +416,7 @@ export function createDeployerService({
         const restored = await restore(parent, params, context, 'APPLIED');
         return success(restored);
       }
+      parent = await op(params.opId);
       check(parent.kind === 'deployer.apply' && parent.targetKey === params.key &&
         ['HELD', 'UNCERTAIN'].includes(parent.phase), 'RECOVERY_HOLD');
       if (parent.phase === 'UNCERTAIN') parent = await update(parent.opId,
