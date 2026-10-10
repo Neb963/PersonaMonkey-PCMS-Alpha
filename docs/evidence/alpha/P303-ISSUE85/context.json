@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "kind": "REPAIR",
+  "phaseId": "P303",
+  "repairId": "P303-ISSUE85",
+  "issueNumber": 85,
+  "agentId": "p303-repair",
+  "branch": "repair/p303-issue85",
+  "claimEpoch": 1,
+  "baseMainSha": "9d988df7f7e536496a919cccd83aff75f7f95708",
+  "contractHash": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e",
+  "authorization": "MAINT-P303-REPAIR-008",
+  "productPr": 90,
+  "maintenancePr": 92,
+  "providerLive": false
+}
