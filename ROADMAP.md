@@ -26,10 +26,10 @@ State: **ACCEPTED**. Gate: GATE-R2.
 
 ## R3 — Operational engines
 
-State: **READY**. Gate: GATE-R3.
+State: **IN_PROGRESS**. Gate: GATE-R3.
 
 - P301: **READY** — Bulk reservations and account balancing
-- P302: **READY** — Sleep-only Deployer and rollback
+- P302: **CLAIMED** — Sleep-only Deployer and rollback
 - P303: **READY** — Native Perchance AI session and editor overlay
 - P304: **READY** — Individual Refresher scheduler and healthy clock
 - P305: **READY** — Recent visibility and adaptive metrics
