@@ -3,7 +3,7 @@
   "phaseId": "GATE-R4",
   "state": "ACCEPTED",
   "providerLive": false,
-  "mergedMainSha": "2caaf2dd9a52fa059ea72b2730f8f903d5f16e73",
+  "mergedMainSha": "f26fa0bb0b6e6dfa57fe684c271b7164e9145b7d",
   "contractId": "alpha.contracts.v1",
   "contractRevision": 2,
   "contractHash": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e",
@@ -425,33 +425,33 @@
   ],
   "ciRuns": [
     {
-      "id": 38160115647,
+      "id": 38165563439,
       "name": "alpha-governance",
-      "sha": "2caaf2dd9a52fa059ea72b2730f8f903d5f16e73",
+      "sha": "f26fa0bb0b6e6dfa57fe684c271b7164e9145b7d",
       "event": "push",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38160115647"
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38165563439"
     },
     {
-      "id": 38160115643,
+      "id": 38165563424,
       "name": "firefox-developer-edition",
-      "sha": "2caaf2dd9a52fa059ea72b2730f8f903d5f16e73",
+      "sha": "f26fa0bb0b6e6dfa57fe684c271b7164e9145b7d",
       "event": "push",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38160115643"
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38165563424"
     }
   ],
   "additionalCiRuns": [
     {
-      "id": 38160115673,
+      "id": 38165563512,
       "name": "alpha-firefox",
-      "sha": "2caaf2dd9a52fa059ea72b2730f8f903d5f16e73",
+      "sha": "f26fa0bb0b6e6dfa57fe684c271b7164e9145b7d",
       "event": "push",
       "status": "completed",
       "conclusion": "success",
-      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38160115673"
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38165563512"
     }
   ],
   "verification": {
@@ -459,19 +459,19 @@
     "localGateCommands": "NOT_RUN (no local network-capable checkout; independently executed GitHub Actions inspected)",
     "combinedRuns": [
       {
-        "runId": 38160115647,
+        "runId": 38165563439,
         "workflow": "alpha-governance",
         "result": "PASS",
-        "observed": "npm run verify && node tools/alpha/run-tests.mjs: 64/64 governance and 284/284 Alpha feature/integration tests, zero failures; frozen donor, validation and derivative packaging."
+        "observed": "npm run verify && node tools/alpha/run-tests.mjs: 65/65 governance and 284/284 Alpha feature/integration tests, zero failures; frozen donor, validation and derivative packaging."
       },
       {
-        "runId": 38160115643,
+        "runId": 38165563424,
         "workflow": "firefox-developer-edition",
         "result": "PASS",
         "observed": "All packaged pinned Firefox Developer Edition jobs successful, derivative Alpha Core and inherited PersonaMonkey regressions."
       },
       {
-        "runId": 38160115673,
+        "runId": 38165563512,
         "workflow": "alpha-firefox",
         "result": "PASS",
         "observed": "Packaged PersonaMonkey baseline, typed broker, routing and Firefox lifecycle."
