@@ -22,3 +22,16 @@ test('R4 issue repair cannot alter accepted or upcoming round state',()=>{
   assert.throws(()=>validateTransition(main,altered,c,{mainSha:sha,headBranch:c.branch,files:['docs/evidence/alpha/R4-ISSUE99/context.json']}));
  }
 });
+
+test('supplementary #99 coverage repair is separately fenced to bundle and backup regressions',()=>{
+  const c={...ctx('R4-ISSUE99-COVERAGE'),authorization:'MAINT-R4-COVERAGE-SCOPE-010'};
+  const accepted=(paths)=>validateTransition(main,main,c,{
+    mainSha:sha,headBranch:c.branch,files:['docs/evidence/alpha/R4-ISSUE99-COVERAGE/context.json',...paths]});
+  assert.equal(accepted(['extension/alpha/backup/bundle.js','tests/alpha/backup/bundle.test.mjs']).kind,'R4_REPAIR');
+  for(const p of ['extension/alpha/storage/store.js','extension/alpha/core/core.mjs','tools/alpha/governance.mjs'])
+    assert.throws(()=>accepted([p]),/outside ownership/);
+  for(const change of [{authorization:'MAINT-R4-REPAIR-SCOPE-009'},
+    {branch:'agent/r4-repair/r4-issue99'},{issueNumber:100}])
+    assert.throws(()=>validateTransition(main,main,{...c,...change},{
+      mainSha:sha,headBranch:c.branch,files:['docs/evidence/alpha/R4-ISSUE99-COVERAGE/context.json']}));
+});
