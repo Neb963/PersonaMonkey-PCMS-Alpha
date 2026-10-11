@@ -330,3 +330,22 @@ integration via typed existing PersonaMonkey execution and P103 boundaries.
 Neither is authorization to invent live Perchance behavior, silently retry
 uncertain mutations or declare provider-live acceptance. Completion evidence is
 separate from a later independent GATE-R4 acceptance.
+
+## P405 reconciled evidence (MAINT-R4-EVIDENCE-012)
+
+A separately approved, single-use `R4-P405-EVIDENCE` repair may update
+`docs/evidence/alpha/P405/acceptance.json` and the interim README only.
+It must attest the unchanged active P405 claim ID and epoch, frozen contract
+hash, exact current-main product SHA and independent GitHub Actions checks,
+and `providerLive:false`. Product feature paths and phase/round state are
+not authorized. It cannot declare P405 GATE_VERIFIED or GATE-R4 accepted;
+the subsequent independent GATE-R4 checker owns the final decision.
+
+## R4 connected typed-broker final proof (same MAINT-R4-EVIDENCE-012)
+
+The separate one-use `R4-ISSUE100-FINAL` context may add only deterministic
+`tests/alpha/integration/r4/**` cases and its own context, on exact current
+main. It cannot change production features, bypass Alpha Core, grant a new
+browser execution authority, or claim live Perchance. These tests must
+actually instantiate the P201 Core and typed Persona Broker in the same
+connected source-linked P401–P403 scenario before issue #100 is closed.

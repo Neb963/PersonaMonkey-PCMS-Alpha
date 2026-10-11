@@ -47,3 +47,23 @@ test('follow-up R4 #99 and #100 have separate narrowly-scoped authority',()=>{
     assert.throws(()=>validateTransition(main,main,{...data,authorization:'MAINT-R4-REPAIR-SCOPE-009'},{mainSha:sha,headBranch:data.branch,files:[file,path]}));
   }
 });
+
+test('R4 P405 reconciliation evidence is one-use and cannot change product or governance',()=>{
+  const c={...ctx('R4-P405-EVIDENCE'),authorization:'MAINT-R4-EVIDENCE-012'};
+  const allowed=['docs/evidence/alpha/R4-P405-EVIDENCE/context.json',
+    'docs/evidence/alpha/P405/acceptance.json'];
+  assert.equal(validateTransition(main,main,c,{mainSha:sha,headBranch:c.branch,files:allowed}).kind,'R4_REPAIR');
+  for(const path of ['extension/alpha/backup/integration/authority.mjs',
+    'docs/implementation/alpha/plan.json','docs/evidence/alpha/P402/acceptance.json'])
+    assert.throws(()=>validateTransition(main,main,c,{mainSha:sha,headBranch:c.branch,
+      files:[...allowed,path]}),/outside ownership/);
+});
+
+test('one-use final issue100 connected typed-broker tests cannot edit product',()=>{
+  const c={...ctx('R4-ISSUE100-FINAL'),authorization:'MAINT-R4-EVIDENCE-012'};
+  const files=['docs/evidence/alpha/R4-ISSUE100-FINAL/context.json',
+    'tests/alpha/integration/r4/connected.test.mjs'];
+  assert.equal(validateTransition(main,main,c,{mainSha:sha,headBranch:c.branch,files}).kind,'R4_REPAIR');
+  assert.throws(()=>validateTransition(main,main,c,{mainSha:sha,headBranch:c.branch,
+    files:[...files,'extension/alpha/bootstrap/host.mjs']}),/outside ownership/);
+});
