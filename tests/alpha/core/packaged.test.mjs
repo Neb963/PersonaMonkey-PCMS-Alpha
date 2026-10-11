@@ -172,8 +172,8 @@ test('AP405-01/03 real packaged Firefox backup download has explicit consent and
   const kept=await page(`return entry.host.backup.retain();`);
   assert.equal(kept.retained,1);
   assert.ok(kept.warnings.includes('UNTRACKED_FILES_NOT_ENUMERABLE'));
-  const tracked=await page(`const data=await api.storage.local.get('alpha.backup.tracked-downloads.v1');
-    return data['alpha.backup.tracked-downloads.v1'];`);
+  const tracked=await page(`const manifestData=await api.storage.local.get('alpha.backup.tracked-downloads.v1');
+    return manifestData['alpha.backup.tracked-downloads.v1'];`);
   assert.equal(tracked.entries.filter(x=>x.id===exported.id && x.state==='COMPLETE').length,1);
   report.checks.realPackagedBackupDownloadAndTrackedRetention=true;
 });
