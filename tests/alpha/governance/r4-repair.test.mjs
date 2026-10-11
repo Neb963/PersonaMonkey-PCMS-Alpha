@@ -1,7 +1,25 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {load,validateTransition,R4_REPAIRS} from '../../../tools/alpha/governance.mjs';
-const main=load('.'),sha='a'.repeat(40),hash=main.lock.contracts['alpha.contracts.v1'];
+// Historical R4 repair permissions must be tested against the R4-in-progress
+// state, not the checkout's current state. Gate acceptance intentionally removes
+// that permission. This fixture reconstructs the authorized historical state
+// without changing the real plan, claim registry or the trusted validator.
+const published=load('.');
+const main=structuredClone(published);
+for (const r of main.plan.rounds) {
+  if (r.round===4) r.status='IN_PROGRESS';
+  if (r.round>=5) r.status='LOCKED';
+}
+for (const p of main.plan.phases) {
+  if (p.round===4) p.status='CLAIMED';
+  if (p.round>=5) p.status='LOCKED';
+}
+for (const c of main.registry.claims) {
+  if (/^P40[1-5]$/.test(c.phaseId) &&
+      c.claimEpoch===main.registry.epochs[c.phaseId]) c.state='ACTIVE';
+}
+const sha='a'.repeat(40),hash=main.lock.contracts['alpha.contracts.v1'];
 const ctx=id=>({schemaVersion:1,kind:'R4_REPAIR',repairId:id,phaseId:id,issueNumber:R4_REPAIRS[id].issue,agentId:'r4-repair',branch:R4_REPAIRS[id].branch,claimEpoch:0,authorization:'MAINT-R4-REPAIR-SCOPE-009',baseMainSha:sha,contractHash:hash,claimEpochs:structuredClone(main.registry.epochs)});
 const validate=(id,paths=[],patch={})=>{const context={...ctx(id),...patch};return validateTransition(main,main,context,{mainSha:sha,headBranch:context.branch,files:[`docs/evidence/alpha/${id}/context.json`,...paths]});};
 test('R4 repair confines owner paths to exact issue',()=>{
@@ -77,4 +95,28 @@ test('R4 P403 premature recovery hold may only be repaired in owner flow',()=>{
    files:[...files,'extension/alpha/core/core.mjs','tests/alpha/core/core.test.mjs']}).kind,'R4_REPAIR');
  assert.throws(()=>validateTransition(main,main,c,{mainSha:sha,headBranch:c.branch,
    files:[...files,'extension/alpha/features/ai/controller.mjs']}),/outside ownership/);
+});
+
+test('R4 repair authority cannot be reused after GATE-R4 is accepted',()=>{
+  const accepted=structuredClone(main);
+  accepted.plan.rounds.find(r=>r.id==='R4').status='ACCEPTED';
+  accepted.plan.rounds.find(r=>r.id==='R5').status='READY';
+  for(const p of accepted.plan.phases) {
+    if(p.round===4) p.status='ACCEPTED';
+    if(p.round===5) p.status='READY';
+  }
+  for(const c of accepted.registry.claims) {
+    if(/^P40[1-5]$/.test(c.phaseId) &&
+       c.claimEpoch===accepted.registry.epochs[c.phaseId]) c.state='ACCEPTED';
+  }
+  for(const id of Object.keys(R4_REPAIRS)){
+    const context=ctx(id);
+    const files=[`docs/evidence/alpha/${id}/context.json`];
+    assert.throws(
+      ()=>validateTransition(accepted,accepted,context,{
+        mainSha:sha,headBranch:context.branch,files
+      }),
+      /R4 issue repair needs active R4 and exact current main/
+    );
+  }
 });
