@@ -6,6 +6,7 @@
  */
 import {decodeAlphaSnapshot,decodeInventoryFacts,decodeRestoreLocalSection}
   from '../bundle.js';
+import {canonicalPjs} from '../../flows/refresh/comment.mjs';
 
 const RECOVER='RESTORE UNENCRYPTED BACKUP';
 const COMPONENTS=Object.freeze(['alpha.records','alpha.journal','alpha.inventoryFacts',
@@ -15,11 +16,73 @@ const err=code=>Object.assign(new Error('Backup restore requires reconciliation.
 function ensure(x,code='RECOVERY_HOLD'){if(!x)throw err(code);}
 function state(list){return list?.items?.map(x=>x.record)||[];}
 export function createProductionBackupAuthority({core,storage,facts,refreshLedger,attentionStore,
-  personaEndpoint}={}){
+  personaEndpoint,perchance=null,contextForAccount=null}={}){
   ensure(core?.restore && storage?.restoreSnapshot && storage?.restoreReceipt &&
     facts?.replaceForRestore && refreshLedger?.replaceForRestore &&
     attentionStore?.replaceForRestore && typeof personaEndpoint?.backup==='function',
     'UNSUPPORTED_CAPABILITY');
+  /**
+   * Runtime-only reconciliation of restored identities and provider source.
+   * The context MUST be freshly resolved from the Persona-bound P202 owner;
+   * the P103 probe and authoritative inventory/read are required again AFTER
+   * replacement. No restored session cookie or locally cached VERIFIED flag
+   * is sufficient, and an unavailable executor never releases recovery hold.
+   */
+  async function verifyFreshFleet(accounts,generators,refresh){
+    if(accounts.length===0)return {sessions:true,providers:generators.length===0};
+    if(typeof contextForAccount!=='function' || typeof perchance?.probe!=='function' ||
+      typeof perchance?.read!=='function')return {sessions:false,providers:false};
+    const contexts=new Map();
+    let sessions=true;
+    for(const account of accounts){
+      try {
+        const context=await contextForAccount(Object.freeze({...account}));
+        if(!context || context.accountId!==account.accountId ||
+          context.personaUid!==account.personaUid || context.epoch!==account.epoch ||
+          !Number.isSafeInteger(context.routeRevision) ||
+          !Number.isSafeInteger(context.capabilityRevision)){
+          sessions=false;continue;
+        }
+        const probe=await perchance.probe(context);
+        if(probe?.ok!==true || !Array.isArray(probe.result) ||
+          !probe.result.includes('generator.get') ||
+          !probe.result.includes('generator.list')){
+          sessions=false;continue;
+        }
+        contexts.set(account.accountId,context);
+      }catch {sessions=false;}
+    }
+    if(!sessions)return {sessions:false,providers:false};
+    let providers=true;
+    for(const g of generators){
+      const ctx=contexts.get(g.accountId);
+      if(!ctx || g.personaUid!==ctx.personaUid || g.accountBindingEpoch!==ctx.epoch){
+        providers=false;continue;
+      }
+      try {
+        // P103.read includes a fresh authenticated ACCOUNT inventory check.
+        // A direct editor URL or collaborator key never establishes ownership.
+        const response=await perchance.read({context:ctx,targetKey:g.key});
+        const observed=response?.result;
+        if(response?.ok!==true || observed?.ownership!=='CONFIRMED' ||
+           typeof observed.sourceRevision!=='string' || !observed.sourceRevision ||
+           !['PUBLIC','UNLISTED'].includes(observed.listing) ||
+           (g.listingObserved!=='UNKNOWN' && observed.listing!==g.listingObserved)){
+          providers=false;continue;
+        }
+        if(g.releaseId!==null){
+          const release=(await storage.read('release',g.releaseId)).item?.record;
+          if(!release || release.source?.slug!==g.key || !observed.files){
+            providers=false;continue;
+          }
+          // Any restored transient refresh suffix must be proven byte-exact
+          // against P403's signed execution ledger, not stripped speculatively.
+          await canonicalPjs(observed.files,release,refresh.jobs[g.key]?.comment??null);
+        }
+      }catch {providers=false;}
+    }
+    return {sessions,providers};
+  }
   return Object.freeze({
     async supported(){
       await core.assertCurrent();
@@ -86,11 +149,11 @@ export function createProductionBackupAuthority({core,storage,facts,refreshLedge
         f.accountBindingEpoch===g.accountBindingEpoch)) &&
         Object.values(refresh.jobs).every(j=>!['PREPARED','DISPATCHING','RELOADING','RECONCILE'].includes(j.state)) &&
         attention.items.every(i=>i.notice!=='DISPATCHING');
-      // Restored browser sessions and Perchance source ownership are NEVER
-      // evidence of current authentication. They need independent P202/P103
-      // readback; until then a nonempty account/generator fleet stays held.
+      // Restored browser sessions cannot be trusted. This is a fresh
+      // Persona-bound P103 probe and source readback with no provider mutation.
+      const verified=await verifyFreshFleet(accounts,generators,refresh);
       return {core:receipt?.holdId===holdId && receipt.durable===true,
-        bindings,sessions:accounts.length===0,providers:generators.length===0,
+        bindings,sessions:verified.sessions,providers:verified.providers,
         operations:ops.every(o=>!['PREPARED','DISPATCHING','UNCERTAIN','HELD'].includes(o.phase)),
         inventory};
     },
