@@ -36,23 +36,23 @@ State: **ACCEPTED**. Gate: GATE-R3.
 
 ## R4 — Integrated workflows and recovery
 
-State: **IN_PROGRESS**. Gate: GATE-R4.
+State: **ACCEPTED**. Gate: GATE-R4.
 
-- P401: **CLAIMED** — Supply flow and two-sided reconciliation
-- P402: **CLAIMED** — Release, approval, publication and GitHub writeback
-- P403: **CLAIMED** — Refresh execution and visibility feedback
-- P404: **CLAIMED** — Notifications, attention, and tab ownership
-- P405: **CLAIMED** — Full backup restore and downloads retention
+- P401: **ACCEPTED** — Supply flow and two-sided reconciliation
+- P402: **ACCEPTED** — Release, approval, publication and GitHub writeback
+- P403: **ACCEPTED** — Refresh execution and visibility feedback
+- P404: **ACCEPTED** — Notifications, attention, and tab ownership
+- P405: **ACCEPTED** — Full backup restore and downloads retention
 
 ## R5 — Operator interface
 
-State: **LOCKED**. Gate: GATE-R5.
+State: **READY**. Gate: GATE-R5.
 
-- P501: **LOCKED** — Bulk-first Overview and Supply UI
-- P502: **LOCKED** — Accounts and generator management UI
-- P503: **LOCKED** — AI approval and deployment review UI
-- P504: **LOCKED** — Refresher, settings and backup UI
-- P505: **LOCKED** — Attention and toolbar popup UI
+- P501: **READY** — Bulk-first Overview and Supply UI
+- P502: **READY** — Accounts and generator management UI
+- P503: **READY** — AI approval and deployment review UI
+- P504: **READY** — Refresher, settings and backup UI
+- P505: **READY** — Attention and toolbar popup UI
 
 ## R6 — Production wiring and adversarial hardening
 

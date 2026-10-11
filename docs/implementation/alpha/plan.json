@@ -85,7 +85,7 @@
         "P405"
       ],
       "gateId": "GATE-R4",
-      "status": "IN_PROGRESS"
+      "status": "ACCEPTED"
     },
     {
       "round": 5,
@@ -99,7 +99,7 @@
         "P505"
       ],
       "gateId": "GATE-R5",
-      "status": "LOCKED"
+      "status": "READY"
     },
     {
       "round": 6,
@@ -640,7 +640,7 @@
       "round": 4,
       "agent": 1,
       "title": "Supply flow and two-sided reconciliation",
-      "status": "CLAIMED",
+      "status": "ACCEPTED",
       "dependsOn": [
         "P301",
         "P203"
@@ -674,7 +674,7 @@
       "round": 4,
       "agent": 2,
       "title": "Release, approval, publication and GitHub writeback",
-      "status": "CLAIMED",
+      "status": "ACCEPTED",
       "dependsOn": [
         "P302",
         "P303",
@@ -710,7 +710,7 @@
       "round": 4,
       "agent": 3,
       "title": "Refresh execution and visibility feedback",
-      "status": "CLAIMED",
+      "status": "ACCEPTED",
       "dependsOn": [
         "P304",
         "P305",
@@ -745,7 +745,7 @@
       "round": 4,
       "agent": 4,
       "title": "Notifications, attention, and tab ownership",
-      "status": "CLAIMED",
+      "status": "ACCEPTED",
       "dependsOn": [
         "P201",
         "P202",
@@ -781,7 +781,7 @@
       "round": 4,
       "agent": 5,
       "title": "Full backup restore and downloads retention",
-      "status": "CLAIMED",
+      "status": "ACCEPTED",
       "dependsOn": [
         "P205",
         "P201",
@@ -816,7 +816,7 @@
       "round": 5,
       "agent": 1,
       "title": "Bulk-first Overview and Supply UI",
-      "status": "LOCKED",
+      "status": "READY",
       "dependsOn": [
         "P401",
         "P402",
@@ -853,7 +853,7 @@
       "round": 5,
       "agent": 2,
       "title": "Accounts and generator management UI",
-      "status": "LOCKED",
+      "status": "READY",
       "dependsOn": [
         "P202",
         "P204",
@@ -889,7 +889,7 @@
       "round": 5,
       "agent": 3,
       "title": "AI approval and deployment review UI",
-      "status": "LOCKED",
+      "status": "READY",
       "dependsOn": [
         "P402",
         "P404",
@@ -924,7 +924,7 @@
       "round": 5,
       "agent": 4,
       "title": "Refresher, settings and backup UI",
-      "status": "LOCKED",
+      "status": "READY",
       "dependsOn": [
         "P403",
         "P405",
@@ -960,7 +960,7 @@
       "round": 5,
       "agent": 5,
       "title": "Attention and toolbar popup UI",
-      "status": "LOCKED",
+      "status": "READY",
       "dependsOn": [
         "P404",
         "P105"
