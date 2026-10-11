@@ -29,6 +29,16 @@ export function createR4Flows({core,ports,ledger,attention}={}){
   if(!core?.storage || !core?.assertMutationAllowed || !core?.assertCurrent ||
     !ports || typeof ports!=='object' || !ledger?.read || !attention?.raise)
     throw new TypeError('R4 requires verified Core, ports, ledger and attention');
+  // All R4 services must consume one trusted P103 instance and one source
+  // catalog. A second browser executor or conflicting source reader can
+  // otherwise invalidate release and refresh readbacks.
+  if(!ports.supply || !ports.release || !ports.refresh ||
+    !ports.supply.perchance || ports.supply.perchance!==ports.release.provider ||
+    ports.supply.perchance!==ports.refresh.provider ||
+    ports.supply.sources!==ports.release.sourceCatalog ||
+    ports.release.journal!==ports.refresh.journal ||
+    typeof ports.supply.contextForAccount!=='function')
+    throw new TypeError('R4 requires one shared Persona-bound P103 executor, source catalog and journal');
   const supply=createSupplyFlow({...ports.supply,storage:core.storage,
     assertMutationAllowed:()=>core.assertMutationAllowed()});
   const release=createReleaseFlow({...ports.release,storage:core.storage,core,
@@ -73,8 +83,15 @@ export function createAlphaHost({ browserRef, personaMonkeyReady, createCore = n
         // executors, enrollment mutations and source configuration are composed
         // by their assigned flows; an absent bridge cannot fabricate authority.
         const unavailable = async () => { throw new Error('UNSUPPORTED_CAPABILITY'); };
-        const provider = { probe: unavailable, listGenerators: unavailable, observe: unavailable };
-        const accounts = createAccountsService({ storage: core.storage, broker: { request: unavailable }, perchance: provider, contextForAccount: unavailable });
+        const configured=r4Ports?.supply?.perchance;
+        const provider = configured && ['probe','read','observe','listGenerators'].every(
+          key=>typeof configured[key]==='function') ? configured :
+          {probe:unavailable,read:unavailable,listGenerators:unavailable,observe:unavailable};
+        const contextForAccount = r4Ports?.supply?.contextForAccount ?? unavailable;
+        const accounts = createAccountsService({
+          storage:core.storage,broker,
+          perchance:provider,contextForAccount
+        });
         services.accounts = Object.freeze(Object.fromEntries(['list', 'get', 'previewRebind'].map(k => [k, accounts[k]])));
         const facts=createInventoryFactsStore();
         const inventory = createInventoryService({ storage: core.storage, provider, facts });
@@ -124,7 +141,11 @@ export function createAlphaHost({ browserRef, personaMonkeyReady, createCore = n
         // With no PersonaMonkey-owned P103 executor or authenticated GitHub
         // source adapter, do not pretend R4 mutations are available.
         if(r4Ports){
-          composedR4=createR4Flows({core,ports:r4Ports,ledger:refreshLedger,attention});
+          // The background-built graph shares projections and the actual P204
+          // facts store. No duplicate inventory service or Core is created.
+          const ports={...r4Ports,inventory:r4Ports.inventory??inventory,
+            facts:r4Ports.facts??facts};
+          composedR4=createR4Flows({core,ports,ledger:refreshLedger,attention});
         }
         current = core; return core;
       } catch (error) { core.close(); throw error; }
