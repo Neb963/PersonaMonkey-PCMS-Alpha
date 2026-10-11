@@ -46,10 +46,10 @@ State: **ACCEPTED**. Gate: GATE-R4.
 
 ## R5 — Operator interface
 
-State: **READY**. Gate: GATE-R5.
+State: **IN_PROGRESS**. Gate: GATE-R5.
 
 - P501: **READY** — Bulk-first Overview and Supply UI
-- P502: **READY** — Accounts and generator management UI
+- P502: **CLAIMED** — Accounts and generator management UI
 - P503: **READY** — AI approval and deployment review UI
 - P504: **READY** — Refresher, settings and backup UI
 - P505: **READY** — Attention and toolbar popup UI
