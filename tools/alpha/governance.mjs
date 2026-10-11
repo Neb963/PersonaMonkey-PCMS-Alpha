@@ -116,6 +116,16 @@ export const R4_REPAIRS = Object.freeze({
       'docs/evidence/alpha/R4-P405-EVIDENCE/**'
     ])
   }),
+  'R4-ISSUE100-REFRESH': Object.freeze({
+    issue:100,branch:'agent/r4-repair/r4-issue100-refresh',
+    authorization:'MAINT-R4-REFRESH-013',
+    paths:Object.freeze([
+      'extension/alpha/flows/refresh/service.mjs',
+      'tests/alpha/integration/r4/**',
+      'tests/alpha/flows/refresh/**',
+      'docs/evidence/alpha/R4-ISSUE100-REFRESH/**'
+    ])
+  }),
   'R4-ISSUE100': Object.freeze({issue:100,branch:'agent/r4-repair/r4-issue100',
     paths:Object.freeze(["extension/alpha/bootstrap/host.mjs", "extension/alpha/flows/supply/service.mjs", "extension/alpha/flows/release/service.mjs", "extension/alpha/flows/refresh/service.mjs", "extension/alpha/features/attention/service.mjs", "extension/alpha/features/tabs/allocator.mjs", "tests/alpha/integration/r4/**", "tests/alpha/core/**", "docs/evidence/alpha/R4-ISSUE100/**"])})
 });
