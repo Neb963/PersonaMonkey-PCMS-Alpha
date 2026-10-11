@@ -87,7 +87,12 @@ export function createAlphaHost({ browserRef, personaMonkeyReady, createCore = n
           refreshLedgerStore:refreshLedger,attentionStore,
           personaMonkeyExport:()=>personaEndpoint.backup({version:1,command:'export',consent:UNENCRYPTED_CONSENT})});
         const authority=createProductionBackupAuthority({core,storage:core.storage,facts,
-          refreshLedger,attentionStore,personaEndpoint});
+          refreshLedger,attentionStore,personaEndpoint,
+          // Only a compiled trusted P103 executor can verify a restored
+          // account's LIVE session and unchanged provider source. With no
+          // installed bridge, a nonempty fleet stays RECOVERY_HOLD.
+          perchance:r4Ports?.supply?.perchance??null,
+          contextForAccount:r4Ports?.supply?.contextForAccount??null});
         if(browserRef?.downloads?.onChanged?.addListener && browserRef?.storage?.local){
           const downloads=createFirefoxBackupDownloads({firefox:browserRef});
           backupService=createBackupIntegration({exporter,decodeFile:decodeBackupFile,downloads,authority});

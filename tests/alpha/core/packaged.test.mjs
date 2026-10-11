@@ -146,6 +146,38 @@ test('AP201-01 startup and sender/request authorization', async () => {
   await h.client.command('WebDriver:SwitchToWindow', { handle: original }); probe = original;
   report.checks.startupAuthorizationAndPersonaMonkeyAuthority = true;
 });
+test('AP405-01/03 real packaged Firefox backup download has explicit consent and tracked retention', async () => {
+  const unauthorized=await page(`
+    try {await entry.host.backup.exportToDownloads(clone({consent:'NOT APPROVED'}));return {allowed:true};}
+    catch(error){return {allowed:false,code:(error.wrappedJSObject||error).code};}`);
+  assert.equal(unauthorized.allowed,false);
+  assert.equal(unauthorized.code,'UNENCRYPTED_CONSENT_REQUIRED');
+  const exported=await page(`
+    const result=await entry.host.backup.exportToDownloads(clone({consent:'EXPORT UNENCRYPTED BACKUP'}));
+    return {id:result.downloadId,filename:result.filename,hasBytes:Object.hasOwn(result,'file'),
+      unavailable:result.unavailable};`);
+  assert.equal(Number.isSafeInteger(exported.id),true);
+  assert.match(exported.filename,/^PersonaMonkey-PCMS-Alpha-backups\/.+\.json$/);
+  assert.equal(exported.hasBytes,false);
+  assert.ok(Array.isArray(exported.unavailable));
+  const complete=await waitFor(async()=>{
+    const observed=await page(`const rows=await api.downloads.search(clone({id:data.id}));
+      const current=rows.find(item=>item.id===data.id);return current?{
+        id:current.id,state:current.state,exists:current.exists,filename:current.filename}:null;`,
+      {id:exported.id});
+    return observed?.state==='complete' && observed;
+  },'one authentic Firefox backup download is complete',20000);
+  assert.equal(complete.id,exported.id);
+  assert.ok(complete.filename.replaceAll('\\','/').includes('PersonaMonkey-PCMS-Alpha-backups/'));
+  const kept=await page(`return entry.host.backup.retain();`);
+  assert.equal(kept.retained,1);
+  assert.ok(kept.warnings.includes('UNTRACKED_FILES_NOT_ENUMERABLE'));
+  const tracked=await page(`const manifestData=await api.storage.local.get('alpha.backup.tracked-downloads.v1');
+    return manifestData['alpha.backup.tracked-downloads.v1'];`);
+  assert.equal(tracked.entries.filter(x=>x.id===exported.id && x.state==='COMPLETE').length,1);
+  report.checks.realPackagedBackupDownloadAndTrackedRetention=true;
+});
+
 test('AP201-02 two clients one core', async () => {
   const first = probe, before = await status(), second = await h.openPage(PRODUCT, PAGE);
   assert.equal((await request('accounts.list')).ok, true); const other = await status();
@@ -301,6 +333,6 @@ test('AP201-03 bounded alarms and operation/tab budgets', async () => {
     db.close();return true;`, journal, { core: false });
   assert.equal((await request('accounts.list')).ok, true); assert.equal((await status()).state, 'RUNNING');
   report.checks.boundedTimersOperationsAndTabPermitsNoOperatorTabClosure = true;
-  report.passed = Object.values(report.checks).length === 6 && Object.values(report.checks).every(Boolean);
+  report.passed = Object.values(report.checks).length === 7 && Object.values(report.checks).every(Boolean);
   assert.equal(report.passed, true);
 });

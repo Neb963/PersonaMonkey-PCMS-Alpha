@@ -41,6 +41,11 @@ test('AP102-01/02/03: actual pinned Firefox IndexedDB migrations, races, aborts,
         'extension/alpha/backup/bundle.js',
         'extension/alpha/backup/integration/restore.mjs',
         'extension/alpha/backup/integration/authority.mjs',
+        'extension/alpha/providers/perchance/adapter.mjs',
+        'extension/alpha/providers/perchance/emulator.mjs',
+        'extension/alpha/features/sources/catalog.mjs',
+        'extension/alpha/providers/github/paths.mjs',
+        'extension/alpha/flows/refresh/comment.mjs',
         'tests/alpha/domain/fixtures.js', 'tests/alpha/domain/storage-cases.js',
         'tests/alpha/domain/probe.js', 'tests/alpha/domain/probe.html'
       ];
@@ -72,7 +77,7 @@ test('AP102-01/02/03: actual pinned Firefox IndexedDB migrations, races, aborts,
         if (!body.startsWith('{')) return null;
         const result = JSON.parse(body); assert.equal(result.passed, true, result.error); return result;
       }, 'P102 real IndexedDB cases', 90000);
-      report.storage = await collect(); assert.equal(report.storage.count, 24);
+      report.storage = await collect(); assert.equal(report.storage.count, 26);
       await browser.restart(); await browser.openPage(id, 'tests/alpha/domain/probe.html?stage=restart');
       report.restart = await collect(); assert.equal(report.restart.count, 1);
       report.passed = true;
