@@ -123,7 +123,24 @@ export function decodeInventoryFacts(input) {return decodeFacts(input);}
 export function decodeRestoreLocalSection(input,kind) {
   if (!(input instanceof Uint8Array) || !input.length) fail();
   let decoded;
-  try {decoded=parseAlpha(JSON.parse(td.decode(input)));
+  try {
+    // The legacy Alpha parser deliberately creates null-prototype maps;
+    // Attention's strict v1 ledger requires ordinary JSON record prototypes.
+    // Reject hazardous property names before passing records to validators.
+    const parsed=JSON.parse(td.decode(input));
+    const rejectKeys=(value,depth=0)=>{
+      if(depth>32)throw new Error('bad nesting');
+      if(value && typeof value==='object'){
+        if(Array.isArray(value)) {for(const x of value)rejectKeys(x,depth+1);return;}
+        for(const [key,v] of Object.entries(value)){
+          if(['__proto__','prototype','constructor','__alphaBackupU8'].includes(key))
+            throw new Error('invalid key');
+          rejectKeys(v,depth+1);
+        }
+      }
+    };
+    rejectKeys(parsed);
+    decoded=parsed;
     if (kind==='refreshLedger') validateRefreshState(decoded);
     else if (kind==='attentionInbox') validateAttentionLedger(decoded);
     else fail();
