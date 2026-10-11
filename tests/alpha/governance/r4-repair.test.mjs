@@ -67,3 +67,12 @@ test('one-use final issue100 connected typed-broker tests cannot edit product',(
   assert.throws(()=>validateTransition(main,main,c,{mainSha:sha,headBranch:c.branch,
     files:[...files,'extension/alpha/bootstrap/host.mjs']}),/outside ownership/);
 });
+
+test('R4 P403 premature recovery hold may only be repaired in owner flow',()=>{
+ const c={...ctx('R4-ISSUE100-REFRESH'),authorization:'MAINT-R4-REFRESH-013'};
+ const files=['docs/evidence/alpha/R4-ISSUE100-REFRESH/context.json',
+   'extension/alpha/flows/refresh/service.mjs','tests/alpha/integration/r4/connected.test.mjs'];
+ assert.equal(validateTransition(main,main,c,{mainSha:sha,headBranch:c.branch,files}).kind,'R4_REPAIR');
+ assert.throws(()=>validateTransition(main,main,c,{mainSha:sha,headBranch:c.branch,
+   files:[...files,'extension/alpha/core/core.mjs']}),/outside ownership/);
+});
