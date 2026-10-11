@@ -6,9 +6,10 @@ export const UNENCRYPTED_CONSENT = 'EXPORT UNENCRYPTED BACKUP';
 export const MAX_BACKUP_BYTES = 128 * 1024 * 1024;
 const te = new TextEncoder(), td = new TextDecoder('utf-8', { fatal: true });
 const FACTS_COVERAGE_REVISION = 2;
+const COMPLETE_LOCAL_COVERAGE_REVISION = 3;
 const SHA = /^[0-9a-f]{64}$/;
 const SENSITIVE = Object.freeze(['personaMonkey.cookies', 'personaMonkey.gmValues', 'personaMonkey.routeCredentials', 'alpha.githubCredential']);
-const COMPONENTS = Object.freeze(['alpha.records', 'alpha.journal', 'alpha.inventoryFacts', 'personaMonkey.personas', 'personaMonkey.routes', 'personaMonkey.userscripts', 'personaMonkey.workflows', ...SENSITIVE, 'personaMonkey.activeSessions', 'personaMonkey.nativeCredentials', 'perchance.passwords']);
+const COMPONENTS = Object.freeze(['alpha.records', 'alpha.journal', 'alpha.inventoryFacts', 'alpha.refreshLedger', 'alpha.attentionInbox', 'personaMonkey.personas', 'personaMonkey.routes', 'personaMonkey.userscripts', 'personaMonkey.workflows', ...SENSITIVE, 'personaMonkey.activeSessions', 'personaMonkey.nativeCredentials', 'perchance.passwords']);
 const CODES = new Set(['INVALID_BACKUP', 'INTEGRITY_MISMATCH', 'UNENCRYPTED_CONSENT_REQUIRED', 'EXPORT_UNAVAILABLE', 'BACKUP_TOO_LARGE', 'RECOVERY_HOLD']);
 export class BackupError extends Error {
   constructor(code) { super('Backup operation failed (' + (CODES.has(code) ? code : 'INVALID_BACKUP') + ').'); this.name = 'BackupError'; this.code = CODES.has(code) ? code : 'INVALID_BACKUP'; }
@@ -128,15 +129,20 @@ function normalizeAbsent(items) {
 function verifyManifest(m) {
   const extended = Object.hasOwn(m ?? {}, 'coverageRevision');
   fields(m, extended ? ['version', 'encrypted', 'createdAt', 'hashes', 'absentItems', 'coverageRevision'] : ['version', 'encrypted', 'createdAt', 'hashes', 'absentItems']);
-  if (m.version !== 1 || m.encrypted !== false || (extended && m.coverageRevision !== FACTS_COVERAGE_REVISION)) fail();
+  if (m.version !== 1 || m.encrypted !== false || (extended && ![FACTS_COVERAGE_REVISION, COMPLETE_LOCAL_COVERAGE_REVISION].includes(m.coverageRevision))) fail();
   timestamp(m.createdAt);
   if (!plain(m.hashes) || !SHA.test(m.hashes.alpha) || !SHA.test(m.hashes.personaMonkey)) fail();
   const keys = Object.keys(m.hashes);
-  if (keys.some(k => !['alpha', 'personaMonkey', 'inventoryFacts', ...SENSITIVE].includes(k) || !SHA.test(m.hashes[k])) || keys.length > SENSITIVE.length + 3) fail();
+  if (keys.some(k => !['alpha', 'personaMonkey', 'inventoryFacts', 'refreshLedger', 'attentionInbox', ...SENSITIVE].includes(k) || !SHA.test(m.hashes[k])) || keys.length > SENSITIVE.length + 5) fail();
   const absent = normalizeAbsent(m.absentItems);
   const missing = new Set(absent.map(x => x.item));
   if (missing.has('alpha.records') || missing.has('alpha.journal')) fail();
   const factsHashed = Object.hasOwn(m.hashes, 'inventoryFacts');
+  if (m.coverageRevision === COMPLETE_LOCAL_COVERAGE_REVISION) {
+    for (const [component,section] of [['alpha.refreshLedger','refreshLedger'],['alpha.attentionInbox','attentionInbox']])
+      if (missing.has(component) === Object.hasOwn(m.hashes,section)) fail();
+  } else if (Object.hasOwn(m.hashes,'refreshLedger') || Object.hasOwn(m.hashes,'attentionInbox') ||
+    missing.has('alpha.refreshLedger') || missing.has('alpha.attentionInbox')) fail();
   if (extended) {
     if (missing.has('alpha.inventoryFacts') === factsHashed) fail();
   } else if (factsHashed || missing.has('alpha.inventoryFacts')) fail();
@@ -156,6 +162,8 @@ function checkCoverage(m, personaMonkey, facts) {
     for (const item of ['personaMonkey.personas', 'personaMonkey.routes', 'personaMonkey.userscripts', 'personaMonkey.workflows']) if (!missing.has(item)) fail();
   } else if (missing.has('personaMonkey.personas')) fail();
   for (const item of COMPONENTS) {
+    if (['alpha.refreshLedger','alpha.attentionInbox'].includes(item) &&
+      m.coverageRevision !== COMPLETE_LOCAL_COVERAGE_REVISION) continue;
     if (item === 'alpha.inventoryFacts' && !extended) continue; // Legacy v1: staged preview adds its missing facts.
     if (item.startsWith('personaMonkey.') && !SENSITIVE.includes(item) && !['personaMonkey.activeSessions', 'personaMonkey.nativeCredentials'].includes(item)) continue;
     if (item === 'alpha.records' || item === 'alpha.journal') continue;
@@ -185,21 +193,34 @@ function fieldsSafeMap(input) {
 }
 export async function encodeBackupFile(bundle) {
   const extended = Object.hasOwn(bundle ?? {}, 'inventoryFacts');
-  fields(bundle, extended ? ['manifest', 'personaMonkey', 'alpha', 'authorizedSensitiveEntries', 'inventoryFacts'] : ['manifest', 'personaMonkey', 'alpha', 'authorizedSensitiveEntries']);
+  const full = bundle?.manifest?.coverageRevision === COMPLETE_LOCAL_COVERAGE_REVISION;
+  fields(bundle, full ? ['manifest','personaMonkey','alpha','authorizedSensitiveEntries','inventoryFacts','refreshLedger','attentionInbox'] :
+    extended ? ['manifest', 'personaMonkey', 'alpha', 'authorizedSensitiveEntries', 'inventoryFacts'] :
+    ['manifest', 'personaMonkey', 'alpha', 'authorizedSensitiveEntries']);
   const m = verifyManifest(bundle.manifest);
   const a = bytes(bundle.alpha), p = bytes(bundle.personaMonkey);
   decodeAlpha(a);
   const facts = extended ? bytes(bundle.inventoryFacts) : null;
+  const refreshLedger = full ? bytes(bundle.refreshLedger) : null;
+  const attentionInbox = full ? bytes(bundle.attentionInbox) : null;
   if (extended !== Object.hasOwn(m, 'coverageRevision')) fail();
   if (facts?.length) decodeFacts(facts);
   checkCoverage(m, p, facts);
   const sensitive = fieldsSafeMap(bundle.authorizedSensitiveEntries);
-  const expected = ['alpha', 'personaMonkey', ...(facts?.length ? ['inventoryFacts'] : []), ...Object.keys(sensitive)].sort();
+  const expected = ['alpha','personaMonkey',...(facts?.length?['inventoryFacts']:[]),
+    ...(refreshLedger?.length?['refreshLedger']:[]),
+    ...(attentionInbox?.length?['attentionInbox']:[]),...Object.keys(sensitive)].sort();
   if (JSON.stringify(Object.keys(m.hashes).sort()) !== JSON.stringify(expected)) fail();
   if (await digest(a) !== m.hashes.alpha || await digest(p) !== m.hashes.personaMonkey) fail('INTEGRITY_MISMATCH');
   if (facts?.length && await digest(facts) !== m.hashes.inventoryFacts) fail('INTEGRITY_MISMATCH');
   for (const [key, value] of Object.entries(sensitive)) if (await digest(value) !== m.hashes[key]) fail('INTEGRITY_MISMATCH');
-  const envelope = { format: BACKUP_FORMAT, version: BACKUP_VERSION, manifest: m, manifestSha256: await hash(te.encode(JSON.stringify(m))), alpha: b64(a), personaMonkey: b64(p), authorizedSensitiveEntries: Object.fromEntries(Object.entries(sensitive).map(([k, v]) => [k, b64(v)])), ...(extended ? { inventoryFacts: b64(facts) } : {}) };
+  if (full) {
+    for (const [name,payload] of [['refreshLedger',refreshLedger],['attentionInbox',attentionInbox]])
+      if (payload.length) { if (await digest(payload) !== m.hashes[name]) fail('INTEGRITY_MISMATCH'); }
+      else if (Object.hasOwn(m.hashes,name)) fail();
+  }
+  const envelope = { format: BACKUP_FORMAT, version: BACKUP_VERSION, manifest: m, manifestSha256: await hash(te.encode(JSON.stringify(m))), alpha: b64(a), personaMonkey: b64(p), authorizedSensitiveEntries: Object.fromEntries(Object.entries(sensitive).map(([k, v]) => [k, b64(v)])), ...(extended ? { inventoryFacts: b64(facts) } : {}),
+    ...(full ? {refreshLedger:b64(refreshLedger),attentionInbox:b64(attentionInbox)} : {}) };
   const output = te.encode(JSON.stringify(envelope));
   if (output.length > MAX_BACKUP_BYTES) fail('BACKUP_TOO_LARGE');
   return output;
