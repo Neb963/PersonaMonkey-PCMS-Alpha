@@ -316,3 +316,17 @@ unchanged contract hash and claim epochs. It may only modify
 `extension/alpha/backup/bundle.js`, `tests/alpha/backup/**` and its own
 evidence context. This does not reopen the original used R4-ISSUE99 authority,
 alter phase states, grant a browser executor, or imply P405/GATE-R4 acceptance.
+
+## Bounded final R4 issue-99/100 repair scope (MAINT-R4-FINAL-011)
+
+Operator-authorized 2026-10-11 remediation permits only the separate one-use
+`R4-ISSUE99-RECONCILE` and `R4-ISSUE100-WIRING` contexts, on their exact
+declared branches. This does not reissue consumed #99/#100 claims. The immutable
+Alpha contract hash and epoch vector, current-main base, R4 in-progress state and
+locked R5 are mandatory. Both repairs must merge serially after independent
+Firefox/governance CI. The first owns vetted full-fleet restore verification and
+PersonaMonkey backup mutation fencing; the second owns compiled R4 host graph
+integration via typed existing PersonaMonkey execution and P103 boundaries.
+Neither is authorization to invent live Perchance behavior, silently retry
+uncertain mutations or declare provider-live acceptance. Completion evidence is
+separate from a later independent GATE-R4 acceptance.

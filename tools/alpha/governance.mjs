@@ -70,6 +70,35 @@ export const R4_REPAIRS = Object.freeze({
     paths:Object.freeze(['extension/alpha/backup/bundle.js',
       'tests/alpha/backup/**','docs/evidence/alpha/R4-ISSUE99-COVERAGE/**'])
   }),
+
+  'R4-ISSUE99-RECONCILE': Object.freeze({
+    issue:99,branch:'agent/r4-repair/r4-issue99-reconcile',
+    authorization:'MAINT-R4-FINAL-011',
+    paths:Object.freeze([
+      'extension/alpha/backup/integration/**',
+      'extension/alpha/bootstrap/host.mjs',
+      'extension/background.js',
+      'tests/alpha/backup/**','tests/alpha/core/**',
+      'tests/alpha/domain/**','tests/alpha/browser-baseline/**',
+      'docs/evidence/alpha/R4-ISSUE99-RECONCILE/**'
+    ])
+  }),
+  'R4-ISSUE100-WIRING': Object.freeze({
+    issue:100,branch:'agent/r4-repair/r4-issue100-wiring',
+    authorization:'MAINT-R4-FINAL-011',
+    paths:Object.freeze([
+      'extension/alpha/bootstrap/host.mjs',
+      'extension/alpha/bootstrap/entry.mjs',
+      'extension/alpha/providers/perchance/**',
+      'extension/alpha/flows/supply/**',
+      'extension/alpha/flows/release/**',
+      'extension/alpha/flows/refresh/**',
+      'extension/background.js',
+      'tests/alpha/integration/r4/**','tests/alpha/core/**',
+      'tests/alpha/browser-baseline/**',
+      'docs/evidence/alpha/R4-ISSUE100-WIRING/**'
+    ])
+  }),
   'R4-ISSUE100': Object.freeze({issue:100,branch:'agent/r4-repair/r4-issue100',
     paths:Object.freeze(["extension/alpha/bootstrap/host.mjs", "extension/alpha/flows/supply/service.mjs", "extension/alpha/flows/release/service.mjs", "extension/alpha/flows/refresh/service.mjs", "extension/alpha/features/attention/service.mjs", "extension/alpha/features/tabs/allocator.mjs", "tests/alpha/integration/r4/**", "tests/alpha/core/**", "docs/evidence/alpha/R4-ISSUE100/**"])})
 });
