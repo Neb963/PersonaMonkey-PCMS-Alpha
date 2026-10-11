@@ -76,5 +76,5 @@ test('R4 P403 premature recovery hold may only be repaired in owner flow',()=>{
  assert.equal(validateTransition(main,main,c,{mainSha:sha,headBranch:c.branch,
    files:[...files,'extension/alpha/core/core.mjs','tests/alpha/core/core.test.mjs']}).kind,'R4_REPAIR');
  assert.throws(()=>validateTransition(main,main,c,{mainSha:sha,headBranch:c.branch,
-   files:[...files,'extension/alpha/core/core.mjs']}),/outside ownership/);
+   files:[...files,'extension/alpha/features/ai/controller.mjs']}),/outside ownership/);
 });
