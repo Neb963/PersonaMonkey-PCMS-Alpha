@@ -10,7 +10,7 @@ function inbox(){
     async read(){return structuredClone(validateAttentionLedger(data));},
     change(rev,mutator){
       const next=pending.then(()=>{
-        assert.equal(rev,data.revision);
+        if(rev!==data.revision)throw Object.assign(new Error('STALE_REVISION'),{code:'STALE_REVISION'});
         const value=structuredClone(data);mutator(value);value.revision++;
         data=validateAttentionLedger(value);return structuredClone(data);
       });
@@ -31,7 +31,7 @@ test('R4-ISSUE100 concurrent jobs share one Core tab ceiling while P404 notifica
     expectedRevision:revision,opId:'alert-r4',key:'demo',
     options:{kind:'SYSTEM_WARNING',occurrence:'r4-conflict'}};
   const replies=await Promise.all(Array.from({length:24},()=>attention.raise(req)));
-  assert(replies.every(x=>x.ok===true));
+  assert(replies.every(x=>x.ok===true),JSON.stringify(replies.filter(x=>!x.ok).map(x=>x.error?.code)));
   assert.equal(new Set(replies.map(x=>x.result.id)).size,1);
   assert.equal(sent.length,1);
   assert.equal((await attention.list()).result.items.length,1);
