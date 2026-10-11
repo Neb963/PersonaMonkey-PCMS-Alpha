@@ -440,7 +440,7 @@ export function validateTransition(main, head, context, { mainSha, headBranch, f
       context.authorization === R5_FOUNDATION.authorization &&
       context.previousHash === main.lock.contracts['alpha.contracts.v1'] &&
       context.contractRevision === R5_FOUNDATION.nextRevision &&
-      SHA256.test(context.nextHash) &&
+      /^[a-f0-9]{64}$/.test(context.nextHash) &&
       equal(context.claimEpochs, main.registry.epochs),
       'Invalid R5 foundation identity, contract or epoch fence');
     requireThat(main.lock.contractRevision === R5_FOUNDATION.previousRevision &&
