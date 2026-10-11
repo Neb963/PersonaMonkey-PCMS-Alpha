@@ -136,6 +136,24 @@ export function createInventoryFactsStore({ indexedDB = globalThis.indexedDB, da
         };
       });
     },
+    /** Restore-only authority, called under a durable P201 recovery hold.
+     * The P204 observation DB is separate from P102: no cross-DB atomicity
+     * is claimed. Every fact is normalized before a single strict transaction.
+     */
+    async replaceForRestore(input) {
+      if (!Array.isArray(input) || input.length > 1000000) throw new Error('INVALID_REQUEST');
+      const rows=input.map(normalizeInventoryFact);
+      if (new Set(rows.map(r=>r.key)).size !== rows.length) throw new Error('RECOVERY_HOLD');
+      await transact('readwrite', (store, set, fail) => {
+        const clear=store.clear();clear.onerror=fail;
+        clear.onsuccess=()=>{for(const row of rows){const put=store.put(row);put.onerror=fail;}};
+      });
+      const current=await this.list();
+      const byKey=values=>values.slice().sort((a,b)=>a.key.localeCompare(b.key));
+      if (JSON.stringify(byKey(current)) !== JSON.stringify(byKey(rows)))
+        throw new Error('RECOVERY_HOLD');
+      return {restored:true,count:rows.length,crossStoreAtomic:false};
+    },
     close() { if (connection) connection.then(db => db.close()).catch(() => {}); connection = null; }
   });
 }
