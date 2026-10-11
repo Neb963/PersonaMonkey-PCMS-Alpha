@@ -9,6 +9,9 @@ import {createAttentionStore} from '../../../extension/alpha/features/attention/
 import {createBackupExporter,decodeBackupFile,UNENCRYPTED_CONSENT} from '../../../extension/alpha/backup/bundle.js';
 import {createBackupRestore,RESTORE_CONFIRMATION} from '../../../extension/alpha/backup/integration/restore.mjs';
 import {createProductionBackupAuthority} from '../../../extension/alpha/backup/integration/authority.mjs';
+import {createPerchanceAdapter} from '../../../extension/alpha/providers/perchance/adapter.mjs';
+import {createPerchanceEmulator} from '../../../extension/alpha/providers/perchance/emulator.mjs';
+import {canonicalReleaseId} from '../../../extension/alpha/features/sources/catalog.mjs';
 
 function assert(value) { if (!value) throw new Error('P102 storage assertion failed'); }
 async function rejects(fn, code) {
@@ -38,7 +41,7 @@ const storage = suffix => createAlphaStorage({ dbName: nameFor(suffix), clock: (
  * Alpha host. Browser transport is an inert typed PersonaMonkey emulator;
  * no provider call, cookie, remote account or native profile is involved.
  */
-function restoreRig(label) {
+function restoreRig(label,{brokerRequest=null}={}) {
   const suffix='r4-'+label;
   const storage=createAlphaStorage({dbName:nameFor('integrated-'+suffix),clock:()=>WHEN});
   const control=createControlStore({databaseName:'persona-monkey-pcms-alpha-core-test-'+suffix});
@@ -48,7 +51,7 @@ function restoreRig(label) {
   const values={};
   const session={get:async key=>({[key]:values[key]}),set:async data=>Object.assign(values,data)};
   const alarms={create:()=>{},clear:()=>{}};
-  const broker={request:async()=>{throw Error('Unexpected PersonaMonkey provider dispatch');}};
+  const broker={request:brokerRequest??(async()=>{throw Error('Unexpected PersonaMonkey provider dispatch');})};
   const core=createAlphaCore({storage,control,broker,session,alarms,now:()=>Date.parse(WHEN),
     randomId:()=> 'restore-hold-'+suffix});
   const personaEndpoint={backup:async()=>{throw Error('Unavailable PersonaMonkey section');}};
@@ -59,7 +62,9 @@ export async function runStorageCases() {
   const passed = [];
   const check = async (name, run) => {
     if(name.startsWith('R4-ISSUE99: complete production') ||
-      name.startsWith('R4-ISSUE99: partial cross-DB')){
+      name.startsWith('R4-ISSUE99: partial cross-DB') ||
+      name.startsWith('R4-ISSUE99: nonempty P405') ||
+      name.startsWith('R4-ISSUE99: lost session')){
       let timer;
       try {await Promise.race([run(),new Promise((_,reject)=>{
         timer=setTimeout(()=>reject(new Error('R4_RESTORE_CASE_TIMEOUT:'+name)),20000);
@@ -387,6 +392,112 @@ export async function runStorageCases() {
     assert(verdict.core===false);
     assert((await reopened.core.readStatus()).state==='RECOVERY_HOLD');
     reopened.close();
+  });
+
+
+  await check('R4-ISSUE99: nonempty P405 restore uses actual P103 ownership, session and exact source validation',async()=>{
+    const brokerRequest=async req=>{
+      if(req.command==='persona.get' && req.params.personaUid==='persona-one')
+        return {ok:true,result:{personaUid:'persona-one'}};
+      throw Error('Unsupported broker call');
+    };
+    const h=restoreRig('populated',{brokerRequest});
+    await h.core.initialize();
+    const files={pjs:'source ready',html:'<p>verified</p>',
+      thumbnail:new Uint8Array([255,216,255,217])};
+    const encoded=new TextEncoder();
+    const hash=await canonicalReleaseId({pjs:encoded.encode(files.pjs),
+      html:encoded.encode(files.html),thumbnail:files.thumbnail});
+    const rel=release({releaseId:hash,
+      source:{...release().source,releaseId:hash},files});
+    const emu=createPerchanceEmulator({accountId:'account-one',personaUid:'persona-one',
+      entries:[{name:'generator-one',isPrivate:true,sourceRevision:'r1',files}]});
+    const perchance=createPerchanceAdapter({executor:emu.executor,journal:emu.journal});
+    const verifier={perchance,contextForAccount:async a=>{
+      assert(a.accountId==='account-one' && a.personaUid==='persona-one' && a.epoch===1);
+      return emu.context;
+    }};
+    await h.storage.commit({expectedRevision:0,writes:[
+      write('account',account()),write('generator',generator({
+        listingObserved:'UNLISTED',releaseId:hash,
+        sourceBinding:{...rel.source,status:'READY'}})),write('release',rel)]});
+    const exporter=createBackupExporter({alphaStorage:h.storage,inventoryFactsStore:h.facts,
+      refreshLedgerStore:h.refreshLedger,attentionStore:h.attentionStore,clock:()=>WHEN});
+    const archived=await exporter.exportBackup({consent:UNENCRYPTED_CONSENT});
+    await h.storage.commit({expectedRevision:1,writes:[
+      write('account',account({revision:1,name:'Mutated after backup'}),1)]});
+    const authority=createProductionBackupAuthority({...h,...verifier});
+    const restorer=createBackupRestore({exporter,decodeFile:decodeBackupFile,authority,
+      randomId:()=> 'stage_populated_01'});
+    const preview=await restorer.stage(archived.file);
+    const applied=await restorer.apply({id:preview.id,digest:preview.digest,
+      confirmation:RESTORE_CONFIRMATION});
+    assert(applied.state==='RUNNING' && applied.released===true);
+    assert((await h.storage.read('account','account-one')).item.record.name==='Synthetic account');
+    assert((await h.storage.read('generator','generator-one')).item.record.releaseId===hash);
+    assert((await h.core.readStatus()).state==='RUNNING');
+    assert(emu.calls.some(c=>c.kind==='inventory') && emu.calls.some(c=>c.kind==='read'));
+    assert(!emu.calls.some(c=>['save','setListing','create','delete'].includes(c.kind)));
+    h.close();
+  });
+
+  await check('R4-ISSUE99: lost session and stale Persona binding hold, source drift remains held across restart',async()=>{
+    const brokerRequest=async req=>{
+      if(req.command==='persona.get' && req.params.personaUid==='persona-one')
+        return {ok:true,result:{personaUid:'persona-one'}};
+      throw Error('Unsupported broker call');
+    };
+    const h=restoreRig('reverify',{brokerRequest});
+    await h.core.initialize();
+    const files={pjs:'source stable',html:'<p>versioned</p>',
+      thumbnail:new Uint8Array([255,216,255,217])};
+    const encoder=new TextEncoder();
+    const hash=await canonicalReleaseId({pjs:encoder.encode(files.pjs),
+      html:encoder.encode(files.html),thumbnail:files.thumbnail});
+    const rel=release({releaseId:hash,source:{...release().source,releaseId:hash},files});
+    const emu=createPerchanceEmulator({accountId:'account-one',personaUid:'persona-one',
+      entries:[{name:'generator-one',isPrivate:true,sourceRevision:'r1',files}]});
+    const perchance=createPerchanceAdapter({executor:emu.executor,journal:emu.journal});
+    const readback={perchance,contextForAccount:async()=>emu.context};
+    await h.storage.commit({expectedRevision:0,writes:[
+      write('account',account({sessionState:'VERIFIED'})), // archived state is never trusted
+      write('generator',generator({listingObserved:'UNLISTED',releaseId:hash,
+        sourceBinding:{...rel.source,status:'READY'}})),write('release',rel)]});
+    const exporter=createBackupExporter({alphaStorage:h.storage,inventoryFactsStore:h.facts,
+      refreshLedgerStore:h.refreshLedger,attentionStore:h.attentionStore,clock:()=>WHEN});
+    const archived=await exporter.exportBackup({consent:UNENCRYPTED_CONSENT});
+    await h.storage.commit({expectedRevision:1,writes:[
+      write('account',account({revision:1,sessionState:'UNKNOWN'}),1)]});
+    const authority=createProductionBackupAuthority({...h,...readback});
+    const restorer=createBackupRestore({exporter,decodeFile:decodeBackupFile,authority,
+      randomId:()=> 'stage_reverify_01'});
+    const preview=await restorer.stage(archived.file);
+    emu.setSession('WAITING_HUMAN');
+    const held=await restorer.apply({id:preview.id,digest:preview.digest,
+      confirmation:RESTORE_CONFIRMATION});
+    assert(held.state==='RECOVERY_HOLD' && held.unresolved.includes('sessions') &&
+      held.unresolved.includes('providers'));
+    const holdId=held.holdId;
+    emu.setSession('VERIFIED');
+    emu.changeRemote('generator-one',{files:{...files,pjs:'unapproved source drift'},
+      sourceRevision:'r2'});
+    const drift=await restorer.resumeReconciliation({holdId});
+    assert(drift.state==='RECOVERY_HOLD' && drift.unresolved.includes('providers'));
+    emu.corruptBinding('epoch',2);
+    const stale=await restorer.resumeReconciliation({holdId});
+    assert(stale.state==='RECOVERY_HOLD' && stale.unresolved.includes('sessions'));
+    h.close();
+    const again=restoreRig('reverify',{brokerRequest});
+    await again.core.initialize();
+    emu.corruptBinding('epoch',1);
+    emu.changeRemote('generator-one',{files,sourceRevision:'r3'});
+    const reconciler=createBackupRestore({exporter,decodeFile:decodeBackupFile,
+      authority:createProductionBackupAuthority({...again,...readback}),
+      randomId:()=> 'stage_reverify_02'});
+    const recovered=await reconciler.resumeReconciliation({holdId});
+    assert(recovered.state==='RUNNING' && recovered.released===true);
+    assert((await again.core.readStatus()).state==='RUNNING');
+    again.close();
   });
 
   const durable = storage('browser-restart');
