@@ -78,11 +78,12 @@ async function fixture() {
     } }; },
     async save(input) {
       assert.equal(input.expectedSourceRevision, String(revision));
-      assert.equal(journal.get(input.opId)?.phase, 'DISPATCHING');
+      assert.equal(journal.get(input.opId)?.phase, 'PREPARED');
       if (cause === 'BEFORE_WRITE') throw new Error('lost transport');
       saves++;
       source = copyFiles(input.files);
       revision++;
+      journal.get(input.opId).phase = cause === 'AFTER_WRITE' ? 'UNCERTAIN' : 'APPLIED';
       if (cause === 'AFTER_WRITE') throw new Error('lost response');
       return this.read();
     }
@@ -91,15 +92,6 @@ async function fixture() {
     async prepare(op) {
       assert.equal(journal.has(op.opId), false);
       journal.set(op.opId, { ...op, phase: 'PREPARED' });
-    },
-    async dispatch(opId) {
-      assert.equal(journal.get(opId)?.phase,'PREPARED');
-      journal.get(opId).phase='DISPATCHING';
-    },
-    async complete(opId,{phase,remoteEvidence}){
-      assert.equal(journal.get(opId)?.phase,'DISPATCHING');
-      assert(['APPLIED','UNCERTAIN','HELD','NOT_APPLIED'].includes(phase));
-      Object.assign(journal.get(opId),{phase,remoteEvidence});
     },
     async read(id) { return journal.get(id) ?? null; }
   };
