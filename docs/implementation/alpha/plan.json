@@ -99,7 +99,7 @@
         "P505"
       ],
       "gateId": "GATE-R5",
-      "status": "READY"
+      "status": "IN_PROGRESS"
     },
     {
       "round": 6,
@@ -853,7 +853,7 @@
       "round": 5,
       "agent": 2,
       "title": "Accounts and generator management UI",
-      "status": "READY",
+      "status": "CLAIMED",
       "dependsOn": [
         "P202",
         "P204",
