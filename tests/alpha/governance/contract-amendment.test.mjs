@@ -28,7 +28,7 @@ test('keyed account-list items, unchanged readback and pagination declarations',
  for(const method of ['read','observe','create','save','setListing','delete'])assert.match(d,new RegExp(method+'\\([^\\n]+Promise<Result<ProviderReadback>>'));
  assert.match(d,/export interface ProviderReadback \{ readonly sourceRevision: string \| null; readonly files\?: DeployableFiles; readonly listing: ListingObserved; readonly ownership: 'CONFIRMED' \| 'UNKNOWN'; readonly asOf: string \}/);
  assert.match(d,/export interface Page<T> \{ readonly items: readonly T\[\]; readonly cursor: string \| null; readonly asOf: string \}/);
- assert.equal(contractHash(),AMENDMENT.nextHash);assert.equal(validateSnapshot(historicalHead).activeClaims,4);assert.equal(validateSnapshot(load(),{root:'.'}).phases,30);
+ assert.equal(contractHash(),load().lock.contracts['alpha.contracts.v1']);assert.equal(validateSnapshot(historicalHead).activeClaims,4);assert.equal(validateSnapshot(load(),{root:'.'}).phases,30);
 });
 test('account-discovery conformance fixture rejects bad and duplicate keys across cursor pages',()=>{
  // Test-only pagination fixture; use P102's canonical key authority, not a second regex.

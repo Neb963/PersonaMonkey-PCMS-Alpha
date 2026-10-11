@@ -4,7 +4,8 @@ import { load, validateTransition, P303_REPAIR } from '../../../tools/alpha/gove
 
 // The repair leaves accepted R3 and the active R4 agents completely unchanged.
 // Ownership is deliberately more restrictive than the original P303 claim.
-const main = load('.');
+// Fixed pre-R5 contract snapshot: accepted R3 readers are v2.
+const main = load('.', '16e53125c3dcab2dfbd3284273dd1b15f6e5367f');
 const mainSha = 'a'.repeat(40);
 const context = {
   schemaVersion: 1, kind: 'REPAIR', phaseId: 'P303', repairId: 'P303-ISSUE85',
