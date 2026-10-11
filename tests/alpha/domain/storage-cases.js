@@ -255,6 +255,47 @@ export async function runStorageCases() {
     assert(snapshot.records[0].revision === JOURNAL_LIMIT + 3); reopened.close();
   });
 
+
+  await check('R4-ISSUE99: authenticated P102 journal restore is atomic and survives reopening', async () => {
+    const s = storage('r4-restore-atomic');
+    await s.open();
+    const source = await s.snapshot();
+    assert(source.revision === 0);
+    await s.commit({expectedRevision:0,writes:[write('account',account())]});
+    const populated = await s.snapshot();
+    await s.commit({expectedRevision:1,writes:[write('account',account({revision:1,name:'Changed after archive'}),1)]});
+    await rejects(() => s.restoreSnapshot({snapshot:populated,expectedRevision:1}), 'STALE_REVISION');
+    const before = await s.snapshot();
+    const tampered = structuredClone(populated);
+    tampered.records[0].record.name = 'Tampered but checksum not updated';
+    await rejects(() => s.restoreSnapshot({snapshot:tampered,expectedRevision:2}), 'RECOVERY_HOLD');
+    assert(JSON.stringify((await s.snapshot()).records) === JSON.stringify(before.records));
+    const applied = await s.restoreSnapshot({snapshot:populated,expectedRevision:2});
+    assert(applied.restored && applied.requiresReconciliation && applied.revision === 1);
+    assert((await s.read('account','account-one')).item.record.name === 'Synthetic account');
+    s.close();
+    const reopened=storage('r4-restore-atomic');
+    assert((await reopened.snapshot()).revision === 1);
+    assert((await reopened.read('account','account-one')).item.record.name === 'Synthetic account');
+    // A stale snapshot can be a deliberate whole-state restore, but never
+    // a receipt for a still-live provider operation.
+    reopened.close();
+  });
+
+  await check('R4-ISSUE99: P102 restore rejects malformed journal, duplicate rows and CAS mismatch', async () => {
+    const s = storage('r4-restore-corrupt');
+    await s.commit({expectedRevision:0,writes:[write('account',account())]});
+    const source=await s.snapshot(), duplicate=structuredClone(source);
+    duplicate.records.push(structuredClone(duplicate.records[0]));
+    await rejects(()=>s.restoreSnapshot({snapshot:duplicate,expectedRevision:1}),'RECOVERY_HOLD');
+    const interrupted=structuredClone(source);
+    interrupted.journal[0].checksum='0'.repeat(64);
+    await rejects(()=>s.restoreSnapshot({snapshot:interrupted,expectedRevision:1}),'RECOVERY_HOLD');
+    await rejects(()=>s.restoreSnapshot({snapshot:source,expectedRevision:0}),'STALE_REVISION');
+    assert((await s.snapshot()).revision===1);
+    s.close();
+  });
+
   const durable = storage('browser-restart');
   await durable.commit({ expectedRevision: 0, writes: [write('account', account()), write('generator', generator()), write('release', release()), write('operation', operation())] });
   await durable.commit({ expectedRevision: 1, writes: [write('operation', operation({ phase: 'DISPATCHING' }), 1)] }); durable.close();
