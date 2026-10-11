@@ -1,6 +1,14 @@
 import { createAlphaStorage } from '../../../extension/alpha/storage/store.js';
 import { openAlphaDatabase, ALPHA_MIGRATIONS, RECORDS, JOURNAL, META, JOURNAL_LIMIT } from '../../../extension/alpha/storage/migrations.js';
 import { account, generator, release, operation, write, WHEN } from './fixtures.js';
+import {createAlphaCore} from '../../../extension/alpha/core/core.mjs';
+import {createControlStore} from '../../../extension/alpha/core/control-store.mjs';
+import {createInventoryFactsStore} from '../../../extension/alpha/features/inventory/facts.mjs';
+import {createRefreshLedger} from '../../../extension/alpha/flows/refresh/ledger.mjs';
+import {createAttentionStore} from '../../../extension/alpha/features/attention/store.mjs';
+import {createBackupExporter,decodeBackupFile,UNENCRYPTED_CONSENT} from '../../../extension/alpha/backup/bundle.js';
+import {createBackupRestore,RESTORE_CONFIRMATION} from '../../../extension/alpha/backup/integration/restore.mjs';
+import {createProductionBackupAuthority} from '../../../extension/alpha/backup/integration/authority.mjs';
 
 function assert(value) { if (!value) throw new Error('P102 storage assertion failed'); }
 async function rejects(fn, code) {
@@ -26,6 +34,27 @@ async function rawTransaction(db, store, mode, action) {
 const nameFor = suffix => 'persona-monkey-pcms-alpha-test-' + suffix;
 const storage = suffix => createAlphaStorage({ dbName: nameFor(suffix), clock: () => WHEN });
 
+/** Same production P102/P201/P204/P403/P404 implementations used by the
+ * Alpha host. Browser transport is an inert typed PersonaMonkey emulator;
+ * no provider call, cookie, remote account or native profile is involved.
+ */
+function restoreRig(label) {
+  const suffix='r4-'+label;
+  const storage=createAlphaStorage({dbName:nameFor('integrated-'+suffix),clock:()=>WHEN});
+  const control=createControlStore({databaseName:'persona-monkey-pcms-alpha-core-test-'+suffix});
+  const facts=createInventoryFactsStore({databaseName:'persona-monkey-alpha-inventory-facts-test-'+suffix});
+  const refreshLedger=createRefreshLedger({databaseName:'persona-monkey-alpha-refresh-test-'+suffix});
+  const attentionStore=createAttentionStore({databaseName:'persona-monkey-pcms-alpha-attention-test-'+suffix});
+  const values={};
+  const session={get:async key=>({[key]:values[key]}),set:async data=>Object.assign(values,data)};
+  const alarms={create:()=>{},clear:()=>{}};
+  const broker={request:async()=>{throw Error('Unexpected PersonaMonkey provider dispatch');}};
+  const core=createAlphaCore({storage,control,broker,session,alarms,now:()=>Date.parse(WHEN),
+    randomId:()=> 'restore_hold_'+suffix});
+  const personaEndpoint={backup:async()=>{throw Error('Unavailable PersonaMonkey section');}};
+  return {storage,control,facts,refreshLedger,attentionStore,core,personaEndpoint,session,alarms,broker,
+    close(){core.close();facts.close();refreshLedger.close();attentionStore.close();}};
+}
 export async function runStorageCases() {
   const passed = [];
   const check = async (name, run) => { await run(); passed.push(name); };
@@ -294,6 +323,61 @@ export async function runStorageCases() {
     await rejects(()=>s.restoreSnapshot({snapshot:source,expectedRevision:0,holdId:'restore_test_001'}),'STALE_REVISION');
     assert((await s.snapshot()).revision===1);
     s.close();
+  });
+
+  await check('R4-ISSUE99: complete production P405 archive restores P102/P201 and three actual IndexedDB ledgers',async()=>{
+    const h=restoreRig('full');
+    await h.core.initialize();
+    const exporter=createBackupExporter({alphaStorage:h.storage,inventoryFactsStore:h.facts,
+      refreshLedgerStore:h.refreshLedger,attentionStore:h.attentionStore,clock:()=>WHEN});
+    const exportReceipt=await exporter.exportBackup({consent:UNENCRYPTED_CONSENT});
+    assert(exportReceipt.bundle.manifest.coverageRevision===3);
+    assert(exportReceipt.bundle.manifest.absentItems.some(x=>x.item==='personaMonkey.personas'));
+    await h.storage.commit({expectedRevision:0,writes:[write('account',account())]});
+    const authority=createProductionBackupAuthority(h);
+    const restore=createBackupRestore({exporter,decodeFile:decodeBackupFile,authority,
+      randomId:()=> 'stage_full_001'});
+    const preview=await restore.stage(exportReceipt.file);
+    assert(preview.integrityVerified===true && preview.supported===true);
+    const result=await restore.apply({id:preview.id,digest:preview.digest,confirmation:RESTORE_CONFIRMATION});
+    assert(result.state==='RUNNING' && result.released===true);
+    assert((await h.storage.snapshot()).revision===0);
+    assert((await h.storage.read('account','account-one')).item===null);
+    assert((await h.storage.restoreReceipt()).holdId!==null);
+    assert((await h.core.readStatus()).state==='RUNNING');
+    assert((await h.facts.list()).length===0);
+    assert((await h.refreshLedger.read()).revision===0);
+    assert((await h.attentionStore.read()).revision===0);
+    h.close();
+  });
+
+  await check('R4-ISSUE99: partial cross-DB restore stays durably held across actual Core reconstruction',async()=>{
+    const h=restoreRig('interrupted');
+    await h.core.initialize();
+    const exporter=createBackupExporter({alphaStorage:h.storage,inventoryFactsStore:h.facts,
+      refreshLedgerStore:h.refreshLedger,attentionStore:h.attentionStore,clock:()=>WHEN});
+    const exported=await exporter.exportBackup({consent:UNENCRYPTED_CONSENT});
+    await h.storage.commit({expectedRevision:0,writes:[write('account',account())]});
+    const brokenFacts={list:()=>h.facts.list(),replaceForRestore:async()=>{throw Error('test induced cross-store interruption');}};
+    const authority=createProductionBackupAuthority({...h,facts:brokenFacts});
+    const restore=createBackupRestore({exporter,decodeFile:decodeBackupFile,authority,
+      randomId:()=> 'stage_int_001'});
+    const preview=await restore.stage(exported.file);
+    await rejects(()=>restore.apply({id:preview.id,digest:preview.digest,
+      confirmation:RESTORE_CONFIRMATION}),'RECOVERY_HOLD');
+    const control=await h.control.read();
+    assert(control.recoveryReason==='RESTORE_PENDING' && control.restore.phase==='PREPARED');
+    assert((await h.storage.restoreReceipt()).holdId===control.restore.holdId);
+    h.close();
+    const reopened=restoreRig('interrupted');
+    await reopened.core.initialize();
+    assert((await reopened.core.restore.status({holdId:control.restore.holdId})).phase==='PREPARED');
+    await rejects(()=>reopened.core.assertMutationAllowed(),'RECOVERY_HOLD');
+    const recovered=createProductionBackupAuthority(reopened);
+    const verdict=await recovered.reconcile({holdId:control.restore.holdId});
+    assert(verdict.core===false);
+    assert((await reopened.core.readStatus()).state==='RECOVERY_HOLD');
+    reopened.close();
   });
 
   const durable = storage('browser-restart');
