@@ -15,9 +15,11 @@ async function digest(value) {
 }
 
 function validateMeta(input) {
-  const m = exact(input, ['id', 'schemaVersion', 'revision', 'journalLimit']);
+  const m = exact(input, ['id', 'schemaVersion', 'revision', 'journalLimit'], ['restoreHoldId']);
   requireData(m.id === 'state' && m.schemaVersion === 1 && m.journalLimit === JOURNAL_LIMIT, 'RECOVERY_HOLD');
   revision(m.revision);
+  if (m.restoreHoldId !== undefined) requireData(typeof m.restoreHoldId === 'string' &&
+    /^[a-zA-Z0-9_-]{8,128}$/.test(m.restoreHoldId),'RECOVERY_HOLD');
   return m;
 }
 
@@ -217,8 +219,15 @@ export function createAlphaStorage({ openDatabase = openAlphaDatabase, clock = (
      * establish a durable Core restore hold before entering this authority.
      * Every failure aborts the entire transaction, preserving the old snapshot.
      */
-    async restoreSnapshot({snapshot, expectedRevision} = {}) {
+    async restoreReceipt() {
+      const snapshot = await readSelection(await connection(), [], null, true);
+      return snapshot.meta.restoreHoldId === undefined ? null :
+        {holdId:snapshot.meta.restoreHoldId,durable:true,revision:snapshot.meta.revision};
+    },
+    async restoreSnapshot({snapshot, expectedRevision, holdId} = {}) {
       revision(expectedRevision);
+      requireData(typeof holdId === 'string' && /^[a-zA-Z0-9_-]{8,128}$/.test(holdId),
+        'INVALID_REQUEST');
       const restored = await validateRestoreSnapshot(snapshot);
       const active = await connection();
       const original = await readSelection(active, [], null, true);
@@ -232,7 +241,7 @@ export function createAlphaStorage({ openDatabase = openAlphaDatabase, clock = (
           watch(records.clear()); watch(journal.clear());
           for (const row of restored.records) watch(records.put(row));
           for (const entry of restored.journal) watch(journal.put(entry));
-          watch(meta.put({ ...current, revision: restored.revision }));
+          watch(meta.put({ ...current, revision: restored.revision, restoreHoldId: holdId }));
         });
       });
       const verified = await readSelection(active, [], null, true);
@@ -240,7 +249,7 @@ export function createAlphaStorage({ openDatabase = openAlphaDatabase, clock = (
         canonical(verified.records.sort((a,b)=>a.id.localeCompare(b.id))) ===
           canonical(restored.records.sort((a,b)=>a.id.localeCompare(b.id))) &&
         canonical(verified.journal) === canonical(restored.journal), 'RECOVERY_HOLD');
-      return {revision: verified.meta.revision, records: verified.records.length,
+      return {revision: verified.meta.revision, holdId, records: verified.records.length,
         journal: verified.journal.length, restored: true, requiresReconciliation: true};
     },
     async commit(input) {
