@@ -58,3 +58,12 @@ test('R4 P405 reconciliation evidence is one-use and cannot change product or go
     assert.throws(()=>validateTransition(main,main,c,{mainSha:sha,headBranch:c.branch,
       files:[...allowed,path]}),/outside ownership/);
 });
+
+test('one-use final issue100 connected typed-broker tests cannot edit product',()=>{
+  const c={...ctx('R4-ISSUE100-FINAL'),authorization:'MAINT-R4-EVIDENCE-012'};
+  const files=['docs/evidence/alpha/R4-ISSUE100-FINAL/context.json',
+    'tests/alpha/integration/r4/connected.test.mjs'];
+  assert.equal(validateTransition(main,main,c,{mainSha:sha,headBranch:c.branch,files}).kind,'R4_REPAIR');
+  assert.throws(()=>validateTransition(main,main,c,{mainSha:sha,headBranch:c.branch,
+    files:[...files,'extension/alpha/bootstrap/host.mjs']}),/outside ownership/);
+});
