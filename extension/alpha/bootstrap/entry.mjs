@@ -3,11 +3,17 @@ import { authorizeSender, failure, UI_TYPE } from '../core/ui.mjs';
 import { NEXT_ALARM, HEARTBEAT_ALARM } from '../core/core.mjs';
 
 const SINGLETON = Symbol.for('persona-monkey.alpha.background.v1');
-export function installAlphaBackground({ browserRef = globalThis.browser, scope = globalThis, createHost = createAlphaHost } = {}) {
+export function installAlphaBackground({
+  browserRef = globalThis.browser, scope = globalThis, createHost = createAlphaHost,
+  // Background bootstrap only. No UI, content-script, external message or
+  // stored JSON can supply this capability-bearing object.
+  r4Ports = null
+} = {}) {
   if (scope[SINGLETON]) return scope[SINGLETON];
   let resolveBootstrap, bootstrapSet = false;
   const ready = new Promise(resolve => { resolveBootstrap = resolve; });
-  const host = createHost({ browserRef, personaMonkeyReady: async () => { const bootstrap = await ready; await bootstrap(); } });
+  const host = createHost({ browserRef, r4Ports,
+    personaMonkeyReady: async () => { const bootstrap = await ready; await bootstrap(); } });
   const safeWake = () => { void host.wake().catch(() => {}); };
   const entry = Object.freeze({
     host,
