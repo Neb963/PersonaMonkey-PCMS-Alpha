@@ -991,7 +991,11 @@ async function handlePcmsBackup(request){
       throw new Error('PersonaMonkey backup preview expired or mismatched');
     // Remove before possibly ambiguous remote mutation; never retry blindly.
     pendingAlphaBackupImports.delete(request.authorizationId);
-    await importState(null,'replace',request.authorizationId);
+    // Apply through PersonaMonkey's existing lease-aware local mutation
+    // fence. A Core restore hold does not by itself revoke independent
+    // PersonaMonkey execution/control leases or tab activity.
+    await localMutationFence(allPersonaUids,
+      () => importState(null,'replace',request.authorizationId));
     const restored=await getState();
     if(!restored || !restored.profiles || !restored.routes)
       throw new Error('PersonaMonkey restore needs reconciliation');
