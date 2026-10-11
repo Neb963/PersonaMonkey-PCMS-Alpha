@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import {createSupplyFlow} from '../../../../extension/alpha/flows/supply/service.mjs';
 import {createR4Flows} from '../../../../extension/alpha/bootstrap/host.mjs';
+import {installAlphaBackground} from '../../../../extension/alpha/bootstrap/entry.mjs';
 import {createReleaseFlow} from '../../../../extension/alpha/flows/release/service.mjs';
 import {createRefreshExecution} from '../../../../extension/alpha/flows/refresh/service.mjs';
 import {emptyRefreshState,validateRefreshState} from '../../../../extension/alpha/flows/refresh/ledger.mjs';
@@ -372,4 +373,45 @@ test('R4-ISSUE100 post-stage rollback delegates P302 verification and remains un
   assert.equal(generator.listingObserved,'UNLISTED');
   assert.equal(z.h.emulator.listRemote()[0].isPrivate,true);
   assert.equal(z.gitState().writes,0);
+});
+
+test('R4-ISSUE100: static startup forwards only background-compiled provider object into one host',async()=>{
+  const scope={}, events=()=>({addListener(){}});
+  const browserRef={runtime:{onMessage:events(),onStartup:events(),onInstalled:events()},
+    alarms:{onAlarm:events()}};
+  const r4Ports={source:'trusted-compiled-provider'};
+  let calls=0,received;
+  const fakeHost=({r4Ports:ports,personaMonkeyReady})=>{
+    calls++;received=ports;
+    return {wake:()=>personaMonkeyReady(),handleUi:async()=>({ok:false}),
+      handleAlarm:async()=>{}};
+  };
+  const entry=installAlphaBackground({browserRef,scope,r4Ports,createHost:fakeHost});
+  assert.equal(entry,installAlphaBackground({browserRef,scope,
+    r4Ports:{source:'untrusted-replacement'},createHost:fakeHost}));
+  assert.equal(calls,1);
+  assert.strictEqual(received,r4Ports);
+  let count=0;
+  assert.equal(entry.setPersonaMonkeyBootstrap(async()=>{count++;}),true);
+  assert.equal(entry.setPersonaMonkeyBootstrap(async()=>{throw Error('untrusted second bootstrap');}),false);
+  await entry.host.wake();
+  assert.equal(count,2); // safeWake at bootstrap registration plus explicit wake
+});
+test('R4-ISSUE100: mixed P103 executors or source catalogues cannot be composed in one Core',async()=>{
+  const z=await connected();
+  assert(z.releaseFlow && z.refreshFlow);
+  const core=z.core, ledger={read:async()=>emptyRefreshState()},
+    attention={raise:async()=>receipt({})};
+  const provider=z.h.provider, catalogs=z.catalog;
+  const common={provider,journal:z.h.journal};
+  const supply={perchance:provider,sources:catalogs,
+    contextForAccount:async()=>z.h.emulator.context};
+  for(const ports of [
+    {supply:{...supply,perchance:{}},release:{...common,sourceCatalog:catalogs},
+      refresh:{...common}},
+    {supply,release:{...common,sourceCatalog:{}},
+      refresh:{...common}},
+    {supply,release:{...common,sourceCatalog:catalogs},
+      refresh:{...common,journal:{}}}
+  ])assert.throws(()=>createR4Flows({core,ports,ledger,attention}),TypeError);
 });
