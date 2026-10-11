@@ -305,3 +305,14 @@ merge. A draft, pending check or stale owner comment is not authorization.
 ## Single-use, bounded R4 #99/#100 repair exception (MAINT-R4-REPAIR-SCOPE-009)
 
 The operator's 2026-10-11 repair assignment authorizes, subject to this independently approved trusted-validator amendment, two narrowly scoped **serialized** changes: `R4-ISSUE99` for storage/Core/PersonaMonkey backup restore and `R4-ISSUE100` for R4-host deterministic integration. Each owns only its paths enumerated by `R4_REPAIRS` in trusted `tools/alpha/governance.mjs`. The issue number, exact branch, agent, frozen contract hash, complete claim-epoch vector and current main are mandatory. The repair context must not exist in predecessor main. No reassignment, owner takeover, R5 unlock, acceptance, or LIVE claim is implied. **Frozen contract changes still require a separate authorized amendment**. A new ordinary maintenance PR with operator's exact-head `OWNER_PR_COMMENT_V1` attestation must merge first. 
+
+## R4 backup coverage follow-up (MAINT-R4-COVERAGE-SCOPE-010)
+
+Only after an independently approved owner-attested maintenance PR merges,
+`R4-ISSUE99-COVERAGE` may make **one** narrowly scoped correction to the
+P205/P405 archive completeness ledger and its tests. It must run from
+`agent/r4-repair/r4-issue99-coverage` at the exact current-main SHA with the
+unchanged contract hash and claim epochs. It may only modify
+`extension/alpha/backup/bundle.js`, `tests/alpha/backup/**` and its own
+evidence context. This does not reopen the original used R4-ISSUE99 authority,
+alter phase states, grant a browser executor, or imply P405/GATE-R4 acceptance.
