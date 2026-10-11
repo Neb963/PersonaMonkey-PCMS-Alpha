@@ -7,6 +7,35 @@
 // never receives PersonaMonkey service objects through this module.
 
 export const PCMS_INTERNAL_BROKER_ENDPOINT_CONTRACT = "pcms.persona-broker.internal-endpoint/v1";
+/** Additive internal-only typed backup capability. Not an Integration-v1 command.
+ * It cannot be reached by runtime.sendMessage or an external extension.
+ * PersonaMonkey remains the only execution/state mutation authority. */
+export const PCMS_INTERNAL_BACKUP_ENDPOINT_CONTRACT = "pcms.persona-broker.backup/v1";
+const BACKUP_MAX_BYTES=128*1024*1024;
+function validateBackupRequest(raw) {
+  if(!raw || typeof raw!=='object' || Array.isArray(raw) ||
+      Object.getPrototypeOf(raw)!==Object.prototype || raw.version!==1 ||
+      !['export','previewImport','commitImport'].includes(raw.command))
+    throw new TypeError('Invalid typed PersonaMonkey backup request');
+  const keys=Object.keys(raw).sort().join(',');
+  const expected={
+    export:'command,consent,version',
+    previewImport:'bytes,command,consent,holdId,version',
+    commitImport:'authorizationId,command,consent,holdId,version'
+  }[raw.command];
+  if(keys!==expected || raw.consent!=='RESTORE UNENCRYPTED BACKUP' && raw.consent!=='EXPORT UNENCRYPTED BACKUP')
+    throw new TypeError('Unapproved backup request');
+  if(raw.command==='export' && raw.consent!=='EXPORT UNENCRYPTED BACKUP')throw new TypeError('Export consent required');
+  if(raw.command!=='export' && raw.consent!=='RESTORE UNENCRYPTED BACKUP')throw new TypeError('Restore consent required');
+  if(raw.command==='previewImport' && (!(raw.bytes instanceof Uint8Array) ||
+    !raw.bytes.length || raw.bytes.byteLength>BACKUP_MAX_BYTES))
+    throw new TypeError('Invalid backup bytes');
+  if(raw.command!=='export' && (typeof raw.holdId!=='string' ||
+     !/^[a-zA-Z0-9_-]{8,128}$/.test(raw.holdId)))throw new TypeError('Invalid restore hold');
+  if(raw.command==='commitImport' && (typeof raw.authorizationId!=='string' ||
+    !/^[a-zA-Z0-9_-]{8,128}$/.test(raw.authorizationId)))throw new TypeError('Invalid import authorization');
+  return raw;
+}
 export const PCMS_INTERNAL_BROKER_EVENTS_PORT_NAME = "PCMS_PERSONA_BROKER_EVENTS";
 export const PCMS_INTERNAL_BROKER_INTEGRATION_EVENTS_PORT = "PERSONAMONKEY_INTEGRATION_EVENTS";
 
@@ -32,7 +61,8 @@ function validateHandler(handler) {
   return Object.freeze({
     ready: handler.ready,
     handleRequest: handler.handleRequest,
-    attachEvents: handler.attachEvents
+    attachEvents: handler.attachEvents,
+    handleBackup: typeof handler.handleBackup === 'function' ? handler.handleBackup : null
   });
 }
 
@@ -102,6 +132,13 @@ export function createPcmsInternalBrokerEndpointRegistry() {
         try { response = await current.handleRequest(request); }
         catch (error) { throw sanitizedError(error); }
         return cloneData(response);
+      },
+      async backup(request) {
+        const parsed=validateBackupRequest(cloneData(request));
+        const current=await readyHandler();
+        if(typeof current.handleBackup!=='function')throw new Error('PersonaMonkey typed backup unsupported');
+        try {return cloneData(await current.handleBackup(parsed));}
+        catch(error){throw sanitizedError(error);}
       },
       openEvents(portName, onEvent) {
         if (portName !== PCMS_INTERNAL_BROKER_INTEGRATION_EVENTS_PORT || typeof onEvent !== "function") {
