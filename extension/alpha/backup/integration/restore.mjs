@@ -16,6 +16,8 @@ function requiredSections(bundle) {
   const m=bundle.manifest, absent=new Set(m.absentItems.map(x=>x.item));
   const components = ['alpha.records','alpha.journal'];
   if (!absent.has('alpha.inventoryFacts') && bundle.inventoryFacts?.length) components.push('alpha.inventoryFacts');
+  if (!absent.has('alpha.refreshLedger') && bundle.refreshLedger?.length) components.push('alpha.refreshLedger');
+  if (!absent.has('alpha.attentionInbox') && bundle.attentionInbox?.length) components.push('alpha.attentionInbox');
   for (const item of ['personaMonkey.personas','personaMonkey.routes','personaMonkey.userscripts','personaMonkey.workflows']) if (!absent.has(item)) components.push(item);
   for (const item of Object.keys(bundle.authorizedSensitiveEntries)) components.push(item);
   return components;

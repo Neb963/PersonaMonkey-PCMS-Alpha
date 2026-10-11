@@ -108,7 +108,7 @@ test('nonempty P204 source-drift and exact ignored revision are integrity-checke
   const out = await x.exportBackup({ consent: UNENCRYPTED_CONSENT });
   assert.equal(reads, 1);
   assert.equal(out.bundle.manifest.version, 1);
-  assert.equal(out.bundle.manifest.coverageRevision, 2);
+  assert.equal(out.bundle.manifest.coverageRevision, 3);
   assert.match(out.bundle.manifest.hashes.inventoryFacts, /^[a-f0-9]{64}$/);
   assert.equal(out.bundle.manifest.absentItems.some(row => row.item === 'alpha.inventoryFacts'), false);
   assert.equal(out.inventory.find(row => row.item === 'alpha.inventoryFacts').availability, 'EXPORTED');
@@ -135,13 +135,13 @@ test('nonempty P204 source-drift and exact ignored revision are integrity-checke
 test('absent P204 facts and pre-repair v1 archives cannot be reported as complete or silently restored', async () => {
   const x = make();
   const out = await x.exportBackup({ consent: UNENCRYPTED_CONSENT });
-  assert.equal(out.bundle.manifest.coverageRevision, 2);
+  assert.equal(out.bundle.manifest.coverageRevision, 3);
   assert.equal(out.bundle.manifest.absentItems.find(row => row.item === 'alpha.inventoryFacts').reason, 'UNAVAILABLE');
   assert.equal(Object.hasOwn(out.bundle.manifest.hashes, 'inventoryFacts'), false);
   assert.equal((await x.stageRestore(out.file)).recoveryCompleteness, 'PARTIAL');
   const legacyManifest = structuredClone(out.bundle.manifest);
   delete legacyManifest.coverageRevision;
-  legacyManifest.absentItems = legacyManifest.absentItems.filter(row => row.item !== 'alpha.inventoryFacts');
+  legacyManifest.absentItems = legacyManifest.absentItems.filter(row => !['alpha.inventoryFacts','alpha.refreshLedger','alpha.attentionInbox'].includes(row.item));
   const legacyFile = await encodeBackupFile({
     manifest: legacyManifest, alpha: out.bundle.alpha, personaMonkey: out.bundle.personaMonkey,
     authorizedSensitiveEntries: out.bundle.authorizedSensitiveEntries
@@ -183,7 +183,7 @@ test('P204 component corruption, fake completeness, missing sections and unsuppo
   fakeComplete.manifest.absentItems = fakeComplete.manifest.absentItems.filter(row => row.item !== 'alpha.inventoryFacts');
   await assert.rejects(decodeBackupFile(await rehashManifest(fakeComplete)), e => code(e) === 'INVALID_BACKUP');
   const version = structuredClone(good);
-  version.manifest.coverageRevision = 3;
+  version.manifest.coverageRevision = 4;
   await assert.rejects(decodeBackupFile(await rehashManifest(version)), e => code(e) === 'INVALID_BACKUP');
   const forgedRows = structuredClone(good);
   const rows = JSON.parse(atob(forgedRows.inventoryFacts));
@@ -202,4 +202,29 @@ test('P204 read failure and invalid observation facts never create an archive or
   await assert.rejects(duplicate.exportBackup({ consent: UNENCRYPTED_CONSENT }),
     e => code(e) === 'EXPORT_UNAVAILABLE');
   assert.throws(() => make({ inventoryFactsStore: { list: null } }), TypeError);
+});
+
+test('R4-ISSUE99 backup v3 persists refresh and attention ledgers, detects corruption and reports omissions',async()=>{
+  const refresh={schemaVersion:1,revision:0,lastSaveAtMs:null,jobs:{}};
+  const attention={schemaVersion:1,revision:0,items:[]};
+  const exporter=make({refreshLedgerStore:{read:async()=>refresh},attentionStore:{read:async()=>attention}});
+  const out=await exporter.exportBackup({consent:UNENCRYPTED_CONSENT});
+  assert.equal(out.bundle.manifest.coverageRevision,3);
+  for(const [item,section] of [['alpha.refreshLedger','refreshLedger'],['alpha.attentionInbox','attentionInbox']]) {
+    assert.equal(out.bundle.manifest.absentItems.some(x=>x.item===item),false);
+    assert.match(out.bundle.manifest.hashes[section],/^[a-f0-9]{64}$/);
+  }
+  const decoded=await decodeBackupFile(out.file);
+  assert.equal(Buffer.compare(Buffer.from(out.file),Buffer.from(await encodeBackupFile(decoded))),0);
+  const staged=await exporter.stageRestore(out.file);
+  assert.equal(staged.refreshJobCount,0);
+  assert.equal(staged.attentionItemCount,0);
+  assert.equal(staged.recoveryCompleteness,'PARTIAL');
+  const altered=JSON.parse(new TextDecoder().decode(out.file));
+  altered.refreshLedger='AA==';
+  await assert.rejects(()=>decodeBackupFile(new TextEncoder().encode(JSON.stringify(altered))),
+    e=>code(e)==='INVALID_BACKUP'||code(e)==='INTEGRITY_MISMATCH');
+  const missing=await make().exportBackup({consent:UNENCRYPTED_CONSENT});
+  assert.equal(missing.bundle.manifest.absentItems.some(x=>x.item==='alpha.refreshLedger'),true);
+  assert.equal(missing.bundle.manifest.absentItems.some(x=>x.item==='alpha.attentionInbox'),true);
 });

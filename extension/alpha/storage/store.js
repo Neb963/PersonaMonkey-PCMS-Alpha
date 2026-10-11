@@ -15,9 +15,11 @@ async function digest(value) {
 }
 
 function validateMeta(input) {
-  const m = exact(input, ['id', 'schemaVersion', 'revision', 'journalLimit']);
+  const m = exact(input, ['id', 'schemaVersion', 'revision', 'journalLimit'], ['restoreHoldId']);
   requireData(m.id === 'state' && m.schemaVersion === 1 && m.journalLimit === JOURNAL_LIMIT, 'RECOVERY_HOLD');
   revision(m.revision);
+  if (m.restoreHoldId !== undefined) requireData(typeof m.restoreHoldId === 'string' &&
+    /^[a-zA-Z0-9_-]{8,128}$/.test(m.restoreHoldId),'RECOVERY_HOLD');
   return m;
 }
 
@@ -113,6 +115,53 @@ async function readSelection(db, ids, kind, all = false) {
   return state;
 }
 
+
+/** Validate the entire signed P102 snapshot before any destructive IndexedDB write.
+ * This checks the journal chain, record checksums, binding epochs and every
+ * most-recent journal receipt. Restoring does not imply provider readback.
+ */
+async function validateRestoreSnapshot(raw) {
+  let source;
+  try {
+    source = exact(raw, ['schemaVersion', 'revision', 'records', 'journal']);
+    requireData(source.schemaVersion === 1, 'RECOVERY_HOLD');
+    revision(source.revision);
+    requireData(Array.isArray(source.records) && source.records.length <= 1000000 &&
+      Array.isArray(source.journal) && source.journal.length <= JOURNAL_LIMIT, 'RECOVERY_HOLD');
+    const recordIds = new Set(), personas = new Set(), accounts = new Map();
+    for (const e of source.records) {
+      await verifyEnvelope(e, source.revision);
+      requireData(!recordIds.has(e.id), 'RECOVERY_HOLD'); recordIds.add(e.id);
+      if (e.kind === 'account') {
+        requireData(!personas.has(e.accountPersonaUid), 'RECOVERY_HOLD');
+        personas.add(e.accountPersonaUid);
+        accounts.set(e.key, e.record);
+      }
+    }
+    for (const e of source.records) if (e.kind === 'generator') {
+      const account = accounts.get(e.record.accountId);
+      requireData(account && account.personaUid === e.record.personaUid &&
+        account.epoch === e.record.accountBindingEpoch, 'RECOVERY_HOLD');
+    }
+    requireData(source.journal.length === Math.min(source.revision, JOURNAL_LIMIT), 'RECOVERY_HOLD');
+    const first = Math.max(1, source.revision - JOURNAL_LIMIT + 1);
+    const latest = new Map();
+    for (let i = 0; i < source.journal.length; i++) {
+      const j = source.journal[i];
+      await verifyJournal(j);
+      requireData(j.revision === first + i, 'RECOVERY_HOLD');
+      for (const change of j.changes) latest.set(address(change.kind, change.key), change);
+    }
+    const byId = new Map(source.records.map(e => [e.id, e]));
+    for (const [key, change] of latest) {
+      const e = byId.get(key);
+      requireData(e && e.revision === change.revision && e.checksum === change.checksum, 'RECOVERY_HOLD');
+    }
+    requireData(source.revision > 0 || source.records.length === 0, 'RECOVERY_HOLD');
+    return structuredClone(source);
+  } catch { throw new AlphaDataError('RECOVERY_HOLD'); }
+}
+
 /**
  * Background-only Alpha persistence. Nothing here executes browser/provider actions.
  * commit uses a store revision and per-record revisions; no physical deletion/ABA.
@@ -165,6 +214,43 @@ export function createAlphaStorage({ openDatabase = openAlphaDatabase, clock = (
     async snapshot() {
       const s = await readSelection(await connection(), [], null, true);
       return { schemaVersion: 1, revision: s.meta.revision, records: structuredClone(s.records), journal: structuredClone(s.journal) };
+    },
+    /** Atomic replace of all P102 rows and the signed journal. The caller MUST
+     * establish a durable Core restore hold before entering this authority.
+     * Every failure aborts the entire transaction, preserving the old snapshot.
+     */
+    async restoreReceipt() {
+      const snapshot = await readSelection(await connection(), [], null, true);
+      return snapshot.meta.restoreHoldId === undefined ? null :
+        {holdId:snapshot.meta.restoreHoldId,durable:true,revision:snapshot.meta.revision};
+    },
+    async restoreSnapshot({snapshot, expectedRevision, holdId} = {}) {
+      revision(expectedRevision);
+      requireData(typeof holdId === 'string' && /^[a-zA-Z0-9_-]{8,128}$/.test(holdId),
+        'INVALID_REQUEST');
+      const restored = await validateRestoreSnapshot(snapshot);
+      const active = await connection();
+      const original = await readSelection(active, [], null, true);
+      requireData(original.meta.revision === expectedRevision, 'STALE_REVISION');
+      await transaction(active, 'readwrite', (tx, watch) => {
+        const records = tx.objectStore(RECORDS), journal = tx.objectStore(JOURNAL), meta = tx.objectStore(META);
+        watch(meta.get('state'), current => {
+          validateMeta(current);
+          requireData(current.revision === expectedRevision, 'STALE_REVISION');
+          // No await in this lifetime. Either all three stores commit, or none.
+          watch(records.clear()); watch(journal.clear());
+          for (const row of restored.records) watch(records.put(row));
+          for (const entry of restored.journal) watch(journal.put(entry));
+          watch(meta.put({ ...current, revision: restored.revision, restoreHoldId: holdId }));
+        });
+      });
+      const verified = await readSelection(active, [], null, true);
+      requireData(verified.meta.revision === restored.revision &&
+        canonical(verified.records.sort((a,b)=>a.id.localeCompare(b.id))) ===
+          canonical(restored.records.sort((a,b)=>a.id.localeCompare(b.id))) &&
+        canonical(verified.journal) === canonical(restored.journal), 'RECOVERY_HOLD');
+      return {revision: verified.meta.revision, holdId, records: verified.records.length,
+        journal: verified.journal.length, restored: true, requiresReconciliation: true};
     },
     async commit(input) {
       const batch = exact(input, ['expectedRevision', 'writes']);

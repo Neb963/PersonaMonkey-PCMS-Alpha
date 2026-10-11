@@ -30,6 +30,17 @@ test('AP102-01/02/03: actual pinned Firefox IndexedDB migrations, races, aborts,
       const paths = [
         'extension/alpha/domain/validation.js', 'extension/alpha/domain/records.js',
         'extension/alpha/storage/migrations.js', 'extension/alpha/storage/store.js',
+        // The isolated XPI must ship the exact production modules imported by
+        // the added R4 restore cases; otherwise Firefox leaves the test page
+        // blank after an unresolved ESM import, falsely appearing as a timeout.
+        'extension/alpha/core/core.mjs', 'extension/alpha/core/control-store.mjs',
+        'extension/pcms/core/persona-broker-contract.js',
+        'extension/alpha/features/inventory/facts.mjs',
+        'extension/alpha/flows/refresh/ledger.mjs',
+        'extension/alpha/features/attention/store.mjs',
+        'extension/alpha/backup/bundle.js',
+        'extension/alpha/backup/integration/restore.mjs',
+        'extension/alpha/backup/integration/authority.mjs',
         'tests/alpha/domain/fixtures.js', 'tests/alpha/domain/storage-cases.js',
         'tests/alpha/domain/probe.js', 'tests/alpha/domain/probe.html'
       ];
@@ -61,7 +72,7 @@ test('AP102-01/02/03: actual pinned Firefox IndexedDB migrations, races, aborts,
         if (!body.startsWith('{')) return null;
         const result = JSON.parse(body); assert.equal(result.passed, true, result.error); return result;
       }, 'P102 real IndexedDB cases', 90000);
-      report.storage = await collect(); assert.equal(report.storage.count, 20);
+      report.storage = await collect(); assert.equal(report.storage.count, 24);
       await browser.restart(); await browser.openPage(id, 'tests/alpha/domain/probe.html?stage=restart');
       report.restart = await collect(); assert.equal(report.restart.count, 1);
       report.passed = true;

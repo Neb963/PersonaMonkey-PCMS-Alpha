@@ -3,13 +3,22 @@ import { exact, id, revision, instant, safeDetails, canonical, requireData, Alph
 export const CORE_DB = 'persona-monkey-pcms-alpha-core';
 export const OWNERS = Object.freeze(['core', 'accounts', 'inventory', 'sourceCatalog', 'reservation', 'deployer', 'aiReview', 'refresher', 'visibility', 'attention', 'backup']);
 export const LIMITS = Object.freeze({ timers: 64, operations: 2, tabs: 4, pending: 64, ledger: 1024, pass: 16, passMs: 2000, handlerMs: 1000, continuationMs: 5000 });
-const initial = () => ({ schemaVersion: 1, revision: 0, generation: 0, ownerId: 'unclaimed', timers: [], slots: [], lastPassAt: null, passCount: 0, recoveryReason: null });
+const initial = () => ({ schemaVersion: 1, revision: 0, generation: 0, ownerId: 'unclaimed', timers: [], slots: [], lastPassAt: null, passCount: 0, recoveryReason: null, restore: null });
 const check = (condition) => requireData(condition, 'RECOVERY_HOLD');
 export function validateControl(input) {
-  const s = exact(input, ['schemaVersion', 'revision', 'generation', 'ownerId', 'timers', 'slots', 'lastPassAt', 'passCount', 'recoveryReason']);
+  const s = exact(input, ['schemaVersion', 'revision', 'generation', 'ownerId', 'timers', 'slots', 'lastPassAt', 'passCount', 'recoveryReason'], ['restore']);
   check(s.schemaVersion === 1); revision(s.revision); revision(s.generation); id(s.ownerId); revision(s.passCount);
   check(s.lastPassAt === null || instant(s.lastPassAt) === s.lastPassAt);
-  check(s.recoveryReason === null || ['INTERRUPTED_TIMER', 'STORAGE_FAILURE', 'TAB_OWNERSHIP_UNKNOWN'].includes(s.recoveryReason));
+  check(s.recoveryReason === null || ['INTERRUPTED_TIMER', 'STORAGE_FAILURE', 'TAB_OWNERSHIP_UNKNOWN', 'RESTORE_PENDING'].includes(s.recoveryReason));
+  if (s.restore !== undefined && s.restore !== null) {
+    const rs = exact(s.restore, ['holdId', 'digest', 'sourceRevision', 'phase', 'startedAt']);
+    id(rs.holdId);
+    check(/^[a-f0-9]{64}$/.test(rs.digest));
+    check(typeof rs.sourceRevision === 'string' && rs.sourceRevision.length >= 1 && rs.sourceRevision.length <= 64);
+    check(['PREPARED','APPLIED'].includes(rs.phase)); instant(rs.startedAt);
+    check(s.recoveryReason === 'RESTORE_PENDING');
+  }
+  check(s.recoveryReason !== 'RESTORE_PENDING' || (s.restore && s.restore !== null));
   check(Array.isArray(s.timers) && s.timers.length <= LIMITS.timers && Array.isArray(s.slots) && s.slots.length <= LIMITS.pending);
   for (const t of s.timers) {
     exact(t, ['id', 'owner', 'generation', 'dueAt', 'intervalMs', 'mutating', 'phase', 'attempt', 'completedAt', 'receipt']);

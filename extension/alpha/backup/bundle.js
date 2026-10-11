@@ -1,14 +1,17 @@
 /** P205: read-only, explicitly UNENCRYPTED backup framing, never provider authority. */
 import { normalizeInventoryFact } from '../features/inventory/facts.mjs';
+import {validateRefreshState} from '../flows/refresh/ledger.mjs';
+import {validateAttentionLedger} from '../features/attention/store.mjs';
 export const BACKUP_FORMAT = 'personamonkey-pcms-alpha-backup';
 export const BACKUP_VERSION = 1;
 export const UNENCRYPTED_CONSENT = 'EXPORT UNENCRYPTED BACKUP';
 export const MAX_BACKUP_BYTES = 128 * 1024 * 1024;
 const te = new TextEncoder(), td = new TextDecoder('utf-8', { fatal: true });
 const FACTS_COVERAGE_REVISION = 2;
+const COMPLETE_LOCAL_COVERAGE_REVISION = 3;
 const SHA = /^[0-9a-f]{64}$/;
 const SENSITIVE = Object.freeze(['personaMonkey.cookies', 'personaMonkey.gmValues', 'personaMonkey.routeCredentials', 'alpha.githubCredential']);
-const COMPONENTS = Object.freeze(['alpha.records', 'alpha.journal', 'alpha.inventoryFacts', 'personaMonkey.personas', 'personaMonkey.routes', 'personaMonkey.userscripts', 'personaMonkey.workflows', ...SENSITIVE, 'personaMonkey.activeSessions', 'personaMonkey.nativeCredentials', 'perchance.passwords']);
+const COMPONENTS = Object.freeze(['alpha.records', 'alpha.journal', 'alpha.inventoryFacts', 'alpha.refreshLedger', 'alpha.attentionInbox', 'personaMonkey.personas', 'personaMonkey.routes', 'personaMonkey.userscripts', 'personaMonkey.workflows', ...SENSITIVE, 'personaMonkey.activeSessions', 'personaMonkey.nativeCredentials', 'perchance.passwords']);
 const CODES = new Set(['INVALID_BACKUP', 'INTEGRITY_MISMATCH', 'UNENCRYPTED_CONSENT_REQUIRED', 'EXPORT_UNAVAILABLE', 'BACKUP_TOO_LARGE', 'RECOVERY_HOLD']);
 export class BackupError extends Error {
   constructor(code) { super('Backup operation failed (' + (CODES.has(code) ? code : 'INVALID_BACKUP') + ').'); this.name = 'BackupError'; this.code = CODES.has(code) ? code : 'INVALID_BACKUP'; }
@@ -115,6 +118,41 @@ function decodeFacts(data) {
   if (JSON.stringify(safeJsonClone(rows)) !== JSON.stringify(safeJsonClone(normalized))) fail();
   return normalized;
 }
+export function decodeAlphaSnapshot(input) {return decodeAlpha(input);}
+export function decodeInventoryFacts(input) {return decodeFacts(input);}
+export function decodeRestoreLocalSection(input,kind) {
+  if (!(input instanceof Uint8Array) || !input.length) fail();
+  let decoded;
+  try {
+    // The legacy Alpha parser deliberately creates null-prototype maps;
+    // Attention's strict v1 ledger requires ordinary JSON record prototypes.
+    // Reject hazardous property names before passing records to validators.
+    const parsed=JSON.parse(td.decode(input));
+    const rejectKeys=(value,depth=0)=>{
+      if(depth>32)throw new Error('bad nesting');
+      if(value && typeof value==='object'){
+        if(Array.isArray(value)) {for(const x of value)rejectKeys(x,depth+1);return;}
+        for(const [key,v] of Object.entries(value)){
+          if(['__proto__','prototype','constructor','__alphaBackupU8'].includes(key))
+            throw new Error('invalid key');
+          rejectKeys(v,depth+1);
+        }
+      }
+    };
+    rejectKeys(parsed);
+    decoded=parsed;
+    if (kind==='refreshLedger') validateRefreshState(decoded);
+    else if (kind==='attentionInbox') validateAttentionLedger(decoded);
+    else fail();
+  } catch {fail();}
+  return decoded;
+}
+function encodeLocalSection(state,kind) {
+  if (kind==='refreshLedger') validateRefreshState(state);
+  else if (kind==='attentionInbox') validateAttentionLedger(state);
+  else fail();
+  return te.encode(JSON.stringify(safeJsonClone(state)));
+}
 function normalizeAbsent(items) {
   if (!Array.isArray(items) || items.length > COMPONENTS.length) fail();
   const seen = new Set();
@@ -128,15 +166,20 @@ function normalizeAbsent(items) {
 function verifyManifest(m) {
   const extended = Object.hasOwn(m ?? {}, 'coverageRevision');
   fields(m, extended ? ['version', 'encrypted', 'createdAt', 'hashes', 'absentItems', 'coverageRevision'] : ['version', 'encrypted', 'createdAt', 'hashes', 'absentItems']);
-  if (m.version !== 1 || m.encrypted !== false || (extended && m.coverageRevision !== FACTS_COVERAGE_REVISION)) fail();
+  if (m.version !== 1 || m.encrypted !== false || (extended && ![FACTS_COVERAGE_REVISION, COMPLETE_LOCAL_COVERAGE_REVISION].includes(m.coverageRevision))) fail();
   timestamp(m.createdAt);
   if (!plain(m.hashes) || !SHA.test(m.hashes.alpha) || !SHA.test(m.hashes.personaMonkey)) fail();
   const keys = Object.keys(m.hashes);
-  if (keys.some(k => !['alpha', 'personaMonkey', 'inventoryFacts', ...SENSITIVE].includes(k) || !SHA.test(m.hashes[k])) || keys.length > SENSITIVE.length + 3) fail();
+  if (keys.some(k => !['alpha', 'personaMonkey', 'inventoryFacts', 'refreshLedger', 'attentionInbox', ...SENSITIVE].includes(k) || !SHA.test(m.hashes[k])) || keys.length > SENSITIVE.length + 5) fail();
   const absent = normalizeAbsent(m.absentItems);
   const missing = new Set(absent.map(x => x.item));
   if (missing.has('alpha.records') || missing.has('alpha.journal')) fail();
   const factsHashed = Object.hasOwn(m.hashes, 'inventoryFacts');
+  if (m.coverageRevision === COMPLETE_LOCAL_COVERAGE_REVISION) {
+    for (const [component,section] of [['alpha.refreshLedger','refreshLedger'],['alpha.attentionInbox','attentionInbox']])
+      if (missing.has(component) === Object.hasOwn(m.hashes,section)) fail();
+  } else if (Object.hasOwn(m.hashes,'refreshLedger') || Object.hasOwn(m.hashes,'attentionInbox') ||
+    missing.has('alpha.refreshLedger') || missing.has('alpha.attentionInbox')) fail();
   if (extended) {
     if (missing.has('alpha.inventoryFacts') === factsHashed) fail();
   } else if (factsHashed || missing.has('alpha.inventoryFacts')) fail();
@@ -156,10 +199,14 @@ function checkCoverage(m, personaMonkey, facts) {
     for (const item of ['personaMonkey.personas', 'personaMonkey.routes', 'personaMonkey.userscripts', 'personaMonkey.workflows']) if (!missing.has(item)) fail();
   } else if (missing.has('personaMonkey.personas')) fail();
   for (const item of COMPONENTS) {
+    if (['alpha.refreshLedger','alpha.attentionInbox'].includes(item) &&
+      m.coverageRevision !== COMPLETE_LOCAL_COVERAGE_REVISION) continue;
     if (item === 'alpha.inventoryFacts' && !extended) continue; // Legacy v1: staged preview adds its missing facts.
     if (item.startsWith('personaMonkey.') && !SENSITIVE.includes(item) && !['personaMonkey.activeSessions', 'personaMonkey.nativeCredentials'].includes(item)) continue;
     if (item === 'alpha.records' || item === 'alpha.journal') continue;
     if (item === 'alpha.inventoryFacts' && factsHashed) continue;
+    if (item === 'alpha.refreshLedger' && Object.hasOwn(m.hashes,'refreshLedger')) continue;
+    if (item === 'alpha.attentionInbox' && Object.hasOwn(m.hashes,'attentionInbox')) continue;
     if (SENSITIVE.includes(item) && Object.hasOwn(m.hashes, item)) continue;
     if (!missing.has(item)) fail();
   }
@@ -185,21 +232,38 @@ function fieldsSafeMap(input) {
 }
 export async function encodeBackupFile(bundle) {
   const extended = Object.hasOwn(bundle ?? {}, 'inventoryFacts');
-  fields(bundle, extended ? ['manifest', 'personaMonkey', 'alpha', 'authorizedSensitiveEntries', 'inventoryFacts'] : ['manifest', 'personaMonkey', 'alpha', 'authorizedSensitiveEntries']);
+  const full = bundle?.manifest?.coverageRevision === COMPLETE_LOCAL_COVERAGE_REVISION;
+  fields(bundle, full ? ['manifest','personaMonkey','alpha','authorizedSensitiveEntries','inventoryFacts','refreshLedger','attentionInbox'] :
+    extended ? ['manifest', 'personaMonkey', 'alpha', 'authorizedSensitiveEntries', 'inventoryFacts'] :
+    ['manifest', 'personaMonkey', 'alpha', 'authorizedSensitiveEntries']);
   const m = verifyManifest(bundle.manifest);
   const a = bytes(bundle.alpha), p = bytes(bundle.personaMonkey);
   decodeAlpha(a);
   const facts = extended ? bytes(bundle.inventoryFacts) : null;
+  const refreshLedger = full ? bytes(bundle.refreshLedger) : null;
+  const attentionInbox = full ? bytes(bundle.attentionInbox) : null;
+  if (full) {
+    if (refreshLedger?.length) decodeRestoreLocalSection(refreshLedger,'refreshLedger');
+    if (attentionInbox?.length) decodeRestoreLocalSection(attentionInbox,'attentionInbox');
+  }
   if (extended !== Object.hasOwn(m, 'coverageRevision')) fail();
   if (facts?.length) decodeFacts(facts);
   checkCoverage(m, p, facts);
   const sensitive = fieldsSafeMap(bundle.authorizedSensitiveEntries);
-  const expected = ['alpha', 'personaMonkey', ...(facts?.length ? ['inventoryFacts'] : []), ...Object.keys(sensitive)].sort();
+  const expected = ['alpha','personaMonkey',...(facts?.length?['inventoryFacts']:[]),
+    ...(refreshLedger?.length?['refreshLedger']:[]),
+    ...(attentionInbox?.length?['attentionInbox']:[]),...Object.keys(sensitive)].sort();
   if (JSON.stringify(Object.keys(m.hashes).sort()) !== JSON.stringify(expected)) fail();
   if (await digest(a) !== m.hashes.alpha || await digest(p) !== m.hashes.personaMonkey) fail('INTEGRITY_MISMATCH');
   if (facts?.length && await digest(facts) !== m.hashes.inventoryFacts) fail('INTEGRITY_MISMATCH');
   for (const [key, value] of Object.entries(sensitive)) if (await digest(value) !== m.hashes[key]) fail('INTEGRITY_MISMATCH');
-  const envelope = { format: BACKUP_FORMAT, version: BACKUP_VERSION, manifest: m, manifestSha256: await hash(te.encode(JSON.stringify(m))), alpha: b64(a), personaMonkey: b64(p), authorizedSensitiveEntries: Object.fromEntries(Object.entries(sensitive).map(([k, v]) => [k, b64(v)])), ...(extended ? { inventoryFacts: b64(facts) } : {}) };
+  if (full) {
+    for (const [name,payload] of [['refreshLedger',refreshLedger],['attentionInbox',attentionInbox]])
+      if (payload.length) { if (await digest(payload) !== m.hashes[name]) fail('INTEGRITY_MISMATCH'); }
+      else if (Object.hasOwn(m.hashes,name)) fail();
+  }
+  const envelope = { format: BACKUP_FORMAT, version: BACKUP_VERSION, manifest: m, manifestSha256: await hash(te.encode(JSON.stringify(m))), alpha: b64(a), personaMonkey: b64(p), authorizedSensitiveEntries: Object.fromEntries(Object.entries(sensitive).map(([k, v]) => [k, b64(v)])), ...(extended ? { inventoryFacts: b64(facts) } : {}),
+    ...(full ? {refreshLedger:b64(refreshLedger),attentionInbox:b64(attentionInbox)} : {}) };
   const output = te.encode(JSON.stringify(envelope));
   if (output.length > MAX_BACKUP_BYTES) fail('BACKUP_TOO_LARGE');
   return output;
@@ -208,21 +272,29 @@ export async function decodeBackupFile(file) {
   const data = bytes(file); let x;
   try { x = JSON.parse(td.decode(data)); } catch { fail(); }
   const extended = Object.hasOwn(x ?? {}, 'inventoryFacts');
-  fields(x, extended ? ['format', 'version', 'manifest', 'manifestSha256', 'alpha', 'personaMonkey', 'authorizedSensitiveEntries', 'inventoryFacts'] : ['format', 'version', 'manifest', 'manifestSha256', 'alpha', 'personaMonkey', 'authorizedSensitiveEntries']);
+  const full = x?.manifest?.coverageRevision === COMPLETE_LOCAL_COVERAGE_REVISION;
+  fields(x, full ? ['format','version','manifest','manifestSha256','alpha','personaMonkey','authorizedSensitiveEntries','inventoryFacts','refreshLedger','attentionInbox'] :
+    extended ? ['format', 'version', 'manifest', 'manifestSha256', 'alpha', 'personaMonkey', 'authorizedSensitiveEntries', 'inventoryFacts'] :
+    ['format', 'version', 'manifest', 'manifestSha256', 'alpha', 'personaMonkey', 'authorizedSensitiveEntries']);
   if (x.format !== BACKUP_FORMAT || x.version !== BACKUP_VERSION || !SHA.test(x.manifestSha256)) fail();
   const m = verifyManifest(x.manifest);
   if (await hash(te.encode(JSON.stringify(m))) !== x.manifestSha256) fail('INTEGRITY_MISMATCH');
   if (!plain(x.authorizedSensitiveEntries)) fail();
   const sensitive = Object.create(null);
   for (const [k, v] of Object.entries(x.authorizedSensitiveEntries)) { if (!SENSITIVE.includes(k)) fail(); sensitive[k] = unb64(v); }
-  const bundle = { manifest: m, alpha: unb64(x.alpha), personaMonkey: unb64(x.personaMonkey), authorizedSensitiveEntries: sensitive, ...(extended ? { inventoryFacts: unb64(x.inventoryFacts) } : {}) };
+  const bundle = { manifest: m, alpha: unb64(x.alpha), personaMonkey: unb64(x.personaMonkey), authorizedSensitiveEntries: sensitive, ...(extended ? { inventoryFacts: unb64(x.inventoryFacts) } : {}),
+    ...(full ? {refreshLedger:unb64(x.refreshLedger),attentionInbox:unb64(x.attentionInbox)} : {}) };
   if (extended !== Object.hasOwn(m, 'coverageRevision')) fail();
   await encodeBackupFile(bundle);
   return bundle;
 }
 /** Only exact, separately authorized read-only export callbacks are injectable. */
-export function createBackupExporter({ alphaStorage, inventoryFactsStore = null, personaMonkeyExport = null, sensitiveExports = {}, clock = () => new Date().toISOString() } = {}) {
-  if ((typeof alphaStorage?.snapshot !== 'function' || (inventoryFactsStore !== null && typeof inventoryFactsStore?.list !== 'function')) || (personaMonkeyExport !== null && typeof personaMonkeyExport !== 'function') || !plain(sensitiveExports) || typeof clock !== 'function') throw new TypeError('Unsupported backup source');
+export function createBackupExporter({ alphaStorage, inventoryFactsStore = null,
+  refreshLedgerStore = null, attentionStore = null,
+  personaMonkeyExport = null, sensitiveExports = {}, clock = () => new Date().toISOString() } = {}) {
+  if ((typeof alphaStorage?.snapshot !== 'function' || (inventoryFactsStore !== null && typeof inventoryFactsStore?.list !== 'function') ||
+    (refreshLedgerStore !== null && typeof refreshLedgerStore?.read !== 'function') ||
+    (attentionStore !== null && typeof attentionStore?.read !== 'function')) || (personaMonkeyExport !== null && typeof personaMonkeyExport !== 'function') || !plain(sensitiveExports) || typeof clock !== 'function') throw new TypeError('Unsupported backup source');
   if (Object.keys(sensitiveExports).some(k => !SENSITIVE.includes(k) || typeof sensitiveExports[k] !== 'function')) throw new TypeError('Unsupported sensitive export source');
   const unavailable = () => COMPONENTS.filter(x => x !== 'alpha.records' && x !== 'alpha.journal').map(item => ({ item, reason: 'UNAVAILABLE' }));
   async function build({ consent, includeSensitive = [] } = {}) {
@@ -236,6 +308,15 @@ export function createBackupExporter({ alphaStorage, inventoryFactsStore = null,
       let facts;
       try { facts = await inventoryFactsStore.list(); } catch { fail('RECOVERY_HOLD'); }
       inventoryFacts = encodeFacts(facts);
+    }
+    let refreshLedger = new Uint8Array(), attentionInbox = new Uint8Array();
+    if (refreshLedgerStore) {
+      try { refreshLedger = encodeLocalSection(await refreshLedgerStore.read(),'refreshLedger'); }
+      catch { fail('RECOVERY_HOLD'); }
+    }
+    if (attentionStore) {
+      try { attentionInbox = encodeLocalSection(await attentionStore.read(),'attentionInbox'); }
+      catch { fail('RECOVERY_HOLD'); }
     }
     let personaMonkey = new Uint8Array(), includedItems = [];
     if (personaMonkeyExport) {
@@ -252,18 +333,25 @@ export function createBackupExporter({ alphaStorage, inventoryFactsStore = null,
       try { entries[key] = bytes(await sensitiveExports[key]()); } catch { fail('EXPORT_UNAVAILABLE'); }
       if (!entries[key].length) fail('EXPORT_UNAVAILABLE');
     }
-    const absent = unavailable().filter(x => !(x.item === 'alpha.inventoryFacts' && inventoryFactsStore) && !includedItems.includes(x.item) && !Object.hasOwn(entries, x.item)).map(x => ({ item: x.item, reason: includeSensitive.includes(x.item) ? 'UNAVAILABLE' : SENSITIVE.includes(x.item) ? 'NOT_AUTHORIZED' : 'UNAVAILABLE' }));
-    const m = { version: 1, encrypted: false, createdAt: timestamp(clock()), hashes: { alpha: await digest(alpha), personaMonkey: await digest(personaMonkey) }, absentItems: absent, coverageRevision: FACTS_COVERAGE_REVISION };
+    const absent = unavailable().filter(x => !(x.item === 'alpha.inventoryFacts' && inventoryFactsStore) &&
+      !(x.item === 'alpha.refreshLedger' && refreshLedgerStore) &&
+      !(x.item === 'alpha.attentionInbox' && attentionStore) &&
+      !includedItems.includes(x.item) && !Object.hasOwn(entries, x.item)).map(x => ({ item: x.item, reason: includeSensitive.includes(x.item) ? 'UNAVAILABLE' : SENSITIVE.includes(x.item) ? 'NOT_AUTHORIZED' : 'UNAVAILABLE' }));
+    const m = { version: 1, encrypted: false, createdAt: timestamp(clock()), hashes: { alpha: await digest(alpha), personaMonkey: await digest(personaMonkey) }, absentItems: absent, coverageRevision: COMPLETE_LOCAL_COVERAGE_REVISION };
     if (inventoryFactsStore) m.hashes.inventoryFacts = await digest(inventoryFacts);
+    if (refreshLedgerStore) m.hashes.refreshLedger = await digest(refreshLedger);
+    if (attentionStore) m.hashes.attentionInbox = await digest(attentionInbox);
     for (const [key, value] of Object.entries(entries)) m.hashes[key] = await digest(value);
-    const bundle = { manifest: m, alpha, personaMonkey, authorizedSensitiveEntries: entries, inventoryFacts };
+    const bundle = { manifest: m, alpha, personaMonkey, authorizedSensitiveEntries: entries, inventoryFacts, refreshLedger, attentionInbox };
     const file = await encodeBackupFile(bundle);
     return { bundle, file, inventory: inventory(absent, Object.keys(entries)), snapshotRevision: snapshot.revision };
   }
   return Object.freeze({
     previewExport() {
       const absent = unavailable().map(x => ({ item: x.item, reason: SENSITIVE.includes(x.item) ? 'NOT_AUTHORIZED' : x.reason }));
-      return { encrypted: false, requiresExplicitConsent: true, availableFrom: ['alpha.records', 'alpha.journal'], potentiallyExportable: [ ...(inventoryFactsStore ? ['alpha.inventoryFacts'] : []), ...(personaMonkeyExport ? ['PersonaMonkey validated export only'] : []), ...Object.keys(sensitiveExports) ], unavailable: absent.filter(x => !inventoryFactsStore || x.item !== 'alpha.inventoryFacts') };
+      return { encrypted: false, requiresExplicitConsent: true, availableFrom: ['alpha.records', 'alpha.journal'], potentiallyExportable: [ ...(inventoryFactsStore ? ['alpha.inventoryFacts'] : []),
+          ...(refreshLedgerStore ? ['alpha.refreshLedger'] : []),
+          ...(attentionStore ? ['alpha.attentionInbox'] : []), ...(personaMonkeyExport ? ['PersonaMonkey validated export only'] : []), ...Object.keys(sensitiveExports) ], unavailable: absent.filter(x => !(inventoryFactsStore && x.item==='alpha.inventoryFacts') && !(refreshLedgerStore && x.item==='alpha.refreshLedger') && !(attentionStore && x.item==='alpha.attentionInbox')) };
     },
     exportBackup: build,
     async stageRestore(file) {
@@ -272,7 +360,10 @@ export function createBackupExporter({ alphaStorage, inventoryFactsStore = null,
       let current;
       try { current = await alphaStorage.snapshot(); } catch { fail('RECOVERY_HOLD'); }
       const legacy = !Object.hasOwn(bundle.manifest, 'coverageRevision');
-      const missing = [...bundle.manifest.absentItems.map(x => ({ ...x })), ...(legacy ? [{ item: 'alpha.inventoryFacts', reason: 'UNAVAILABLE' }] : [])];
+      const missing = [...bundle.manifest.absentItems.map(x => ({ ...x })),
+        ...(legacy ? [{ item: 'alpha.inventoryFacts', reason: 'UNAVAILABLE' }] : []),
+        ...(bundle.manifest.coverageRevision !== COMPLETE_LOCAL_COVERAGE_REVISION ?
+          ['alpha.refreshLedger','alpha.attentionInbox'].map(item=>({item,reason:'UNAVAILABLE'})) : [])];
       const facts = bundle.inventoryFacts?.length ? decodeFacts(bundle.inventoryFacts) : [];
       return Object.freeze({
         verified: true,
@@ -280,6 +371,10 @@ export function createBackupExporter({ alphaStorage, inventoryFactsStore = null,
         recoveryCompleteness: 'PARTIAL',
         crossStoreAtomic: false,
         inventoryFactsCount: facts.length,
+        refreshJobCount: bundle.refreshLedger?.length ?
+          Object.keys(decodeRestoreLocalSection(bundle.refreshLedger,'refreshLedger').jobs).length : null,
+        attentionItemCount: bundle.attentionInbox?.length ?
+          decodeRestoreLocalSection(bundle.attentionInbox,'attentionInbox').items.length : null,
         inventoryDriftCount: facts.filter(x => x.drift !== null).length,
         inventoryIgnoredRevisionCount: facts.filter(x => x.ignoredVersion !== null).length,
         encrypted: false,

@@ -197,3 +197,39 @@ test('AP201-03 occupied tab permits survive wake; numeric tab reuse never transf
   assert.equal((await replacement.tabs.reconcile({ permit: reconciled.permit, binding: META })).phase, 'RELEASED');
   assert.equal(live.size, 2); assert.equal((await replacement.readStatus()).budgets.tabs, 0);
 });
+
+test('R4-ISSUE99 restore hold survives Core restart and denies all mutations without signed receipt', async () => {
+  const f = await fixture();
+  const created = await f.core.restore.begin({digest:'a'.repeat(64),sourceRevision:'2026-10-11T00:00:00.000Z'});
+  assert.equal(created.state,'RECOVERY_HOLD');
+  assert.equal(created.durable,true);
+  await assert.rejects(f.core.assertMutationAllowed(),rejected('RECOVERY_HOLD'));
+  const control = await f.control.read();
+  assert.equal(control.restore.holdId,created.holdId);
+  assert.equal(control.recoveryReason,'RESTORE_PENDING');
+  await assert.rejects(f.core.restore.markApplied({holdId:created.holdId}),rejected('UNSUPPORTED_CAPABILITY'));
+  const next = createAlphaCore(f.options);
+  await next.initialize();
+  assert.equal((await next.restore.status({holdId:created.holdId})).phase,'PREPARED');
+  await assert.rejects(next.assertMutationAllowed(),rejected('RECOVERY_HOLD'));
+  await assert.rejects(next.restore.release({holdId:created.holdId,checks:Object.fromEntries(
+    ['core','bindings','sessions','providers','operations','inventory'].map(x=>[x,true]))}),rejected('RECOVERY_HOLD'));
+  next.close();
+});
+
+test('R4-ISSUE99 restoration denies occupied global Core slots and invalidates old pending mutation timers',async()=>{
+  const f=await fixture({timerHandlers:{backup:{generation:1,run:async()=>{throw Error('never dispatched');}}}});
+  const permit=await f.core.tabs.reserve({binding:META,opId:'restore-tab-guard',targetKey:META.accountId});
+  assert.equal(permit.kind,'tab');
+  await assert.rejects(()=>f.core.restore.begin({digest:'a'.repeat(64),sourceRevision:'2026-10-11T00:00:00.000Z'}),
+    rejected('RECOVERY_HOLD'));
+  await f.core.tabs.release({permit});
+  await f.core.timers.schedule({id:'old-pending-mutation',owner:'backup',generation:1,
+    dueAt:'2026-10-11T00:00:00.000Z',intervalMs:null,mutating:true});
+  const hold=await f.core.restore.begin({digest:'b'.repeat(64),sourceRevision:'2026-10-11T00:00:00.000Z'});
+  assert.equal(hold.durable,true);
+  const timers=await f.core.timers.list();
+  assert.equal(timers.find(x=>x.id==='old-pending-mutation').phase,'MISSED');
+  assert.equal((await f.core.readStatus()).state,'RECOVERY_HOLD');
+  f.core.close();
+});
