@@ -141,8 +141,8 @@ async function harness({ existing = false, publicListing = false, state = 'SLEEP
 const receipt=result=>({ok:true,result,revision:7});
 const good=result=>{assert.equal(result?.ok,true,JSON.stringify(result?.error));return result.result;};
 const bad=(result,code)=>{assert.equal(result?.ok,false);assert.equal(result.error.code,code);};
-async function connected({casConflict=false,uncertainCommit=false}={}){
-  const h=await harness({state:'INELIGIBLE'});
+async function connected({casConflict=false,uncertainCommit=false,existing=false}={}){
+  const h=await harness({existing,state:existing?'SLEEPING':'INELIGIBLE'});
   const initialSha='c'.repeat(40), newSha='d'.repeat(40);
   const initialBlob='b'.repeat(40);
   const paths=['DEPLOYMENT.md','main.pjs','index.html','thumbnail.jpeg']
@@ -361,7 +361,7 @@ test('R4-ISSUE100 independently observed source drift denies sleep-only stage be
   assert.equal(z.h.emulator.calls.filter(x=>x.kind==='save'||x.kind==='setListing').length,0);
 });
 test('R4-ISSUE100 post-stage rollback delegates P302 verification and remains unlisted and quarantined',async()=>{
-  const z=await connected();
+  const z=await connected({existing:true});
   good(await z.supply.importReady({key,opId:'supply-rollback'}));
   const stage=good(await z.releaseFlow.stage(z.base()));
   assert.equal(stage.state,'AI_PENDING');
