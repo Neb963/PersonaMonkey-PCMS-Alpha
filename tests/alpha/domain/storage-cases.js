@@ -57,7 +57,16 @@ function restoreRig(label) {
 }
 export async function runStorageCases() {
   const passed = [];
-  const check = async (name, run) => { await run(); passed.push(name); };
+  const check = async (name, run) => {
+    if(name.startsWith('R4-ISSUE99: complete production') ||
+      name.startsWith('R4-ISSUE99: partial cross-DB')){
+      let timer;
+      try {await Promise.race([run(),new Promise((_,reject)=>{
+        timer=setTimeout(()=>reject(new Error('R4_RESTORE_CASE_TIMEOUT:'+name)),20000);
+      })]);}finally{clearTimeout(timer);}
+    }else await run();
+    passed.push(name);
+  };
 
   await check('AP102-01: isolated schema never opens or imports legacy PCMS', async () => {
     const legacy = await rawOpen('persona-monkey-pcms', 17, db => db.createObjectStore('historical'));
