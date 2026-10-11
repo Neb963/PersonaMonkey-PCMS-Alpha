@@ -13,9 +13,34 @@ import {createBackupExporter,decodeBackupFile,UNENCRYPTED_CONSENT} from '../back
 import {createBackupIntegration} from '../backup/integration/index.mjs';
 import {createFirefoxBackupDownloads} from '../backup/integration/downloads.mjs';
 import {createProductionBackupAuthority} from '../backup/integration/authority.mjs';
+import {createSupplyFlow} from '../flows/supply/service.mjs';
+import {createReleaseFlow} from '../flows/release/service.mjs';
+import {createRefreshExecution} from '../flows/refresh/service.mjs';
+import {createAiTaskStore} from '../features/ai/store.mjs';
+import {createAttentionService,createDesktopAttentionNotifier} from '../features/attention/service.mjs';
+import {createAlphaTabAllocator} from '../features/tabs/allocator.mjs';
 
-export function createAlphaHost({ browserRef, personaMonkeyReady, createCore = null } = {}) {
-  let pending = null, current = null, constructedCores = 0, backupService = null;
+/** Static R4 graph, not a general scheduler/automation runtime. Every port
+ * must be a compiled, trusted background adapter; no UI/runtime module can
+ * supply scripts or raw browser/native execution. Core remains the sole
+ * owner of storage, mutating operations and the global tab ceiling.
+ */
+export function createR4Flows({core,ports,ledger,attention}={}){
+  if(!core?.storage || !core?.assertMutationAllowed || !core?.assertCurrent ||
+    !ports || typeof ports!=='object' || !ledger?.read || !attention?.raise)
+    throw new TypeError('R4 requires verified Core, ports, ledger and attention');
+  const supply=createSupplyFlow({...ports.supply,storage:core.storage,
+    assertMutationAllowed:()=>core.assertMutationAllowed()});
+  const release=createReleaseFlow({...ports.release,storage:core.storage,core,
+    inventory:ports.inventory,facts:ports.facts});
+  const refresh=createRefreshExecution({...ports.refresh,storage:core.storage,core,
+    ledger,attention});
+  return Object.freeze({supply,release,refresh,attention});
+}
+
+
+export function createAlphaHost({ browserRef, personaMonkeyReady, createCore = null, r4Ports = null } = {}) {
+  let pending = null, current = null, constructedCores = 0, backupService = null, composedR4 = null;
   const services = Object.create(null);
   async function ensureCore() {
     if (pending) return pending;
@@ -79,10 +104,27 @@ export function createAlphaHost({ browserRef, personaMonkeyReady, createCore = n
             return {ok:true,result:await backupService.downloads.maintain(),revision:(await core.storage.snapshot()).revision};
           }
         });
+        // P404's one durable inbox is independently usable even before
+        // any Perchance executor is admitted. Editor opening always requires
+        // independently verified Persona+session binding from a trusted port.
+        const aiTasks=createAiTaskStore();
+        const tabAllocator=createAlphaTabAllocator({core,aiTasks,
+          verifyBinding:r4Ports?.verifyBinding ?? unavailable});
+        const notifier=browserRef.notifications?.create ?
+          createDesktopAttentionNotifier({notifications:browserRef.notifications}) : null;
+        const attention=createAttentionService({store:attentionStore,aiTasks,
+          tabs:tabAllocator,notifier,
+          readRevision:async()=>(await core.storage.snapshot()).revision});
+        services.attention=attention;
+        // With no PersonaMonkey-owned P103 executor or authenticated GitHub
+        // source adapter, do not pretend R4 mutations are available.
+        if(r4Ports){
+          composedR4=createR4Flows({core,ports:r4Ports,ledger:refreshLedger,attention});
+        }
         current = core; return core;
       } catch (error) { core.close(); throw error; }
     })().catch(async error => {
-      pending = null; current = null;
+      pending = null; current = null; composedR4=null;
       // Wake failures stay visible without persisting raw provider exceptions.
       try { await browserRef.storage.session.set({ alphaCoreStatus: { version: 1, state: error?.code === 'RECOVERY_HOLD' ? 'RECOVERY_HOLD' : 'UNAVAILABLE' } }); } catch {}
       throw error;
@@ -101,7 +143,13 @@ export function createAlphaHost({ browserRef, personaMonkeyReady, createCore = n
       async reconcileRestore(input){await ensureCore();if(!backupService)throw new Error('UNSUPPORTED_CAPABILITY');return backupService.reconcileRestore(input);},
       async retain(){await ensureCore();if(!backupService)throw new Error('UNSUPPORTED_CAPABILITY');return backupService.downloads.maintain();}
     }),
-    diagnostics: () => ({ constructedCores, activeCores: current === null ? 0 : 1 }),
+    // Background-only compositions. There is no R5 UI command or remote
+    // provider execution admission in this surface.
+    async r4(){await ensureCore();if(!composedR4)
+      throw Object.assign(new Error('R4 provider adapters unverified'),{code:'UNSUPPORTED_CAPABILITY'});
+      return composedR4;},
+    diagnostics: () => ({ constructedCores, activeCores: current === null ? 0 : 1,
+      r4Configured: composedR4!==null }),
     async handleAlarm(alarm) { const alreadyRunning = current !== null; const core = await ensureCore(); return alreadyRunning ? core.handleAlarm(alarm) : { started: true }; },
     wake: () => ensureCore(),
     async status() { return (await ensureCore()).readStatus(); }
