@@ -37,7 +37,8 @@ export function createRefreshExecution({
     typeof storage.read === 'function' && typeof storage.commit === 'function' && provider &&
     typeof provider.read === 'function' && typeof provider.probe === 'function' &&
     typeof provider.save === 'function' && journal &&
-    typeof journal.prepare === 'function' && typeof journal.read === 'function' &&
+    typeof journal.prepare === 'function' && typeof journal.dispatch === 'function' &&
+    typeof journal.complete === 'function' && typeof journal.read === 'function' &&
     core && typeof core.assertMutationAllowed === 'function' &&
     typeof core.assertCurrent === 'function' &&
     typeof contextFor === 'function' && ledger &&
@@ -159,9 +160,10 @@ export function createRefreshExecution({
       await journal.prepare({ opId, kind: 'save', targetKey: key,
         sourceRevision: observed.sourceRevision,
         accountBindingEpoch: generator.accountBindingEpoch });
-      // Storage/P201 journal now owns this mutation. No second Core
-      // preflight against its own PREPARED receipt: dispatch is bounded
-      // by the existing exact binding/sourceRevision/provider CAS checks.
+      // Persist DISPATCHING before the external save. Core's preflight was
+      // completed before this operation existed; this is its own durable
+      // journal, so a second general preflight would self-block.
+      await journal.dispatch(opId);
       await update(key, { state: 'DISPATCHING' });
       const after = unwrap(await provider.save({
         context, targetKey: key, opId, expectedRevision: capabilities.revision,
@@ -177,6 +179,11 @@ export function createRefreshExecution({
         current.listing === 'PUBLIC' && current.ownership === 'CONFIRMED',
       'UNCERTAIN');
       await canonicalPjs(current.files, release, staged.comment);
+      // A successful provider readback is not sufficient to clear P201's
+      // hold: settle the exact durable operation before advancing the
+      // refresh ledger to OBSERVE. Failure stays unresolved, never replayed.
+      await journal.complete(opId, {phase:'APPLIED',remoteEvidence:{
+        sourceRevision:current.sourceRevision,listing:'PUBLIC'}});
       const confirmedComment = { ...staged.comment, targetKey: key,
         saveReceipt: after.sourceRevision, sourceRevision: after.sourceRevision };
       await update(key, { state: 'OBSERVE', attempts: Math.min(MAX_ATTEMPTS, job.attempts + 1),
