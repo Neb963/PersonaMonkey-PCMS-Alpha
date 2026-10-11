@@ -63,3 +63,44 @@ any provider operation. The original proposed text is preserved under
 Pages retain the existing `items`, `cursor` (opaque continuation token or `null`), and `asOf` fields. Account ownership must be observed through the account-bound Persona context. An implementation must reject missing, invalid/noncanonical, or duplicate generator identities; duplicates across successive pages must not silently overwrite prior observations. The consumer must treat pagination failure and conflicting identities as incomplete discovery, not proof of absent generators or ownership. No public-feed API is an account-inventory substitute. These are interface requirements, not a claim that a Perchance runtime adapter exists or has been live-tested.
 
 Revision 2 changes only the account-list element type, introduces `AccountGeneratorEntry`, and updates its surface metadata. It does not change `ProviderReadback`, `Page<T>`, Persona Broker commands, other provider methods, persistence records, or service methods. The contract family remains `alpha.contracts.v1` and its byte-framed lock hash is changed; active R1 claims require explicit read-hash revalidation without ownership or epoch reassignment.
+
+## R5 fixed operator interface — contract revision 3
+
+The fixed R5 dashboard routes are overview, supply, accounts, generators,
+refresher, attention and settings; review is a nested `#supply/review` route.
+Built-in view entrypoints export `mount(target, { request, route })`, optionally
+returning a synchronous teardown callback. Mounts are selected exclusively from
+a statically compiled allowlist and cannot load provider scripts, runtime
+plugins, dynamic modules or privileged Core objects.
+
+The only UI transport is `PCMS_UI_REQUEST`, validated by the existing
+extension-origin sender, 32-KiB envelope, revision and mutation rules.
+`Supply.preview({text})` parses untrusted pasted slugs. A mutation
+`Supply.processBatch({expectedRevision,text,batchId,offset?,limit?,imports?})`
+uses a stable batch ID, maximum 16 serial tasks and durable P401 receipts.
+A bulk operation has no caller-selected Persona or global binding epoch:
+the existing P401 account allocator resolves each operation's binding.
+
+The R5 `Release` facade is a background-owned adapter onto the accepted P402
+release flow. It resolves account and Persona context via the trusted installed
+P103/P401 background port, verifies account ID and binding epoch, and does not
+accept raw context from UI. If no authoritative ports exist, it returns
+`UNSUPPORTED_CAPABILITY` without a provider mutation.
+
+Account and inventory UI commands reuse P202/P204 services and P102 revision
+fencing. Refresher configuration requires both the P102 global mutation
+revision and an explicit P304 `ledgerRevision` inside `options`; the
+scheduler's mutating `planPass` is never a dashboard command.
+P303 review queue projection omits native session details.
+
+Backup export requires exact explicit `EXPORT UNENCRYPTED BACKUP` consent,
+uses P405's downloads writer and returns only local download metadata; raw
+archive bytes, sensitive entries and credential-bearing material are never
+returned to generic JSON UI commands. Restore file selection requires a
+separate permissioned, bounded file transport; an absent transport fails
+closed instead of accepting a large JSON payload. No LIVE provider acceptance
+is conferred by this contract.
+
+Any later command or route beyond this approved bounded interface needs an
+independent contract amendment and cross-view integration tests. Frozen
+PersonaMonkey broker authority and the prohibition on a second executor remain.
