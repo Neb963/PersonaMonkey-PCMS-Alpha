@@ -161,7 +161,7 @@ test('AP405-01/03 real packaged Firefox backup download has explicit consent and
   assert.equal(exported.hasBytes,false);
   assert.ok(Array.isArray(exported.unavailable));
   const complete=await waitFor(async()=>{
-    const observed=await page(`const rows=await api.downloads.search({id:data.id});
+    const observed=await page(`const rows=await api.downloads.search(clone({id:data.id}));
       const current=rows.find(item=>item.id===data.id);return current?{
         id:current.id,state:current.state,exists:current.exists,filename:current.filename}:null;`,
       {id:exported.id});
