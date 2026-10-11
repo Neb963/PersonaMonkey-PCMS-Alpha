@@ -155,10 +155,17 @@ export function createSupplyFlow({storage,reservation,sources,perchance,importPe
         prior.sourceBinding?.releaseId===binding.releaseId) return prior;
     const asOf=now();
     check(typeof asOf==='string' && !Number.isNaN(Date.parse(asOf)),'UNAVAILABLE');
-    const record=prior?{...prior,sourceBinding:binding,asOf}:normalizeGenerator({
+    // A GitHub-first import with no adopted release is undeployed, not a
+    // perpetually reserved deployment. P302 still independently verifies the
+    // actual blank/unlisted Perchance source before its first mutation.
+    const undeployed = prior && prior.releaseId===null &&
+      prior.deployState==='RESERVED' && prior.refreshState==='INELIGIBLE' &&
+      owner.readback.listing==='UNLISTED';
+    const record=prior?{...prior,...(undeployed?{deployState:'UNDEPLOYED'}:{}),
+      sourceBinding:binding,asOf}:normalizeGenerator({
       key,accountId:owner.account.accountId,personaUid:owner.account.personaUid,
       accountBindingEpoch:owner.account.epoch,fleetIntent:'EXCLUDED',
-      listingObserved:owner.readback.listing,deployState:'RESERVED',
+      listingObserved:owner.readback.listing,deployState:'UNDEPLOYED',
       refreshState:'INELIGIBLE',sourceBinding:binding,releaseId:null,
       revision:0,asOf,attentionRefs:[]
     });
