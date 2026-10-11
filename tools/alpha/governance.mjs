@@ -99,6 +99,14 @@ export const R4_REPAIRS = Object.freeze({
       'docs/evidence/alpha/R4-ISSUE100-WIRING/**'
     ])
   }),
+  'R4-ISSUE100-FINAL': Object.freeze({
+    issue:100,branch:'agent/r4-repair/r4-issue100-final',
+    authorization:'MAINT-R4-EVIDENCE-012',
+    paths:Object.freeze([
+      'tests/alpha/integration/r4/**',
+      'docs/evidence/alpha/R4-ISSUE100-FINAL/**'
+    ])
+  }),
   'R4-P405-EVIDENCE': Object.freeze({
     issue:99,branch:'agent/r4-repair/r4-p405-evidence',
     authorization:'MAINT-R4-EVIDENCE-012',
