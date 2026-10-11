@@ -11,7 +11,8 @@ const FACTS_COVERAGE_REVISION = 2;
 const COMPLETE_LOCAL_COVERAGE_REVISION = 3;
 const SHA = /^[0-9a-f]{64}$/;
 const SENSITIVE = Object.freeze(['personaMonkey.cookies', 'personaMonkey.gmValues', 'personaMonkey.routeCredentials', 'alpha.githubCredential']);
-const COMPONENTS = Object.freeze(['alpha.records', 'alpha.journal', 'alpha.inventoryFacts', 'alpha.refreshLedger', 'alpha.attentionInbox', 'personaMonkey.personas', 'personaMonkey.routes', 'personaMonkey.userscripts', 'personaMonkey.workflows', ...SENSITIVE, 'personaMonkey.activeSessions', 'personaMonkey.nativeCredentials', 'perchance.passwords']);
+const NON_EXPORTABLE_ALPHA_STORES=Object.freeze(['alpha.aiReviewTasks','alpha.refresherSettings','alpha.visibilityObservations']);
+const COMPONENTS = Object.freeze(['alpha.records', 'alpha.journal', 'alpha.inventoryFacts', 'alpha.refreshLedger', 'alpha.attentionInbox', ...NON_EXPORTABLE_ALPHA_STORES, 'personaMonkey.personas', 'personaMonkey.routes', 'personaMonkey.userscripts', 'personaMonkey.workflows', ...SENSITIVE, 'personaMonkey.activeSessions', 'personaMonkey.nativeCredentials', 'perchance.passwords']);
 const CODES = new Set(['INVALID_BACKUP', 'INTEGRITY_MISMATCH', 'UNENCRYPTED_CONSENT_REQUIRED', 'EXPORT_UNAVAILABLE', 'BACKUP_TOO_LARGE', 'RECOVERY_HOLD']);
 export class BackupError extends Error {
   constructor(code) { super('Backup operation failed (' + (CODES.has(code) ? code : 'INVALID_BACKUP') + ').'); this.name = 'BackupError'; this.code = CODES.has(code) ? code : 'INVALID_BACKUP'; }
@@ -199,6 +200,10 @@ function checkCoverage(m, personaMonkey, facts) {
     for (const item of ['personaMonkey.personas', 'personaMonkey.routes', 'personaMonkey.userscripts', 'personaMonkey.workflows']) if (!missing.has(item)) fail();
   } else if (missing.has('personaMonkey.personas')) fail();
   for (const item of COMPONENTS) {
+    // Older signed archives could not name these stores. Even a v3 archive
+    // that lists them has no import authority; omissions are disclosed at
+    // staging, never silently called complete.
+    if (NON_EXPORTABLE_ALPHA_STORES.includes(item)) continue;
     if (['alpha.refreshLedger','alpha.attentionInbox'].includes(item) &&
       m.coverageRevision !== COMPLETE_LOCAL_COVERAGE_REVISION) continue;
     if (item === 'alpha.inventoryFacts' && !extended) continue; // Legacy v1: staged preview adds its missing facts.
@@ -361,6 +366,8 @@ export function createBackupExporter({ alphaStorage, inventoryFactsStore = null,
       try { current = await alphaStorage.snapshot(); } catch { fail('RECOVERY_HOLD'); }
       const legacy = !Object.hasOwn(bundle.manifest, 'coverageRevision');
       const missing = [...bundle.manifest.absentItems.map(x => ({ ...x })),
+        ...NON_EXPORTABLE_ALPHA_STORES.filter(item => !bundle.manifest.absentItems.some(x=>x.item===item))
+          .map(item=>({item,reason:'UNAVAILABLE'})),
         ...(legacy ? [{ item: 'alpha.inventoryFacts', reason: 'UNAVAILABLE' }] : []),
         ...(bundle.manifest.coverageRevision !== COMPLETE_LOCAL_COVERAGE_REVISION ?
           ['alpha.refreshLedger','alpha.attentionInbox'].map(item=>({item,reason:'UNAVAILABLE'})) : [])];
