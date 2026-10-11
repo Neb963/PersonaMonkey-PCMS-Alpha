@@ -1,4 +1,4 @@
-import { exact, id, revision, safeDetails, requireData } from '../domain/validation.js';
+import { exact, id, revision, safeDetails, requireData, text, relativePath } from '../domain/validation.js';
 
 const METHODS = Object.freeze({
   accounts: ['list', 'get', 'enroll', 'verifySession', 'previewRebind', 'rebind'],
@@ -7,12 +7,15 @@ const METHODS = Object.freeze({
   reservation: ['preview', 'reserve', 'reconcile'], deployer: ['prepare', 'apply', 'reconcile', 'rollback'],
   aiReview: ['queue', 'get', 'start', 'recordReview', 'approveIntent'],
   refresher: ['status', 'configure', 'setEligibility', 'planPass'], visibility: ['observeRecent', 'getPosition', 'collectStats'],
-  attention: ['list', 'get', 'acknowledge', 'raise'], backup: ['previewExport', 'export', 'previewRestore', 'restore', 'retain']
+  attention: ['list', 'get', 'acknowledge', 'raise'], backup: ['previewExport', 'export', 'previewRestore', 'restore', 'retain'],
+  supply: ['preview', 'processBatch'], release: ['scanReady', 'stage', 'startAi', 'markReady', 'resume', 'reconcile', 'failUpdate']
 });
 const WRITES = new Set(['accounts.enroll', 'accounts.verifySession', 'accounts.rebind', 'inventory.observe', 'inventory.setIntent', 'inventory.delete',
   'sourceCatalog.bind', 'reservation.reserve', 'reservation.reconcile', 'deployer.prepare', 'deployer.apply', 'deployer.reconcile', 'deployer.rollback',
   'aiReview.start', 'aiReview.recordReview', 'aiReview.approveIntent', 'refresher.configure', 'refresher.setEligibility',
-  'attention.acknowledge', 'attention.raise', 'backup.export', 'backup.restore', 'backup.retain']);
+  'attention.acknowledge', 'attention.raise', 'backup.export', 'backup.restore', 'backup.retain',
+  'supply.processBatch', 'release.stage', 'release.startAi', 'release.markReady',
+  'release.resume', 'release.reconcile', 'release.failUpdate']);
 const MESSAGES = Object.freeze({
   INVALID_REQUEST: 'Invalid Alpha request.', STALE_REVISION: 'Alpha changed; refresh before trying again.', STALE_BINDING: 'Account Persona binding changed.',
   UNSUPPORTED_CAPABILITY: 'This Alpha capability is unavailable.', OWNERSHIP_UNKNOWN: 'Ownership has not been confirmed.',
@@ -38,13 +41,50 @@ export function validateUiRequest(raw) {
   const r = exact(raw, ['v', 'requestId', 'command', 'params'], ['expectedRevision']);
   requireData(r.v === 1); id(r.requestId); requireData(r.requestId.length <= 128 && typeof r.command === 'string');
   const pieces = r.command.split('.'); requireData(pieces.length === 2 && Object.hasOwn(METHODS, pieces[0]) && METHODS[pieces[0]].includes(pieces[1]));
-  const write = WRITES.has(r.command), params = exact(r.params, write ? ['expectedRevision', 'accountBindingEpoch', 'opId'] : [],
-    write ? ['key', 'accountId', 'options'] : ['key', 'accountId', 'cursor', 'limit']);
-  safeDetails(params); if (params.key !== undefined) id(params.key); if (params.accountId !== undefined) id(params.accountId);
-  if (params.limit !== undefined) requireData(Number.isSafeInteger(params.limit) && params.limit > 0 && params.limit <= 200);
-  if (params.cursor !== undefined) requireData(typeof params.cursor === 'string' && params.cursor.length <= 1024);
-  if (write) { revision(r.expectedRevision); revision(params.expectedRevision); revision(params.accountBindingEpoch, 1); id(params.opId); }
-  else if (r.expectedRevision !== undefined) revision(r.expectedRevision);
+  const write = WRITES.has(r.command);
+  let params;
+  if (r.command === 'supply.preview') {
+    params = exact(r.params, ['text']);
+    text(params.text, 24000);
+    if (r.expectedRevision !== undefined) revision(r.expectedRevision);
+  } else if (r.command === 'supply.processBatch') {
+    params = exact(r.params, ['expectedRevision','text','batchId'],
+      ['offset','limit','imports']);
+    text(params.text, 24000);
+    requireData(typeof params.batchId === 'string' &&
+      /^[A-Za-z0-9_-]{1,32}$/.test(params.batchId));
+    revision(params.expectedRevision);
+    revision(r.expectedRevision);
+    requireData(params.expectedRevision === r.expectedRevision, 'STALE_REVISION');
+    if (params.offset !== undefined) revision(params.offset);
+    if (params.limit !== undefined) requireData(Number.isSafeInteger(params.limit) &&
+      params.limit >= 1 && params.limit <= 16);
+    if (params.imports !== undefined) {
+      requireData(Array.isArray(params.imports) && params.imports.length <= 200);
+      const used = new Set();
+      for (const item of params.imports) {
+        const entry = exact(item,['key','folder']);
+        id(entry.key); relativePath(entry.folder);
+        requireData(!used.has(entry.key)); used.add(entry.key);
+      }
+    }
+  } else {
+    params = exact(r.params, write ?
+      ['expectedRevision', 'accountBindingEpoch', 'opId'] : [],
+      write ? ['key', 'accountId', 'options'] : ['key', 'accountId', 'cursor', 'limit']);
+    if (params.key !== undefined) id(params.key);
+    if (params.accountId !== undefined) id(params.accountId);
+    if (params.limit !== undefined) requireData(Number.isSafeInteger(params.limit) &&
+      params.limit > 0 && params.limit <= 200);
+    if (params.cursor !== undefined) requireData(typeof params.cursor === 'string' &&
+      params.cursor.length <= 1024);
+    if (write) {
+      revision(r.expectedRevision); revision(params.expectedRevision);
+      revision(params.accountBindingEpoch, 1); id(params.opId);
+      requireData(r.expectedRevision === params.expectedRevision, 'STALE_REVISION');
+    } else if (r.expectedRevision !== undefined) revision(r.expectedRevision);
+  }
+  safeDetails(params);
   requireData(new TextEncoder().encode(JSON.stringify(r)).length <= 32768);
   return { request: structuredClone(r), service: pieces[0], method: pieces[1], write };
 }

@@ -19,6 +19,7 @@ import {createRefreshExecution} from '../flows/refresh/service.mjs';
 import {createAiTaskStore} from '../features/ai/store.mjs';
 import {createAttentionService,createDesktopAttentionNotifier} from '../features/attention/service.mjs';
 import {createAlphaTabAllocator} from '../features/tabs/allocator.mjs';
+import {createRefresherService} from '../features/refresher/service.mjs';
 
 /** Static R4 graph, not a general scheduler/automation runtime. Every port
  * must be a compiled, trusted background adapter; no UI/runtime module can
@@ -92,10 +93,13 @@ export function createAlphaHost({ browserRef, personaMonkeyReady, createCore = n
           storage:core.storage,broker,
           perchance:provider,contextForAccount
         });
-        services.accounts = Object.freeze(Object.fromEntries(['list', 'get', 'previewRebind'].map(k => [k, accounts[k]])));
+        services.accounts = Object.freeze(Object.fromEntries(
+          ['list','get','enroll','verifySession','previewRebind','rebind'].map(k => [k, accounts[k]])));
         const facts=createInventoryFactsStore();
         const inventory = createInventoryService({ storage: core.storage, provider, facts });
-        services.inventory = Object.freeze(Object.fromEntries(['list', 'get', 'inspectDrift', 'previewDelete', 'setIntent'].map(k => [k, inventory[k]])));
+        services.inventory = Object.freeze(Object.fromEntries(
+          ['list','get','inspectDrift','previewDelete','setIntent','observe','delete']
+            .map(k => [k, inventory[k]])));
         // Backup runs under the SAME logical Alpha Core as all other flows.
         // The provider-owned import/export crosses only the strict in-process
         // typed Persona Broker backup port, never raw native or private state.
@@ -121,6 +125,18 @@ export function createAlphaHost({ browserRef, personaMonkeyReady, createCore = n
           async previewExport(){
             return {ok:true,result:exporter.previewExport(),revision:(await core.storage.snapshot()).revision};
           },
+          // A consented local download returns metadata only, never archive bytes.
+          // Sensitive entries cannot be selected by a generic UI message.
+          async export(params){
+            if(!params?.options || Object.keys(params.options).length!==1 ||
+              params.options.consent!==UNENCRYPTED_CONSENT)
+              throw Object.assign(new Error('INVALID_REQUEST'),{code:'INVALID_REQUEST'});
+            if(!backupService)
+              throw Object.assign(new Error('UNSUPPORTED_CAPABILITY'),{code:'UNSUPPORTED_CAPABILITY'});
+            const receipt=await backupService.exportToDownloads({
+              consent:UNENCRYPTED_CONSENT,includeSensitive:[]});
+            return {ok:true,result:receipt,revision:(await core.storage.snapshot()).revision};
+          },
           async retain(){
             if(!backupService)return {ok:false,error:{code:'UNSUPPORTED_CAPABILITY'},revision:(await core.storage.snapshot()).revision};
             return {ok:true,result:await backupService.downloads.maintain(),revision:(await core.storage.snapshot()).revision};
@@ -138,6 +154,27 @@ export function createAlphaHost({ browserRef, personaMonkeyReady, createCore = n
           tabs:tabAllocator,notifier,
           readRevision:async()=>(await core.storage.snapshot()).revision});
         services.attention=attention;
+        // P304 retains scheduler ownership. UI cannot invoke the planning pass.
+        // Its ledger revision is distinct from P102's global optimistic revision.
+        const policy=r4Ports?.refresh?.refresher ?? createRefresherService({storage:core.storage});
+        services.refresher=Object.freeze({
+          status:params=>policy.status(params),
+          async configure(params){
+            const source=params?.options;
+            if(!source || !Number.isSafeInteger(source.ledgerRevision) ||
+              source.ledgerRevision<0)
+              throw Object.assign(new Error('INVALID_REQUEST'),{code:'INVALID_REQUEST'});
+            const {ledgerRevision,...settings}=source;
+            return policy.configure({expectedRevision:ledgerRevision,options:settings});
+          },
+          async setEligibility(params){
+            const opts=params?.options;
+            if(!opts || !Number.isSafeInteger(opts.ledgerRevision) || opts.ledgerRevision<0)
+              throw Object.assign(new Error('INVALID_REQUEST'),{code:'INVALID_REQUEST'});
+            return policy.setEligibility({...params,expectedRevision:opts.ledgerRevision,
+              options:{action:opts.action}});
+          }
+        });
         // With no PersonaMonkey-owned P103 executor or authenticated GitHub
         // source adapter, do not pretend R4 mutations are available.
         if(r4Ports){
@@ -147,6 +184,117 @@ export function createAlphaHost({ browserRef, personaMonkeyReady, createCore = n
             facts:r4Ports.facts??facts};
           composedR4=createR4Flows({core,ports,ledger:refreshLedger,attention});
         }
+        // The UI sees only validated commands, not r4(), provider adapters,
+        // Persona control leases or a generic scripting/execution gateway.
+        const unavailableR4=()=>{throw Object.assign(
+          new Error('UNSUPPORTED_CAPABILITY'),{code:'UNSUPPORTED_CAPABILITY'});};
+        const r4=()=>composedR4??unavailableR4();
+        services.supply=Object.freeze({
+          preview:params=>r4().supply.preview(params),
+          async processBatch(params){
+            const reply=await r4().supply.processBatch(params);
+            if(!reply.ok)return reply;
+            const batch=reply.result;
+            // P301 operation evidence stays inside the background. UI receives
+            // only receipt identity and outcome, never a provider record.
+            return {...reply,result:{
+              total:batch.total,nextOffset:batch.nextOffset,
+              cursor:batch.cursor,halted:batch.halted,
+              maxConcurrentMutations:batch.maxConcurrentMutations,
+              items:batch.items.map(i=>({
+                key:i.key,opId:i.opId,ok:i.ok,
+                ...(Number.isSafeInteger(i.revision)?{revision:i.revision}:{}),
+                ...(i.error?{error:{code:i.error.code}}:{}),
+                ...(i.result?.mode?{mode:i.result.mode}:{}),
+                ...(i.result?.phase?{phase:i.result.phase}:{})
+              }))
+            }};
+          }
+        });
+        const methods=Object.freeze({
+          stage:['aiOpId'],startAi:['stageOpId','aiOpId'],
+          markReady:['stageOpId','taskId','expectedTaskRevision','editorUrl'],
+          resume:[],reconcile:[],failUpdate:['stageOpId']
+        });
+        async function releaseCall(method,params){
+          const opts=params?.options??{};
+          if(!opts || typeof opts!=='object' || Array.isArray(opts) ||
+            Object.keys(opts).some(k=>!methods[method].includes(k)))
+            throw Object.assign(new Error('INVALID_REQUEST'),{code:'INVALID_REQUEST'});
+          const account=(await core.storage.read('account',params.accountId)).item?.record;
+          if(!account || account.sessionState!=='VERIFIED')
+            throw Object.assign(new Error('WAITING_HUMAN'),{code:'WAITING_HUMAN'});
+          if(account.epoch!==params.accountBindingEpoch)
+            throw Object.assign(new Error('STALE_BINDING'),{code:'STALE_BINDING'});
+          const resolver=r4Ports?.supply?.contextForAccount;
+          if(typeof resolver!=='function')unavailableR4();
+          const ctx=await resolver(Object.freeze({...account}));
+          if(!ctx || ctx.accountId!==account.accountId ||
+            ctx.personaUid!==account.personaUid ||
+            ctx.epoch!==account.epoch ||
+            !Number.isSafeInteger(ctx.routeRevision) ||
+            !Number.isSafeInteger(ctx.capabilityRevision))
+            throw Object.assign(new Error('STALE_BINDING'),{code:'STALE_BINDING'});
+          // Only the background-resolved context ever reaches P402.
+          const reply=await r4().release[method]({
+            key:params.key,accountId:params.accountId,
+            accountBindingEpoch:params.accountBindingEpoch,
+            opId:params.opId,context:ctx,...opts
+          });
+          if(!reply.ok)return reply;
+          const receipt=reply.result??{};
+          const summary={};
+          for(const field of ['state','stageOpId','taskId','releaseId',
+            'commitSha','listing','refreshState','operation']){
+            const value=receipt[field];
+            if(typeof value==='string'||typeof value==='number'||typeof value==='boolean')
+              summary[field]=value;
+          }
+          return {...reply,result:summary};
+        }
+        services.release=Object.freeze({
+          scanReady:params=>r4().release.scanReady(params),
+          ...Object.fromEntries(Object.keys(methods).map(method=>
+            [method,params=>releaseCall(method,params)]))
+        });
+        // P303's journal owns AI review records. Never expose native session
+        // IDs, privileged dispatch data or user-provided prompt content.
+        const aiProject=t=>({
+          id:t.id,key:t.key,accountId:t.accountId,state:t.state,
+          sourceHash:t.sourceHash,provenanceRefs:t.provenanceRefs,
+          approvalRevision:t.approvalRevision
+        });
+        services.aiReview=Object.freeze({
+          async queue(params={}){
+            const state=await aiTasks.read();
+            const limit=params.limit??100;
+            if(!Number.isSafeInteger(limit)||limit<1||limit>200)
+              throw Object.assign(new Error('INVALID_REQUEST'),{code:'INVALID_REQUEST'});
+            let offset=0;
+            if(params.cursor!==undefined){
+              const match=/^v1\.(\d+)\.(\d+)$/.exec(params.cursor);
+              if(!match || Number(match[1])!==state.revision)
+                throw Object.assign(new Error('STALE_REVISION'),{code:'STALE_REVISION'});
+              offset=Number(match[2]);
+            }
+            const rows=state.tasks.filter(t=>params.accountId===undefined ||
+              t.accountId===params.accountId).sort((a,b)=>a.id.localeCompare(b.id));
+            if(!Number.isSafeInteger(offset)||offset>rows.length)
+              throw Object.assign(new Error('INVALID_REQUEST'),{code:'INVALID_REQUEST'});
+            const end=offset+limit;
+            return {ok:true,revision:(await core.storage.snapshot()).revision,
+              result:{items:rows.slice(offset,end).map(aiProject),
+                cursor:end<rows.length?'v1.'+state.revision+'.'+end:null,
+                asOf:new Date().toISOString()}};
+          },
+          async get(params){
+            const state=await aiTasks.read();
+            const task=state.tasks.find(t=>t.id===params.key);
+            if(!task)throw Object.assign(new Error('NOT_APPLIED'),{code:'NOT_APPLIED'});
+            return {ok:true,revision:(await core.storage.snapshot()).revision,
+              result:aiProject(task)};
+          }
+        });
         current = core; return core;
       } catch (error) { core.close(); throw error; }
     })().catch(async error => {

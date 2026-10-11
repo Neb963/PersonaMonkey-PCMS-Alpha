@@ -2,7 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {load,validateTransition,R5_FOUNDATION} from '../../../tools/alpha/governance.mjs';
 
-const main = load('.'), sha = 'a'.repeat(40);
+// Historical authority immediately before the one-use foundation, not moving checkout HEAD.
+const main = load('.', '16e53125c3dcab2dfbd3284273dd1b15f6e5367f'), sha = 'a'.repeat(40);
 function candidate() {
   const head = structuredClone(main), nextHash = 'b'.repeat(64);
   head.lock.contractRevision = R5_FOUNDATION.nextRevision;

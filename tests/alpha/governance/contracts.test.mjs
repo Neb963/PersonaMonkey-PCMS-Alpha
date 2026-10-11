@@ -5,11 +5,11 @@ import { contractHash, json, load, validateSnapshot } from '../../../tools/alpha
 import { PERSONA_BROKER_COMMANDS } from '../../../extension/pcms/core/persona-broker-contract.js';
 import { renderViews } from '../../../tools/alpha/views.mjs';
 
-test('frozen declarations and surface hash match the actual broker and ten services', () => {
+test('frozen declarations and surface hash match the actual broker and twelve services', () => {
   const surface = json('.', 'extension/alpha/contracts/surface.json');
   const declarations = readFileSync('extension/alpha/contracts/index.d.ts', 'utf8');
   assert.equal(surface.runtimeImplementation, false);
-  assert.equal(Object.keys(surface.services).length, 10);
+  assert.equal(Object.keys(surface.services).length, 12);
   assert.deepEqual(surface.personaBroker.commands, Object.entries(PERSONA_BROKER_COMMANDS).map(([name, d]) => ({ name, requiresOperation: d.requiresOperation })));
   for (const [name, methods] of Object.entries(surface.services)) {
     const body = declarations.match(new RegExp(`export interface ${name} \\{([^\\n]+)\\}`))?.[1];
@@ -22,8 +22,8 @@ test('frozen declarations and surface hash match the actual broker and ten servi
     assert.deepEqual([...body.matchAll(/'([^']+)'/g)].map(m => m[1]), values);
   }
   assert.equal(contractHash(), load().lock.contracts['alpha.contracts.v1']);
-  assert.equal(load().lock.contractRevision, 2);
-  assert.equal(surface.contractRevision, 2);
+  assert.equal(load().lock.contractRevision, 3);
+  assert.equal(surface.contractRevision, 3);
   assert.equal(surface.perchanceAdapter.listGenerators.itemType, 'AccountGeneratorEntry');
   validateSnapshot(load(), { root: '.' });
 });
