@@ -188,6 +188,8 @@ function checkCoverage(m, personaMonkey, facts) {
     if (item.startsWith('personaMonkey.') && !SENSITIVE.includes(item) && !['personaMonkey.activeSessions', 'personaMonkey.nativeCredentials'].includes(item)) continue;
     if (item === 'alpha.records' || item === 'alpha.journal') continue;
     if (item === 'alpha.inventoryFacts' && factsHashed) continue;
+    if (item === 'alpha.refreshLedger' && Object.hasOwn(m.hashes,'refreshLedger')) continue;
+    if (item === 'alpha.attentionInbox' && Object.hasOwn(m.hashes,'attentionInbox')) continue;
     if (SENSITIVE.includes(item) && Object.hasOwn(m.hashes, item)) continue;
     if (!missing.has(item)) fail();
   }
