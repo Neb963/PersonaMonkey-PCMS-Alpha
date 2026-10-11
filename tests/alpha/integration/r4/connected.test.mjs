@@ -3,6 +3,10 @@ import { test } from 'node:test';
 import {createSupplyFlow} from '../../../../extension/alpha/flows/supply/service.mjs';
 import {createR4Flows} from '../../../../extension/alpha/bootstrap/host.mjs';
 import {installAlphaBackground} from '../../../../extension/alpha/bootstrap/entry.mjs';
+import {createAlphaCore} from '../../../../extension/alpha/core/core.mjs';
+import {createPersonaBroker} from '../../../../extension/pcms/core/persona-broker.js';
+import {createPcmsInternalBrokerEndpointRegistry} from '../../../../extension/lib/pcms-internal-broker-endpoint.js';
+import {memoryControl} from '../../core/helpers.mjs';
 import {createReleaseFlow} from '../../../../extension/alpha/flows/release/service.mjs';
 import {createRefreshExecution} from '../../../../extension/alpha/flows/refresh/service.mjs';
 import {emptyRefreshState,validateRefreshState} from '../../../../extension/alpha/flows/refresh/ledger.mjs';
@@ -142,7 +146,7 @@ async function harness({ existing = false, publicListing = false, state = 'SLEEP
 const receipt=result=>({ok:true,result,revision:7});
 const good=result=>{assert.equal(result?.ok,true,JSON.stringify(result?.error));return result.result;};
 const bad=(result,code)=>{assert.equal(result?.ok,false);assert.equal(result.error.code,code);};
-async function connected({casConflict=false,uncertainCommit=false,existing=false}={}){
+async function connected({casConflict=false,uncertainCommit=false,existing=false,realCore=false}={}){
   const h=await harness({existing,state:existing?'SLEEPING':'INELIGIBLE'});
   const initialSha='c'.repeat(40), newSha='d'.repeat(40);
   const initialBlob='b'.repeat(40);
@@ -237,7 +241,37 @@ async function connected({casConflict=false,uncertainCommit=false,existing=false
       return receipt({state:'COMPLETED'});
     }
   };
-  const core={storage:h.storage,assertCurrent:async()=>{},assertMutationAllowed:async()=>{}};
+  let core={storage:h.storage,assertCurrent:async()=>{},assertMutationAllowed:async()=>{}};
+  if(realCore){
+    // The existing P302 memory ledger still owns exactly one shared CAS
+    // version; P201 gets the same read/commit authority with its lifecycle
+    // operations, not an independent test storage copy.
+    const domain={...h.storage,open:async()=>{},close:()=>{},
+      async snapshot(){return {revision:(await h.storage.list('operation')).revision};}};
+    const registry=createPcmsInternalBrokerEndpointRegistry();
+    const calls=[];
+    registry.register({
+      ready:async()=>{},
+      async handleRequest(request){
+        calls.push(request);
+        return {version:1,requestId:request.requestId,ok:true,
+          bootId:'r4-typed-broker-boot',revision:1,
+          result:{personaUid:context.personaUid,active:true}};
+      },
+      attachEvents:async()=>true
+    });
+    const broker=createPersonaBroker({transport:registry.createEndpoint()});
+    let ids=0;const sessionData={};
+    const session={get:async k=>({[k]:sessionData[k]}),
+      set:async value=>Object.assign(sessionData,value)};
+    core=createAlphaCore({storage:domain,control:memoryControl(),broker,session,
+      alarms:{create:async()=>{},clear:async()=>{}},
+      now:()=>Date.parse(when),randomId:()=> 'r4-typed-'+(++ids)});
+    await core.initialize();
+    const read=await core.broker.read('persona.get',{personaUid:context.personaUid});
+    assert.equal(read.result.personaUid,context.personaUid);
+    assert.equal(calls.length,1);
+  }
   // One compiled background graph; no UI, unverified provider or second
   // browser authority can replace its P102/Core ownership.
   let nowMs=Date.parse('2026-10-11T08:00:00.000Z'),visible=false,active=false;
@@ -257,7 +291,10 @@ async function connected({casConflict=false,uncertainCommit=false,existing=false
   const compiled=createR4Flows({core,ports:{
     supply:{reservation,sources:catalog,perchance:h.provider,importPerchance:h.provider,
       contextForAccount:async()=>copy(h.emulator.context),now:()=>when},
-    release:{sourceCatalog:catalog,deployer:h.service,ai,aiStore,provider:h.provider,
+    release:{sourceCatalog:catalog,deployer:realCore ?
+      createDeployerService({storage:core.storage,sourceCatalog:catalog,
+        provider:h.provider,journal:h.journal,core,facts,clock:()=>when}) : h.service,
+      ai,aiStore,provider:h.provider,
       github,journal:h.journal,secretRef:'github-ref',clock:()=>when},
     refresh:{scheduler,visibility,provider:h.provider,journal:h.journal,
       contextFor:async()=>copy(h.emulator.context),clock:()=>nowMs},
@@ -284,7 +321,8 @@ async function connected({casConflict=false,uncertainCommit=false,existing=false
     gitState:()=>({head:gitHead,writes:gitWrites,blobs:{...gitBlobs}})};
 }
 test('R4-ISSUE100 connected GitHub-first supply → P302 unlisted stage → native AI → human approval → conditional GitHub CAS → publication → P403 feedback',async()=>{
-  const z=await connected();
+  const z=await connected({realCore:true});
+  assert.equal((await z.core.readStatus()).state,'RUNNING');
   const imported=good(await z.supply.importReady({key,opId:'supply-1'}));
   assert.equal(imported.phase,'APPLIED');
   let generator=(await z.h.storage.read('generator',key)).item.record;
@@ -323,6 +361,8 @@ test('R4-ISSUE100 connected GitHub-first supply → P302 unlisted stage → nati
   const result=good(await z.refreshFlow.pass());
   assert.equal(result.items[0].action,'ON_TARGET');
   assert.equal((await z.refreshFlow.inspect()).jobs[key].attempts,0);
+  assert.equal((await z.core.readStatus()).state,'RUNNING');
+  z.core.close();
 });
 test('R4-ISSUE100 GitHub compare-and-swap conflict never publishes or replays a held write',async()=>{
   const z=await connected({casConflict:true});
