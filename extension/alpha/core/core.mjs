@@ -264,8 +264,71 @@ export function createAlphaCore({ storage, control, broker, alarms, session, tab
       budgets: { operations: s.slots.filter(t => t.kind === 'operation').length, tabs: s.slots.filter(t => t.kind === 'tab').length,
         operationLimit: bounds.operations, tabLimit: bounds.tabs } };
   }
+  /** Durable restore fencing. Core never reads backup files or PersonaMonkey
+   * state: it owns the hold and receipts; the vetted Backup service owns imports.
+   */
+  const restore = Object.freeze({
+    async begin({digest,sourceRevision}={}) {
+      check(typeof digest==='string' && /^[a-f0-9]{64}$/.test(digest) &&
+        typeof sourceRevision==='string' && sourceRevision.length>0 &&
+        sourceRevision.length<=64, 'INVALID_REQUEST');
+      return locked(async () => {
+        await fence(); await mutable();
+        const holdId=randomId(); id(holdId); check(holdId.length>=8 && holdId.length<=128);
+        await change(s => {
+          check(s.recoveryReason===null && !s.restore,'RECOVERY_HOLD');
+          s.recoveryReason='RESTORE_PENDING';
+          s.restore={holdId,digest,sourceRevision,phase:'PREPARED',startedAt:when()};
+        });
+        await arm(); await publish();
+        return {state:'RECOVERY_HOLD',holdId,durable:true};
+      });
+    },
+    async status({holdId}={}) {
+      id(holdId); const s=await fence();
+      check(s.recoveryReason==='RESTORE_PENDING' && s.restore?.holdId===holdId,'RECOVERY_HOLD');
+      return {state:'RECOVERY_HOLD',holdId,durable:true,phase:s.restore.phase,digest:s.restore.digest};
+    },
+    async markApplied({holdId}={}) {
+      id(holdId);
+      return locked(async () => {
+        const s=await fence();
+        check(s.recoveryReason==='RESTORE_PENDING' && s.restore?.holdId===holdId,'RECOVERY_HOLD');
+        check(typeof storage.restoreReceipt==='function','UNSUPPORTED_CAPABILITY');
+        const receipt=await storage.restoreReceipt();
+        check(receipt?.holdId===holdId && receipt.durable===true,'RECOVERY_HOLD');
+        await change(s => {
+          check(s.restore?.holdId===holdId && s.recoveryReason==='RESTORE_PENDING','RECOVERY_HOLD');
+          s.restore.phase='APPLIED';
+        });
+        await publish();
+        return {state:'APPLIED',holdId};
+      });
+    },
+    async release({holdId,checks}={}) {
+      id(holdId);
+      check(checks && ['core','bindings','sessions','providers','operations','inventory']
+        .every(key=>checks[key]===true),'RECOVERY_HOLD');
+      return locked(async () => {
+        const state=await fence();
+        check(state.recoveryReason==='RESTORE_PENDING' &&
+          state.restore?.holdId===holdId && state.restore.phase==='APPLIED','RECOVERY_HOLD');
+        const rec=await storage.restoreReceipt();
+        check(rec?.holdId===holdId && rec.durable===true,'RECOVERY_HOLD');
+        const unresolved=(await operations()).filter(({record:o})=>OPEN.has(o.phase));
+        check(unresolved.length===0 && !state.timers.some(t=>t.phase==='HELD') &&
+          !state.slots.some(t=>t.phase==='HELD'),'RECOVERY_HOLD');
+        await change(s => {
+          check(s.restore?.holdId===holdId && s.restore.phase==='APPLIED','RECOVERY_HOLD');
+          s.restore=null; s.recoveryReason=null;
+        });
+        await arm(); await publish();
+        return {state:'RUNNING',holdId};
+      });
+    }
+  });
   const api = Object.freeze({
-    initialize, readStatus, storage,
+    initialize, readStatus, storage, restore,
     assertMutationAllowed: mutable, assertCurrent: fence, publish,
     broker: Object.freeze({ read: readBroker }),
     operations: Object.freeze({ execute, reconcile }),
