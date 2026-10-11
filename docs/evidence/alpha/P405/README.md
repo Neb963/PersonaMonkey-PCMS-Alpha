@@ -1,11 +1,21 @@
-# P405 interim implementation evidence
+# P405 — merged R4 acceptance evidence (not gate acceptance)
 
-Product branch changes only P405-owned integration, tests, and evidence. No direct P102 IndexedDB replacement, P201 control-store edits or PersonaMonkey internals.
+**Product implementation:** [PR #98](https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/98); authorized repairs [#102](https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/102), [#107](https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/107), [#109](https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/109), [#110](https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/110) and [#114](https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/114). **Claim:** `CLM-P405-001`, epoch 1, still ACTIVE pending independent GATE-R4.
 
-Locally executed (Node v22): `node --test /mnt/data/p405/tests/alpha/backup/integration/downloads.test.mjs /mnt/data/p405/tests/alpha/backup/integration/index.test.mjs /mnt/data/p405/tests/alpha/backup/integration/restore.test.mjs` — 10 PASS, 0 FAIL. Syntax checks of integration modules PASS. `bundle.test.mjs` imports the real P205 codec; it was not executed locally and must be verified in independent GitHub CI.
+**Exact integrated main verified:** `2071e5dffdf4d8506425a1a921e266713c29e063`. Independently verified successful GitHub Actions push runs:
 
-AP405-01: PARTIAL — P205 unencrypted consent-gated export wired to Firefox downloads and explicit absent-items ledger; no packaged export proven.
-AP405-02: BLOCKED — simulated authorized restore port handles staged preview, durable hold and reconciliation without replay. Production P102/P201/typed PersonaMonkey restorer is absent; real apply stays UNSUPPORTED_CAPABILITY. No real successful restore or provider reconciliation is claimed.
-AP405-03: LOCAL PASS — known successful download ID retention, interrupted/pending exclusion, unknown-file warning, delete-failure warning. Actual packaged Firefox coverage is unverified.
+| Suite | Run | Conclusion |
+|---|---|---|
+| alpha-governance | [38159397613](https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38159397613) | SUCCESS |
+| alpha-firefox | [38159397614](https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38159397614) | SUCCESS |
+| firefox-developer-edition | [38159397608](https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38159397608) | SUCCESS |
 
-Evidence status remains below MERGED and GATE_VERIFIED. No provider live testing. Real P405 acceptance requires separately authorized owner-boundary repair plus integrated tests.
+Acceptance coverage (exact mapped suites/cases in `acceptance.json`):
+
+- **AP405-01:** P205 consent-gated one-file unencrypted bundle, SHA-256 integrity preview and explicit unavailable-section ledger; typed PersonaMonkey state export; successful real packaged Firefox download. See `tests/alpha/backup/integration/bundle.test.mjs`, `tests/alpha/backup/bundle.test.mjs`, `tests/alpha/core/packaged.test.mjs`.
+- **AP405-02:** real P102 IndexedDB atomic restore of records plus operation journal; P201 durable recovery hold and restart; independently persisted P204 inventory facts, P403 execution ledger and P404 attention state; nonempty fleet requires fresh trusted P103/Persona authenticated session and unchanged provider source, with denial for stale binding, lost session, interrupted cross-store commit and ambiguous mutation. See `tests/alpha/domain/storage-cases.js`, `tests/alpha/backup/integration/restore.test.mjs`.
+- **AP405-03:** exact known Firefox download IDs and bounded retention; unknown/untracked files left untouched; interrupted/incomplete never evicted; warnings rather than blind deletion. Packaged download/manifest check in `tests/alpha/core/packaged.test.mjs` and deterministic faults in `tests/alpha/backup/integration/downloads.test.mjs`.
+
+**Limits:** P201 holds during uncertain cross-database restoration. No global cross-IndexedDB atomicity is claimed. AI task state, Refresher policy configuration, visibility observations and non-exportable/native/provider data are explicitly marked unavailable (not secretly dropped and not falsely restored). A restored fleet lacking current authenticated Persona/P103 session and exact provider source readback is not released. No live Perchance, Mullvad, credentials, real account or operator-native acceptance was run: `providerLive:false`. Later R6 operator-validated live provider admission remains a separate gate.
+
+**Status:** Phase proof `MERGED` with AP405-01/02/03 evidence; *neither P405 ACCEPTED nor GATE-R4 ACCEPTED is asserted*. The independent GATE-R4 checker must evaluate combined CI, ownership and all R4 phases before setting acceptance.

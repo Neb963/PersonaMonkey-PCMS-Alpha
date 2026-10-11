@@ -1,0 +1,177 @@
+{
+  "schemaVersion": 1,
+  "phaseId": "P405",
+  "state": "MERGED",
+  "claimState": "ACTIVE",
+  "claimId": "CLM-P405-001",
+  "agentId": "slot-five-r4-retry",
+  "claimEpoch": 1,
+  "claimBaseMainSha": "a53efbbd57b019eb9e094af134d9fd6461f8cf1b",
+  "baseMainSha": "a53efbbd57b019eb9e094af134d9fd6461f8cf1b",
+  "contractId": "alpha.contracts.v1",
+  "contractRevision": 2,
+  "contractHash": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e",
+  "claimPr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/97",
+  "implementationPr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/98",
+  "repairPrs": [
+    "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/102",
+    "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/103",
+    "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/107",
+    "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/109",
+    "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/110",
+    "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/114"
+  ],
+  "commitSha": "544749d3e4ee27ee91ad1b238e36bc6d081754f0",
+  "mergedMainSha": "2071e5dffdf4d8506425a1a921e266713c29e063",
+  "providerLive": false,
+  "gateVerified": false,
+  "accepted": false,
+  "acceptanceIds": [
+    "AP405-01",
+    "AP405-02",
+    "AP405-03"
+  ],
+  "cases": [
+    {
+      "id": "AP405-01",
+      "status": "PASS_DETERMINISTIC_AND_PACKAGED_FIREFOX",
+      "summary": "Explicit operator confirmation produces exactly one SHA-256 section-verified unencrypted local bundle; typed PersonaMonkey export remains inside PersonaMonkey, and manifest/inventory name every unavailable local or provider item. Real packaged Firefox downloads completed, with no plaintext secret exposure in UI receipts.",
+      "evidence": [
+        "extension/alpha/backup/bundle.js",
+        "extension/alpha/backup/integration/index.mjs",
+        "extension/alpha/backup/integration/downloads.mjs",
+        "extension/alpha/bootstrap/host.mjs",
+        "tests/alpha/backup/integration/bundle.test.mjs",
+        "tests/alpha/core/packaged.test.mjs"
+      ]
+    },
+    {
+      "id": "AP405-02",
+      "status": "PASS_DETERMINISTIC_REAL_STORES",
+      "summary": "Real P102 IndexedDB all-record-and-operation-journal restore is atomic; P201 persists a restore-specific hold across restart, with P204 facts, P403 refresh-execution ledger and P404 attention inbox separately restored. The nonempty-fleet flow proves fresh typed Persona/P103 account-session, binding and source ownership verification before release; lost session, stale epoch, unknown provider, uncertain operations, tampered bytes and interrupted cross-store writes retain recovery hold without blind retry. Live provider acceptance not claimed.",
+      "evidence": [
+        "extension/alpha/storage/store.js",
+        "extension/alpha/core/core.mjs",
+        "extension/alpha/backup/integration/authority.mjs",
+        "extension/alpha/backup/integration/restore.mjs",
+        "extension/lib/pcms-internal-broker-endpoint.js",
+        "extension/background.js",
+        "tests/alpha/domain/storage-cases.js",
+        "tests/alpha/backup/integration/restore.test.mjs"
+      ]
+    },
+    {
+      "id": "AP405-03",
+      "status": "PASS_DETERMINISTIC_AND_PACKAGED_FIREFOX",
+      "summary": "Firefox-owned completion state and exact tracked download IDs govern bounded retention. Unknown/untracked files, incomplete and interrupted downloads are never removed. Deletion errors are warnings. Pinned packaged Firefox test verifies an authentic completed download and tracking manifest; deterministic tests cover unknown IDs, retention and failure paths.",
+      "evidence": [
+        "extension/alpha/backup/integration/downloads.mjs",
+        "tests/alpha/backup/integration/downloads.test.mjs",
+        "tests/alpha/core/packaged.test.mjs"
+      ]
+    }
+  ],
+  "localTestsExecuted": [
+    {
+      "command": "node --test /mnt/data/p405/tests/alpha/backup/integration/{downloads,index,restore}.test.mjs (three explicit paths)",
+      "environment": "earlier P405 detached Node v22 workspace",
+      "passed": 10,
+      "failed": 0,
+      "result": "PASS",
+      "note": "This predates the cross-owner repairs; do not substitute it for latest merged-main CI."
+    }
+  ],
+  "prCiRuns": [
+    {
+      "id": 38159054347,
+      "name": "alpha-governance",
+      "sha": "a1ffd1c54e6bf0da142e47aba261086f8d0d6c7a",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38159054347"
+    },
+    {
+      "id": 38159054278,
+      "name": "firefox-developer-edition",
+      "sha": "a1ffd1c54e6bf0da142e47aba261086f8d0d6c7a",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38159054278"
+    }
+  ],
+  "ciRuns": [
+    {
+      "id": 38159397613,
+      "name": "alpha-governance",
+      "sha": "2071e5dffdf4d8506425a1a921e266713c29e063",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38159397613"
+    },
+    {
+      "id": 38159397608,
+      "name": "firefox-developer-edition",
+      "sha": "2071e5dffdf4d8506425a1a921e266713c29e063",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38159397608"
+    }
+  ],
+  "additionalCiRuns": [
+    {
+      "id": 38159397614,
+      "name": "alpha-firefox",
+      "sha": "2071e5dffdf4d8506425a1a921e266713c29e063",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38159397614"
+    }
+  ],
+  "proofCollection": {
+    "method": "AUTHENTICATED_GITHUB_API_EQUIVALENT",
+    "localPhaseProofCommand": "node tools/alpha/ci.mjs --phase-proof P405 --commit 544749d3e4ee27ee91ad1b238e36bc6d081754f0",
+    "localCommandExecuted": false,
+    "currentMainAtCollection": "2071e5dffdf4d8506425a1a921e266713c29e063",
+    "runIdAndRepositoryIndependentlyVerified": true,
+    "productAncestorVerified": true,
+    "providerLive": false
+  },
+  "milestones": [
+    {
+      "state": "COMMITTED",
+      "sha": "5b180c964c7839c9eb2dc61e02402360fc5d67fc"
+    },
+    {
+      "state": "CI_VERIFIED",
+      "sha": "5b180c964c7839c9eb2dc61e02402360fc5d67fc",
+      "validatedMainSha": "1598bb016d72a844d6329b1df544c1a16cc554c7"
+    },
+    {
+      "state": "MERGED",
+      "sha": "2071e5dffdf4d8506425a1a921e266713c29e063",
+      "previousMainSha": "6c9cc23024c7ce26499737a3e58035814a3c526d"
+    }
+  ],
+  "diffReview": {
+    "authorizedPathsOnly": true,
+    "credentialsCommitted": false,
+    "sharedContractsModified": false,
+    "otherPhaseFilesModified": false,
+    "providerMutations": false,
+    "crossOwnerRepairsAuthorized": true,
+    "trackedUnknownDownloadsDeleted": false
+  },
+  "limitations": [
+    "AP405 is deterministic plus packaged Firefox only; no live Perchance, Mullvad, account-login, operator-native or network mutation acceptance is inferred.",
+    "Non-exportable AI review tasks, Refresher policy settings, visibility cache, provider sessions, native credentials, cookies, GM values and unsupported operator secrets are reported UNAVAILABLE, not restored.",
+    "Every restored nonempty fleet requires fresh Persona/P103 authenticated session and exact current ownership/source readback; when unavailable the durable recovery hold remains in place.",
+    "Cross-database IndexedDB restore is not globally atomic; after a crash the P201 hold prevents mutations until independently reconciled.",
+    "Live provider execution admission/compatibility belongs to later operator-controlled R6, not an R4 pass.",
+    "Only the separately invoked GATE-R4 checker may mark GATE_VERIFIED or ACCEPTED."
+  ]
+}
