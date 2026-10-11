@@ -172,6 +172,89 @@ export function createAlphaHost({ browserRef, personaMonkeyReady, createCore = n
             facts:r4Ports.facts??facts};
           composedR4=createR4Flows({core,ports,ledger:refreshLedger,attention});
         }
+        // The UI sees only validated commands, not r4(), provider adapters,
+        // Persona control leases or a generic scripting/execution gateway.
+        const unavailableR4=()=>{throw Object.assign(
+          new Error('UNSUPPORTED_CAPABILITY'),{code:'UNSUPPORTED_CAPABILITY'});};
+        const r4=()=>composedR4??unavailableR4();
+        services.supply=Object.freeze({
+          preview:params=>r4().supply.preview(params),
+          processBatch:params=>r4().supply.processBatch(params)
+        });
+        const methods=Object.freeze({
+          stage:['aiOpId'],startAi:['stageOpId','aiOpId'],
+          markReady:['stageOpId','taskId','expectedTaskRevision','editorUrl'],
+          resume:[],reconcile:[],failUpdate:['stageOpId']
+        });
+        async function releaseCall(method,params){
+          const opts=params?.options??{};
+          if(!opts || typeof opts!=='object' || Array.isArray(opts) ||
+            Object.keys(opts).some(k=>!methods[method].includes(k)))
+            throw Object.assign(new Error('INVALID_REQUEST'),{code:'INVALID_REQUEST'});
+          const account=(await core.storage.read('account',params.accountId)).item?.record;
+          if(!account || account.sessionState!=='VERIFIED')
+            throw Object.assign(new Error('WAITING_HUMAN'),{code:'WAITING_HUMAN'});
+          if(account.epoch!==params.accountBindingEpoch)
+            throw Object.assign(new Error('STALE_BINDING'),{code:'STALE_BINDING'});
+          const resolver=r4Ports?.supply?.contextForAccount;
+          if(typeof resolver!=='function')unavailableR4();
+          const ctx=await resolver(Object.freeze({...account}));
+          if(!ctx || ctx.accountId!==account.accountId ||
+            ctx.personaUid!==account.personaUid ||
+            ctx.epoch!==account.epoch ||
+            !Number.isSafeInteger(ctx.routeRevision) ||
+            !Number.isSafeInteger(ctx.capabilityRevision))
+            throw Object.assign(new Error('STALE_BINDING'),{code:'STALE_BINDING'});
+          // Only the background-resolved context ever reaches P402.
+          return r4().release[method]({
+            key:params.key,accountId:params.accountId,
+            accountBindingEpoch:params.accountBindingEpoch,
+            opId:params.opId,context:ctx,...opts
+          });
+        }
+        services.release=Object.freeze({
+          scanReady:params=>r4().release.scanReady(params),
+          ...Object.fromEntries(Object.keys(methods).map(method=>
+            [method,params=>releaseCall(method,params)]))
+        });
+        // P303's journal owns AI review records. Never expose native session
+        // IDs, privileged dispatch data or user-provided prompt content.
+        const aiProject=t=>({
+          id:t.id,key:t.key,accountId:t.accountId,state:t.state,
+          sourceHash:t.sourceHash,provenanceRefs:t.provenanceRefs,
+          approvalRevision:t.approvalRevision
+        });
+        services.aiReview=Object.freeze({
+          async queue(params={}){
+            const state=await aiTasks.read();
+            const limit=params.limit??100;
+            if(!Number.isSafeInteger(limit)||limit<1||limit>200)
+              throw Object.assign(new Error('INVALID_REQUEST'),{code:'INVALID_REQUEST'});
+            let offset=0;
+            if(params.cursor!==undefined){
+              const match=/^v1\.(\d+)\.(\d+)$/.exec(params.cursor);
+              if(!match || Number(match[1])!==state.revision)
+                throw Object.assign(new Error('STALE_REVISION'),{code:'STALE_REVISION'});
+              offset=Number(match[2]);
+            }
+            const rows=state.tasks.filter(t=>params.accountId===undefined ||
+              t.accountId===params.accountId).sort((a,b)=>a.id.localeCompare(b.id));
+            if(!Number.isSafeInteger(offset)||offset>rows.length)
+              throw Object.assign(new Error('INVALID_REQUEST'),{code:'INVALID_REQUEST'});
+            const end=offset+limit;
+            return {ok:true,revision:(await core.storage.snapshot()).revision,
+              result:{items:rows.slice(offset,end).map(aiProject),
+                cursor:end<rows.length?'v1.'+state.revision+'.'+end:null,
+                asOf:new Date().toISOString()}};
+          },
+          async get(params){
+            const state=await aiTasks.read();
+            const task=state.tasks.find(t=>t.id===params.key);
+            if(!task)throw Object.assign(new Error('NOT_APPLIED'),{code:'NOT_APPLIED'});
+            return {ok:true,revision:(await core.storage.snapshot()).revision,
+              result:aiProject(task)};
+          }
+        });
         current = core; return core;
       } catch (error) { core.close(); throw error; }
     })().catch(async error => {
