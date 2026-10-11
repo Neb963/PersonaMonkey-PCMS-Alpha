@@ -378,3 +378,28 @@ old fixture remains byte-equivalent. This is test-only projection; the trusted
 CI validator continues to read the complete current-main registry and rejects
 stale claims, scope overlap and unauthorized changes. Future fixture tests must
 follow the same pattern or pin an exact historical commit.
+
+## Single-use R5 integration foundation (MAINT-R5-FOUNDATION-SCOPE-016)
+
+The operator authorized a preventive shared boundary integration after R4.
+A **separate owner-attested maintenance PR** must first install the trusted
+R5_FOUNDATION validator. Only then may a one-use
+`R5-FOUNDATION-016` PR integrate static Overview/Supply/Management/Review/
+Refresher/Attention/Settings route mounts and narrowly typed background
+command wiring. Its paths, base main, branch, contract revision, exact
+claim epochs and allowed active-reader revalidation are checked by the
+predecessor trusted validator. It cannot acquire/complete any P5xx phase,
+change phase state, override phase-owner views or start R6.
+
+The frozen v2 contract may change **only by an explicit complete version 3
+declaration + surface + document + lock update** in that PR, with independent
+verification of the actual byte-framed SHA-256. Existing accepted claims remain
+historical; only current active readers may be revalidated without changing
+epochs. The PR cannot bypass PersonaMonkey or reveal privileged R4 objects to
+UI clients. Unavailable provider capabilities fail closed.
+
+Round entry engineering rule: verify each phase's route is mounted, every
+required UI action has a validated background service (or a documented
+unsupported state with an exact later owning phase), backup bytes never flow
+through generic 32-KB JSON messages, and the packaged toolbar points at a real
+resource. End-to-end R5 actions remain phase-owned and gate-verified.
