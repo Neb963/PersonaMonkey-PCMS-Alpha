@@ -191,7 +191,25 @@ export function createAlphaHost({ browserRef, personaMonkeyReady, createCore = n
         const r4=()=>composedR4??unavailableR4();
         services.supply=Object.freeze({
           preview:params=>r4().supply.preview(params),
-          processBatch:params=>r4().supply.processBatch(params)
+          async processBatch(params){
+            const reply=await r4().supply.processBatch(params);
+            if(!reply.ok)return reply;
+            const batch=reply.result;
+            // P301 operation evidence stays inside the background. UI receives
+            // only receipt identity and outcome, never a provider record.
+            return {...reply,result:{
+              total:batch.total,nextOffset:batch.nextOffset,
+              cursor:batch.cursor,halted:batch.halted,
+              maxConcurrentMutations:batch.maxConcurrentMutations,
+              items:batch.items.map(i=>({
+                key:i.key,opId:i.opId,ok:i.ok,
+                ...(Number.isSafeInteger(i.revision)?{revision:i.revision}:{}),
+                ...(i.error?{error:{code:i.error.code}}:{}),
+                ...(i.result?.mode?{mode:i.result.mode}:{}),
+                ...(i.result?.phase?{phase:i.result.phase}:{})
+              }))
+            }};
+          }
         });
         const methods=Object.freeze({
           stage:['aiOpId'],startAi:['stageOpId','aiOpId'],
@@ -218,11 +236,21 @@ export function createAlphaHost({ browserRef, personaMonkeyReady, createCore = n
             !Number.isSafeInteger(ctx.capabilityRevision))
             throw Object.assign(new Error('STALE_BINDING'),{code:'STALE_BINDING'});
           // Only the background-resolved context ever reaches P402.
-          return r4().release[method]({
+          const reply=await r4().release[method]({
             key:params.key,accountId:params.accountId,
             accountBindingEpoch:params.accountBindingEpoch,
             opId:params.opId,context:ctx,...opts
           });
+          if(!reply.ok)return reply;
+          const receipt=reply.result??{};
+          const summary={};
+          for(const field of ['state','stageOpId','taskId','releaseId',
+            'commitSha','listing','refreshState','operation']){
+            const value=receipt[field];
+            if(typeof value==='string'||typeof value==='number'||typeof value==='boolean')
+              summary[field]=value;
+          }
+          return {...reply,result:summary};
         }
         services.release=Object.freeze({
           scanReady:params=>r4().release.scanReady(params),
