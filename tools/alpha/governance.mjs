@@ -82,6 +82,7 @@ export const R5_FOUNDATION = Object.freeze({
     'extension/alpha/ui/shell/**',
     'extension/alpha/popup/**',
     'extension/manifest.json',
+    '.github/workflows/alpha-contract-amendment.yml',
     'tests/alpha/core/**',
     'tests/alpha/ui-shell/**',
     'tests/alpha/governance/**',
