@@ -360,3 +360,10 @@ P403 and connected R4 tests and own evidence. The fix must retain a durable
 P102 journal before provider dispatch, generation fence, P103 exact
 source/readback and fail-closed uncertain reconciliation. No new provider
 behavior, no P201 global hold relaxation, no R5 UI and no gate acceptance.
+
+The approved correction may also add one **background-only** P201 Core
+atomic pre-dispatch check for a specific durable, already-PREPARED operation.
+That method must refuse any restore hold, other unresolved operation or
+conflicting Core operation slot; it must not relax global recovery hold or
+change the typed Persona Broker/Alpha v1 contracts. This closes the race
+between preflight and P102 journal preparation.
