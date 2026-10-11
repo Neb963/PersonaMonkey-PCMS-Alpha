@@ -121,6 +121,8 @@ export const R4_REPAIRS = Object.freeze({
     authorization:'MAINT-R4-REFRESH-013',
     paths:Object.freeze([
       'extension/alpha/flows/refresh/service.mjs',
+      'extension/alpha/core/core.mjs',
+      'tests/alpha/core/**',
       'tests/alpha/integration/r4/**',
       'tests/alpha/flows/refresh/**',
       'docs/evidence/alpha/R4-ISSUE100-REFRESH/**'
