@@ -273,10 +273,23 @@ export function createAlphaCore({ storage, control, broker, alarms, session, tab
         typeof sourceRevision==='string' && sourceRevision.length>0 &&
         sourceRevision.length<=64, 'INVALID_REQUEST');
       return locked(async () => {
-        await fence(); await mutable();
+        const state=await fence(); await mutable();
+        // Restoring while any in-flight operation, opened editor tab or
+        // mutating timer handler owns the old state could race that authority.
+        // A non-dispatched scheduled mutation can safely be marked MISSED;
+        // the owning feature must explicitly replan it after recovery.
+        check(!state.slots.length && !state.timers.some(t=>t.mutating &&
+          ['RUNNING','HELD'].includes(t.phase)) &&
+          !(await operations()).some(({record:o})=>OPEN.has(o.phase)),
+          'RECOVERY_HOLD');
         const holdId=randomId(); id(holdId); check(holdId.length>=8 && holdId.length<=128);
         await change(s => {
-          check(s.recoveryReason===null && !s.restore,'RECOVERY_HOLD');
+          check(s.recoveryReason===null && !s.restore &&
+            !s.slots.length && !s.timers.some(t=>t.mutating &&
+              ['RUNNING','HELD'].includes(t.phase)),'RECOVERY_HOLD');
+          for(const timer of s.timers) if(timer.mutating && timer.phase==='SCHEDULED'){
+            timer.phase='MISSED';timer.completedAt=when();
+          }
           s.recoveryReason='RESTORE_PENDING';
           s.restore={holdId,digest,sourceRevision,phase:'PREPARED',startedAt:when()};
         });
