@@ -44,6 +44,7 @@ test('AP102-01/02/03: actual pinned Firefox IndexedDB migrations, races, aborts,
         'extension/alpha/providers/perchance/adapter.mjs',
         'extension/alpha/providers/perchance/emulator.mjs',
         'extension/alpha/features/sources/catalog.mjs',
+        'extension/alpha/providers/github/paths.mjs',
         'extension/alpha/flows/refresh/comment.mjs',
         'tests/alpha/domain/fixtures.js', 'tests/alpha/domain/storage-cases.js',
         'tests/alpha/domain/probe.js', 'tests/alpha/domain/probe.html'
