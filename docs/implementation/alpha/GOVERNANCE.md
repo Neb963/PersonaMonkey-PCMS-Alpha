@@ -349,3 +349,21 @@ main. It cannot change production features, bypass Alpha Core, grant a new
 browser execution authority, or claim live Perchance. These tests must
 actually instantiate the P201 Core and typed Persona Broker in the same
 connected source-linked P401–P403 scenario before issue #100 is closed.
+
+## R4 refresh dispatch repair (MAINT-R4-REFRESH-013)
+
+The separately approved one-use `R4-ISSUE100-REFRESH` context may fix only
+the P403/Core ordering defect where recording a PREPARED operation precedes
+the required Core mutation preflight. The permitted code is
+`extension/alpha/flows/refresh/service.mjs`, together with the existing
+P403 and connected R4 tests and own evidence. The fix must retain a durable
+P102 journal before provider dispatch, generation fence, P103 exact
+source/readback and fail-closed uncertain reconciliation. No new provider
+behavior, no P201 global hold relaxation, no R5 UI and no gate acceptance.
+
+The approved correction may also add one **background-only** P201 Core
+atomic pre-dispatch check for a specific durable, already-PREPARED operation.
+That method must refuse any restore hold, other unresolved operation or
+conflicting Core operation slot; it must not relax global recovery hold or
+change the typed Persona Broker/Alpha v1 contracts. This closes the race
+between preflight and P102 journal preparation.
