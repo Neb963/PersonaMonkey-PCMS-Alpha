@@ -35,3 +35,15 @@ test('supplementary #99 coverage repair is separately fenced to bundle and backu
     assert.throws(()=>validateTransition(main,main,{...c,...change},{
       mainSha:sha,headBranch:c.branch,files:['docs/evidence/alpha/R4-ISSUE99-COVERAGE/context.json']}));
 });
+
+test('follow-up R4 #99 and #100 have separate narrowly-scoped authority',()=>{
+  for(const [id,path,other] of [
+    ['R4-ISSUE99-RECONCILE','extension/alpha/backup/integration/authority.mjs','extension/alpha/providers/perchance/broker-executor.mjs'],
+    ['R4-ISSUE100-WIRING','extension/alpha/providers/perchance/broker-executor.mjs','extension/alpha/backup/integration/authority.mjs']]){
+    const data={...ctx(id),authorization:'MAINT-R4-FINAL-011'};
+    const file='docs/evidence/alpha/'+id+'/context.json';
+    assert.equal(validateTransition(main,main,data,{mainSha:sha,headBranch:data.branch,files:[file,path]}).kind,'R4_REPAIR');
+    assert.throws(()=>validateTransition(main,main,data,{mainSha:sha,headBranch:data.branch,files:[file,other]}),/outside ownership/);
+    assert.throws(()=>validateTransition(main,main,{...data,authorization:'MAINT-R4-REPAIR-SCOPE-009'},{mainSha:sha,headBranch:data.branch,files:[file,path]}));
+  }
+});
