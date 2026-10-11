@@ -79,6 +79,32 @@ export function createRefreshLedger({ indexedDB = globalThis.indexedDB,
       if (typeof fn !== 'function') throw new TypeError('Atomic update callback required');
       return transact(fn);
     },
+    /** One strict transaction; independent of P102 and P404, so Core hold
+     * must survive a crash between the individual store commits.
+     */
+    async replaceForRestore(input) {
+      const next=structuredClone(validateRefreshState(input));
+      // Do not revive ambiguous saves as runnable jobs after a restore.
+      for (const job of Object.values(next.jobs)) if (
+        ['PREPARED','DISPATCHING','RELOADING'].includes(job.state)) {
+        job.state='RECONCILE';job.attentionReason='RECOVERY_HOLD';
+      }
+      validateRefreshState(next);
+      const db=await connection();
+      await new Promise((resolve,reject)=>{
+        let tx;
+        try {tx=db.transaction('state','readwrite',{durability:'strict'});}
+        catch {reject(new Error('RECOVERY_HOLD'));return;}
+        tx.onabort=()=>reject(new Error('RECOVERY_HOLD'));
+        tx.onerror=()=>{};
+        tx.oncomplete=resolve;
+        try {tx.objectStore('state').put(next,'journal');}
+        catch {try{tx.abort();}catch{}}
+      });
+      const observed=await transact(null);
+      if (JSON.stringify(observed)!==JSON.stringify(next)) throw new Error('RECOVERY_HOLD');
+      return {restored:true,crossStoreAtomic:false,jobs:Object.keys(next.jobs).length};
+    },
     close() {
       if (pending) void pending.then(db => db.close()).catch(() => {});
       pending = null;
