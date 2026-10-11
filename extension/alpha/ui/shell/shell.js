@@ -1,4 +1,5 @@
 import { renderState } from './states.js';
+import { createViewCoordinator } from './mounts.js';
 
 export const SECTION_IDS = Object.freeze([
   'overview', 'supply', 'refresher', 'accounts', 'generators', 'attention', 'settings'
@@ -6,7 +7,7 @@ export const SECTION_IDS = Object.freeze([
 
 export function resolveRoute(hash) {
   const route = typeof hash === 'string' && hash.startsWith('#') ? hash.slice(1) : '';
-  return SECTION_IDS.includes(route) ? route : 'overview';
+  return route === 'supply/review' ? 'supply' : SECTION_IDS.includes(route) ? route : 'overview';
 }
 
 export function showRoute(doc, hash, { focus = false } = {}) {
@@ -35,8 +36,14 @@ export function bootShell(doc, view) {
       message: slot.dataset.message
     });
   }
-  showRoute(doc, view.location.hash);
-  view.addEventListener('hashchange', () => showRoute(doc, view.location.hash, { focus: true }));
+  const coordinator = createViewCoordinator(doc, view);
+  const navigate = (focus = false) => {
+    const section = showRoute(doc, view.location.hash, { focus });
+    void coordinator.activate(section, view.location.hash);
+  };
+  navigate();
+  view.addEventListener('hashchange', () => navigate(true));
+  return coordinator;
 }
 
 // Native anchors provide Tab/Enter navigation. Only the displayed panel changes.
