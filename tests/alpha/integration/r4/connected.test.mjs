@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import {createSupplyFlow} from '../../../../extension/alpha/flows/supply/service.mjs';
+import {createR4Flows} from '../../../../extension/alpha/bootstrap/host.mjs';
 import {createReleaseFlow} from '../../../../extension/alpha/flows/release/service.mjs';
 import {createRefreshExecution} from '../../../../extension/alpha/flows/refresh/service.mjs';
 import {emptyRefreshState,validateRefreshState} from '../../../../extension/alpha/flows/refresh/ledger.mjs';
@@ -235,10 +236,32 @@ async function connected({casConflict=false,uncertainCommit=false}={}){
       return receipt({state:'COMPLETED'});
     }
   };
-  const core={assertCurrent:async()=>{},assertMutationAllowed:async()=>{}};
-  const releaseFlow=createReleaseFlow({storage:h.storage,sourceCatalog:catalog,
-    deployer:h.service,ai,aiStore,provider:h.provider,
-    github,journal:h.journal,core,inventory,facts,secretRef:'github-ref',clock:()=>when});
+  const core={storage:h.storage,assertCurrent:async()=>{},assertMutationAllowed:async()=>{}};
+  // One compiled background graph; no UI, unverified provider or second
+  // browser authority can replace its P102/Core ownership.
+  let nowMs=Date.parse('2026-10-11T08:00:00.000Z'),visible=false,active=false;
+  const scheduler={planPass:async()=>receipt({}),inspect:async()=>({
+    config:{margin:.1},health:{state:'HEALTHY'},
+    schedules:active?{[key]:{key,accountId:context.accountId,personaUid:context.personaUid,
+      accountBindingEpoch:1,phase:'ACTIVE'}}:{}})};
+  const visibility={getPosition:async()=>receipt({key,status:visible?'VISIBLE':'NOT_VISIBLE',
+    feedPosition:visible?1:null,renderedPosition:visible?1:null,
+    asOf:new Date(nowMs).toISOString(),evidenceRefs:['emulated-feed']})};
+  let ledgerData=emptyRefreshState();
+  const ledger={read:async()=>copy(ledgerData),async update(fn){
+    const next=copy(ledgerData);fn(next);next.revision++;
+    ledgerData=validateRefreshState(next);return copy(ledgerData);
+  }};
+  const attention={raise:async()=>receipt({id:'attention-test'})};
+  const compiled=createR4Flows({core,ports:{
+    supply:{reservation,sources:catalog,perchance:h.provider,importPerchance:h.provider,
+      contextForAccount:async()=>copy(h.emulator.context),now:()=>when},
+    release:{sourceCatalog:catalog,deployer:h.service,ai,aiStore,provider:h.provider,
+      github,journal:h.journal,secretRef:'github-ref',clock:()=>when},
+    refresh:{scheduler,visibility,provider:h.provider,journal:h.journal,
+      contextFor:async()=>copy(h.emulator.context),clock:()=>nowMs},
+    inventory,facts},ledger,attention});
+  const releaseFlow=compiled.release;
   const base=(opId='stage-1',extra={})=>({key,accountId:context.accountId,
     accountBindingEpoch:1,context:copy(h.emulator.context),
     opId,aiOpId:'native-ai-1',...extra});
@@ -253,8 +276,11 @@ async function connected({casConflict=false,uncertainCommit=false}={}){
   }
   const approve=task=>base('approved-1',{stageOpId:'stage-1',taskId:task.id,
     expectedTaskRevision:task.revision,editorUrl:'https://perchance.org/demo#edit'});
-  return {h,catalog,supply,releaseFlow,github,tasks,core,base,review,approve,
-    inventory,facts,gitState:()=>({head:gitHead,writes:gitWrites,blobs:{...gitBlobs}})};
+  return {h,catalog,supply:compiled.supply,releaseFlow,refreshFlow:compiled.refresh,
+    github,tasks,core,base,review,approve,inventory,facts,
+    enableRefresh(){active=true;},markVisible(){visible=true;},
+    advance(ms){nowMs+=ms;},
+    gitState:()=>({head:gitHead,writes:gitWrites,blobs:{...gitBlobs}})};
 }
 test('R4-ISSUE100 connected GitHub-first supply → P302 unlisted stage → native AI → human approval → conditional GitHub CAS → publication → P403 feedback',async()=>{
   const z=await connected();
@@ -286,34 +312,16 @@ test('R4-ISSUE100 connected GitHub-first supply → P302 unlisted stage → nati
   await z.h.storage.commit({expectedRevision:row.revision,writes:[{
     kind:'generator',expectedRevision:row.item.revision,
     record:{...row.item.record,refreshState:'ACTIVE',asOf:when}}]});
-  const t=Date.parse('2026-10-11T08:00:00.000Z');
-  let nowMs=t, visible=false;
-  const scheduler={
-    planPass:async()=>receipt({}),inspect:async()=>({
-      config:{margin:.1},health:{state:'HEALTHY'},
-      schedules:{[key]:{key,accountId:context.accountId,personaUid:context.personaUid,
-        accountBindingEpoch:1,phase:'ACTIVE'}}})
-  };
-  let ledgerData=emptyRefreshState();
-  const ledger={read:async()=>copy(ledgerData),async update(fn){
-    const next=copy(ledgerData);fn(next);next.revision++;
-    ledgerData=validateRefreshState(next);return copy(ledgerData);
-  }};
-  const visibility={getPosition:async()=>receipt({key,status:visible?'VISIBLE':'NOT_VISIBLE',
-    feedPosition:visible?1:null,renderedPosition:visible?1:null,
-    asOf:new Date(nowMs).toISOString(),evidenceRefs:['emulated-feed']})};
-  const refresh=createRefreshExecution({scheduler,visibility,storage:z.h.storage,
-    provider:z.h.provider,journal:z.h.journal,core:z.core,ledger,
-    clock:()=>nowMs,contextFor:async()=>copy(z.h.emulator.context)});
-  const pass=good(await refresh.pass());
+  z.enableRefresh();
+  const pass=good(await z.refreshFlow.pass());
   assert.equal(pass.items[0].action,'SAVED_WAIT_FOR_OBSERVATION');
   assert(z.h.emulator.listRemote()[0].files.pjs.includes('edited source for approved release'));
-  assert.equal((await refresh.inspect()).jobs[key].attempts,1);
-  // Fresh independent visibility observation, not a save receipt, establishes target.
-  nowMs+=11*60000;visible=true;
-  const result=good(await refresh.pass());
+  assert.equal((await z.refreshFlow.inspect()).jobs[key].attempts,1);
+  // Fresh rendered observation, never save receipt alone, establishes target.
+  z.advance(11*60000);z.markVisible();
+  const result=good(await z.refreshFlow.pass());
   assert.equal(result.items[0].action,'ON_TARGET');
-  assert.equal((await refresh.inspect()).jobs[key].attempts,0);
+  assert.equal((await z.refreshFlow.inspect()).jobs[key].attempts,0);
 });
 test('R4-ISSUE100 GitHub compare-and-swap conflict never publishes or replays a held write',async()=>{
   const z=await connected({casConflict:true});
