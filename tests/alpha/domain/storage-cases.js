@@ -50,7 +50,7 @@ function restoreRig(label) {
   const alarms={create:()=>{},clear:()=>{}};
   const broker={request:async()=>{throw Error('Unexpected PersonaMonkey provider dispatch');}};
   const core=createAlphaCore({storage,control,broker,session,alarms,now:()=>Date.parse(WHEN),
-    randomId:()=> 'restore_hold_'+suffix});
+    randomId:()=> 'restore-hold-'+suffix});
   const personaEndpoint={backup:async()=>{throw Error('Unavailable PersonaMonkey section');}};
   return {storage,control,facts,refreshLedger,attentionStore,core,personaEndpoint,session,alarms,broker,
     close(){core.close();facts.close();refreshLedger.close();attentionStore.close();}};
