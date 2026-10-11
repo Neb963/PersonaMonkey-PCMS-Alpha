@@ -350,3 +350,26 @@ test('R4-ISSUE100 stale Persona epoch rejected before supply and deployment muta
   bad(await z.supply.importReady({key,opId:'supply-stale'}),'STALE_BINDING');
   assert.equal(z.h.emulator.calls.filter(c=>['save','create','setListing'].includes(c.kind)).length,0);
 });
+
+test('R4-ISSUE100 independently observed source drift denies sleep-only stage before any save',async()=>{
+  const z=await connected();
+  good(await z.supply.importReady({key,opId:'supply-drift'}));
+  z.h.emulator.changeRemote(key,{files:{pjs:'externally edited source',html:'',thumbnail:new Uint8Array()}});
+  const result=await z.releaseFlow.stage(z.base());
+  bad(result,'SOURCE_DRIFT');
+  assert.equal((await z.h.storage.read('operation','stage-1')).item,null);
+  assert.equal(z.h.emulator.calls.filter(x=>x.kind==='save'||x.kind==='setListing').length,0);
+});
+test('R4-ISSUE100 post-stage rollback delegates P302 verification and remains unlisted and quarantined',async()=>{
+  const z=await connected();
+  good(await z.supply.importReady({key,opId:'supply-rollback'}));
+  const stage=good(await z.releaseFlow.stage(z.base()));
+  assert.equal(stage.state,'AI_PENDING');
+  const attempted=await z.releaseFlow.failUpdate(z.base('rollback-1',{stageOpId:'stage-1'}));
+  assert.equal(attempted.ok,true,JSON.stringify(attempted.error));
+  const generator=(await z.h.storage.read('generator',key)).item.record;
+  assert.equal(generator.deployState,'QUARANTINED');
+  assert.equal(generator.listingObserved,'UNLISTED');
+  assert.equal(z.h.emulator.listRemote()[0].isPrivate,true);
+  assert.equal(z.gitState().writes,0);
+});
