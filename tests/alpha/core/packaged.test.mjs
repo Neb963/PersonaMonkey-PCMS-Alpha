@@ -333,6 +333,6 @@ test('AP201-03 bounded alarms and operation/tab budgets', async () => {
     db.close();return true;`, journal, { core: false });
   assert.equal((await request('accounts.list')).ok, true); assert.equal((await status()).state, 'RUNNING');
   report.checks.boundedTimersOperationsAndTabPermitsNoOperatorTabClosure = true;
-  report.passed = Object.values(report.checks).length === 6 && Object.values(report.checks).every(Boolean);
+  report.passed = Object.values(report.checks).length === 7 && Object.values(report.checks).every(Boolean);
   assert.equal(report.passed, true);
 });
