@@ -148,8 +148,7 @@ export function createAlphaHost({ browserRef, personaMonkeyReady, createCore = n
     async r4(){await ensureCore();if(!composedR4)
       throw Object.assign(new Error('R4 provider adapters unverified'),{code:'UNSUPPORTED_CAPABILITY'});
       return composedR4;},
-    diagnostics: () => ({ constructedCores, activeCores: current === null ? 0 : 1,
-      r4Configured: composedR4!==null }),
+    diagnostics: () => ({ constructedCores, activeCores: current === null ? 0 : 1 }),
     async handleAlarm(alarm) { const alreadyRunning = current !== null; const core = await ensureCore(); return alreadyRunning ? core.handleAlarm(alarm) : { started: true }; },
     wake: () => ensureCore(),
     async status() { return (await ensureCore()).readStatus(); }
