@@ -137,6 +137,7 @@ async function harness({ existing = false, publicListing = false, state = 'SLEEP
  * execution engines. Every R4 phase consumes the SAME account, generator and
  * durable operation rows. No provider-live inference.
  */
+const receipt=result=>({ok:true,result,revision:7});
 const good=result=>{assert.equal(result?.ok,true,JSON.stringify(result?.error));return result.result;};
 const bad=(result,code)=>{assert.equal(result?.ok,false);assert.equal(result.error.code,code);};
 async function connected({casConflict=false,uncertainCommit=false}={}){
