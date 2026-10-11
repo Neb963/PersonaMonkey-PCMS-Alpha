@@ -340,3 +340,12 @@ hash, exact current-main product SHA and independent GitHub Actions checks,
 and `providerLive:false`. Product feature paths and phase/round state are
 not authorized. It cannot declare P405 GATE_VERIFIED or GATE-R4 accepted;
 the subsequent independent GATE-R4 checker owns the final decision.
+
+## R4 connected typed-broker final proof (same MAINT-R4-EVIDENCE-012)
+
+The separate one-use `R4-ISSUE100-FINAL` context may add only deterministic
+`tests/alpha/integration/r4/**` cases and its own context, on exact current
+main. It cannot change production features, bypass Alpha Core, grant a new
+browser execution authority, or claim live Perchance. These tests must
+actually instantiate the P201 Core and typed Persona Broker in the same
+connected source-linked P401–P403 scenario before issue #100 is closed.
