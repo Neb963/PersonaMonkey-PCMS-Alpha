@@ -68,6 +68,19 @@
       "previewRestore",
       "restore",
       "retain"
+    ],
+    "Supply": [
+      "preview",
+      "processBatch"
+    ],
+    "Release": [
+      "scanReady",
+      "stage",
+      "startAi",
+      "markReady",
+      "resume",
+      "reconcile",
+      "failUpdate"
     ]
   },
   "personaBroker": {
@@ -356,7 +369,7 @@
       "READY"
     ]
   },
-  "contractRevision": 2,
+  "contractRevision": 3,
   "perchanceAdapter": {
     "listGenerators": {
       "itemType": "AccountGeneratorEntry",
@@ -367,5 +380,24 @@
       "invalidIdentity": "FAIL_CLOSED",
       "duplicateIdentity": "FAIL_CLOSED"
     }
+  },
+  "uiBoundary": {
+    "transport": "PCMS_UI_REQUEST",
+    "authority": "CORE_ONLY",
+    "maxEnvelopeBytes": 32768,
+    "supply": {
+      "maxSlugs": 200,
+      "maxBatchSize": 16,
+      "immutableBatchIds": true
+    },
+    "release": {
+      "contextSource": "BACKGROUND_VERIFIED_PERSONA_BINDING",
+      "rawContextFromUi": false
+    },
+    "backup": {
+      "exportReturnsMetadataOnly": true,
+      "restoreFileRequiresSeparatePermissionedTransport": true
+    },
+    "viewMounts": "FIXED_BUILT_INS_ONLY"
   }
 }
