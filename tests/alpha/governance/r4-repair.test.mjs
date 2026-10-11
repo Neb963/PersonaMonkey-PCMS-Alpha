@@ -1,24 +1,12 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {load,validateTransition,R4_REPAIRS} from '../../../tools/alpha/governance.mjs';
+import {historicalRoundSnapshot} from './historical-fixtures.mjs';
 // Historical R4 repair permissions must be tested against the R4-in-progress
 // state, not the checkout's current state. Gate acceptance intentionally removes
 // that permission. This fixture reconstructs the authorized historical state
 // without changing the real plan, claim registry or the trusted validator.
-const published=load('.');
-const main=structuredClone(published);
-for (const r of main.plan.rounds) {
-  if (r.round===4) r.status='IN_PROGRESS';
-  if (r.round>=5) r.status='LOCKED';
-}
-for (const p of main.plan.phases) {
-  if (p.round===4) p.status='CLAIMED';
-  if (p.round>=5) p.status='LOCKED';
-}
-for (const c of main.registry.claims) {
-  if (/^P40[1-5]$/.test(c.phaseId) &&
-      c.claimEpoch===main.registry.epochs[c.phaseId]) c.state='ACTIVE';
-}
+const main=historicalRoundSnapshot(load('.'),4);
 const sha='a'.repeat(40),hash=main.lock.contracts['alpha.contracts.v1'];
 const ctx=id=>({schemaVersion:1,kind:'R4_REPAIR',repairId:id,phaseId:id,issueNumber:R4_REPAIRS[id].issue,agentId:'r4-repair',branch:R4_REPAIRS[id].branch,claimEpoch:0,authorization:'MAINT-R4-REPAIR-SCOPE-009',baseMainSha:sha,contractHash:hash,claimEpochs:structuredClone(main.registry.epochs)});
 const validate=(id,paths=[],patch={})=>{const context={...ctx(id),...patch};return validateTransition(main,main,context,{mainSha:sha,headBranch:context.branch,files:[`docs/evidence/alpha/${id}/context.json`,...paths]});};

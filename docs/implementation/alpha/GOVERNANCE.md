@@ -367,3 +367,14 @@ That method must refuse any restore hold, other unresolved operation or
 conflicting Core operation slot; it must not relax global recovery hold or
 change the typed Persona Broker/Alpha v1 contracts. This closes the race
 between preflight and P102 journal preparation.
+
+## Historical-test fixture isolation (MAINT-R5-PREFLIGHT-015)
+
+Historical round/repair tests use a reconstructed snapshot with later phases
+LOCKED, later claim epochs reset to zero, and later claim records absent.
+They **must not** use the current checkout's later-round epoch vector as historical
+authority. Regression tests inject synthetic later-round claims and verify the
+old fixture remains byte-equivalent. This is test-only projection; the trusted
+CI validator continues to read the complete current-main registry and rejects
+stale claims, scope overlap and unauthorized changes. Future fixture tests must
+follow the same pattern or pin an exact historical commit.
