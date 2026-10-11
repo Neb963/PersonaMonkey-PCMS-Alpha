@@ -63,6 +63,13 @@ export const P303_REPAIR = Object.freeze({
 export const R4_REPAIRS = Object.freeze({
   'R4-ISSUE99': Object.freeze({issue:99,branch:'agent/r4-repair/r4-issue99',
     paths:Object.freeze(["extension/alpha/storage/store.js", "extension/alpha/core/core.mjs", "extension/alpha/core/control-store.mjs", "extension/alpha/bootstrap/host.mjs", "extension/alpha/backup/bundle.js", "extension/alpha/backup/integration/**", "extension/alpha/features/inventory/facts.mjs", "extension/alpha/flows/refresh/ledger.mjs", "extension/alpha/features/attention/store.mjs", "extension/pcms/core/persona-broker-contract.js", "extension/pcms/core/persona-broker.js", "extension/lib/management-integration.js", "extension/lib/management-integration-protocol.js", "extension/lib/pcms-internal-broker-endpoint.js", "extension/background.js", "tests/alpha/backup/**", "tests/alpha/core/**", "tests/alpha/domain/**", "tests/alpha/browser-baseline/**", "tests/alpha/integration/r4/**", "docs/evidence/alpha/R4-ISSUE99/**"])}),
+  // A separate owner-approved amendment, never a reset of the consumed R4-ISSUE99 claim.
+  'R4-ISSUE99-COVERAGE': Object.freeze({
+    issue:99,branch:'agent/r4-repair/r4-issue99-coverage',
+    authorization:'MAINT-R4-COVERAGE-SCOPE-010',
+    paths:Object.freeze(['extension/alpha/backup/bundle.js',
+      'tests/alpha/backup/**','docs/evidence/alpha/R4-ISSUE99-COVERAGE/**'])
+  }),
   'R4-ISSUE100': Object.freeze({issue:100,branch:'agent/r4-repair/r4-issue100',
     paths:Object.freeze(["extension/alpha/bootstrap/host.mjs", "extension/alpha/flows/supply/service.mjs", "extension/alpha/flows/release/service.mjs", "extension/alpha/flows/refresh/service.mjs", "extension/alpha/features/attention/service.mjs", "extension/alpha/features/tabs/allocator.mjs", "tests/alpha/integration/r4/**", "tests/alpha/core/**", "docs/evidence/alpha/R4-ISSUE100/**"])})
 });
@@ -335,7 +342,7 @@ export function validateTransition(main, head, context, { mainSha, headBranch, f
       context.baseMainSha === mainSha, 'R4 issue repair needs active R4 and exact current main');
     requireThat(context.issueNumber === repair.issue && context.phaseId === context.repairId &&
       context.agentId === 'r4-repair' && context.branch === repair.branch &&
-      context.claimEpoch === 0 && context.authorization === 'MAINT-R4-REPAIR-SCOPE-009' &&
+      context.claimEpoch === 0 && context.authorization === (repair.authorization || 'MAINT-R4-REPAIR-SCOPE-009') &&
       context.contractHash === main.lock.contracts['alpha.contracts.v1'] &&
       equal(context.claimEpochs, main.registry.epochs),
       'R4 repair requires fixed issue/owner/epoch/contract scope');
