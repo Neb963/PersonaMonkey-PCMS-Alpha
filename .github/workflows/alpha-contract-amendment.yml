@@ -25,8 +25,17 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: '24'
-      - name: Verify P103 amendment against exact main
-        run: node tools/alpha/verify-amendment.mjs
+      - name: Verify fenced contract transition against exact main
+        env:
+          ALPHA_PR_BRANCH: ${{ github.event.pull_request.head.ref }}
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            test -n "$ALPHA_PR_BRANCH"
+            git fetch origin main
+            node tools/alpha/ci.mjs --main-ref origin/main --head-ref HEAD --branch "$ALPHA_PR_BRANCH"
+          else
+            node tools/alpha/verify-amendment.mjs
+          fi
       - name: Run full governance suite
         run: npm run verify
       - name: Recheck discovery, contract and claim regressions

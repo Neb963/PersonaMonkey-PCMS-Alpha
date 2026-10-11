@@ -403,3 +403,14 @@ required UI action has a validated background service (or a documented
 unsupported state with an exact later owning phase), backup bytes never flow
 through generic 32-KB JSON messages, and the packaged toolbar points at a real
 resource. End-to-end R5 actions remain phase-owned and gate-verified.
+
+## R5 contract verification maintenance (MAINT-R5-CONTRACT-WORKFLOW-017)
+
+The P103-only contract-amendment workflow is historical; it must not reject
+valid, independently fenced later contract revisions. A one-use owner-approved
+maintenance change extends the R5 foundation scope to the *existing*
+`.github/workflows/alpha-contract-amendment.yml` only, so the same foundation
+transaction must replace its hardcoded P103 check with a version-aware validator.
+The trusted-main alpha-governance workflow and exact lock hash continue to
+verify the candidate; historical P103 amendment regression remains tested.
+This authorization does not admit additional runtime paths or contract writers.
