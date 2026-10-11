@@ -1,6 +1,6 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
-import { git, json, load, hasAuthority, requireThat, validateSnapshot, validateTransition, owns, ACTIVE, AMENDMENT, MAINTENANCE, P201_CI_MIGRATION, validatePublishedPhaseEvidence, collectPhaseEvidence } from './governance.mjs';
+import { git, json, load, hasAuthority, requireThat, validateSnapshot, validateTransition, owns, ACTIVE, AMENDMENT, MAINTENANCE, P201_CI_MIGRATION, R5_FOUNDATION, validatePublishedPhaseEvidence, collectPhaseEvidence } from './governance.mjs';
 import { verifyRepository, verifyG0Runtime } from './verify-repo.mjs';
 import { verifyRun } from './ci-evidence.mjs';
 import { verifyMaintenanceApproval } from './maintenance-approval.mjs';
@@ -53,7 +53,7 @@ if (branch || event === 'local') {
     `docs/evidence/alpha/${branch.split('/').at(-1).toUpperCase()}/context.json`;
   contexts = [json(root, contextPath)];
 } else {
-  const changed = files.filter(p => /^docs\/evidence\/alpha\/(G0|P[1-6]0[1-5]|GATE-R[1-6]|AMEND-P103-LIST-001|MAINT-[A-Z0-9-]+|P303-ISSUE85|R4-ISSUE99|R4-ISSUE99-COVERAGE|R4-ISSUE99-RECONCILE|R4-P405-EVIDENCE|R4-ISSUE100-FINAL|R4-ISSUE100-REFRESH|R4-ISSUE100-WIRING|R4-ISSUE100)\/context\.json$/.test(p));
+  const changed = files.filter(p => /^docs\/evidence\/alpha\/(G0|P[1-6]0[1-5]|GATE-R[1-6]|AMEND-P103-LIST-001|MAINT-[A-Z0-9-]+|P303-ISSUE85|R4-ISSUE99|R4-ISSUE99-COVERAGE|R4-ISSUE99-RECONCILE|R4-P405-EVIDENCE|R4-ISSUE100-FINAL|R4-ISSUE100-REFRESH|R4-ISSUE100-WIRING|R4-ISSUE100|R5-FOUNDATION-016)\/context\.json$/.test(p));
   if (changed.length) contexts = changed.map(p => json(root, p));
   else if (!main || main.plan.bootstrap.state !== 'ACCEPTED') contexts = [json(root, 'docs/evidence/alpha/G0/context.json')];
   else {
@@ -72,6 +72,11 @@ const results = contexts.map(c => {
   return validateTransition(main, head, c, { mainSha, headBranch: branch || c.branch, files: owned });
 });
 const context = contexts[0], report = { ...results[0], contexts: results };
+if (context.kind === 'R5_FOUNDATION') {
+  let consumed = false;
+  try { git(root, ['cat-file', '-e', `${mainRef}:${R5_FOUNDATION.contextPath}`]); consumed = true; } catch {}
+  requireThat(!consumed, 'R5 foundation authority is single-use');
+}
 if (context.kind === 'R4_REPAIR') {
   const path = `docs/evidence/alpha/${context.repairId}/context.json`;
   let alreadyMerged = false;

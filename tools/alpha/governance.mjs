@@ -59,6 +59,37 @@ export const P303_REPAIR = Object.freeze({
   ])
 });
 
+// One-use R5 shared boundary integration. This is *not* a phase claim or an
+// unrestricted contract unlock; the owner-attested scope amendment must first
+// pass independently on current main.
+export const R5_FOUNDATION = Object.freeze({
+  id: 'R5-FOUNDATION-016',
+  agentId: 'r5-foundation',
+  branch: 'agent/r5-foundation/r5-foundation-016',
+  authorization: 'MAINT-R5-FOUNDATION-SCOPE-016',
+  contextPath: 'docs/evidence/alpha/R5-FOUNDATION-016/context.json',
+  previousRevision: 2,
+  nextRevision: 3,
+  writePaths: Object.freeze([
+    'docs/implementation/alpha/CONTRACTS.md',
+    'docs/implementation/alpha/contracts.lock.json',
+    'docs/implementation/alpha/claims.json',
+    'docs/implementation/alpha/GOVERNANCE.md',
+    'extension/alpha/contracts/index.d.ts',
+    'extension/alpha/contracts/surface.json',
+    'extension/alpha/core/ui.mjs',
+    'extension/alpha/bootstrap/host.mjs',
+    'extension/alpha/ui/shell/**',
+    'extension/alpha/popup/**',
+    'extension/manifest.json',
+    'tests/alpha/core/**',
+    'tests/alpha/ui-shell/**',
+    'tests/alpha/governance/**',
+    'tests/alpha/integration/r5/**',
+    'docs/evidence/alpha/R5-FOUNDATION-016/**'
+  ])
+});
+
 // Two separately serialized, single-use R4 repairs. Trusted-main code fixes scope.
 export const R4_REPAIRS = Object.freeze({
   'R4-ISSUE99': Object.freeze({issue:99,branch:'agent/r4-repair/r4-issue99',
@@ -234,7 +265,7 @@ export function validateSnapshot(s, { root, verifyHash = true } = {}) {
     for (const dep of plan.phases.find(p => p.id === id).dependsOn) visit(dep, next);
   }
   for (const id of ids) visit(id);
-  requireThat(lock.schemaVersion === 1 && /^[a-f0-9]{64}$/.test(lock.contracts['alpha.contracts.v1']) && (lock.contractRevision === undefined || lock.contractRevision === AMENDMENT.revision), 'Invalid contract lock');
+  requireThat(lock.schemaVersion === 1 && /^[a-f0-9]{64}$/.test(lock.contracts['alpha.contracts.v1']) && ([undefined, AMENDMENT.revision, R5_FOUNDATION.nextRevision].includes(lock.contractRevision)), 'Invalid contract lock');
   if (root && verifyHash) requireThat(contractHash(root) === lock.contracts['alpha.contracts.v1'], 'Frozen contract bytes have changed');
   requireThat(registry.schemaVersion === 1 && sameSet(Object.keys(registry.epochs), [...ids]) && Array.isArray(registry.claims), 'Invalid claim registry');
   for (const epoch of Object.values(registry.epochs)) requireThat(Number.isSafeInteger(epoch) && epoch >= 0, 'Invalid authoritative claim epoch');
@@ -364,7 +395,7 @@ export function validateTransition(main, head, context, { mainSha, headBranch, f
     requireThat(head.plan.bootstrap.state === 'IN_PROGRESS' && head.registry.claims.length === 0, 'Bootstrap cannot pre-accept G0 or acquire round claims');
   } else {
     validateSnapshot(main, { verifyHash: false });
-    if (context.kind !== 'CONTRACT_AMENDMENT') requireThat(equal(main.lock, head.lock), 'Frozen shared contracts require a separate authorized gate amendment');
+    if (!['CONTRACT_AMENDMENT','R5_FOUNDATION'].includes(context.kind)) requireThat(equal(main.lock, head.lock), 'Frozen shared contracts require a separate authorized gate amendment');
     requireThat(equal(main.policies, head.policies), 'Policy amendment is outside this claim');
   }
   if (context.kind === 'MAINTENANCE') {
@@ -392,6 +423,49 @@ export function validateTransition(main, head, context, { mainSha, headBranch, f
       'Ordinary maintenance cannot claim P201 CI migration scope');
     assertFiles(files, [...MAINTENANCE.writePaths, contextPath,
       ...(migration ? P201_CI_MIGRATION.writePaths : [])]);
+  } else if (context.kind === 'R5_FOUNDATION') {
+    requireThat(main?.plan.bootstrap.state === 'ACCEPTED' &&
+      main.plan.rounds.find(r => r.id === 'R4')?.status === 'ACCEPTED' &&
+      main.plan.rounds.find(r => r.id === 'R5')?.status === 'READY' &&
+      main.plan.rounds.find(r => r.id === 'R6')?.status === 'LOCKED' &&
+      !main.registry.claims.some(c => ACTIVE.has(c.state) &&
+        main.plan.phases.find(p => p.id === c.phaseId)?.round >= 5) &&
+      context.baseMainSha === mainSha,
+      'R5 foundation requires accepted R4, unclaimed R5 and exact current main');
+    requireThat(context.foundationId === R5_FOUNDATION.id &&
+      context.phaseId === R5_FOUNDATION.id &&
+      context.agentId === R5_FOUNDATION.agentId &&
+      context.branch === R5_FOUNDATION.branch &&
+      context.claimEpoch === 0 &&
+      context.authorization === R5_FOUNDATION.authorization &&
+      context.previousHash === main.lock.contracts['alpha.contracts.v1'] &&
+      context.contractRevision === R5_FOUNDATION.nextRevision &&
+      SHA256.test(context.nextHash) &&
+      equal(context.claimEpochs, main.registry.epochs),
+      'Invalid R5 foundation identity, contract or epoch fence');
+    requireThat(main.lock.contractRevision === R5_FOUNDATION.previousRevision &&
+      head.lock.contractRevision === R5_FOUNDATION.nextRevision &&
+      head.lock.contracts['alpha.contracts.v1'] === context.nextHash &&
+      Object.keys(head.lock.contracts).length === 1,
+      'R5 foundation must publish the declared revision 3 contract hash');
+    requireThat(equal(main.plan, head.plan) && equal(main.policies, head.policies) &&
+      equal(main.registry.epochs, head.registry.epochs),
+      'R5 foundation cannot change plan, policies or claim epochs');
+    const expectedRegistry = structuredClone(main.registry);
+    for (const claim of expectedRegistry.claims) if (ACTIVE.has(claim.state)) {
+      requireThat(claim.contractReads['alpha.contracts.v1'] === context.previousHash,
+        'Unexpected active claim hash before R5 foundation');
+      claim.contractReads['alpha.contracts.v1'] = context.nextHash;
+    }
+    requireThat(equal(head.registry, expectedRegistry),
+      'R5 foundation may only revalidate active contract readers');
+    requireThat(files.includes(R5_FOUNDATION.contextPath) &&
+      files.includes('docs/implementation/alpha/contracts.lock.json') &&
+      files.includes('extension/alpha/contracts/index.d.ts') &&
+      files.includes('extension/alpha/contracts/surface.json') &&
+      files.includes('docs/implementation/alpha/CONTRACTS.md'),
+      'R5 foundation needs its complete versioned contract and context');
+    assertFiles(files, R5_FOUNDATION.writePaths);
   } else if (context.kind === 'R4_REPAIR') {
     const repair = R4_REPAIRS[context.repairId];
     requireThat(repair && main?.plan.bootstrap.state === 'ACCEPTED' &&
