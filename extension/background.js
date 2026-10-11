@@ -840,7 +840,10 @@ const managementIntegration = createManagementIntegration({
 registerPcmsInternalBrokerHandler({
   ready: () => initialize(),
   handleRequest: (request) => managementIntegration.handleInternalRequest(request),
-  attachEvents: (port) => managementIntegration.attachInternalPort(port)
+  attachEvents: (port) => managementIntegration.attachInternalPort(port),
+  // Optional typed internal backup capability. Not a public Integration API
+  // command, raw Persona API, native RPC or second browser execution engine.
+  handleBackup: (request) => handlePcmsBackup(request)
 });
 
 function localMutationFence(profileIds, operation, mode = "block", options = {}) {
@@ -946,6 +949,57 @@ async function exportState(includeSecrets) {
   };
 }
 
+// P405 backup import previews are one-shot and scoped to the Core hold.
+const pendingAlphaBackupImports = new Map();
+const ALPHA_BACKUP_BYTES_LIMIT = 128*1024*1024;
+const alphaBackupText = new TextDecoder('utf-8',{fatal:true});
+async function handlePcmsBackup(request){
+  if(!request || request.version!==1)throw new Error('Typed backup request invalid');
+  if(request.command==='export'){
+    const snapshot = await getState();
+    // Only PersonaMonkey-owned serializable configuration. Cookies, live
+    // sessions, native credentials and GM values remain explicitly unavailable.
+    const payload={format:'persona-route-manager',version:2,exportedAt:nowIso(),
+      secretsIncluded:false,state:redactSecrets(snapshot),userscriptData:null};
+    const bytes=new TextEncoder().encode(JSON.stringify(payload));
+    if(!bytes.length || bytes.length>ALPHA_BACKUP_BYTES_LIMIT)
+      throw new Error('Backup export unavailable');
+    return {bytes,includedItems:['personaMonkey.personas','personaMonkey.routes',
+      'personaMonkey.userscripts','personaMonkey.workflows']};
+  }
+  if(request.command==='previewImport'){
+    let payload;
+    try {payload=JSON.parse(alphaBackupText.decode(request.bytes));}
+    catch{throw new Error('Backup integrity or format invalid');}
+    if(!payload || payload.format!=='persona-route-manager' || payload.version!==2 ||
+      payload.secretsIncluded!==false || payload.userscriptData!==null ||
+      typeof payload.state!=='object' || payload.state===null)
+      throw new Error('PersonaMonkey backup format not authorized');
+    const preview=await importState(payload,'replace');
+    if(typeof preview?.previewId!=='string' || !/^[a-zA-Z0-9_-]{8,128}$/.test(preview.previewId))
+      throw new Error('PersonaMonkey preview unavailable');
+    pendingAlphaBackupImports.set(preview.previewId,{holdId:request.holdId,expiresAt:Date.now()+10*60_000});
+    if(pendingAlphaBackupImports.size>16)
+      pendingAlphaBackupImports.delete(pendingAlphaBackupImports.keys().next().value);
+    return {authorizationId:preview.previewId,holdId:request.holdId,state:'PREVIEWED',
+      // We return only non-secret metadata; never the saved state.
+      revision:stateManager.getRevision()};
+  }
+  if(request.command==='commitImport'){
+    const entry=pendingAlphaBackupImports.get(request.authorizationId);
+    if(!entry || entry.holdId!==request.holdId || Date.now()>entry.expiresAt)
+      throw new Error('PersonaMonkey backup preview expired or mismatched');
+    // Remove before possibly ambiguous remote mutation; never retry blindly.
+    pendingAlphaBackupImports.delete(request.authorizationId);
+    await importState(null,'replace',request.authorizationId);
+    const restored=await getState();
+    if(!restored || !restored.profiles || !restored.routes)
+      throw new Error('PersonaMonkey restore needs reconciliation');
+    return {state:'APPLIED',holdId:request.holdId,revision:stateManager.getRevision(),
+      requiresRouteAndSessionRevalidation:true};
+  }
+  throw new Error('Unknown typed backup command');
+}
 const pendingLegacyImports = new Map();
 
 async function importState(payload, mode = "replace", authorizationId = null) {
