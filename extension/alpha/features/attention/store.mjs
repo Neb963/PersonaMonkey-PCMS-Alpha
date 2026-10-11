@@ -81,5 +81,27 @@ export function createAttentionStore({indexedDB=globalThis.indexedDB,databaseNam
     });
   }
   return Object.freeze({read:()=>transaction('readonly'),change:(revision,update)=>transaction('readwrite',revision,update),
+    async replaceForRestore(input){
+      const next=structuredClone(validateAttentionLedger(input));
+      // A notification dispatch cannot be re-established by restored local bytes.
+      for(const item of next.items) if(item.notice==='DISPATCHING'){
+        item.notice='UNCERTAIN';
+      }
+      validateAttentionLedger(next);
+      const db=await connect();
+      await new Promise((resolve,reject)=>{
+        let tx;
+        try{tx=db.transaction('inbox','readwrite',{durability:'strict'});}
+        catch{reject(Object.assign(new Error('RECOVERY_HOLD'),{code:'RECOVERY_HOLD'}));return;}
+        tx.oncomplete=resolve;
+        tx.onabort=()=>reject(Object.assign(new Error('RECOVERY_HOLD'),{code:'RECOVERY_HOLD'}));
+        tx.onerror=()=>{};
+        try{tx.objectStore('inbox').put(next,'state');}
+        catch{try{tx.abort();}catch{}}
+      });
+      const observed=await transaction('readonly');
+      if(JSON.stringify(observed)!==JSON.stringify(next)) throw Object.assign(new Error('RECOVERY_HOLD'),{code:'RECOVERY_HOLD'});
+      return {restored:true,count:next.items.length,crossStoreAtomic:false};
+    },
     close(){connection?.close();connection=null;}});
 }
