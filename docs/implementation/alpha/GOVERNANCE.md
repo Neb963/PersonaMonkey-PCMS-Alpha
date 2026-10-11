@@ -301,3 +301,7 @@ P303 acceptance; issue #85 closes only after merge and CI confirmation.
 The maintenance PR itself still requires the repository-owner's exact-head
 `ALPHA_GOVERNANCE_MAINTENANCE_APPROVAL_V1` comment and non-forced serialized
 merge. A draft, pending check or stale owner comment is not authorization.
+
+## Single-use, bounded R4 #99/#100 repair exception (MAINT-R4-REPAIR-SCOPE-009)
+
+The operator's 2026-10-11 repair assignment authorizes, subject to this independently approved trusted-validator amendment, two narrowly scoped **serialized** changes: `R4-ISSUE99` for storage/Core/PersonaMonkey backup restore and `R4-ISSUE100` for R4-host deterministic integration. Each owns only its paths enumerated by `R4_REPAIRS` in trusted `tools/alpha/governance.mjs`. The issue number, exact branch, agent, frozen contract hash, complete claim-epoch vector and current main are mandatory. The repair context must not exist in predecessor main. No reassignment, owner takeover, R5 unlock, acceptance, or LIVE claim is implied. **Frozen contract changes still require a separate authorized amendment**. A new ordinary maintenance PR with operator's exact-head `OWNER_PR_COMMENT_V1` attestation must merge first. 
