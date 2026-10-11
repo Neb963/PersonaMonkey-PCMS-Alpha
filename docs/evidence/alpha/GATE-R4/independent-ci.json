@@ -1,0 +1,518 @@
+{
+  "schemaVersion": 1,
+  "phaseId": "GATE-R4",
+  "state": "ACCEPTED",
+  "providerLive": false,
+  "mergedMainSha": "f26fa0bb0b6e6dfa57fe684c271b7164e9145b7d",
+  "contractId": "alpha.contracts.v1",
+  "contractRevision": 2,
+  "contractHash": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e",
+  "prerequisite": {
+    "id": "GATE-R3",
+    "state": "ACCEPTED"
+  },
+  "phases": [
+    {
+      "phaseId": "P401",
+      "agentSlot": 1,
+      "agentId": "slot-one-r4",
+      "claimId": "CLM-P401-001",
+      "claimEpoch": 1,
+      "baseMainSha": "9ce23733060dbe8322f9ffb68c29d8007cff5609",
+      "writePaths": [
+        "extension/alpha/flows/supply/**",
+        "tests/alpha/flows/supply/**",
+        "docs/evidence/alpha/P401/**"
+      ],
+      "contractReads": {
+        "alpha.contracts.v1": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e"
+      },
+      "contractWrites": [],
+      "exclusiveResources": [],
+      "migrationSlots": [],
+      "claimPr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/80",
+      "implementationPr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/86",
+      "repairPrs": [],
+      "commitSha": "b0118b1618ed89702ea3c28ee2041a9990df8be2",
+      "mergedMainSha": "8aa78abb3cd57d289d1e5d6b5d8c1a9ca943d6de",
+      "acceptanceIds": [
+        "AP401-01",
+        "AP401-02",
+        "AP401-03"
+      ],
+      "acceptanceEvidence": "docs/evidence/alpha/P401/acceptance.json",
+      "cases": [
+        {
+          "id": "AP401-01",
+          "summary": "Validated 200- and 1,000-candidate pasted sets with deterministic identity and at most 16 sequential candidate tasks per pass; resumable stable pagination.",
+          "evidence": [
+            "extension/alpha/flows/supply/service.mjs",
+            "tests/alpha/flows/supply/supply.test.mjs"
+          ]
+        },
+        {
+          "id": "AP401-02",
+          "summary": "Resolved explicit GitHub-first folder/slug mappings through commit-pinned READY P203 catalog and full authenticated Perchance ownership; adopted valid existing P301 reservation without overwriting READY GitHub source.",
+          "evidence": [
+            "extension/alpha/flows/supply/service.mjs",
+            "tests/alpha/flows/supply/supply.test.mjs"
+          ]
+        },
+        {
+          "id": "AP401-03",
+          "summary": "Reconciled durable partial P301 Perchance/GitHub operation after lost receipt, and P401 READY-first create after lost Perchance response; no duplicate external create, explicit NOT_APPLIED for confirmed absence and source/binding fences.",
+          "evidence": [
+            "extension/alpha/flows/supply/service.mjs",
+            "tests/alpha/flows/supply/supply.test.mjs"
+          ]
+        }
+      ],
+      "ciRuns": [
+        {
+          "id": 38087648385,
+          "name": "alpha-governance",
+          "sha": "8aa78abb3cd57d289d1e5d6b5d8c1a9ca943d6de",
+          "event": "push",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38087648385"
+        },
+        {
+          "id": 38087648367,
+          "name": "firefox-developer-edition",
+          "sha": "8aa78abb3cd57d289d1e5d6b5d8c1a9ca943d6de",
+          "event": "push",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38087648367"
+        }
+      ]
+    },
+    {
+      "phaseId": "P402",
+      "agentSlot": 2,
+      "agentId": "slot-two-r4-retry",
+      "claimId": "CLM-P402-001",
+      "claimEpoch": 1,
+      "baseMainSha": "ab0ef4feb3fe237e6bd5e15fe71e2ccdbacb4911",
+      "writePaths": [
+        "extension/alpha/flows/release/**",
+        "tests/alpha/flows/release/**",
+        "docs/evidence/alpha/P402/**"
+      ],
+      "contractReads": {
+        "alpha.contracts.v1": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e"
+      },
+      "contractWrites": [],
+      "exclusiveResources": [],
+      "migrationSlots": [],
+      "claimPr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/94",
+      "implementationPr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/95",
+      "repairPrs": [],
+      "commitSha": "1c3dbe911c45fcd6391d77a52b606f2a2b56582c",
+      "mergedMainSha": "78d313d3ff4082111efbcec86b1fc5cec3dc9ba6",
+      "acceptanceIds": [
+        "AP402-01",
+        "AP402-02",
+        "AP402-03"
+      ],
+      "acceptanceEvidence": "docs/evidence/alpha/P402/acceptance.json",
+      "cases": [
+        {
+          "id": "AP402-01",
+          "summary": "Release flow composes sleep/never-active P302 stage with P303 native AI and human approval, verifies exact saved Perchance release and selected GitHub provenance, publishes only with confirmed listing, atomically adopts MANAGED/SLEEPING with no immediate active allocation.",
+          "evidence": [
+            "extension/alpha/flows/release/service.mjs",
+            "tests/alpha/flows/release/release.test.mjs"
+          ]
+        },
+        {
+          "id": "AP402-02",
+          "summary": "Active READY source waits without writes; verified unlisting precedes update save, P102 validates approved bytes and P104 conditionally commits PJS+HTML atomically against exact main HEAD/expected blobs; intervening changes stop writeback and unchanged source avoids loops.",
+          "evidence": [
+            "extension/alpha/flows/release/service.mjs",
+            "tests/alpha/flows/release/release.test.mjs"
+          ]
+        },
+        {
+          "id": "AP402-03",
+          "summary": "Covers first and subsequent staging, public/unlisted ordering, deterministic CAS conflict and uncertainty, safe rollback/quarantine, restart after confirmed GitHub writeback, uncertain publication readback without replay, stale binding, malformed source, and P204 source-baseline adoption. Full independent push and pinned Firefox evidence below.",
+          "evidence": [
+            "extension/alpha/flows/release/service.mjs",
+            "tests/alpha/flows/release/release.test.mjs"
+          ]
+        }
+      ],
+      "ciRuns": [
+        {
+          "id": 38092738196,
+          "name": "alpha-governance",
+          "sha": "78d313d3ff4082111efbcec86b1fc5cec3dc9ba6",
+          "event": "push",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38092738196"
+        },
+        {
+          "id": 38092738259,
+          "name": "firefox-developer-edition",
+          "sha": "78d313d3ff4082111efbcec86b1fc5cec3dc9ba6",
+          "event": "push",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38092738259"
+        }
+      ]
+    },
+    {
+      "phaseId": "P403",
+      "agentSlot": 3,
+      "agentId": "slot-three-r4",
+      "claimId": "CLM-P403-001",
+      "claimEpoch": 1,
+      "baseMainSha": "a90dbc029ef0bc3792f8618c0af1728e43c37213",
+      "writePaths": [
+        "extension/alpha/flows/refresh/**",
+        "tests/alpha/flows/refresh/**",
+        "docs/evidence/alpha/P403/**"
+      ],
+      "contractReads": {
+        "alpha.contracts.v1": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e"
+      },
+      "contractWrites": [],
+      "exclusiveResources": [],
+      "migrationSlots": [],
+      "claimPr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/81",
+      "implementationPr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/87",
+      "repairPrs": [
+        114
+      ],
+      "commitSha": "f585af7be99f14f0b6ea1f608f20f36ea3c753e1",
+      "mergedMainSha": "d65ee074c4a17f95c244a7b152f0f2497bf4089b",
+      "acceptanceIds": [
+        "AP403-01",
+        "AP403-02",
+        "AP403-03"
+      ],
+      "acceptanceEvidence": "docs/evidence/alpha/P403/acceptance.json",
+      "cases": [
+        {
+          "id": "AP403-01",
+          "summary": "Exact transient PJS trailing comment; preserved canonical source hash; wrong-target, untracked or changed bytes rejected",
+          "evidence": [
+            "extension/alpha/flows/refresh/comment.mjs",
+            "extension/alpha/flows/refresh/service.mjs",
+            "tests/alpha/flows/refresh/service.test.mjs"
+          ]
+        },
+        {
+          "id": "AP403-02",
+          "summary": "Durable pre-dispatch operations, staggered bounded retries and Persona reload, uncertain read-only reconciliation and suspension with attention",
+          "evidence": [
+            "extension/alpha/flows/refresh/ledger.mjs",
+            "extension/alpha/flows/refresh/service.mjs",
+            "tests/alpha/flows/refresh/service.test.mjs"
+          ]
+        },
+        {
+          "id": "AP403-03",
+          "summary": "Observed rendered target rank is not guaranteed by a provider save or feed position",
+          "evidence": [
+            "extension/alpha/flows/refresh/service.mjs",
+            "tests/alpha/flows/refresh/service.test.mjs"
+          ]
+        }
+      ],
+      "ciRuns": [
+        {
+          "id": 38088089471,
+          "name": "alpha-governance",
+          "sha": "d65ee074c4a17f95c244a7b152f0f2497bf4089b",
+          "event": "push",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38088089471"
+        },
+        {
+          "id": 38088089466,
+          "name": "firefox-developer-edition",
+          "sha": "d65ee074c4a17f95c244a7b152f0f2497bf4089b",
+          "event": "push",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38088089466"
+        }
+      ]
+    },
+    {
+      "phaseId": "P404",
+      "agentSlot": 4,
+      "agentId": "slot-four-r4",
+      "claimId": "CLM-P404-001",
+      "claimEpoch": 1,
+      "baseMainSha": "8a94ebb9224cd4f3d5529b091b1e9866f60643dc",
+      "writePaths": [
+        "extension/alpha/features/attention/**",
+        "extension/alpha/features/tabs/**",
+        "tests/alpha/attention/**",
+        "docs/evidence/alpha/P404/**"
+      ],
+      "contractReads": {
+        "alpha.contracts.v1": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e"
+      },
+      "contractWrites": [],
+      "exclusiveResources": [],
+      "migrationSlots": [],
+      "claimPr": 83,
+      "implementationPr": 88,
+      "repairPrs": [],
+      "commitSha": "2f64289f2b20f6ec95099195e9f64b3a2d58cd6f",
+      "mergedMainSha": "20e4c4d94d2d370a045b5565d84b94d3416c03e3",
+      "acceptanceIds": [
+        "AP404-01",
+        "AP404-02",
+        "AP404-03"
+      ],
+      "acceptanceEvidence": "docs/evidence/alpha/P404/acceptance.json",
+      "cases": [
+        {
+          "id": "AP404-01",
+          "summary": "Concurrent jobs respect the shared four-tab P201 Core ceiling. Every editor tab requires Persona Broker persona.open with a durable Core permit; ambiguous outcomes retain permits for reconciliation, and foreign/operator tabs are never closed.",
+          "evidence": [
+            "extension/alpha/features/tabs/allocator.mjs",
+            "tests/alpha/attention/tabs.test.mjs"
+          ],
+          "status": "PASS_LOCAL"
+        },
+        {
+          "id": "AP404-02",
+          "summary": "The durable action-required inbox deduplicates repeated occurrences and desktop notifications, remains readable when Firefox notifications fail, persists DISPATCHING across restart, rejects corrupt/secret-bearing state, and projects frozen AttentionRecord fields.",
+          "evidence": [
+            "extension/alpha/features/attention/service.mjs",
+            "extension/alpha/features/attention/store.mjs",
+            "tests/alpha/attention/attention.test.mjs",
+            "tests/alpha/attention/store.test.mjs"
+          ],
+          "status": "PASS_LOCAL"
+        },
+        {
+          "id": "AP404-03",
+          "summary": "Pending AI review opens the correct Perchance editor only on explicit operator action; approval state and account/Persona/source revision are rechecked and opening does not itself approve or deploy.",
+          "evidence": [
+            "extension/alpha/features/attention/service.mjs",
+            "extension/alpha/features/tabs/allocator.mjs",
+            "tests/alpha/attention/attention.test.mjs",
+            "tests/alpha/attention/tabs.test.mjs"
+          ],
+          "status": "PASS_LOCAL"
+        }
+      ],
+      "ciRuns": [
+        {
+          "id": 38088814106,
+          "name": "alpha-governance",
+          "sha": "20e4c4d94d2d370a045b5565d84b94d3416c03e3",
+          "event": "push",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38088814106"
+        },
+        {
+          "id": 38088814184,
+          "name": "firefox-developer-edition",
+          "sha": "20e4c4d94d2d370a045b5565d84b94d3416c03e3",
+          "event": "push",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38088814184"
+        }
+      ]
+    },
+    {
+      "phaseId": "P405",
+      "agentSlot": 5,
+      "agentId": "slot-five-r4-retry",
+      "claimId": "CLM-P405-001",
+      "claimEpoch": 1,
+      "baseMainSha": "a53efbbd57b019eb9e094af134d9fd6461f8cf1b",
+      "writePaths": [
+        "extension/alpha/backup/integration/**",
+        "tests/alpha/backup/integration/**",
+        "docs/evidence/alpha/P405/**"
+      ],
+      "contractReads": {
+        "alpha.contracts.v1": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e"
+      },
+      "contractWrites": [],
+      "exclusiveResources": [],
+      "migrationSlots": [],
+      "claimPr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/97",
+      "implementationPr": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/pull/98",
+      "repairPrs": [
+        102,
+        107,
+        109
+      ],
+      "commitSha": "544749d3e4ee27ee91ad1b238e36bc6d081754f0",
+      "mergedMainSha": "2071e5dffdf4d8506425a1a921e266713c29e063",
+      "acceptanceIds": [
+        "AP405-01",
+        "AP405-02",
+        "AP405-03"
+      ],
+      "acceptanceEvidence": "docs/evidence/alpha/P405/acceptance.json",
+      "cases": [
+        {
+          "id": "AP405-01",
+          "status": "PASS_DETERMINISTIC_AND_PACKAGED_FIREFOX",
+          "summary": "Explicit operator confirmation produces exactly one SHA-256 section-verified unencrypted local bundle; typed PersonaMonkey export remains inside PersonaMonkey, and manifest/inventory name every unavailable local or provider item. Real packaged Firefox downloads completed, with no plaintext secret exposure in UI receipts.",
+          "evidence": [
+            "extension/alpha/backup/bundle.js",
+            "extension/alpha/backup/integration/index.mjs",
+            "extension/alpha/backup/integration/downloads.mjs",
+            "extension/alpha/bootstrap/host.mjs",
+            "tests/alpha/backup/integration/bundle.test.mjs",
+            "tests/alpha/core/packaged.test.mjs"
+          ]
+        },
+        {
+          "id": "AP405-02",
+          "status": "PASS_DETERMINISTIC_REAL_STORES",
+          "summary": "Real P102 IndexedDB all-record-and-operation-journal restore is atomic; P201 persists a restore-specific hold across restart, with P204 facts, P403 refresh-execution ledger and P404 attention inbox separately restored. The nonempty-fleet flow proves fresh typed Persona/P103 account-session, binding and source ownership verification before release; lost session, stale epoch, unknown provider, uncertain operations, tampered bytes and interrupted cross-store writes retain recovery hold without blind retry. Live provider acceptance not claimed.",
+          "evidence": [
+            "extension/alpha/storage/store.js",
+            "extension/alpha/core/core.mjs",
+            "extension/alpha/backup/integration/authority.mjs",
+            "extension/alpha/backup/integration/restore.mjs",
+            "extension/lib/pcms-internal-broker-endpoint.js",
+            "extension/background.js",
+            "tests/alpha/domain/storage-cases.js",
+            "tests/alpha/backup/integration/restore.test.mjs"
+          ]
+        },
+        {
+          "id": "AP405-03",
+          "status": "PASS_DETERMINISTIC_AND_PACKAGED_FIREFOX",
+          "summary": "Firefox-owned completion state and exact tracked download IDs govern bounded retention. Unknown/untracked files, incomplete and interrupted downloads are never removed. Deletion errors are warnings. Pinned packaged Firefox test verifies an authentic completed download and tracking manifest; deterministic tests cover unknown IDs, retention and failure paths.",
+          "evidence": [
+            "extension/alpha/backup/integration/downloads.mjs",
+            "tests/alpha/backup/integration/downloads.test.mjs",
+            "tests/alpha/core/packaged.test.mjs"
+          ]
+        }
+      ],
+      "ciRuns": [
+        {
+          "id": 38159397613,
+          "name": "alpha-governance",
+          "sha": "2071e5dffdf4d8506425a1a921e266713c29e063",
+          "event": "push",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38159397613"
+        },
+        {
+          "id": 38159397608,
+          "name": "firefox-developer-edition",
+          "sha": "2071e5dffdf4d8506425a1a921e266713c29e063",
+          "event": "push",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38159397608"
+        }
+      ]
+    }
+  ],
+  "ciRuns": [
+    {
+      "id": 38165563439,
+      "name": "alpha-governance",
+      "sha": "f26fa0bb0b6e6dfa57fe684c271b7164e9145b7d",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38165563439"
+    },
+    {
+      "id": 38165563424,
+      "name": "firefox-developer-edition",
+      "sha": "f26fa0bb0b6e6dfa57fe684c271b7164e9145b7d",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38165563424"
+    }
+  ],
+  "additionalCiRuns": [
+    {
+      "id": 38165563512,
+      "name": "alpha-firefox",
+      "sha": "f26fa0bb0b6e6dfa57fe684c271b7164e9145b7d",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Neb963/PersonaMonkey-PCMS-Alpha/actions/runs/38165563512"
+    }
+  ],
+  "verification": {
+    "source": "Independent authenticated GitHub API: exact SHA and ancestry, run IDs and workflow/repository/event/complete-success status, implementation and bounded repair diffs, exact-main workflow jobs plus alpha-governance logs.",
+    "localGateCommands": "NOT_RUN (no local network-capable checkout; independently executed GitHub Actions inspected)",
+    "combinedRuns": [
+      {
+        "runId": 38165563439,
+        "workflow": "alpha-governance",
+        "result": "PASS",
+        "observed": "npm run verify && node tools/alpha/run-tests.mjs: 65/65 governance and 284/284 Alpha feature/integration tests, zero failures; frozen donor, validation and derivative packaging."
+      },
+      {
+        "runId": 38165563424,
+        "workflow": "firefox-developer-edition",
+        "result": "PASS",
+        "observed": "All packaged pinned Firefox Developer Edition jobs successful, derivative Alpha Core and inherited PersonaMonkey regressions."
+      },
+      {
+        "runId": 38165563512,
+        "workflow": "alpha-firefox",
+        "result": "PASS",
+        "observed": "Packaged PersonaMonkey baseline, typed broker, routing and Firefox lifecycle."
+      }
+    ],
+    "checks": {
+      "Frozen contract and exact epoch/claim/ownership, no overlapping exclusive resources": "PASS",
+      "All 15 R4 acceptance IDs with verified implementation ancestry and required GitHub Actions run IDs": "PASS",
+      "All 15 R3 prerequisite acceptance IDs and verified merged-main push runs": "PASS",
+      "Connected P401 supply → P302 unlisted deployment → P303 AI review → P402 CAS publication → P403 refresh under real Core and typed broker": "PASS",
+      "GitHub conflict/lost receipt, stale Persona epoch, provider source drift and verified unlisted rollback": "PASS",
+      "P404 bounded global tabs and deduplicated actionable notifications": "PASS",
+      "P405 authenticated nonempty restore and durable hold; unencrypted one-file backup, packaged downloads and known-ID retention": "PASS",
+      "Fail-closed absent provider adapter; no new native/browser execution authority or LIVE assertion": "PASS"
+    },
+    "operatorLive": "NOT_RUN",
+    "residualCaveats": [
+      "Provider-live Perchance, Mullvad, Cloudflare, operator login/native AI and real host mutations NOT_RUN; no live acceptance claimed.",
+      "R6 owns production provider admission and adversarial/packaged fleet acceptance; R5 requires new explicit phase assignment.",
+      "Nonexportable provider sessions, native credentials, AI/Refresher policy or visibility caches are explicitly unavailable; nonempty restores remain on recovery hold pending authenticated proof.",
+      "No local tests claimed; all reported test executions originate in verified exact-main GitHub Actions."
+    ]
+  },
+  "governance": {
+    "gate": "GATE-R4",
+    "acceptedClaimEpochs": {
+      "P401": 1,
+      "P402": 1,
+      "P403": 1,
+      "P404": 1,
+      "P405": 1
+    },
+    "acceptedRound": "R4",
+    "readyRound": "R5",
+    "readyPhaseIds": [
+      "P501",
+      "P502",
+      "P503",
+      "P504",
+      "P505"
+    ],
+    "operatorLiveAccepted": false
+  }
+}
