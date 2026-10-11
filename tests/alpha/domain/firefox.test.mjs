@@ -30,6 +30,17 @@ test('AP102-01/02/03: actual pinned Firefox IndexedDB migrations, races, aborts,
       const paths = [
         'extension/alpha/domain/validation.js', 'extension/alpha/domain/records.js',
         'extension/alpha/storage/migrations.js', 'extension/alpha/storage/store.js',
+        // The isolated XPI must ship the exact production modules imported by
+        // the added R4 restore cases; otherwise Firefox leaves the test page
+        // blank after an unresolved ESM import, falsely appearing as a timeout.
+        'extension/alpha/core/core.mjs', 'extension/alpha/core/control-store.mjs',
+        'extension/pcms/core/persona-broker-contract.js',
+        'extension/alpha/features/inventory/facts.mjs',
+        'extension/alpha/flows/refresh/ledger.mjs',
+        'extension/alpha/features/attention/store.mjs',
+        'extension/alpha/backup/bundle.js',
+        'extension/alpha/backup/integration/restore.mjs',
+        'extension/alpha/backup/integration/authority.mjs',
         'tests/alpha/domain/fixtures.js', 'tests/alpha/domain/storage-cases.js',
         'tests/alpha/domain/probe.js', 'tests/alpha/domain/probe.html'
       ];
