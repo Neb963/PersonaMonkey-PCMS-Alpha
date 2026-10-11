@@ -8,7 +8,7 @@
   "branch": "agent/r4-repair/r4-issue99",
   "claimEpoch": 0,
   "authorization": "MAINT-R4-REPAIR-SCOPE-009",
-  "baseMainSha": "dd8e6751a88403456bfa6bb6323cdf96f4d6d59a",
+  "baseMainSha": "1a17c51b40d50439a38ce914dbcdc98a79eb15e9",
   "contractHash": "8ef33e48ae5b16037f31f93a8da64146bc6d34829390a3db16616991e345bd7e",
   "claimEpochs": {
     "P101": 1,
@@ -41,5 +41,6 @@
     "P603": 0,
     "P604": 0,
     "P605": 0
-  }
+  },
+  "notes": "Follow-up supplemental R4-ISSUE99 coverage truthfulness repair; phase acceptance remains independently governed."
 }
