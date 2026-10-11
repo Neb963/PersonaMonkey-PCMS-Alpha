@@ -139,6 +139,12 @@ export function createRefreshExecution({
       '-' + state.revision.toString(36));
     const intent = { opId, kind: 'save', comment: staged.comment,
       beforeRevision: observed.sourceRevision, releaseId: release.releaseId };
+    // Before recording this operation as PREPARED, verify that Core has
+    // no OTHER pending/uncertain mutation. Once our own durable journal
+    // entry exists, assertMutationAllowed would reject it as an open
+    // operation and deadlock its legitimate dispatch.
+    await core.assertCurrent();
+    await core.assertMutationAllowed();
     // Atomic reservation, before any external provider mutation.
     await ledger.update(s => {
       const current = s.jobs[key] ?? baseJob();
@@ -153,8 +159,9 @@ export function createRefreshExecution({
       await journal.prepare({ opId, kind: 'save', targetKey: key,
         sourceRevision: observed.sourceRevision,
         accountBindingEpoch: generator.accountBindingEpoch });
-      await core.assertCurrent();
-      await core.assertMutationAllowed();
+      // Storage/P201 journal now owns this mutation. No second Core
+      // preflight against its own PREPARED receipt: dispatch is bounded
+      // by the existing exact binding/sourceRevision/provider CAS checks.
       await update(key, { state: 'DISPATCHING' });
       const after = unwrap(await provider.save({
         context, targetKey: key, opId, expectedRevision: capabilities.revision,
