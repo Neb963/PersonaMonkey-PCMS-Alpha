@@ -19,6 +19,7 @@ import {createRefreshExecution} from '../flows/refresh/service.mjs';
 import {createAiTaskStore} from '../features/ai/store.mjs';
 import {createAttentionService,createDesktopAttentionNotifier} from '../features/attention/service.mjs';
 import {createAlphaTabAllocator} from '../features/tabs/allocator.mjs';
+import {createRefresherService} from '../features/refresher/service.mjs';
 
 /** Static R4 graph, not a general scheduler/automation runtime. Every port
  * must be a compiled, trusted background adapter; no UI/runtime module can
@@ -92,10 +93,13 @@ export function createAlphaHost({ browserRef, personaMonkeyReady, createCore = n
           storage:core.storage,broker,
           perchance:provider,contextForAccount
         });
-        services.accounts = Object.freeze(Object.fromEntries(['list', 'get', 'previewRebind'].map(k => [k, accounts[k]])));
+        services.accounts = Object.freeze(Object.fromEntries(
+          ['list','get','enroll','verifySession','previewRebind','rebind'].map(k => [k, accounts[k]])));
         const facts=createInventoryFactsStore();
         const inventory = createInventoryService({ storage: core.storage, provider, facts });
-        services.inventory = Object.freeze(Object.fromEntries(['list', 'get', 'inspectDrift', 'previewDelete', 'setIntent'].map(k => [k, inventory[k]])));
+        services.inventory = Object.freeze(Object.fromEntries(
+          ['list','get','inspectDrift','previewDelete','setIntent','observe','delete']
+            .map(k => [k, inventory[k]])));
         // Backup runs under the SAME logical Alpha Core as all other flows.
         // The provider-owned import/export crosses only the strict in-process
         // typed Persona Broker backup port, never raw native or private state.
@@ -138,6 +142,27 @@ export function createAlphaHost({ browserRef, personaMonkeyReady, createCore = n
           tabs:tabAllocator,notifier,
           readRevision:async()=>(await core.storage.snapshot()).revision});
         services.attention=attention;
+        // P304 retains scheduler ownership. UI cannot invoke the planning pass.
+        // Its ledger revision is distinct from P102's global optimistic revision.
+        const policy=r4Ports?.refresh?.refresher ?? createRefresherService({storage:core.storage});
+        services.refresher=Object.freeze({
+          status:params=>policy.status(params),
+          async configure(params){
+            const source=params?.options;
+            if(!source || !Number.isSafeInteger(source.ledgerRevision) ||
+              source.ledgerRevision<0)
+              throw Object.assign(new Error('INVALID_REQUEST'),{code:'INVALID_REQUEST'});
+            const {ledgerRevision,...settings}=source;
+            return policy.configure({expectedRevision:ledgerRevision,options:settings});
+          },
+          async setEligibility(params){
+            const opts=params?.options;
+            if(!opts || !Number.isSafeInteger(opts.ledgerRevision) || opts.ledgerRevision<0)
+              throw Object.assign(new Error('INVALID_REQUEST'),{code:'INVALID_REQUEST'});
+            return policy.setEligibility({...params,expectedRevision:opts.ledgerRevision,
+              options:{action:opts.action}});
+          }
+        });
         // With no PersonaMonkey-owned P103 executor or authenticated GitHub
         // source adapter, do not pretend R4 mutations are available.
         if(r4Ports){
