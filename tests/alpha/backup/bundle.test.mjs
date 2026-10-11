@@ -228,3 +228,24 @@ test('R4-ISSUE99 backup v3 persists refresh and attention ledgers, detects corru
   assert.equal(missing.bundle.manifest.absentItems.some(x=>x.item==='alpha.refreshLedger'),true);
   assert.equal(missing.bundle.manifest.absentItems.some(x=>x.item==='alpha.attentionInbox'),true);
 });
+
+test('R4-ISSUE99 additional separate IndexedDB stores are reported unavailable, never marked restored',async()=>{
+  const names=['alpha.aiReviewTasks','alpha.refresherSettings','alpha.visibilityObservations'];
+  const exporter=make();
+  const out=await exporter.exportBackup({consent:UNENCRYPTED_CONSENT});
+  const staged=await exporter.stageRestore(out.file);
+  for(const name of names){
+    assert.equal(out.bundle.manifest.absentItems.find(x=>x.item===name)?.reason,'UNAVAILABLE');
+    assert.equal(out.inventory.find(x=>x.item===name)?.availability,'UNAVAILABLE');
+    assert.equal(staged.missing.find(x=>x.item===name)?.reason,'UNAVAILABLE');
+    assert.equal(staged.available.find(x=>x.item===name)?.availability,'UNAVAILABLE');
+  }
+  assert.equal(staged.recoveryCompleteness,'PARTIAL');
+  // Previewing legacy archives must disclose the now-known omitted stores.
+  const legacy=structuredClone(out.bundle);
+  legacy.manifest.absentItems=legacy.manifest.absentItems.filter(x=>!names.includes(x.item));
+  const oldFile=await encodeBackupFile(legacy);
+  const oldPreview=await exporter.stageRestore(oldFile);
+  for(const name of names)
+    assert.equal(oldPreview.missing.some(x=>x.item===name),true);
+});
