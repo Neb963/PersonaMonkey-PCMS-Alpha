@@ -125,6 +125,18 @@ export function createAlphaHost({ browserRef, personaMonkeyReady, createCore = n
           async previewExport(){
             return {ok:true,result:exporter.previewExport(),revision:(await core.storage.snapshot()).revision};
           },
+          // A consented local download returns metadata only, never archive bytes.
+          // Sensitive entries cannot be selected by a generic UI message.
+          async export(params){
+            if(!params?.options || Object.keys(params.options).length!==1 ||
+              params.options.consent!==UNENCRYPTED_CONSENT)
+              throw Object.assign(new Error('INVALID_REQUEST'),{code:'INVALID_REQUEST'});
+            if(!backupService)
+              throw Object.assign(new Error('UNSUPPORTED_CAPABILITY'),{code:'UNSUPPORTED_CAPABILITY'});
+            const receipt=await backupService.exportToDownloads({
+              consent:UNENCRYPTED_CONSENT,includeSensitive:[]});
+            return {ok:true,result:receipt,revision:(await core.storage.snapshot()).revision};
+          },
           async retain(){
             if(!backupService)return {ok:false,error:{code:'UNSUPPORTED_CAPABILITY'},revision:(await core.storage.snapshot()).revision};
             return {ok:true,result:await backupService.downloads.maintain(),revision:(await core.storage.snapshot()).revision};
